@@ -4,209 +4,663 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#0a0a12" />
-  <title>LenoahHost · Nova Cognitive</title>
+  <title>LenoahHost · Nova Ultimate Cognitive</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
   <style>
+    /* ============================================
+       DESIGN SYSTEM · NOVA ULTIMATE COGNITIVE
+       ============================================ */
     :root {
-      --bg: #050508; --bg-panel: #0a0a14; --bg-card: #111120;
-      --led-primary: #00d4ff; --led-primary-glow: rgba(0, 212, 255, 0.4);
-      --led-secondary: #7c3aed; --led-warning: #f59e0b;
-      --led-success: #10b981; --led-danger: #ef4444;
-      --text: #f0f4ff; --text-dim: #8b9dc3; --text-muted: #5a6a8a;
+      --bg: #050508;
+      --bg-panel: #0a0a14;
+      --bg-card: #111120;
+      --bg-glass: rgba(15, 15, 28, 0.85);
+      
+      --led-primary: #00d4ff;
+      --led-primary-glow: rgba(0, 212, 255, 0.4);
+      --led-secondary: #7c3aed;
+      --led-secondary-glow: rgba(124, 58, 237, 0.3);
+      --led-warm: #f59e0b;
+      --led-success: #10b981;
+      --led-danger: #ef4444;
+      --led-info: #3b82f6;
+      
+      --text: #f0f4ff;
+      --text-dim: #8b9dc3;
+      --text-muted: #5a6a8a;
+      
       --border: rgba(100, 120, 180, 0.15);
-      --font-robot: 'Inter', sans-serif; --font-serif: 'Playfair Display', serif;
+      --border-glow: rgba(0, 212, 255, 0.3);
+      
+      --font-robot: 'Inter', -apple-system, sans-serif;
+      --font-serif: 'Playfair Display', serif;
       --font-mono: 'JetBrains Mono', monospace;
+      
+      --ease-robot: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    
     body {
-      min-height: 100vh; background: var(--bg); color: var(--text);
-      font-family: var(--font-robot); font-size: 15px; line-height: 1.5;
-      overflow-x: hidden; -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-robot);
+      font-size: 15px;
+      line-height: 1.5;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Setup Screen */
+    /* Canvas de fondo */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.3;
+    }
+
+    /* ============================================
+       SETUP SCREEN
+       ============================================ */
     #setup-screen {
-      position: fixed; inset: 0; background: linear-gradient(135deg, var(--bg), #0a0a18);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      z-index: 1000; padding: 2rem;
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, var(--bg), #0a0a18);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 2rem;
     }
     #setup-screen.hidden { display: none; }
     
-    .setup-container { max-width: 500px; width: 100%; text-align: center; animation: slideUp 0.6s ease; }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .setup-container {
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      animation: slideUp 0.6s var(--ease-robot);
+    }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
     
     .setup-logo {
-      font-family: var(--font-serif); font-size: 2.5rem; font-weight: 700;
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
       background: linear-gradient(135deg, var(--led-primary), var(--led-secondary));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .setup-robot-face {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 1.5rem;
+      position: relative;
+    }
+    
+    .robot-face-circle {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 2px solid var(--led-primary);
+      box-shadow: 0 0 30px var(--led-primary-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    
+    .robot-eyes { display: flex; gap: 20px; }
+    
+    .robot-eye {
+      width: 20px;
+      height: 20px;
+      background: var(--led-primary);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--led-primary), 0 0 20px var(--led-primary-glow);
+      animation: eyePulse 2s infinite;
+    }
+    
+    @keyframes eyePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(0.95); }
+    }
+    
+    .robot-mouth {
+      position: absolute;
+      bottom: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 4px;
+      background: var(--led-primary);
+      border-radius: 2px;
+      box-shadow: 0 0 8px var(--led-primary-glow);
     }
     
     .setup-input {
-      width: 100%; padding: 1rem; background: var(--bg-panel);
-      border: 1px solid var(--border); border-radius: 12px;
-      color: var(--text); font-size: 1rem; margin-bottom: 1rem;
+      width: 100%;
+      padding: 1rem;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      transition: all 0.3s;
     }
-    .setup-input:focus { outline: none; border-color: var(--led-primary); }
+    .setup-input:focus {
+      outline: none;
+      border-color: var(--led-primary);
+      box-shadow: 0 0 20px var(--led-primary-glow);
+    }
     
     .setup-btn {
-      width: 100%; padding: 1rem;
+      width: 100%;
+      padding: 1rem;
       background: linear-gradient(135deg, var(--led-primary), var(--led-secondary));
-      color: #000; border: none; border-radius: 12px;
-      font-weight: 600; font-size: 1.1rem; cursor: pointer;
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 20px var(--led-primary-glow);
     }
+    .setup-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px var(--led-primary-glow);
+    }
+    .setup-btn:active { transform: scale(0.98); }
+    
+    .setup-help {
+      margin-top: 1.5rem;
+      text-align: left;
+      background: var(--bg-panel);
+      padding: 1.25rem;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+    .setup-help ol { padding-left: 1.3rem; margin: 0.75rem 0; }
+    .setup-help a { color: var(--led-primary); text-decoration: none; }
 
-    /* Robot Idle */
+    /* ============================================
+       ROBOT IDLE OVERLAY
+       ============================================ */
     #robot-overlay {
-      position: fixed; inset: 0; background: radial-gradient(ellipse at center, #0a0a18 0%, var(--bg) 70%);
-      display: none; flex-direction: column; align-items: center; justify-content: center;
-      z-index: 500; cursor: pointer;
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, #0a0a18 0%, var(--bg) 70%);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+      cursor: pointer;
     }
     #robot-overlay.show { display: flex; }
     
-    .robot-idle-face {
-      width: 200px; height: 200px; margin: 0 auto 2rem; position: relative;
+    .robot-idle-container {
+      text-align: center;
+      animation: idleFloat 4s ease-in-out infinite;
     }
+    
+    @keyframes idleFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .robot-idle-face {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 2rem;
+      position: relative;
+    }
+    
     .robot-idle-circle {
-      width: 100%; height: 100%; border-radius: 50%;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
       background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
       border: 3px solid var(--led-primary);
-      box-shadow: 0 0 50px var(--led-primary-glow);
-      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 50px var(--led-primary-glow), inset 0 0 30px rgba(0, 212, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+    
     .robot-idle-eyes { display: flex; gap: 30px; }
+    
     .robot-idle-eye {
-      width: 35px; height: 35px; background: var(--led-primary);
-      border-radius: 50%; box-shadow: 0 0 20px var(--led-primary);
-      animation: idleBlink 4s infinite;
+      width: 35px;
+      height: 35px;
+      background: var(--led-primary);
+      border-radius: 50%;
+      box-shadow: 0 0 20px var(--led-primary), 0 0 40px var(--led-primary-glow);
+      animation: idleEyeBlink 4s infinite;
     }
-    @keyframes idleBlink { 0%, 45%, 55%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.1); } }
+    
+    @keyframes idleEyeBlink {
+      0%, 45%, 55%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(0.1); }
+    }
+    
+    .robot-idle-mouth {
+      position: absolute;
+      bottom: 35%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 6px;
+      background: var(--led-primary);
+      border-radius: 3px;
+      box-shadow: 0 0 10px var(--led-primary-glow);
+      animation: mouthIdle 3s ease-in-out infinite;
+    }
+    
+    @keyframes mouthIdle {
+      0%, 100% { width: 60px; border-radius: 3px; }
+      50% { width: 50px; border-radius: 50%; height: 20px; }
+    }
     
     .robot-idle-text {
-      font-family: var(--font-serif); font-size: 1.8rem; font-weight: 600;
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
       background: linear-gradient(135deg, var(--led-primary), var(--led-secondary));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .robot-idle-subtitle {
+      color: var(--text-dim);
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .robot-idle-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--led-success);
+      font-size: 0.9rem;
+    }
+    
+    .status-pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--led-success);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--led-success);
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
     }
 
-    /* Main App */
-    #app { position: relative; min-height: 100vh; display: flex; flex-direction: column; opacity: 0; transition: opacity 0.5s; }
+    /* ============================================
+       MAIN APP
+       ============================================ */
+    #app {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
     #app.ready { opacity: 1; }
 
+    /* ============================================
+       HEADER
+       ============================================ */
     header {
-      position: sticky; top: 0; display: flex; justify-content: space-between;
-      align-items: center; padding: 0.75rem 1.25rem;
-      background: rgba(10, 10, 20, 0.85); backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border); z-index: 50;
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1.25rem;
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 50;
     }
-    .brand { display: flex; align-items: center; gap: 0.75rem; }
+    
+    .header-brand { display: flex; align-items: center; gap: 0.75rem; }
+    
     .brand-icon {
-      width: 36px; height: 36px; background: linear-gradient(135deg, var(--led-primary), var(--led-secondary));
-      border-radius: 10px; display: flex; align-items: center; justify-content: center;
-      font-weight: 700; color: #000;
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--led-primary), var(--led-secondary));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #000;
+      box-shadow: 0 0 15px var(--led-primary-glow);
     }
-    .brand-text { font-family: var(--font-serif); font-weight: 600; font-size: 1.2rem; }
+    
+    .brand-text {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+    }
     .brand-text span { color: var(--led-primary); }
     
-    .header-status { display: flex; gap: 1.25rem; font-size: 0.85rem; color: var(--text-dim); }
+    .header-status {
+      display: flex;
+      gap: 1.25rem;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+    
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
 
+    /* ============================================
+       TABS
+       ============================================ */
     .tabs {
-      display: flex; gap: 0.25rem; padding: 0.5rem 1rem;
-      background: var(--bg-panel); border-bottom: 1px solid var(--border);
-      overflow-x: auto; scrollbar-width: none;
+      display: flex;
+      gap: 0.25rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      scrollbar-width: none;
     }
     .tabs::-webkit-scrollbar { display: none; }
+    
     .tab {
-      flex: 0 0 auto; padding: 0.6rem 1.1rem; background: transparent;
-      border: none; color: var(--text-muted); font-size: 0.9rem;
-      font-weight: 500; border-radius: 10px; cursor: pointer;
+      flex: 0 0 auto;
+      padding: 0.6rem 1.1rem;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
     }
-    .tab.active { color: var(--led-primary); background: rgba(0, 212, 255, 0.1); }
+    .tab:hover { color: var(--text); background: rgba(0, 212, 255, 0.05); }
+    .tab.active {
+      color: var(--led-primary);
+      background: rgba(0, 212, 255, 0.1);
+    }
 
+    /* ============================================
+       MAIN CONTENT
+       ============================================ */
     #content {
-      flex: 1; display: flex; flex-direction: column; padding: 1.25rem;
-      gap: 1.25rem; overflow-y: auto; max-width: 1400px; margin: 0 auto; width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 1.25rem;
+      gap: 1.25rem;
+      overflow-y: auto;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
     }
+    
     @media (min-width: 1024px) {
       #content { flex-direction: row; align-items: flex-start; }
       #chat-section { flex: 1; }
-      #side-panel { flex: 0 0 400px; }
+      #side-panel { flex: 0 0 420px; }
     }
 
     .tab-content { display: none; animation: fadeIn 0.3s; }
     .tab-content.active { display: block; }
+    
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    /* Chat Section */
+    /* ============================================
+       CHAT SECTION
+       ============================================ */
     #chat-section {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       min-height: 500px;
     }
-    .robot-avatar { width: 150px; height: 150px; margin-bottom: 1.5rem; position: relative; }
+    
+    .robot-avatar {
+      width: 150px;
+      height: 150px;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    
     .robot-avatar-circle {
-      width: 100%; height: 100%; border-radius: 50%;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
       background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
       border: 3px solid var(--led-primary);
       box-shadow: 0 0 40px var(--led-primary-glow);
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.3s;
     }
-    .robot-avatar-circle.speaking { animation: speakGlow 0.5s infinite; }
-    @keyframes speakGlow { 0%, 100% { box-shadow: 0 0 40px var(--led-primary-glow); } 50% { box-shadow: 0 0 60px var(--led-primary-glow); } }
+    
+    .robot-avatar-circle.speaking {
+      animation: speakGlow 0.5s infinite;
+      border-color: var(--led-warm);
+    }
+    
+    @keyframes speakGlow {
+      0%, 100% { box-shadow: 0 0 40px var(--led-primary-glow); }
+      50% { box-shadow: 0 0 60px var(--led-primary-glow), 0 0 80px rgba(0, 212, 255, 0.2); }
+    }
     
     .robot-eyes-container { display: flex; gap: 24px; }
+    
     .robot-eye-main {
-      width: 28px; height: 28px; background: var(--led-primary);
-      border-radius: 50%; box-shadow: 0 0 15px var(--led-primary);
+      width: 28px;
+      height: 28px;
+      background: var(--led-primary);
+      border-radius: 50%;
+      box-shadow: 0 0 15px var(--led-primary), 0 0 30px var(--led-primary-glow);
+      transition: all 0.15s;
     }
+    
+    .robot-eye-main.blink { animation: blink 0.15s; }
+    
+    @keyframes blink {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(0.1); }
+    }
+    
     .robot-mouth-main {
-      position: absolute; bottom: 30%; left: 50%; transform: translateX(-50%);
-      width: 50px; height: 5px; background: var(--led-primary);
+      position: absolute;
+      bottom: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 5px;
+      background: var(--led-primary);
       border-radius: 3px;
+      box-shadow: 0 0 8px var(--led-primary-glow);
+      transition: all 0.2s;
     }
+    
     .robot-mouth-main.speaking { animation: speakMouth 0.4s infinite; }
-    @keyframes speakMouth { 0%, 100% { width: 50px; height: 5px; } 50% { width: 40px; height: 15px; border-radius: 50%; } }
+    
+    @keyframes speakMouth {
+      0%, 100% { width: 50px; height: 5px; border-radius: 3px; }
+      25% { width: 40px; height: 15px; border-radius: 50%; }
+      50% { width: 35px; height: 20px; border-radius: 50%; }
+      75% { width: 45px; height: 12px; border-radius: 50%; }
+    }
     
     .message-display {
-      min-height: 80px; text-align: center; font-size: 1.2rem;
-      line-height: 1.6; color: var(--text); margin-bottom: 1.5rem;
-      max-width: 600px; padding: 0 1rem;
+      min-height: 80px;
+      text-align: center;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      max-width: 600px;
+      padding: 0 1rem;
     }
-    .message-display.thinking { color: var(--text-dim); font-style: italic; }
+    .message-display.thinking {
+      color: var(--text-dim);
+      font-style: italic;
+    }
     
-    .voice-controls { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
-    .mic-btn {
-      width: 70px; height: 70px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--led-primary), var(--led-secondary));
-      border: none; display: flex; align-items: center; justify-content: center;
-      font-size: 2rem; cursor: pointer; box-shadow: 0 6px 25px var(--led-primary-glow);
+    .voice-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
-    .mic-btn.listening { animation: micPulse 1.5s infinite; background: linear-gradient(135deg, var(--led-warning), #d97706); }
-    @keyframes micPulse { 0%, 100% { box-shadow: 0 6px 25px rgba(245, 158, 11, 0.4); } 50% { box-shadow: 0 6px 40px rgba(245, 158, 11, 0.6); } }
+    
+    .mic-btn {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--led-primary), var(--led-secondary));
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      cursor: pointer;
+      box-shadow: 0 6px 25px var(--led-primary-glow);
+      transition: all 0.3s;
+    }
+    .mic-btn:hover { transform: scale(1.05); box-shadow: 0 8px 35px var(--led-primary-glow); }
+    .mic-btn:active { transform: scale(0.95); }
+    .mic-btn.listening {
+      animation: micPulse 1.5s infinite;
+      background: linear-gradient(135deg, var(--led-warm), #d97706);
+    }
+    
+    @keyframes micPulse {
+      0%, 100% { box-shadow: 0 6px 25px rgba(245, 158, 11, 0.4); }
+      50% { box-shadow: 0 6px 40px rgba(245, 158, 11, 0.6); }
+    }
     
     .control-btn {
-      padding: 0.6rem 1rem; background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 12px; color: var(--text); font-size: 0.9rem; cursor: pointer;
+      padding: 0.6rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
     }
-    .control-btn.active { background: var(--led-primary); color: #000; }
+    .control-btn:hover {
+      border-color: var(--led-primary);
+      background: rgba(0, 212, 255, 0.05);
+    }
+    .control-btn.active {
+      background: var(--led-primary);
+      color: #000;
+      border-color: var(--led-primary);
+    }
 
-    /* Side Panel */
+    /* ============================================
+       SIDE PANEL / CARDS
+       ============================================ */
     #side-panel { display: flex; flex-direction: column; gap: 1rem; }
+    
     .card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 16px; overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.3s;
     }
+    .card:hover {
+      border-color: var(--border-glow);
+      box-shadow: 0 4px 20px rgba(0, 212, 255, 0.1);
+    }
+    
     .card-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 1rem 1.25rem; border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
     }
+    
     .card-title {
-      font-family: var(--font-serif); font-size: 1.1rem; font-weight: 600;
-      display: flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
+    
     .card-body { padding: 1.25rem; }
 
-    /* Cognitive Reasoning Display */
+    /* ============================================
+       ENTERTAINMENT GRID
+       ============================================ */
+    .entertainment-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+    
+    .entertainment-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .entertainment-card:hover {
+      border-color: var(--led-primary);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 15px rgba(0, 212, 255, 0.1);
+    }
+    
+    .entertainment-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .entertainment-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; }
+    .entertainment-desc { font-size: 0.8rem; color: var(--text-dim); }
+
+    /* ============================================
+       COGNITIVE REASONING PANEL
+       ============================================ */
     .reasoning-panel {
       background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(0, 212, 255, 0.05));
       border: 1px solid var(--led-secondary);
@@ -214,13 +668,20 @@
       padding: 1.25rem;
       margin-bottom: 1rem;
     }
+    
     .reasoning-header {
-      display: flex; align-items: center; gap: 0.5rem;
-      font-weight: 600; margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
       color: var(--led-secondary);
     }
+    
     .reasoning-step {
-      display: flex; gap: 0.75rem; padding: 0.6rem 0;
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
       border-bottom: 1px dashed var(--border);
       font-size: 0.9rem;
     }
@@ -234,11 +695,18 @@
     .step-check { color: var(--led-success); }
     .step-error { color: var(--led-danger); }
 
-    /* Validation Alerts */
+    /* ============================================
+       VALIDATION ALERTS
+       ============================================ */
     .validation-alert {
-      padding: 1rem; border-radius: 12px; margin: 1rem 0;
-      display: flex; gap: 0.75rem; align-items: flex-start;
-      font-size: 0.95rem; line-height: 1.5;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      font-size: 0.95rem;
+      line-height: 1.5;
     }
     .validation-alert.blocker {
       background: rgba(239, 68, 68, 0.15);
@@ -247,64 +715,130 @@
     }
     .validation-alert.warning {
       background: rgba(245, 158, 11, 0.15);
-      border: 2px solid var(--led-warning);
-      color: var(--led-warning);
+      border: 2px solid var(--led-warm);
+      color: var(--led-warm);
     }
     .validation-alert.info {
       background: rgba(0, 212, 255, 0.1);
       border: 1px solid var(--led-primary);
     }
-    .alert-icon { font-size: 1.2rem; flex-shrink: 0; }
 
-    /* Form Elements */
-    .vehicle-selector { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
-    .vehicle-type {
-      flex: 1; padding: 0.7rem 0.8rem; background: var(--bg-panel);
-      border: 1px solid var(--border); border-radius: 10px;
-      color: var(--text-muted); font-size: 0.85rem; cursor: pointer;
+    /* ============================================
+       VEHICLE CLASSIFICATION
+       ============================================ */
+    .vehicle-selector {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      overflow-x: auto;
     }
-    .vehicle-type.active { background: var(--led-primary); color: #000; border-color: var(--led-primary); }
+    
+    .vehicle-type {
+      flex: 1;
+      padding: 0.7rem 0.8rem;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .vehicle-type:hover { color: var(--text); border-color: var(--border-glow); }
+    .vehicle-type.active {
+      background: var(--led-primary);
+      color: #000;
+      border-color: var(--led-primary);
+      box-shadow: 0 4px 15px var(--led-primary-glow);
+    }
     
     .form-group { margin-bottom: 1rem; }
     .form-label { display: block; font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.5rem; }
     .form-input, .textarea, .form-select {
-      width: 100%; padding: 0.85rem 1rem; background: var(--bg-panel);
-      border: 1px solid var(--border); border-radius: 12px;
-      color: var(--text); font-size: 1rem;
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 1rem;
     }
-    .form-input:focus, .textarea:focus { outline: none; border-color: var(--led-primary); }
+    .form-input:focus, .textarea:focus { outline: none; border-color: var(--led-primary); box-shadow: 0 0 20px var(--led-primary-glow); }
     .textarea { min-height: 80px; resize: vertical; }
+    .form-select { cursor: pointer; }
     
     .btn-primary {
-      width: 100%; padding: 1rem;
+      width: 100%;
+      padding: 1rem;
       background: linear-gradient(135deg, var(--led-primary), var(--led-secondary));
-      color: #000; border: none; border-radius: 12px;
-      font-weight: 600; font-size: 1rem; cursor: pointer;
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 20px var(--led-primary-glow);
     }
-    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 30px var(--led-primary-glow); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    
+    .btn-secondary {
+      padding: 0.75rem 1.25rem;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-secondary:hover { border-color: var(--led-primary); background: rgba(0, 212, 255, 0.05); }
 
-    /* Quote Result */
-    .quote-result { display: none; margin-top: 1rem; animation: slideUp 0.4s; }
+    /* ============================================
+       QUOTE RESULT
+       ============================================ */
+    .quote-result { display: none; margin-top: 1rem; animation: slideUp 0.4s var(--ease-robot); }
     .quote-result.show { display: block; }
     
     .fraction-card {
       background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(124, 58, 237, 0.05));
-      border: 1px solid var(--led-primary); border-radius: 16px;
-      padding: 1.25rem; margin-bottom: 1rem;
+      border: 1px solid var(--led-primary);
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
     }
+    
     .fraction-code {
-      font-family: var(--font-mono); font-size: 1.5rem;
-      font-weight: 700; color: var(--led-primary); letter-spacing: 0.05em;
+      font-family: var(--font-mono);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--led-primary);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
     }
+    
+    .fraction-desc { font-size: 0.95rem; color: var(--text); }
+    
     .confidence-meter {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.75rem; background: var(--bg-panel);
-      border-radius: 10px; margin-top: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background: var(--bg-panel);
+      border-radius: 10px;
+      margin-top: 0.75rem;
     }
+    
     .confidence-bar { flex: 1; height: 6px; background: var(--bg-card); border-radius: 3px; overflow: hidden; }
-    .confidence-fill { height: 100%; transition: width 0.5s; }
+    .confidence-fill { height: 100%; border-radius: 3px; transition: width 0.5s var(--ease-smooth); }
     .confidence-fill.high { background: var(--led-success); }
-    .confidence-fill.medium { background: var(--led-warning); }
+    .confidence-fill.medium { background: var(--led-warm); }
     .confidence-fill.low { background: var(--led-danger); }
     
     .calc-grid { display: grid; gap: 0.5rem; margin: 1rem 0; }
@@ -315,112 +849,237 @@
       padding-top: 0.75rem; margin-top: 0.5rem;
       border-top: 2px dashed var(--border); font-size: 1.1rem; color: var(--led-primary);
     }
-    .calc-row.blocked { color: var(--led-danger); font-weight: 700; }
 
-    /* Stats */
+    /* ============================================
+       STATS & VISITS
+       ============================================ */
     .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
     .stat-card {
-      background: var(--bg-panel); padding: 1rem; border-radius: 12px;
-      text-align: center; border: 1px solid var(--border);
+      background: var(--bg-panel);
+      padding: 1rem;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid var(--border);
+      transition: all 0.3s;
     }
-    .stat-value { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 700; color: var(--led-primary); }
+    .stat-card:hover { border-color: var(--border-glow); transform: translateY(-3px); }
+    
+    .stat-value {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--led-primary);
+      margin: 0.25rem 0;
+    }
     .stat-label { font-size: 0.8rem; color: var(--text-muted); }
-
+    
     .visits-list { max-height: 250px; overflow-y: auto; }
     .visit-item {
-      display: flex; justify-content: space-between; padding: 0.85rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.85rem 0;
       border-bottom: 1px solid var(--border);
     }
     .visit-item:last-child { border-bottom: none; }
-    .visit-name { font-weight: 600; }
+    .visit-name { font-weight: 600; margin-bottom: 0.2rem; }
     .visit-meta { font-size: 0.8rem; color: var(--text-muted); }
 
+    /* ============================================
+       MODALS (Trivia, News)
+       ============================================ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 5, 8, 0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 800;
+      padding: 2rem;
+    }
+    .modal-overlay.show { display: flex; }
+    
+    .modal-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glow);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 100%;
+      animation: slideUp 0.4s var(--ease-robot);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .modal-title { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 600; }
+    
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .modal-close:hover { border-color: var(--led-danger); color: var(--led-danger); }
+    
+    .trivia-question { font-size: 1.1rem; margin-bottom: 1.5rem; line-height: 1.5; }
+    
+    .trivia-options { display: flex; flex-direction: column; gap: 0.75rem; }
+    
+    .trivia-option {
+      padding: 1rem;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: left;
+    }
+    .trivia-option:hover { border-color: var(--led-primary); background: rgba(0, 212, 255, 0.05); }
+    .trivia-option.correct { border-color: var(--led-success); background: rgba(16, 185, 129, 0.1); }
+    .trivia-option.incorrect { border-color: var(--led-danger); background: rgba(239, 68, 68, 0.1); }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
     @media (max-width: 767px) {
       .robot-idle-face { width: 150px; height: 150px; }
+      .robot-idle-eyes { gap: 20px; }
+      .robot-idle-eye { width: 25px; height: 25px; }
       .robot-avatar { width: 120px; height: 120px; }
       .header-status { display: none; }
+      .entertainment-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+    
+    .skeleton {
+      background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-panel) 50%, var(--bg-card) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 8px;
     }
   </style>
 </head>
 <body>
 
+  <!-- CANVAS DE FONDO -->
+  <canvas id="bg-canvas"></canvas>
+
   <!-- SETUP SCREEN -->
   <div id="setup-screen">
     <div class="setup-container">
+      <div class="setup-robot-face">
+        <div class="robot-face-circle">
+          <div class="robot-eyes">
+            <div class="robot-eye"></div>
+            <div class="robot-eye"></div>
+          </div>
+          <div class="robot-mouth"></div>
+        </div>
+      </div>
       <div class="setup-logo">L e noah</div>
-      <p style="color: var(--text-dim); margin: 1rem 0 2rem;">Nova Cognitive Edition · IA con Razonamiento</p>
+      <p style="color: var(--text-dim); margin-bottom: 2rem;">Nova Ultimate Cognitive · IA con Razonamiento</p>
+      
       <input type="password" id="api-key-input" class="setup-input" placeholder="AIzaSy..." autocomplete="off" />
       <button id="save-key-btn" class="setup-btn">✓ Guardar y Entrar</button>
-      <div style="margin-top: 1.5rem; text-align: left; background: var(--bg-panel); padding: 1.25rem; border-radius: 12px; font-size: 0.85rem; color: var(--text-dim);">
+      
+      <div class="setup-help">
         <strong>¿Dónde obtengo mi API Key?</strong>
-        <ol style="padding-left: 1.3rem; margin: 0.75rem 0;">
-          <li>Ve a <a href="https://aistudio.google.com" style="color: var(--led-primary);">aistudio.google.com</a></li>
-          <li>Inicia sesión → "Get API Key" → "Create API Key"</li>
-          <li>Copia y pega arriba</li>
+        <ol>
+          <li>Ve a <a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a></li>
+          <li>Inicia sesión con tu cuenta Google</li>
+          <li>Clic en <strong>"Get API Key"</strong> → <strong>"Create API Key"</strong></li>
+          <li>Copia la key y pégala arriba</li>
         </ol>
+        <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border);">
+          🔒 Tu key se guarda solo en esta tablet, nunca se envía a servidores.
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ROBOT IDLE -->
+  <!-- ROBOT IDLE OVERLAY -->
   <div id="robot-overlay">
-    <div style="text-align: center; animation: idleFloat 4s ease-in-out infinite;">
+    <div class="robot-idle-container">
       <div class="robot-idle-face">
         <div class="robot-idle-circle">
           <div class="robot-idle-eyes">
             <div class="robot-idle-eye"></div>
             <div class="robot-idle-eye"></div>
           </div>
+          <div class="robot-idle-mouth"></div>
         </div>
       </div>
       <div class="robot-idle-text">L e noah</div>
-      <div style="color: var(--text-dim); margin: 0.5rem 0 1.5rem;">"Precisión antes que velocidad"</div>
-      <div style="color: var(--led-success); font-size: 0.9rem;">
-        <span style="display: inline-block; width: 8px; height: 8px; background: var(--led-success); border-radius: 50%; margin-right: 0.5rem; animation: pulse 2s infinite;"></span>
-        Sistema cognitivo activo
+      <div class="robot-idle-subtitle" id="idle-message">"Tu importación exitosa comienza aquí."</div>
+      <div class="robot-idle-status">
+        <span class="status-pulse"></span>
+        <span>Sistema cognitivo activo · Detectando presencia</span>
       </div>
+      <div style="margin-top: 1.5rem; color: var(--text-muted); font-size: 0.9rem;" id="idle-weather">🌤 --°C · Tijuana, BC</div>
     </div>
   </div>
-  <style>@keyframes idleFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } } @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }</style>
 
   <!-- MAIN APP -->
   <div id="app">
     <header>
-      <div class="brand">
+      <div class="header-brand">
         <div class="brand-icon">L</div>
         <div class="brand-text">L<span>e</span>noah</div>
       </div>
       <div class="header-status">
-        <div>🕐 <span id="clock">--:--</span></div>
-        <div>🌤 <span id="weather">--°</span></div>
-        <div>👥 <span id="visit-count">0</span></div>
-        <div>🧠 <span style="color: var(--led-success);">Cognitive</span></div>
+        <div class="status-item">🕐 <span id="clock">--:--</span></div>
+        <div class="status-item">🌤 <span id="weather">--°</span></div>
+        <div class="status-item">👥 <span id="visit-count">0</span> hoy</div>
+        <div class="status-item"> <span style="color: var(--led-success);">Cognitive</span></div>
       </div>
     </header>
 
     <nav class="tabs">
       <button class="tab active" data-tab="conversation">💬 Conversación</button>
+      <button class="tab" data-tab="entertainment">🎮 Entretenimiento</button>
       <button class="tab" data-tab="visits">📋 Visitas</button>
       <button class="tab" data-tab="dashboard">📊 Dashboard</button>
-      <button class="tab" data-tab="vehicles">🧠 Clasificador Cognitivo</button>
+      <button class="tab" data-tab="vehicles"> Clasificador</button>
       <button class="tab" data-tab="quote">⬡ Cotización</button>
     </nav>
 
     <main id="content">
-      <!-- CHAT -->
+      <!-- CHAT SECTION -->
       <section id="chat-section" class="tab-content active">
         <div class="robot-avatar">
           <div class="robot-avatar-circle" id="avatar-circle">
             <div class="robot-eyes-container">
-              <div class="robot-eye-main"></div>
-              <div class="robot-eye-main"></div>
+              <div class="robot-eye-main" id="eye-left"></div>
+              <div class="robot-eye-main" id="eye-right"></div>
             </div>
             <div class="robot-mouth-main" id="mouth"></div>
           </div>
         </div>
+        
         <div class="message-display" id="message-area">
-          Hola, soy Nova Cognitive. Analizo y valido antes de responder. ¿En qué puedo ayudarte?
+          Hola, soy Nova Cognitive. Analizo y valido antes de responder. ¿En qué puedo ayudarte hoy?
         </div>
+        
         <div class="voice-controls">
           <button id="mic-btn" title="Presiona para hablar">🎤</button>
           <button id="lang-toggle" class="control-btn">ES · EN</button>
@@ -430,53 +1089,103 @@
 
       <!-- SIDE PANEL -->
       <aside id="side-panel">
-        <!-- VISITS -->
+        <!-- ENTERTAINMENT TAB -->
+        <div id="entertainment-tab" class="tab-content card">
+          <div class="card-header">
+            <div class="card-title"> Centro de Entretenimiento</div>
+          </div>
+          <div class="card-body">
+            <p style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 1rem;">
+              Mientras esperas, Nova puede entretenerte:
+            </p>
+            <div class="entertainment-grid">
+              <div class="entertainment-card" data-game="trivia">
+                <div class="entertainment-icon"></div>
+                <div class="entertainment-title">Trivia</div>
+                <div class="entertainment-desc">Preguntas de cultura y comercio</div>
+              </div>
+              <div class="entertainment-card" data-game="news">
+                <div class="entertainment-icon">📰</div>
+                <div class="entertainment-title">Noticias</div>
+                <div class="entertainment-desc">Comercio exterior</div>
+              </div>
+              <div class="entertainment-card" data-game="joke">
+                <div class="entertainment-icon">😄</div>
+                <div class="entertainment-title">Chiste</div>
+                <div class="entertainment-desc">Un poco de humor</div>
+              </div>
+              <div class="entertainment-card" data-game="tips">
+                <div class="entertainment-icon">💡</div>
+                <div class="entertainment-title">Tips</div>
+                <div class="entertainment-desc">Consejos de importación</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VISITS TAB -->
         <div id="visits-tab" class="tab-content card">
-          <div class="card-header"><div class="card-title">📋 Registro</div></div>
+          <div class="card-header">
+            <div class="card-title">📋 Registro</div>
+          </div>
           <div class="card-body">
             <div class="visits-list" id="visits-list">
-              <div style="text-align: center; color: var(--text-muted); padding: 2rem;">Sin visitas</div>
+              <div style="text-align: center; color: var(--text-muted); padding: 2rem;">Sin visitas aún.</div>
             </div>
             <div style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
-              <button id="export-csv" class="control-btn" style="width: 100%;">↓ Exportar CSV</button>
+              <button id="export-csv" class="btn-secondary" style="width: 100%;">↓ Exportar CSV</button>
             </div>
           </div>
         </div>
 
-        <!-- DASHBOARD -->
+        <!-- DASHBOARD TAB -->
         <div id="dashboard-tab" class="tab-content card">
-          <div class="card-header"><div class="card-title">📊 Dashboard</div></div>
+          <div class="card-header">
+            <div class="card-title"> Dashboard</div>
+          </div>
           <div class="card-body">
             <div class="stats-grid">
-              <div class="stat-card"><div class="stat-value" id="stat-total">0</div><div class="stat-label">Visitas hoy</div></div>
-              <div class="stat-card"><div class="stat-value" id="stat-avg">0m</div><div class="stat-label">Espera prom.</div></div>
-              <div class="stat-card"><div class="stat-value" id="stat-peak">--</div><div class="stat-label">Hora pico</div></div>
-              <div class="stat-card"><div class="stat-value" id="stat-lang">ES</div><div class="stat-label">Idioma</div></div>
+              <div class="stat-card">
+                <div class="stat-value" id="stat-total">0</div>
+                <div class="stat-label">Visitas hoy</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="stat-avg">0m</div>
+                <div class="stat-label">Espera prom.</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="stat-peak">--</div>
+                <div class="stat-label">Hora pico</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="stat-lang">ES</div>
+                <div class="stat-label">Idioma</div>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- COGNITIVE VEHICLE CLASSIFIER -->
+        <!-- VEHICLES TAB -->
         <div id="vehicles-tab" class="tab-content card">
           <div class="card-header">
-            <div class="card-title">🧠 Clasificador Cognitivo</div>
+            <div class="card-title"> Clasificador Cognitivo</div>
             <span style="background: var(--led-success); color: #000; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">VALIDACIÓN IA</span>
           </div>
           <div class="card-body">
             <div class="vehicle-selector">
-              <button class="vehicle-type active" data-type="auto">🚗 Auto</button>
+              <button class="vehicle-type active" data-type="auto">🚗 Auto/SUV</button>
               <button class="vehicle-type" data-type="truck">🚛 Tractocamión</button>
               <button class="vehicle-type" data-type="machinery"> Maquinaria</button>
             </div>
             
             <div class="form-group">
-              <label class="form-label">① VIN (17 caracteres)</label>
+              <label class="form-label"> VIN (17 caracteres)</label>
               <input type="text" id="vin-input" class="form-input" placeholder="1HGCM82633A004352" maxlength="17" pattern="[A-HJ-NPR-Z0-9]{17}" />
             </div>
             
             <div class="form-group">
-              <label class="form-label">② Descripción DETALLADA</label>
-              <textarea id="vehicle-desc" class="textarea" placeholder="Ej: Ford F-150 Lariat 2020, gasolina, 4x4, origen EE.UU., fabricado en Detroit"></textarea>
+              <label class="form-label">② Descripción detallada</label>
+              <textarea id="vehicle-desc" class="textarea" placeholder="Ej: Ford F-150 Lariat 2020, gasolina, 4x4, origen EE.UU."></textarea>
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
@@ -511,7 +1220,7 @@
                   <span>Verificando legalidad y restricciones...</span>
                 </div>
                 <div class="reasoning-step pending" id="step-3">
-                  <span class="step-icon">⏳</span>
+                  <span class="step-icon"></span>
                   <span>Analizando consistencia de datos...</span>
                 </div>
                 <div class="reasoning-step pending" id="step-4">
@@ -525,14 +1234,12 @@
               </div>
             </div>
             
-            <!-- VALIDATION ALERTS -->
             <div id="validation-alerts"></div>
             
-            <!-- RESULT -->
             <div id="classification-result" class="quote-result">
               <div class="fraction-card">
                 <div class="fraction-code" id="res-fraction">--</div>
-                <div style="font-size: 0.95rem; color: var(--text); margin-top: 0.25rem;" id="res-desc">--</div>
+                <div class="fraction-desc" id="res-desc">--</div>
                 <div class="confidence-meter">
                   <span style="font-size: 0.8rem; color: var(--text-muted);">Confianza</span>
                   <div class="confidence-bar">
@@ -561,20 +1268,23 @@
           </div>
         </div>
 
-        <!-- GENERAL QUOTE -->
+        <!-- QUOTE TAB -->
         <div id="quote-tab" class="tab-content card">
-          <div class="card-header"><div class="card-title">⬡ Cotización General</div></div>
+          <div class="card-header">
+            <div class="card-title">⬡ Cotización General</div>
+          </div>
           <div class="card-body">
             <div class="form-group">
               <label class="form-label">Descripción de mercancía</label>
               <textarea id="goods-desc" class="textarea" placeholder="Sé lo más específico posible..."></textarea>
             </div>
+            
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
               <div class="form-group">
-                <label class="form-label">País origen</label>
+                <label class="form-label">País de origen</label>
                 <select id="origin-country" class="form-select">
-                  <option value="US">🇺 EE.UU.</option>
-                  <option value="CA">🇨 Canadá</option>
+                  <option value="US">🇺 EE.UU. ✓ T-MEC</option>
+                  <option value="CA">🇨 Canadá ✓ T-MEC</option>
                   <option value="MX">🇲 México</option>
                   <option value="CN">🇨 China</option>
                   <option value="other">🌍 Otro</option>
@@ -585,7 +1295,8 @@
                 <input type="number" id="quote-value" class="form-input" placeholder="1000" min="0" step="0.01" />
               </div>
             </div>
-            <button id="calculate-quote" class="btn-primary">🧠 Calcular con Validación</button>
+            
+            <button id="calculate-quote" class="btn-primary"> Calcular con Validación</button>
             <div id="validation-alerts-general"></div>
             <div id="general-quote-result" class="quote-result" style="margin-top: 1rem;"></div>
           </div>
@@ -596,20 +1307,45 @@
     <button id="change-key-btn" class="control-btn" style="position: fixed; bottom: 1rem; right: 1rem; z-index: 40;">⚙️ API</button>
   </div>
 
+  <!-- TRIVIA MODAL -->
+  <div id="trivia-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title"> Trivia de Comercio</div>
+        <button class="modal-close" id="trivia-close">✕</button>
+      </div>
+      <div id="trivia-content">
+        <div class="trivia-question" id="trivia-question">Cargando...</div>
+        <div class="trivia-options" id="trivia-options"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEWS MODAL -->
+  <div id="news-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">📰 Noticias</div>
+        <button class="modal-close" id="news-close">✕</button>
+      </div>
+      <div id="news-list"></div>
+    </div>
+  </div>
+
   <script>
     /**
-     * LENOAH HOST · NOVA COGNITIVE EDITION
-     * Razonamiento multi-capa antes de responder
-     * Validación de existencia, legalidad y consistencia
+     * LENOAH HOST · NOVA ULTIMATE COGNITIVE EDITION
+     * Combina: UI completa + Razonamiento cognitivo + Entretenimiento + Animaciones robot
      */
 
     const CONFIG = {
       GEMINI_ENDPOINT: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
       WEATHER_ENDPOINT: 'https://api.open-meteo.com/v1/forecast?latitude=32.5149&longitude=-117.0382&current_weather=true',
-      IDLE_TIMEOUT: 60000
+      IDLE_TIMEOUT: 60000,
+      CONFIDENCE_THRESHOLDS: { HIGH: 85, MEDIUM: 60, LOW: 0 }
     };
 
-    // BASE DE CONOCIMIENTO DE SUSTANCIAS/MERCANCÍAS PROHIBIDAS
+    // BASE DE DATOS DE SUSTANCIAS/MERCANCÍAS PROHIBIDAS
     const PROHIBITED_ITEMS = [
       'fentanilo', 'fentanyl', 'droga', 'narcótico', 'heroína', 'cocaína', 'metanfetamina',
       'arma', 'pistola', 'rifle', 'ametralladora', 'explosivo', 'dinamita',
@@ -620,22 +1356,34 @@
       'producto pirata', 'falsificación', 'réplica no autorizada'
     ];
 
-    // MARCAS REALES DE VEHÍCULOS (base mínima - se expande con IA)
-    const VALID_CAR_BRANDS = [
-      'ford', 'chevrolet', 'toyota', 'honda', 'nissan', 'mazda', 'volkswagen',
-      'bmw', 'mercedes', 'audi', 'lexus', 'acura', 'infiniti', 'cadillac',
-      'jeep', 'dodge', 'ram', 'gmc', 'buick', 'chrysler', 'lincoln',
-      'hyundai', 'kia', 'subaru', 'mitsubishi', 'suzuki', 'isuzu',
-      'volvo', 'porsche', 'land rover', 'jaguar', 'mini', 'tesla',
-      'fiat', 'alfa romeo', 'maserati', 'ferrari', 'lamborghini',
-      'peugeot', 'renault', 'citroen', 'seat', 'skoda',
-      'byd', 'geely', 'great wall', 'jAC', 'changan', 'chery', 'mg'
-    ];
-
     const state = {
-      apiKey: null, lang: 'es', isListening: false, isIdle: false,
-      idleTimer: null, visits: [], currentVisit: null,
-      vehicleType: 'auto', recognition: null, synth: window.speechSynthesis
+      apiKey: null,
+      lang: 'es',
+      isListening: false,
+      isIdle: false,
+      idleTimer: null,
+      visits: [],
+      currentVisit: null,
+      vehicleType: 'auto',
+      recognition: null,
+      synth: window.speechSynthesis,
+      triviaQuestions: [
+        { q: "¿Qué significa TIGIE?", options: ["Tarifa de Importación General", "Tarifa de la Ley General de Impuestos Generales de Importación y Exportación", "Tratado Internacional de Comercio Exterior"], correct: 1 },
+        { q: "¿Cuál es el IVA actual en México?", options: ["12%", "16%", "18%"], correct: 1 },
+        { q: "¿Qué es el DTA?", options: ["Derecho de Trámite Aduanero", "Declaración de Tránsito Aduanero", "Documento de Transferencia Aduanera"], correct: 0 },
+        { q: "¿Cuántos dígitos tiene una fracción arancelaria TIGIE?", options: ["6", "8", "10"], correct: 1 },
+        { q: "¿Qué tratado comercial aplica entre México y EE.UU.?", options: ["NAFTA", "T-MEC", "USMCA"], correct: 1 },
+        { q: "¿Qué es una NOM?", options: ["Norma Oficial Mexicana", "Número de Operación Mercantil", "Nota de Origen Mercantil"], correct: 0 },
+        { q: "¿Cuál es la fracción para tractocamiones?", options: ["8701.20.02", "8703.23.01", "8704.31.01"], correct: 0 },
+        { q: "¿Qué porcentaje de IGI aplica en franja fronteriza para autos usados 5-9 años?", options: ["0%", "1%", "10%"], correct: 1 }
+      ],
+      newsData: [
+        "📊 Tipo de cambio USD/MXN: $17.50 (actualizado)",
+        "🚢 Puerto de Lázaro Cárdenas reporta aumento del 12% en importaciones",
+        "📋 Nuevo decreto de autos usados vigente hasta noviembre 2026",
+        "🌎 T-MEC: Revisión de reglas de origen para vehículos en 2025",
+        " Aduanas digitales: SAT implementa nueva plataforma de clasificación automatizada"
+      ]
     };
 
     // ============================================
@@ -651,11 +1399,16 @@
 
       document.getElementById('save-key-btn').addEventListener('click', saveApiKey);
       document.getElementById('change-key-btn').addEventListener('click', showSetupScreen);
+      
       setupEventListeners();
+      initBackgroundCanvas();
       updateClock();
       setInterval(updateClock, 60000);
       fetchWeather();
       setInterval(fetchWeather, 600000);
+      
+      // Auto-blink eyes
+      setInterval(blinkEyes, 3000 + Math.random() * 2000);
     });
 
     function saveApiKey() {
@@ -665,8 +1418,9 @@
         state.apiKey = key;
         document.getElementById('setup-screen').classList.add('hidden');
         initApp();
+        initCameraDetection();
       } else {
-        alert('⚠️ API Key inválida');
+        showAlert('⚠️ API Key inválida', 'warning');
       }
     }
 
@@ -676,14 +1430,21 @@
     }
 
     async function initApp() {
+      // Web Speech API
       if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         state.recognition = new SpeechRecognition();
         state.recognition.lang = 'es-MX';
         state.recognition.interimResults = true;
         state.recognition.continuous = false;
+        
         state.recognition.onresult = handleSpeechResult;
         state.recognition.onend = () => { state.isListening = false; updateMicButton(); };
+        state.recognition.onerror = () => {
+          state.isListening = false;
+          updateMicButton();
+          speak('No pude entender. ¿Podrías repetirlo?', 'es');
+        };
       }
 
       const savedVisits = localStorage.getItem('lenoah_visits');
@@ -695,9 +1456,19 @@
 
       document.getElementById('app').classList.add('ready');
       resetIdleTimer();
+      
+      setTimeout(() => {
+        document.getElementById('message-area').textContent = state.lang === 'es' 
+          ? 'Hola, soy Nova Cognitive. Analizo y valido antes de responder. ¿En qué puedo ayudarte hoy?' 
+          : 'Hello, I\'m Nova Cognitive. I analyze and validate before responding. How can I help you today?';
+      }, 300);
     }
 
+    // ============================================
+    // EVENT LISTENERS
+    // ============================================
     function setupEventListeners() {
+      // Tabs
       document.querySelectorAll('.tab').forEach(tab => {
         tab.addEventListener('click', () => {
           document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -709,17 +1480,22 @@
         });
       });
 
+      // Voice
       document.getElementById('mic-btn').addEventListener('click', toggleListening);
       document.getElementById('lang-toggle').addEventListener('click', () => {
         state.lang = state.lang === 'es' ? 'en' : 'es';
         document.getElementById('lang-toggle').textContent = state.lang === 'es' ? 'ES · EN' : 'EN · ES';
         if (state.recognition) state.recognition.lang = state.lang === 'es' ? 'es-MX' : 'en-US';
+        speak(state.lang === 'es' ? 'Idioma cambiado a español' : 'Language switched to English', state.lang);
       });
       document.getElementById('new-visit-btn').addEventListener('click', () => {
         if (state.currentVisit) saveVisit();
         state.currentVisit = { id: Date.now(), name: '', reason: '', startTime: new Date(), lang: state.lang };
+        document.getElementById('message-area').textContent = 'Nueva visita iniciada. ¿Cuál es tu nombre?';
+        speak('Nueva visita iniciada. ¿Cuál es tu nombre?', 'es');
       });
 
+      // Vehicle
       document.querySelectorAll('.vehicle-type').forEach(el => {
         el.addEventListener('click', () => {
           document.querySelectorAll('.vehicle-type').forEach(e => e.classList.remove('active'));
@@ -727,15 +1503,27 @@
           state.vehicleType = el.dataset.type;
         });
       });
-
       document.getElementById('vin-input').addEventListener('input', (e) => {
         e.target.value = e.target.value.toUpperCase().replace(/[^A-HJ-NPR-Z0-9]/g, '').slice(0, 17);
       });
-
       document.getElementById('analyze-vehicle').addEventListener('click', analyzeVehicleCognitive);
       document.getElementById('calculate-quote').addEventListener('click', calculateGeneralQuoteCognitive);
       document.getElementById('export-csv').addEventListener('click', exportVisitsCSV);
 
+      // Entertainment
+      document.querySelectorAll('.entertainment-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const game = card.dataset.game;
+          if (game === 'trivia') showTrivia();
+          else if (game === 'news') showNews();
+          else if (game === 'joke') showJoke();
+          else if (game === 'tips') showTips();
+        });
+      });
+      document.getElementById('trivia-close').addEventListener('click', () => document.getElementById('trivia-modal').classList.remove('show'));
+      document.getElementById('news-close').addEventListener('click', () => document.getElementById('news-modal').classList.remove('show'));
+
+      // Idle overlay click
       document.getElementById('robot-overlay').addEventListener('click', () => {
         document.getElementById('robot-overlay').classList.remove('show');
         state.isIdle = false;
@@ -744,19 +1532,58 @@
     }
 
     // ============================================
-    // VOICE
+    // ROBOT ANIMATIONS
+    // ============================================
+    function blinkEyes() {
+      const leftEye = document.getElementById('eye-left');
+      const rightEye = document.getElementById('eye-right');
+      if (leftEye && rightEye) {
+        leftEye.classList.add('blink');
+        rightEye.classList.add('blink');
+        setTimeout(() => {
+          leftEye.classList.remove('blink');
+          rightEye.classList.remove('blink');
+        }, 150);
+      }
+    }
+
+    function setSpeakingState(isSpeaking) {
+      const circle = document.getElementById('avatar-circle');
+      const mouth = document.getElementById('mouth');
+      if (isSpeaking) {
+        circle.classList.add('speaking');
+        mouth.classList.add('speaking');
+      } else {
+        circle.classList.remove('speaking');
+        mouth.classList.remove('speaking');
+      }
+    }
+
+    // ============================================
+    // VOICE & SPEECH
     // ============================================
     function toggleListening() {
-      if (!state.recognition) { alert('❌ No soporta reconocimiento de voz'); return; }
-      if (state.isListening) { state.recognition.stop(); state.isListening = false; }
-      else { state.recognition.lang = state.lang === 'es' ? 'es-MX' : 'en-US'; state.recognition.start(); state.isListening = true; }
+      if (!state.recognition) {
+        showAlert('❌ Tu navegador no soporta reconocimiento de voz', 'danger');
+        return;
+      }
+      
+      if (state.isListening) {
+        state.recognition.stop();
+        state.isListening = false;
+      } else {
+        state.recognition.lang = state.lang === 'es' ? 'es-MX' : 'en-US';
+        state.recognition.start();
+        state.isListening = true;
+      }
       updateMicButton();
+      resetIdleTimer();
     }
 
     function updateMicButton() {
       const btn = document.getElementById('mic-btn');
       btn.classList.toggle('listening', state.isListening);
-      btn.innerHTML = state.isListening ? '🔴' : '🎤';
+      btn.innerHTML = state.isListening ? '' : '🎤';
     }
 
     function handleSpeechResult(event) {
@@ -769,69 +1596,93 @@
 
     function speak(text, lang = null) {
       if (!state.synth) return;
+      
       state.synth.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = lang || (state.lang === 'es' ? 'es-MX' : 'en-US');
       utterance.rate = 0.95;
-      const mouth = document.getElementById('mouth');
-      const circle = document.getElementById('avatar-circle');
-      utterance.onstart = () => { if(mouth) mouth.classList.add('speaking'); if(circle) circle.classList.add('speaking'); };
-      utterance.onend = () => { if(mouth) mouth.classList.remove('speaking'); if(circle) circle.classList.remove('speaking'); };
+      
+      setSpeakingState(true);
+      utterance.onend = () => setSpeakingState(false);
+      utterance.onerror = () => setSpeakingState(false);
+      
       state.synth.speak(utterance);
     }
 
+    // ============================================
+    // GEMINI INTEGRATION - COGNITIVE CHAT
+    // ============================================
     async function processUserMessage(message) {
-      if (!state.apiKey) { speak('Configura API Key', 'es'); return; }
+      if (!state.apiKey) {
+        speak('Configura tu API Key primero', 'es');
+        return;
+      }
+
       document.getElementById('message-area').textContent = 'Pensando...';
       document.getElementById('message-area').classList.add('thinking');
-
-      if (!state.currentVisit && /hola|hello|buenos|me llamo/i.test(message)) {
+      
+      if (!state.currentVisit && /hola|hello|buenos|my name is|me llamo/i.test(message)) {
         state.currentVisit = { id: Date.now(), name: '', reason: '', startTime: new Date(), lang: state.lang };
       }
 
-      const systemPrompt = `Eres Nova Cognitive, asistente EXPERTA de Lenoah con capacidad de razonamiento.
+      const systemPrompt = `Eres Nova Cognitive, asistente EXPERTA de Lenoah Comercializadora con capacidad de razonamiento.
 
-      CARACTERÍSTICAS:
+      PERSONALIDAD: Profesional, cálida, bilingüe (ES/EN), con conocimiento técnico en comercio exterior.
+      
+      CARACTERÍSTICAS CLAVE:
       1. VALIDAS antes de responder - no asumes nada
       2. CUESTIONAS inconsistencias - si algo no cuadra, preguntas
       3. RECHAZAS lo ilegal - sustancias prohibidas, mercancías restringidas
       4. VERIFICAS existencia - marcas, modelos, productos reales
       5. RESPONDES con precisión técnica pero clara
-
+      
       REGLAS ESTRICTAS:
       - Si te piden cotizar algo prohibido (drogas, armas, etc.), RECHAZA inmediatamente
       - Si la marca/modelo no existe, ADVIÉRTELO antes de cotizar
-      - Si hay inconsistencia en datos (ej: auto 2025 pero año actual es 2024), CUESTIÓNALO
+      - Si hay inconsistencia en datos, CUESTIÓNALO
       - Si falta información crítica, PÍDELA antes de proceder
-
-      Usuario: "${message}"
+      
+      FORMATO:
+      - Respuestas breves (máx 3-4 oraciones) para conversación normal
+      - Para clasificación, pide detalles: material, uso, origen, certificado T-MEC
+      - Indica nivel de confianza: ALTA (>85%), MEDIA (60-85%), BAJA (<60%)
+      - Detecta idioma del usuario y responde en el mismo
+      
+      Usuario dice: "${message}"
       Responde naturalmente pero con validación cognitiva:`;
 
       try {
         const response = await fetch(`${CONFIG.GEMINI_ENDPOINT}?key=${state.apiKey}`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             contents: [{ parts: [{ text: systemPrompt }] }],
             generationConfig: { temperature: 0.2 }
           })
         });
+
         const data = await response.json();
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Tuve un problema.';
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Lo siento, tuve un problema.';
+        
         document.getElementById('message-area').textContent = reply;
         document.getElementById('message-area').classList.remove('thinking');
         speak(reply);
-
+        
         if (state.currentVisit) {
-          if (!state.currentVisit.name && /me llamo|soy/i.test(message.toLowerCase())) {
-            const match = message.match(/(?:me llamo|soy)\s+([A-Za-zÁ-ú\s]+)/i);
+          if (!state.currentVisit.name && /me llamo|my name is|soy/i.test(message.toLowerCase())) {
+            const match = message.match(/(?:me llamo|my name is|soy)\s+([A-Za-zÁ-ú\s]+)/i);
             if (match) state.currentVisit.name = match[1].trim();
           }
           state.currentVisit.reason = message.slice(0, 150);
         }
+        
       } catch (error) {
+        console.error('Gemini error:', error);
         document.getElementById('message-area').textContent = '️ Error de conexión.';
         document.getElementById('message-area').classList.remove('thinking');
+        speak('Tuve un problema de conexión. Por favor intenta de nuevo.', 'es');
       }
+      
       resetIdleTimer();
     }
 
@@ -843,7 +1694,7 @@
       const desc = document.getElementById('vehicle-desc').value.trim();
       const value = parseFloat(document.getElementById('invoice-value').value) || 0;
       const destination = document.getElementById('destination').value;
-
+      
       if (!vin && !desc) { showValidationAlert('vehicle', '⚠️ Ingresa VIN o descripción', 'warning'); return; }
       if (!value) { showValidationAlert('vehicle', '⚠️ Ingresa el valor en factura', 'warning'); return; }
 
@@ -890,7 +1741,6 @@
         if (!consistencyCheck.consistent) {
           updateReasoningStep(3, 'failed');
           showValidationAlert('vehicle', `⚠️ ${consistencyCheck.message}`, 'warning');
-          // No bloquear, solo advertir
         }
         updateReasoningStep(3, 'check');
 
@@ -899,7 +1749,7 @@
         const classification = await classifyVehicle(vin, desc, state.vehicleType);
         if (!classification.fraction) {
           updateReasoningStep(4, 'failed');
-          showValidationAlert('vehicle', '⚠️ No se pudo determinar la fracción arancelaria con confianza. Se requiere revisión humana.', 'warning');
+          showValidationAlert('vehicle', '️ No se pudo determinar la fracción arancelaria con confianza. Se requiere revisión humana.', 'warning');
         }
         updateReasoningStep(4, 'check');
 
@@ -910,11 +1760,11 @@
 
         // Renderizar resultado
         renderCognitiveResult(classification, calculation, brandValidation, legalityCheck);
-        speak(`Análisis completado. ${brandValidation.brand} existe y es legal. Total estimado: ${calculation.total.toFixed(0)} pesos.`, 'es');
+        speak(`Análisis completado. Total estimado: ${calculation.total.toFixed(0)} pesos. Un asesor revisará los detalles.`, 'es');
 
       } catch (error) {
         console.error('Cognitive error:', error);
-        showValidationAlert('vehicle', '❌ Error en el proceso cognitivo. Intenta de nuevo.', 'blocker');
+        showValidationAlert('vehicle', ' Error en el proceso cognitivo. Intenta de nuevo.', 'blocker');
       } finally {
         btn.disabled = false;
         btn.innerHTML = originalText;
@@ -942,12 +1792,13 @@
       Reglas:
       - Si la marca NO existe (ej: "Xyzmotors"), exists = false
       - Si el modelo es imposible (ej: "Ford F-1000"), exists = false
-      - Si el año es inválido (ej: 2030 cuando estamos en 2024), existe = false
+      - Si el año es inválido (futuro), exists = false
       - Solo marcas reales: Ford, Toyota, Honda, BMW, Mercedes, etc.`;
 
       try {
         const response = await fetch(`${CONFIG.GEMINI_ENDPOINT}?key=${state.apiKey}`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             contents: [{ parts: [{ text: prompt }] }],
             generationConfig: { temperature: 0.1, responseMimeType: 'application/json' }
@@ -995,7 +1846,8 @@
 
       try {
         const response = await fetch(`${CONFIG.GEMINI_ENDPOINT}?key=${state.apiKey}`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             contents: [{ parts: [{ text: prompt }] }],
             generationConfig: { temperature: 0.1, responseMimeType: 'application/json' }
@@ -1020,13 +1872,13 @@
         if (year > currentYear) {
           return {
             consistent: false,
-            message: `⚠️ El año ${year} es FUTURO (año actual: ${currentYear}). ¿Es correcto o hay un error?`
+            message: `El año ${year} es FUTURO (año actual: ${currentYear}). ¿Es correcto o hay un error?`
           };
         }
         if (year < 1900) {
           return {
             consistent: false,
-            message: `⚠️ El año ${year} parece inválido. Verifica la descripción.`
+            message: `El año ${year} parece inválido. Verifica la descripción.`
           };
         }
       }
@@ -1040,7 +1892,7 @@
           if (Math.abs(vinYear - descYear) > 1) {
             return {
               consistent: false,
-              message: `⚠️ Inconsistencia: VIN indica año ${vinYear} pero descripción dice ${descYear}.`
+              message: `Inconsistencia: VIN indica año ${vinYear} pero descripción dice ${descYear}.`
             };
           }
         }
@@ -1076,12 +1928,18 @@
         "year": 20XX | null,
         "tmec_applicable": boolean,
         "confidence": 0-100,
-        "reasoning": ["punto 1", "punto 2"]
+        "reasoning": ["punto 1", "punto 2"],
+        "requirements": {
+          "padron": boolean,
+          "noms": ["NOM-XXX"],
+          "certs": ["Certificado"]
+        }
       }`;
 
       try {
         const response = await fetch(`${CONFIG.GEMINI_ENDPOINT}?key=${state.apiKey}`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             contents: [{ parts: [{ text: prompt }] }],
             generationConfig: { temperature: 0.1, responseMimeType: 'application/json' }
@@ -1171,10 +2029,9 @@
       document.getElementById('res-fees').textContent = `$${calculation.honorarios.toFixed(2)}`;
       document.getElementById('res-total').textContent = `$${calculation.total.toFixed(2)} MXN`;
       
-      // Advertencias adicionales
       const alerts = [];
-      if (classification.requirements?.padron) alerts.push('<div class="validation-alert warning">⚠️ Requiere Padrón de Importadores</div>');
-      if (!classification.tmec_applicable && classification.origin !== 'MX') alerts.push('<div class="validation-alert warning"> No aplica T-MEC - Arancel general</div>');
+      if (classification.requirements?.padron) alerts.push('<div class="validation-alert warning">️ Requiere Padrón de Importadores</div>');
+      if (!classification.tmec_applicable && classification.origin !== 'MX') alerts.push('<div class="validation-alert warning">⚠️ No aplica T-MEC - Arancel general</div>');
       document.getElementById('res-alerts').innerHTML = alerts.join('');
       
       document.getElementById('classification-result').classList.add('show');
@@ -1211,7 +2068,8 @@
         { "fraction": "8 dígitos", "description": "desc", "igi_rate": 0.XX, "tmec_applicable": boolean, "confidence": 0-100, "legal": boolean, "restrictions": [] }`;
 
         const response = await fetch(`${CONFIG.GEMINI_ENDPOINT}?key=${state.apiKey}`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             contents: [{ parts: [{ text: prompt }] }],
             generationConfig: { temperature: 0.15, responseMimeType: 'application/json' }
@@ -1232,7 +2090,7 @@
         document.getElementById('general-quote-result').innerHTML = `
           <div class="fraction-card">
             <div class="fraction-code">${classification.fraction || '--'}</div>
-            <div style="font-size: 0.95rem; margin-top: 0.25rem;">${classification.description || desc.slice(0, 50)}</div>
+            <div class="fraction-desc">${classification.description || desc.slice(0, 50)}</div>
             <div class="confidence-meter">
               <span style="font-size: 0.8rem; color: var(--text-muted);">Confianza</span>
               <div class="confidence-bar"><div class="confidence-fill ${classification.confidence >= 85 ? 'high' : classification.confidence >= 60 ? 'medium' : 'low'}" style="width: ${classification.confidence || 0}%"></div></div>
@@ -1262,6 +2120,68 @@
     }
 
     // ============================================
+    // ENTERTAINMENT MODULES
+    // ============================================
+    function showTrivia() {
+      const modal = document.getElementById('trivia-modal');
+      const question = state.triviaQuestions[Math.floor(Math.random() * state.triviaQuestions.length)];
+      
+      document.getElementById('trivia-question').textContent = question.q;
+      const optionsHtml = question.options.map((opt, i) => 
+        `<div class="trivia-option" data-index="${i}">${opt}</div>`
+      ).join('');
+      document.getElementById('trivia-options').innerHTML = optionsHtml;
+      
+      document.getElementById('trivia-options').querySelectorAll('.trivia-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          const selected = parseInt(opt.dataset.index);
+          document.querySelectorAll('.trivia-option').forEach(o => {
+            if (parseInt(o.dataset.index) === question.correct) o.classList.add('correct');
+            else if (parseInt(o.dataset.index) === selected) o.classList.add('incorrect');
+          });
+          speak(selected === question.correct ? '¡Correcto! Muy bien.' : 'No es correcto, pero sigue intentando.', 'es');
+          setTimeout(() => modal.classList.remove('show'), 2000);
+        });
+      });
+      
+      modal.classList.add('show');
+      speak('¡Hora de la trivia! ' + question.q, 'es');
+    }
+
+    function showNews() {
+      const modal = document.getElementById('news-modal');
+      const listHtml = state.newsData.map(news => 
+        `<div style="padding: 1rem; border-bottom: 1px solid var(--border); font-size: 0.95rem; line-height: 1.5;">${news}</div>`
+      ).join('');
+      document.getElementById('news-list').innerHTML = listHtml;
+      modal.classList.add('show');
+      speak('Aquí están las últimas noticias de comercio exterior.', 'es');
+    }
+
+    function showJoke() {
+      const jokes = [
+        "¿Por qué el importador siempre lleva paraguas? Porque siempre hay aranceles que te pueden mojar. 😄",
+        "¿Cuál es el colmo de un agente aduanal? Que le digan 'claro' y no entienda la fracción. 😂",
+        "¿Qué le dice un contenedor a otro? 'No te preocupes, pronto nos desahogarán'. 📦"
+      ];
+      const joke = jokes[Math.floor(Math.random() * jokes.length)];
+      speak(joke, 'es');
+      showAlert(joke, 'info');
+    }
+
+    function showTips() {
+      const tips = [
+        "💡 Siempre verifica el país de origen REAL, no el de compra. Un producto comprado en EE.UU. pero fabricado en China no aplica T-MEC.",
+        " Para autos usados, el decreto vigente permite importación con 1% IGI en franja fronteriza para vehículos de 5-9 años de antigüedad.",
+        "💡 Las NOMs (Normas Oficiales Mexicanas) son obligatorias. Verifica si tu producto requiere certificación antes de importar.",
+        "💡 El Padrón de Importadores es obligatorio para ciertas fracciones como tractocamiones. Trámitalo con anticipación."
+      ];
+      const tip = tips[Math.floor(Math.random() * tips.length)];
+      speak(tip, 'es');
+      showAlert(tip, 'info');
+    }
+
+    // ============================================
     // VISITS & DASHBOARD
     // ============================================
     function saveVisit() {
@@ -1283,13 +2203,16 @@
       document.getElementById('visit-count').textContent = todayVisits.length;
       
       if (todayVisits.length === 0) {
-        list.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">Sin visitas</div>';
+        list.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">Sin visitas aún.</div>';
         return;
       }
       
       list.innerHTML = todayVisits.map(v => `
         <div class="visit-item">
-          <div><div class="visit-name">${v.name || 'Visitante'}</div><div class="visit-meta">${v.reason?.slice(0, 30) || 'Consulta'} · ${v.duration || '?'}m</div></div>
+          <div>
+            <div class="visit-name">${v.name || 'Visitante'}</div>
+            <div class="visit-meta">${v.reason?.slice(0, 30) || 'Consulta'} · ${v.duration || '?'}m</div>
+          </div>
           <div style="font-size: 0.8rem; color: var(--text-muted);">${new Date(v.startTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
         </div>
       `).join('');
@@ -1312,7 +2235,7 @@
     }
 
     function exportVisitsCSV() {
-      if (state.visits.length === 0) { alert('No hay visitas'); return; }
+      if (state.visits.length === 0) { showAlert('No hay visitas', 'info'); return; }
       const headers = ['Fecha', 'Hora', 'Nombre', 'Motivo', 'Duración', 'Idioma'];
       const rows = state.visits.map(v => [
         new Date(v.startTime).toLocaleDateString(),
@@ -1344,6 +2267,7 @@
         const data = await res.json();
         const temp = Math.round(data.current_weather?.temperature || 22);
         document.getElementById('weather').textContent = `${temp}°`;
+        document.getElementById('idle-weather').textContent = `🌤 ${temp}°C · Tijuana, BC`;
       } catch {
         document.getElementById('weather').textContent = '--°';
       }
@@ -1361,6 +2285,139 @@
       }, CONFIG.IDLE_TIMEOUT);
     }
 
+    function showAlert(message, type = 'info') {
+      const toast = document.createElement('div');
+      toast.style.cssText = `
+        position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+        background: ${type === 'danger' ? 'var(--led-danger)' : type === 'warning' ? 'var(--led-warm)' : type === 'success' ? 'var(--led-success)' : 'var(--led-primary)'};
+        color: #000; padding: 0.75rem 1.5rem; border-radius: 12px;
+        font-weight: 500; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        animation: slideUp 0.3s;
+      `;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.3s'; setTimeout(() => toast.remove(), 300); }, 3000);
+    }
+
+    // ============================================
+    // BACKGROUND CANVAS ANIMATION
+    // ============================================
+    function initBackgroundCanvas() {
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+      
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+      
+      const particles = [];
+      for (let i = 0; i < 30; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          size: Math.random() * 2 + 0.5,
+          color: `hsla(${180 + Math.random() * 40}, 70%, 60%, ${Math.random() * 0.3 + 0.1})`
+        });
+      }
+      
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          
+          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+          
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+        });
+        
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    // ============================================
+    // CAMERA DETECTION
+    // ============================================
+    async function initCameraDetection() {
+      if (!navigator.mediaDevices?.getUserMedia) return;
+      
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: 'user', width: { ideal: 640 } } 
+        });
+        
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 640;
+        canvas.height = 480;
+        
+        const video = document.createElement('video');
+        video.srcObject = stream;
+        video.playsInline = true;
+        await video.play();
+        
+        let lastFrame = null;
+        let motionDetected = false;
+        let appStarted = false;
+        
+        function detectMotion() {
+          if (!appStarted || state.isIdle) {
+            requestAnimationFrame(detectMotion);
+            return;
+          }
+          
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          
+          if (lastFrame) {
+            let diff = 0;
+            for (let i = 0; i < frame.data.length; i += 16) {
+              if (Math.abs(frame.data[i] - lastFrame.data[i]) > 30) diff++;
+            }
+            const ratio = diff / (frame.data.length / 4);
+            if (ratio > 0.02 && !motionDetected) {
+              motionDetected = true;
+              triggerWakeAnimation();
+            } else if (ratio < 0.005) {
+              motionDetected = false;
+            }
+          }
+          lastFrame = frame;
+          requestAnimationFrame(detectMotion);
+        }
+        
+        function triggerWakeAnimation() {
+          document.getElementById('app').classList.add('ready');
+          if (!state.isIdle) {
+            speak(state.lang === 'es' ? '¡Hola! Bienvenido a Lenoah.' : 'Hello! Welcome to Lenoah.', state.lang);
+          }
+        }
+        
+        setTimeout(() => { appStarted = true; detectMotion(); }, 2000);
+        
+      } catch (err) {
+        console.log('Camera fallback:', err);
+        document.getElementById('app').addEventListener('click', () => {
+          if (!document.getElementById('app').classList.contains('ready')) {
+            document.getElementById('app').classList.add('ready');
+            speak('¡Hola! Bienvenido a Lenoah.', 'es');
+          }
+        }, { once: true });
+      }
+    }
+
+    // Prevent zoom
     document.addEventListener('touchstart', (e) => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
     let lastTouchEnd = 0;
     document.addEventListener('touchend', (e) => { const now = Date.now(); if (now - lastTouchEnd <= 300) e.preventDefault(); lastTouchEnd = now; }, false);
