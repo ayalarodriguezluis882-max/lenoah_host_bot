@@ -1,807 +1,358 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#0a0a12" />
-  <title>LenoahHost · Cotizador LIGIE v11</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #050508; --bg-panel: #0a0a14; --bg-card: #111120;
-      --led-primary: #00d4ff; --led-primary-glow: rgba(0, 212, 255, 0.4);
-      --led-secondary: #7c3aed; --led-warm: #f59e0b;
-      --led-success: #10b981; --led-danger: #ef4444;
-      --text: #f0f4ff; --text-dim: #8b9dc3; --text-muted: #5a6a8a;
-      --border: rgba(100, 120, 180, 0.15);
-      --font-robot: 'Inter', sans-serif; --font-serif: 'Playfair Display', serif;
-      --font-mono: 'JetBrains Mono', monospace;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    body { min-height: 100vh; background: var(--bg); color: var(--text); font-family: var(--font-robot); font-size: 15px; line-height: 1.5; overflow-x: hidden; }
-    #setup-screen { position: fixed; inset: 0; background: linear-gradient(135deg, var(--bg), #0a0a18); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; padding: 2rem; }
-    #setup-screen.hidden { display: none; }
-    .setup-container { max-width: 500px; width: 100%; text-align: center; animation: slideUp 0.6s ease; }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    .setup-logo { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, var(--led-primary), var(--led-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .setup-input { width: 100%; padding: 1rem; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1rem; margin-bottom: 1rem; }
-    .setup-input:focus { outline: none; border-color: var(--led-primary); box-shadow: 0 0 20px var(--led-primary-glow); }
-    .setup-btn { width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--led-primary), var(--led-secondary)); color: #000; border: none; border-radius: 12px; font-weight: 600; font-size: 1.1rem; cursor: pointer; }
-    .setup-help { margin-top: 1.5rem; text-align: left; background: var(--bg-panel); padding: 1.25rem; border-radius: 12px; font-size: 0.85rem; color: var(--text-dim); }
-    .setup-help ol { padding-left: 1.3rem; margin: 0.75rem 0; }
-    .setup-help a { color: var(--led-primary); text-decoration: none; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LenoahHost · Nova v6</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a12;
+            --bg-panel: #11111a;
+            --neon-cyan: #00f3ff;
+            --neon-purple: #bc13fe;
+            --neon-green: #00ff66;
+            --text-main: #e0e6ed;
+            --text-dim: #7c8db5;
+            --border: #2a2a35;
+        }
 
-    #app { position: relative; z-index: 10; min-height: 100vh; display: flex; flex-direction: column; opacity: 0; transition: opacity 0.5s; }
-    #app.ready { opacity: 1; }
-    header { position: sticky; top: 0; display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.25rem; background: rgba(10, 10, 20, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); z-index: 50; }
-    .brand { display: flex; align-items: center; gap: 0.75rem; }
-    .brand-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--led-primary), var(--led-secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #000; }
-    .brand-text { font-family: var(--font-serif); font-weight: 600; font-size: 1.2rem; }
-    .brand-text span { color: var(--led-primary); }
-    .header-status { display: flex; gap: 1.25rem; font-size: 0.85rem; color: var(--text-dim); }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    .tabs { display: flex; gap: 0.25rem; padding: 0.5rem 1rem; background: var(--bg-panel); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
-    .tabs::-webkit-scrollbar { display: none; }
-    .tab { flex: 0 0 auto; padding: 0.6rem 1.1rem; background: transparent; border: none; color: var(--text-muted); font-size: 0.9rem; font-weight: 500; border-radius: 10px; cursor: pointer; }
-    .tab.active { color: var(--led-primary); background: rgba(0, 212, 255, 0.1); }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Roboto', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-    #content { flex: 1; display: flex; flex-direction: column; padding: 1.25rem; gap: 1.25rem; overflow-y: auto; max-width: 1200px; margin: 0 auto; width: 100%; }
-    @media (min-width: 1024px) { #content { flex-direction: row; align-items: flex-start; } #chat-section { flex: 1; } #side-panel { flex: 0 0 480px; } }
-    .tab-content { display: none; animation: fadeIn 0.3s; }
-    .tab-content.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* Scanline Effect */
+        body::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
 
-    #chat-section { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px; }
-    .robot-avatar { width: 120px; height: 120px; margin-bottom: 1.5rem; position: relative; }
-    .robot-avatar-circle { width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, #1a1a2e, #0f0f1a); border: 3px solid var(--led-primary); box-shadow: 0 0 40px var(--led-primary-glow); display: flex; align-items: center; justify-content: center; }
-    .robot-avatar-circle.speaking { animation: speakGlow 0.5s infinite; }
-    @keyframes speakGlow { 0%, 100% { box-shadow: 0 0 40px var(--led-primary-glow); } 50% { box-shadow: 0 0 60px var(--led-primary-glow); } }
-    .robot-eyes-container { display: flex; gap: 20px; }
-    .robot-eye-main { width: 22px; height: 22px; background: var(--led-primary); border-radius: 50%; box-shadow: 0 0 10px var(--led-primary); }
-    .robot-mouth-main { position: absolute; bottom: 30%; left: 50%; transform: translateX(-50%); width: 40px; height: 4px; background: var(--led-primary); border-radius: 3px; }
-    .robot-mouth-main.speaking { animation: speakMouth 0.4s infinite; }
-    @keyframes speakMouth { 0%, 100% { width: 40px; height: 4px; } 50% { width: 30px; height: 12px; border-radius: 50%; } }
-    .message-display { min-height: 60px; text-align: center; font-size: 1.1rem; line-height: 1.5; color: var(--text); margin-bottom: 1rem; max-width: 500px; padding: 0 1rem; }
-    .message-display.thinking { color: var(--text-dim); font-style: italic; }
-    .voice-controls { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
-    .mic-btn { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--led-primary), var(--led-secondary)); border: none; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; }
-    .mic-btn.listening { animation: micPulse 1.5s infinite; background: linear-gradient(135deg, var(--led-warm), #d97706); }
-    @keyframes micPulse { 0%, 100% { box-shadow: 0 6px 25px rgba(245, 158, 11, 0.4); } 50% { box-shadow: 0 6px 40px rgba(245, 158, 11, 0.6); } }
-    .control-btn { padding: 0.5rem 0.9rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-size: 0.9rem; cursor: pointer; }
-    .control-btn.active { background: var(--led-primary); color: #000; }
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            border-bottom: 2px solid var(--neon-cyan);
+            background: rgba(10, 10, 18, 0.9);
+            z-index: 100;
+        }
 
-    #side-panel { display: flex; flex-direction: column; gap: 1rem; }
-    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
-    .card-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); }
-    .card-title { font-family: var(--font-serif); font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
-    .card-body { padding: 1.25rem; }
+        .brand {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+        }
 
-    .form-group { margin-bottom: 1rem; }
-    .form-label { display: block; font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.5rem; }
-    .form-input, .form-select { width: 100%; padding: 0.85rem 1rem; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1rem; }
-    .form-input:focus, .form-select:focus { outline: none; border-color: var(--led-primary); }
-    .textarea { min-height: 100px; resize: vertical; }
-    .btn-primary { width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--led-primary), var(--led-secondary)); color: #000; border: none; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--led-primary-glow); }
-    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .status-bar {
+            display: flex;
+            gap: 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
 
-    .validation-panel { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; margin: 1rem 0; }
-    .validation-step { display: flex; gap: 0.75rem; padding: 0.6rem 0; border-bottom: 1px dashed var(--border); font-size: 0.9rem; align-items: center; }
-    .validation-step:last-child { border-bottom: none; }
-    .step-icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; }
-    .step-icon.pending { background: var(--bg-card); color: var(--text-muted); }
-    .step-icon.checking { background: var(--led-warm); color: #000; animation: pulse 1s infinite; }
-    .step-icon.pass { background: var(--led-success); color: #000; }
-    .step-icon.fail { background: var(--led-danger); color: #fff; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
 
-    .quote-result { display: none; margin-top: 1rem; animation: slideUp 0.4s; }
-    .quote-result.show { display: block; }
-    .fraction-card { background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(124, 58, 237, 0.05)); border: 1px solid var(--led-primary); border-radius: 16px; padding: 1.25rem; margin-bottom: 1rem; }
-    .fraction-code { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; color: var(--led-primary); letter-spacing: 0.05em; }
-    .fraction-path { font-size: 0.85rem; color: var(--text-dim); margin: 0.5rem 0; font-family: var(--font-mono); }
-    .confidence-meter { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--bg-card); border-radius: 10px; margin-top: 0.75rem; }
-    .confidence-bar { flex: 1; height: 6px; background: var(--bg-panel); border-radius: 3px; overflow: hidden; }
-    .confidence-fill { height: 100%; transition: width 0.5s; }
-    .confidence-fill.high { background: var(--led-success); }
-    .confidence-fill.medium { background: var(--led-warm); }
-    .confidence-fill.low { background: var(--led-danger); }
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            background: var(--bg-panel);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
 
-    .calc-grid { display: grid; gap: 0.5rem; margin: 1rem 0; }
-    .calc-row { display: flex; justify-content: space-between; padding: 0.5rem 0; font-size: 0.95rem; border-bottom: 1px dashed var(--border); }
-    .calc-row:last-child { border-bottom: none; }
-    .calc-row.label { color: var(--text-dim); }
-    .calc-row.value { font-weight: 600; }
-    .calc-row.total { padding-top: 0.75rem; margin-top: 0.5rem; border-top: 2px dashed var(--border); font-size: 1.1rem; color: var(--led-primary); font-weight: 700; }
-    
-    .alert-box { padding: 1rem; border-radius: 12px; margin: 1rem 0; display: flex; gap: 0.75rem; align-items: flex-start; font-size: 0.9rem; line-height: 1.4; }
-    .alert-box.blocker { background: rgba(239, 68, 68, 0.2); border: 2px solid var(--led-danger); color: var(--led-danger); }
-    .alert-box.warning { background: rgba(245, 158, 11, 0.2); border: 2px solid var(--led-warm); color: var(--led-warm); }
-    .alert-box.info { background: rgba(0, 212, 255, 0.1); border: 1px solid var(--led-primary); }
-    .alert-box.success { background: rgba(16, 185, 129, 0.15); border: 1px solid var(--led-success); }
+        .sidebar-section h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-purple);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-    .disclaimer { margin-top: 1rem; padding: 0.75rem; background: var(--bg-panel); border-left: 3px solid var(--text-muted); font-size: 0.8rem; color: var(--text-dim); line-height: 1.4; }
-    .btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
-    .btn-secondary { padding: 0.75rem 1.25rem; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-weight: 500; cursor: pointer; flex: 1; }
-    .btn-secondary:hover { border-color: var(--led-primary); }
+        .sidebar-item {
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 5px;
+        }
+        .sidebar-item:hover { background: rgba(255,255,255,0.05); color: var(--neon-cyan); }
 
-    .visits-list { max-height: 200px; overflow-y: auto; }
-    .visit-item { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-    .visit-item:last-child { border-bottom: none; }
-    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
-    .stat-card { background: var(--bg-panel); padding: 0.8rem; border-radius: 12px; text-align: center; border: 1px solid var(--border); }
-    .stat-value { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--led-primary); }
-    .stat-label { font-size: 0.75rem; color: var(--text-muted); }
+        /* Chat Window */
+        .chat-window {
+            flex: 1;
+            background: var(--bg-dark);
+            padding: 2rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
 
-    @media (max-width: 767px) {
-      .robot-avatar { width: 100px; height: 100px; }
-      .header-status { display: none; }
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-  </style>
+        .message {
+            max-width: 80%;
+            padding: 1rem;
+            border-radius: 10px;
+            line-height: 1.5;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .msg-nova {
+            align-self: flex-start;
+            background: rgba(0, 243, 255, 0.1);
+            border-left: 4px solid var(--neon-cyan);
+            color: var(--text-main);
+        }
+
+        .msg-user {
+            align-self: flex-end;
+            background: rgba(188, 19, 254, 0.1);
+            border-right: 4px solid var(--neon-purple);
+            color: var(--text-main);
+        }
+
+        .typing-indicator {
+            font-style: italic;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            margin-left: 1rem;
+            display: none;
+        }
+
+        /* Input Area */
+        .input-area {
+            padding: 1rem 2rem;
+            background: var(--bg-panel);
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 1rem;
+        }
+
+        #user-input {
+            flex: 1;
+            background: #05050a;
+            border: 1px solid var(--border);
+            padding: 1rem;
+            color: var(--text-main);
+            font-family: 'Roboto', sans-serif;
+            border-radius: 5px;
+        }
+        #user-input:focus { outline: none; border-color: var(--neon-cyan); }
+
+        .send-btn {
+            background: var(--neon-cyan);
+            color: #000;
+            border: none;
+            padding: 0 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .send-btn:hover { background: #fff; }
+
+        /* Tariff Result Card */
+        .tariff-card {
+            background: rgba(0, 255, 102, 0.05);
+            border: 1px solid var(--neon-green);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+        .tariff-code { font-family: 'Orbitron'; color: var(--neon-green); font-weight: bold; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
+
+        /* Setup Screen */
+        #setup-screen {
+            position: fixed; inset: 0; background: var(--bg-dark);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 2000;
+        }
+        #setup-screen.hidden { display: none; }
+    </style>
 </head>
 <body>
 
-  <!-- SETUP SCREEN -->
-  <div id="setup-screen">
-    <div class="setup-container">
-      <div class="setup-logo">L e noah</div>
-      <p style="color: var(--text-dim); margin: 1rem 0 2rem;">Cotizador LIGIE v11.0 · Precisión + Restricciones</p>
-      <input type="password" id="api-key-input" class="setup-input" placeholder="AIzaSy..." autocomplete="off" />
-      <button id="save-key-btn" class="setup-btn">✓ Guardar y Entrar</button>
-      <div class="setup-help">
-        <strong>¿Dónde obtengo mi API Key?</strong>
-        <ol>
-          <li>Ve a <a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a></li>
-          <li>Inicia sesión → "Get API Key" → "Create API Key"</li>
-          <li>Copia y pega arriba</li>
-        </ol>
-        🔒 Tu key se guarda solo en esta tablet.
-      </div>
+    <!-- Setup Screen -->
+    <div id="setup-screen">
+        <div class="brand" style="font-size: 3rem; margin-bottom: 2rem;">LENHOST v6</div>
+        <p style="color: var(--text-dim); margin-bottom: 2rem;">Inicializando Sistema Nova...</p>
+        <button class="send-btn" onclick="startSystem()" style="width: 200px;">INICIAR SISTEMA</button>
     </div>
-  </div>
 
-  <!-- MAIN APP -->
-  <div id="app">
-    <header>
-      <div class="brand">
-        <div class="brand-icon">L</div>
-        <div class="brand-text">L<span>e</span>noah</div>
-      </div>
-      <div class="header-status">
-        <div>🕐 <span id="clock">--:--</span></div>
-        <div>🌤 <span id="weather">--°</span></div>
-        <div> <span id="visit-count">0</span></div>
-      </div>
-    </header>
-
-    <nav class="tabs">
-      <button class="tab active" data-tab="conversation">💬 Conversación</button>
-      <button class="tab" data-tab="visits">📋 Visitas</button>
-      <button class="tab" data-tab="dashboard">📊 Dashboard</button>
-      <button class="tab" data-tab="quote">⬡ Cotizador LIGIE</button>
-    </nav>
-
-    <main id="content">
-      <!-- CHAT -->
-      <section id="chat-section" class="tab-content active">
-        <div class="robot-avatar">
-          <div class="robot-avatar-circle" id="avatar-circle">
-            <div class="robot-eyes-container">
-              <div class="robot-eye-main"></div>
-              <div class="robot-eye-main"></div>
+    <!-- Main App -->
+    <div id="app" style="display:none;">
+        <header>
+            <div class="brand">LENOAH <span style="font-size: 0.8rem; color: var(--text-dim);">HOST v6</span></div>
+            <div class="status-bar">
+                <span id="clock">00:00</span>
+                <span style="color: var(--neon-green);">● ONLINE</span>
             </div>
-            <div class="robot-mouth-main" id="mouth"></div>
-          </div>
-        </div>
-        <div class="message-display" id="message-area">
-          Hola, soy Nova. Clasifico con LIGIE, detecto restricciones y calculo impuestos. ¿En qué puedo ayudarte?
-        </div>
-        <div class="voice-controls">
-          <button id="mic-btn" title="Presiona para hablar">🎤</button>
-          <button id="lang-toggle" class="control-btn">ES · EN</button>
-          <button id="new-visit-btn" class="control-btn">＋ Visita</button>
-        </div>
-      </section>
+        </header>
 
-      <!-- SIDE PANEL -->
-      <aside id="side-panel">
-        <!-- VISITS -->
-        <div id="visits-tab" class="tab-content card">
-          <div class="card-header"><div class="card-title">📋 Registro</div></div>
-          <div class="card-body">
-            <div class="visits-list" id="visits-list">
-              <div style="text-align: center; color: var(--text-muted); padding: 2rem;">Sin visitas</div>
-            </div>
-            <div style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
-              <button id="export-csv" class="control-btn" style="width: 100%;">↓ Exportar CSV</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- DASHBOARD -->
-        <div id="dashboard-tab" class="tab-content card">
-          <div class="card-header"><div class="card-title">📊 Dashboard</div></div>
-          <div class="card-body">
-            <div class="stats-grid">
-              <div class="stat-card"><div class="stat-value" id="stat-total">0</div><div class="stat-label">Visitas hoy</div></div>
-              <div class="stat-card"><div class="stat-value" id="stat-avg">0m</div><div class="stat-label">Espera prom.</div></div>
-              <div class="stat-card"><div class="stat-value" id="stat-peak">--</div><div class="stat-label">Hora pico</div></div>
-              <div class="stat-card"><div class="stat-value" id="stat-lang">ES</div><div class="stat-label">Idioma</div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- COTIZADOR LIGIE -->
-        <div id="quote-tab" class="tab-content card">
-          <div class="card-header">
-            <div class="card-title">⬡ Cotizador LIGIE v11</div>
-            <span style="background: var(--led-success); color: #000; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">PRECISIÓN + RESTRICCIONES</span>
-          </div>
-          <div class="card-body">
-            <div class="form-group">
-              <label class="form-label">① Descripción detallada de la mercancía</label>
-              <textarea id="goods-desc" class="form-input textarea" placeholder="Ej: Ácido sulfúrico concentrado al 98%, nuevo, uso industrial, origen China"></textarea>
-              <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-muted);">
-                Incluye: nombre químico/técnico, concentración/estado, uso, origen real.
-              </div>
-            </div>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-              <div class="form-group">
-                <label class="form-label">② País de origen real</label>
-                <select id="origin-country" class="form-select">
-                  <option value="US">🇺🇸 EE.UU. (T-MEC)</option>
-                  <option value="CA">🇨 Canadá (T-MEC)</option>
-                  <option value="MX">🇲 México</option>
-                  <option value="CN">🇨🇳 China</option>
-                  <option value="DE">🇩 Alemania</option>
-                  <option value="other">🌍 Otro</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">③ Destino de importación</label>
-                <select id="destination" class="form-select">
-                  <option value="border">Franja fronteriza (IVA 8%)</option>
-                  <option value="national">Interior del país (IVA 16%)</option>
-                </select>
-              </div>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;">
-              <div class="form-group">
-                <label class="form-label">Valor factura (USD)</label>
-                <input type="number" id="quote-value" class="form-input" placeholder="1000" min="0" step="0.01" />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Flete Intl. (USD)</label>
-                <input type="number" id="freight-value" class="form-input" placeholder="150" min="0" step="0.01" />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Seguro (USD)</label>
-                <input type="number" id="insurance-value" class="form-input" placeholder="15" min="0" step="0.01" />
-              </div>
-            </div>
-
-            <button id="calculate-quote" class="btn-primary">🧠 Clasificar LIGIE + Cotizar</button>
-            
-            <div id="quote-alerts"></div>
-            
-            <!-- PANEL DE VALIDACIÓN EN VIVO -->
-            <div id="validation-panel" class="validation-panel" style="display: none;">
-              <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--led-secondary);">🔍 Análisis en Progreso</div>
-              <div class="validation-step" id="step-1">
-                <div class="step-icon pending" id="icon-1">1</div>
-                <div>Verificando legalidad y restricciones...</div>
-              </div>
-              <div class="validation-step" id="step-2">
-                <div class="step-icon pending" id="icon-2">2</div>
-                <div>Clasificación arancelaria LIGIE...</div>
-              </div>
-              <div class="validation-step" id="step-3">
-                <div class="step-icon pending" id="icon-3">3</div>
-                <div>Cálculo fiscal y honorarios...</div>
-              </div>
-            </div>
-
-            <div id="quote-result" class="quote-result">
-              <div class="fraction-card">
-                <div class="fraction-code" id="res-fraction">--</div>
-                <div style="font-size: 0.95rem; margin: 0.5rem 0;" id="res-desc">--</div>
-                <div class="fraction-path" id="res-path">Capítulo → Partida → Subpartida → Fracción</div>
-                <div class="confidence-meter">
-                  <span style="font-size: 0.8rem; color: var(--text-muted);">Confianza IA</span>
-                  <div class="confidence-bar">
-                    <div class="confidence-fill high" id="confidence-fill" style="width: 0%;"></div>
-                  </div>
-                  <span style="font-size: 0.8rem; font-weight: 600;" id="confidence-text">0%</span>
+        <div class="main-container">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3>COMANDOS RÁPIDOS</h3>
+                    <div class="sidebar-item" onclick="novaCommand('ayuda')">❓ Ayuda</div>
+                    <div class="sidebar-item" onclick="novaCommand('estado')">🔋 Estado del Sistema</div>
+                    <div class="sidebar-item" onclick="novaCommand('buscar 1005.90.04')">🔍 Buscar Código 1005.90.04</div>
                 </div>
-              </div>
+                <div class="sidebar-section">
+                    <h3>ESTADÍSTICAS</h3>
+                    <div style="color: var(--text-dim);">
+                        <div>Consultas Hoy: <span id="query-count" style="color: var(--neon-cyan);">0</span></div>
+                        <div>Base de Datos: <span style="color: var(--neon-cyan);">ACTIVA</span></div>
+                    </div>
+                </div>
+            </aside>
 
-              <div class="calc-grid">
-                <div class="calc-row label"><span>Valor en aduana (USD → MXN)</span></div>
-                <div class="calc-row value" id="res-customs-value">$--</div>
-                <div class="calc-row label"><span>IGI (Impuesto General)</span></div>
-                <div class="calc-row value" id="res-igi">$--</div>
-                <div class="calc-row label"><span>DTA (0.8%)</span></div>
-                <div class="calc-row value" id="res-dta">$--</div>
-                <div class="calc-row label"><span>Prevalidación</span></div>
-                <div class="calc-row value" id="res-preval">$--</div>
-                <div class="calc-row label" id="iva-label"><span>IVA</span></div>
-                <div class="calc-row value" id="res-iva">$--</div>
-                <div class="calc-row label" id="ieps-row" style="display:none;"><span>IEPS</span></div>
-                <div class="calc-row value" id="res-ieps" style="display:none;">$--</div>
-                <div class="calc-row total"><span>SUBTOTAL (Base + Impuestos)</span><span id="res-subtotal">$--</span></div>
-                <div class="calc-row label"><span>HONORARIOS (25%)</span></div>
-                <div class="calc-row value" id="res-fees">$--</div>
-                <div class="calc-row total"><span>TOTAL A PAGAR</span><span id="res-total">$-- MXN</span></div>
-              </div>
-
-              <div id="res-requirements"></div>
-              
-              <div class="disclaimer">
-                ⚖️ <strong>AVISO:</strong> Estimación preliminar basada en LIGIE y normativa vigente. Requiere validación de Agente Aduanal autorizado para liquidación oficial.
-              </div>
-
-              <div class="btn-group">
-                <button class="btn-secondary" id="save-quote-btn">💾 Guardar</button>
-                <button class="btn-secondary" id="print-quote-btn">🖨️ Imprimir</button>
-                <button class="btn-secondary" id="new-quote-btn">↺ Nueva</button>
-              </div>
+            <!-- Chat Window -->
+            <div class="chat-window" id="chat-window">
+                <!-- Messages will appear here -->
             </div>
-          </div>
+
+            <!-- Input Area -->
+            <div class="input-area">
+                <input type="text" id="user-input" placeholder="Escribe un comando (ej: Buscar [código], Ayuda)..." onkeypress="handleKeyPress(event)">
+                <button class="send-btn" onclick="sendMessage()">ENVIAR</button>
+            </div>
         </div>
-      </aside>
-    </main>
+    </div>
 
-    <button id="change-key-btn" class="control-btn" style="position: fixed; bottom: 1rem; right: 1rem; z-index: 40;">⚙️ API</button>
-  </div>
+    <script>
+        // --- DATABASE (Extracted from LIGIE) ---
+        const tariffDB = [
+            { code: "1005.90.04", desc: "Maíz blanco (harinero)", unit: "Kg", tax: "50%" },
+            { code: "1001.11.01", desc: "Trigo y morcajo (tranquillón) - Para siembra", unit: "Kg", tax: "Ex." },
+            { code: "0102.29.99", desc: "Animales vivos de la especie bovina - Los demás", unit: "Pza", tax: "Ex." },
+            { code: "0201.10.01", desc: "Carne de animales de la especie bovina, fresca o refrigerada", unit: "Kg", tax: "Ex." },
+            { code: "0901.11.03", desc: "Café, incluso tostado o descafeinado", unit: "Kg", tax: "20%" },
+            { code: "7208.10.03", desc: "Laminados planos de hierro o acero", unit: "Kg", tax: "Ex." },
+            { code: "8708.99.99", desc: "Las demás partes y accesorios de vehículos", unit: "Pza", tax: "Ex." },
+            { code: "9001.90.99", desc: "Las demás fibras ópticas", unit: "Kg", tax: "Ex." }
+        ];
 
-  <script>
-    /**
-     * LENOAH HOST · COTIZADOR LIGIE v11.0
-     * BASE LOCAL DE RESTRICCIONES + IA CONTEXTUAL + CÁLCULO PRECISO
-     */
+        let queryCount = 0;
 
-    const CONFIG = {
-      GEMINI_ENDPOINT: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
-      WEATHER_ENDPOINT: 'https://api.open-meteo.com/v1/forecast?latitude=32.5149&longitude=-117.0382&current_weather=true',
-      IVA_FRONTERA: 0.08,
-      IVA_GENERAL: 0.16,
-      DTA: 0.008,
-      PREVALIDACION: 450.00,
-      HONORARIOS: 0.25,
-      TIPO_CAMBIO: 17.50
-    };
-
-    // BASE LOCAL DE MERCANCÍAS RESTRINGIDAS/PROHIBIDAS (Validación inmediata)
-    const RESTRICTIONS_DB = {
-      prohibited: ['fentanilo', 'fentanyl', 'cocaína', 'cocaina', 'heroína', 'heroina', 'metanfetamina', 'metanfetamine', 'droga', 'narcótico', 'narcotico', 'estupefaciente', 'psicotrópico', 'arma de fuego', 'pistola', 'rifle', 'ametralladora', 'explosivo', 'dinamita', 'material radiactivo', 'uranio', 'plutonio', 'material nuclear', 'órgano humano', 'especie protegida', 'marfil'],
-      restricted: ['ácido sulfúrico', 'ácido nítrico', 'ácido clorhídrico', 'ácido fosfórico', 'sulfúrico', 'nítrico', 'clorhídrico', 'fosfórico', 'ácido', 'químico', 'reactivo', 'alcohol etílico', 'etanol', 'metanol', 'gasolina', 'diésel', 'diesel', 'petróleo', 'crudo', 'tabaco', 'cigarro', 'cigarrillo', 'bebida alcohólica', 'cerveza', 'vino', 'licor', 'medicamento', 'farmacéutico', 'alimento', 'producto perecedero', 'equipo de radiocomunicación', 'transmisor', 'antena', 'módem', 'router', 'electrónico', 'componente electrónico', 'láser', 'batería de litio', 'pila de litio', 'textil', 'calzado', 'ropa', 'prenda', 'maquinaria pesada', 'equipo de construcción', 'tractor', 'excavadora'],
-      noms: {
-        'ácido': ['NOM-010-STPS-2014 (Agentes químicos contaminantes)', 'NOM-005-STPS-1998 (Sustancias químicas peligrosas)'],
-        'químico': ['NOM-018-STPS-2015 (Sistema globalmente armonizado)', 'NOM-005-STPS-1998'],
-        'alcohol': ['NOM-142-SSA1/SCFI-2014 (Bebidas alcohólicas)'],
-        'alimento': ['NOM-051-SCFI/SSA1-2010 (Etiquetado nutricional)', 'NOM-251-SSA1-2009 (Prácticas de higiene)'],
-        'electrónico': ['NOM-001-SCFI-2018 (Seguridad eléctrica)', 'NOM-016-SCFI-1993 (Compatibilidad electromagnética)'],
-        'textil': ['NOM-004-SCFI-2006 (Información comercial textil)', 'NOM-014-SCFI-1997 (Etiquetado)'],
-        'maquinaria': ['NOM-004-STPS-1999 (Sistemas de protección)', 'NOM-022-STPS-2015 (Estabilidad)']
-      }
-    };
-
-    const state = {
-      apiKey: null, lang: 'es', isListening: false, visits: [], currentVisit: null,
-      recognition: null, synth: window.speechSynthesis
-    };
-
-    document.addEventListener('DOMContentLoaded', async () => {
-      const savedKey = localStorage.getItem('lenoah_api_key');
-      if (savedKey) {
-        state.apiKey = savedKey;
-        document.getElementById('setup-screen').classList.add('hidden');
-        await initApp();
-      }
-      document.getElementById('save-key-btn').addEventListener('click', saveApiKey);
-      document.getElementById('change-key-btn').addEventListener('click', showSetupScreen);
-      setupEventListeners();
-      updateClock();
-      setInterval(updateClock, 60000);
-      fetchWeather();
-      setInterval(fetchWeather, 600000);
-    });
-
-    function saveApiKey() {
-      const key = document.getElementById('api-key-input').value.trim();
-      if (key.startsWith('AIzaSy') && key.length > 30) {
-        localStorage.setItem('lenoah_api_key', key);
-        state.apiKey = key;
-        document.getElementById('setup-screen').classList.add('hidden');
-        initApp();
-      } else { alert('⚠️ API Key inválida'); }
-    }
-    function showSetupScreen() {
-      document.getElementById('setup-screen').classList.remove('hidden');
-      document.getElementById('app').classList.remove('ready');
-    }
-
-    async function initApp() {
-      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        state.recognition = new SpeechRecognition();
-        state.recognition.lang = 'es-MX';
-        state.recognition.interimResults = true;
-        state.recognition.continuous = false;
-        state.recognition.onresult = handleSpeechResult;
-        state.recognition.onend = () => { state.isListening = false; updateMicButton(); };
-      }
-      const savedVisits = localStorage.getItem('lenoah_visits');
-      if (savedVisits) {
-        state.visits = JSON.parse(savedVisits);
-        updateVisitList();
-        updateDashboard();
-      }
-      document.getElementById('app').classList.add('ready');
-    }
-
-    function setupEventListeners() {
-      document.querySelectorAll('.tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-          tab.classList.add('active');
-          document.getElementById(tab.dataset.tab === 'conversation' ? 'chat-section' : `${tab.dataset.tab}-tab`).classList.add('active');
-        });
-      });
-      document.getElementById('mic-btn').addEventListener('click', toggleListening);
-      document.getElementById('lang-toggle').addEventListener('click', () => {
-        state.lang = state.lang === 'es' ? 'en' : 'es';
-        document.getElementById('lang-toggle').textContent = state.lang === 'es' ? 'ES · EN' : 'EN · ES';
-        if (state.recognition) state.recognition.lang = state.lang === 'es' ? 'es-MX' : 'en-US';
-      });
-      document.getElementById('new-visit-btn').addEventListener('click', () => {
-        if (state.currentVisit) saveVisit();
-        state.currentVisit = { id: Date.now(), name: '', reason: '', startTime: new Date(), lang: state.lang };
-      });
-      document.getElementById('calculate-quote').addEventListener('click', calculateIntelligentQuote);
-      document.getElementById('export-csv').addEventListener('click', exportVisitsCSV);
-      document.getElementById('save-quote-btn')?.addEventListener('click', () => alert('✅ Cotización guardada'));
-      document.getElementById('print-quote-btn')?.addEventListener('click', () => window.print());
-      document.getElementById('new-quote-btn')?.addEventListener('click', () => {
-        document.getElementById('quote-result').classList.remove('show');
-        document.getElementById('quote-alerts').innerHTML = '';
-        document.getElementById('validation-panel').style.display = 'none';
-      });
-    }
-
-    function toggleListening() {
-      if (!state.recognition) { alert('❌ No soporta reconocimiento de voz'); return; }
-      if (state.isListening) { state.recognition.stop(); state.isListening = false; }
-      else { state.recognition.lang = state.lang === 'es' ? 'es-MX' : 'en-US'; state.recognition.start(); state.isListening = true; }
-      updateMicButton();
-    }
-    function updateMicButton() {
-      const btn = document.getElementById('mic-btn');
-      btn.classList.toggle('listening', state.isListening);
-      btn.innerHTML = state.isListening ? '🔴' : '🎤';
-    }
-    function handleSpeechResult(event) {
-      const transcript = Array.from(event.results).map(r => r.transcript).join('');
-      if (transcript.trim()) {
-        document.getElementById('message-area').textContent = transcript;
-        processUserMessage(transcript);
-      }
-    }
-    function speak(text, lang = null) {
-      if (!state.synth) return;
-      state.synth.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = lang || (state.lang === 'es' ? 'es-MX' : 'en-US');
-      utterance.rate = 0.95;
-      const mouth = document.getElementById('mouth');
-      const circle = document.getElementById('avatar-circle');
-      utterance.onstart = () => { if(mouth) mouth.classList.add('speaking'); if(circle) circle.classList.add('speaking'); };
-      utterance.onend = () => { if(mouth) mouth.classList.remove('speaking'); if(circle) circle.classList.remove('speaking'); };
-      state.synth.speak(utterance);
-    }
-
-    async function processUserMessage(message) {
-      if (!state.apiKey) { speak('Configura API Key', 'es'); return; }
-      document.getElementById('message-area').textContent = 'Pensando...';
-      document.getElementById('message-area').classList.add('thinking');
-      if (!state.currentVisit && /hola|hello|buenos|me llamo/i.test(message)) {
-        state.currentVisit = { id: Date.now(), name: '', reason: '', startTime: new Date(), lang: state.lang };
-      }
-      const systemPrompt = `Eres Nova, asistente de Lenoah. Responde brevemente (máx 3 líneas). Detecta idioma. Si preguntan por cotizaciones, sugiere usar la pestaña "Cotizador LIGIE". Usuario: "${message}"`;
-      try {
-        const response = await fetch(`${CONFIG.GEMINI_ENDPOINT}?key=${state.apiKey}`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contents: [{ parts: [{ text: systemPrompt }] }], generationConfig: { temperature: 0.3 } })
-        });
-        const data = await response.json();
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Entendido.';
-        document.getElementById('message-area').textContent = reply;
-        document.getElementById('message-area').classList.remove('thinking');
-        speak(reply);
-        if (state.currentVisit) {
-          if (!state.currentVisit.name && /me llamo|soy/i.test(message.toLowerCase())) {
-            const match = message.match(/(?:me llamo|soy)\s+([A-Za-zÁ-ú\s]+)/i);
-            if (match) state.currentVisit.name = match[1].trim();
-          }
-          state.currentVisit.reason = message.slice(0, 100);
+        // --- SYSTEM START ---
+        function startSystem() {
+            document.getElementById('setup-screen').classList.add('hidden');
+            document.getElementById('app').style.display = 'flex';
+            addMessage("nova", "Sistema Nova v6 Iniciado. Soy tu asistente aduanero. Estoy conectado a la base de datos TIGIE. ¿En qué puedo ayudarte?");
         }
-      } catch { document.getElementById('message-area').textContent = '⚠️ Error de conexión.'; document.getElementById('message-area').classList.remove('thinking'); }
-    }
 
-    // ============================================
-    // MOTOR DE COTIZACIÓN LIGIE v11.0
-    // ============================================
-    function checkLocalRestrictions(desc) {
-      const lower = desc.toLowerCase();
-      let status = 'permitida';
-      let restrictions = [];
-      let noms = [];
-      let certificates = [];
-
-      // Verificar prohibidas
-      for (const item of RESTRICTIONS_DB.prohibited) {
-        if (lower.includes(item)) {
-          return { status: 'prohibida', reason: `Mercancía expresamente prohibida: ${item}. No se puede importar ni cotizar.`, noms: [], certificates: [] };
+        // --- CLOCK ---
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         }
-      }
+        setInterval(updateClock, 1000);
+        updateClock();
 
-      // Verificar restringidas
-      for (const item of RESTRICTIONS_DB.restricted) {
-        if (lower.includes(item)) {
-          status = 'restringida';
-          // Buscar NOMs asociadas
-          for (const [key, nomsList] of Object.entries(RESTRICTIONS_DB.noms)) {
-            if (lower.includes(key)) {
-              noms = nomsList;
-              break;
+        // --- CHAT LOGIC ---
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('user-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            addMessage("user", text);
+            input.value = "";
+            queryCount++;
+            document.getElementById('query-count').innerText = queryCount;
+
+            processCommand(text.toLowerCase());
+        }
+
+        function addMessage(sender, text) {
+            const chat = document.getElementById('chat-window');
+            const div = document.createElement('div');
+            div.className = `message msg-${sender}`;
+            div.innerHTML = text;
+            chat.appendChild(div);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function processCommand(input) {
+            // Typing indicator simulation
+            setTimeout(() => {
+                if (input.includes("ayuda")) {
+                    addMessage("nova", "Comandos disponibles:<br>- <b>Buscar [código]</b>: Busca en la TIGIE.<br>- <b>Estado</b>: Muestra estado del sistema.<br>- <b>Limpiar</b>: Limpia el chat.");
+                } else if (input.includes("estado")) {
+                    addMessage("nova", "Sistema Operativo. Base de datos cargada con 8 registros de prueba. Conexión estable.");
+                } else if (input.includes("limpiar")) {
+                    document.getElementById('chat-window').innerHTML = "";
+                    addMessage("nova", "Chat limpio. ¿En qué más puedo ayudarte?");
+                } else if (input.includes("buscar")) {
+                    const code = input.split("buscar")[1]?.trim();
+                    if (code) {
+                        searchTariff(code);
+                    } else {
+                        addMessage("nova", "Por favor especifica el código a buscar. Ejemplo: 'Buscar 1005.90.04'");
+                    }
+                } else {
+                    addMessage("nova", "No reconozco ese comando. Escribe 'Ayuda' para ver opciones.");
+                }
+            }, 500);
+        }
+
+        function searchTariff(code) {
+            const result = tariffDB.find(item => item.code === code);
+            if (result) {
+                const resultHTML = `
+                    <div class="tariff-card">
+                        <div class="tariff-code">Código TIGIE: ${result.code}</div>
+                        <div><strong>Descripción:</strong> ${result.desc}</div>
+                        <div><strong>Unidad:</strong> ${result.unit}</div>
+                        <div><strong>Arancel:</strong> ${result.tax}</div>
+                    </div>
+                `;
+                addMessage("nova", `Encontrado en base de datos:<br>${resultHTML}`);
+            } else {
+                addMessage("nova", `No se encontró el código <b>${code}</b> en la base de datos actual. Intenta con otro código.`);
             }
-          }
-          if (noms.length === 0) noms = ['NOM aplicable según tipo de mercancía'];
-          
-          certificates.push('Permiso de importación COFEPRIS/SE (según aplique)');
-          if (lower.includes('químico') || lower.includes('ácido')) {
-            certificates.push('Hoja de Seguridad (SDS) del producto');
-            certificates.push('Permiso de SEMARNAT si es sustancia controlada');
-          }
-          break;
-        }
-      }
-
-      return { status, reason: status === 'restringida' ? 'Requiere permisos/NOMs específicos.' : 'Sin restricciones conocidas.', noms, certificates };
-    }
-
-    async function calculateIntelligentQuote() {
-      const desc = document.getElementById('goods-desc').value.trim();
-      const origin = document.getElementById('origin-country').value;
-      const destination = document.getElementById('destination').value;
-      const valorUSD = parseFloat(document.getElementById('quote-value').value) || 0;
-      const fleteUSD = parseFloat(document.getElementById('freight-value').value) || 0;
-      const seguroUSD = parseFloat(document.getElementById('insurance-value').value) || 0;
-
-      if (!desc) { showAlert('⚠️ Describe la mercancía para clasificar', 'warning'); return; }
-      if (!valorUSD) { showAlert('⚠️ Ingresa el valor en factura', 'warning'); return; }
-
-      const btn = document.getElementById('calculate-quote');
-      btn.disabled = true; btn.innerHTML = '🔍 Analizando...';
-      document.getElementById('quote-alerts').innerHTML = '';
-      document.getElementById('quote-result').classList.remove('show');
-      document.getElementById('validation-panel').style.display = 'block';
-      resetValidationSteps();
-
-      try {
-        // PASO 1: VALIDACIÓN LOCAL INMEDIATA
-        setStep(1, 'checking');
-        const localCheck = checkLocalRestrictions(desc);
-        
-        if (localCheck.status === 'prohibida') {
-          setStep(1, 'fail');
-          showAlert(`🚫 ${localCheck.reason}`, 'blocker');
-          speak('Artículo prohibido. No se puede cotizar.', 'es');
-          btn.disabled = false; btn.innerHTML = '🧠 Clasificar LIGIE + Cotizar';
-          return;
         }
 
-        if (localCheck.status === 'restringida') {
-          showAlert(`✅ Mercancía detectada como RESTRINGIDA. Requiere: ${localCheck.noms.join(', ')} y ${localCheck.certificates.join(', ')}.`, 'warning');
-        } else {
-          showAlert('✅ Sin restricciones conocidas en base local.', 'success');
-        }
-        setStep(1, 'pass');
+        // Add welcome message after a short delay
+        setTimeout(() => {
+             // Wait for user to click start or auto-start if needed
+        }, 500);
 
-        // PASO 2: CLASIFICACIÓN LIGIE CON IA
-        setStep(2, 'checking');
-        const prompt = `Eres experto en clasificación arancelaria mexicana LIGIE 2024.
-        Mercancía: "${desc}"
-        Origen: ${origin}
-        
-        Clasifica según Reglas Generales de Interpretación y Notas Explicativas.
-        Responde SOLO en JSON válido con esta estructura exacta:
-        {
-          "fraction": "8481.80.99",
-          "description": "Las demás válvulas",
-          "path": "Capítulo 84 → Partida 84.81 → Subpartida 8481.80 → Fracción 8481.80.99",
-          "igi_rate": 0.10,
-          "confidence": 85,
-          "additional_noms": ["NOM específica si aplica"],
-          "notes": ["Nota explicativa relevante"]
-        }
-        
-        Ejemplos reales:
-        - Ácido sulfúrico → 2807.00.01 (IGI 0-5%)
-        - Válvulas de latón → 8481.80.99 (IGI 10%)
-        - Computadoras → 8471.30.01 (IGI 0% T-MEC)
-        - Ropa de algodón → 6203.42.01 (IGI 15-20%)`;
-
-        const response = await fetch(`${CONFIG.GEMINI_ENDPOINT}?key=${state.apiKey}`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.1, responseMimeType: 'application/json' } })
-        });
-        const data = await response.json();
-        const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-        let classification;
-        
-        try {
-          classification = JSON.parse(raw.match(/\{[\s\S]*\}/)?.[0] || '{}');
-        } catch {
-          classification = { fraction: 'Por verificar manualmente', description: desc.slice(0, 50), path: 'Análisis manual requerido', igi_rate: 0.10, confidence: 50, additional_noms: [], notes: ['IA no pudo clasificar con precisión. Requiere Agente Aduanal.'] };
-        }
-
-        // Combinar NOMs locales con las de IA
-        const allNoms = [...new Set([...(localCheck.noms || []), ...(classification.additional_noms || [])])];
-        
-        setStep(2, 'pass');
-
-        // PASO 3: CÁLCULO FISCAL
-        setStep(3, 'checking');
-        let igiRate = Math.min(Math.max(classification.igi_rate || 0, 0), 0.20);
-        const isTMEC = ['US', 'CA'].includes(origin);
-        if (isTMEC && igiRate > 0) igiRate = 0;
-
-        const valorTotalUSD = valorUSD + fleteUSD + seguroUSD;
-        const valorAduanaMXN = valorTotalUSD * CONFIG.TIPO_CAMBIO;
-        const igiMXN = valorAduanaMXN * igiRate;
-        const dtaMXN = valorAduanaMXN * CONFIG.DTA;
-        const baseIVA = valorAduanaMXN + igiMXN + dtaMXN + CONFIG.PREVALIDACION;
-        const ivaRate = destination === 'border' ? CONFIG.IVA_FRONTERA : CONFIG.IVA_GENERAL;
-        const ivaMXN = baseIVA * ivaRate;
-        const subtotal = baseIVA + ivaMXN;
-        const honorarios = subtotal * CONFIG.HONORARIOS;
-        const total = subtotal + honorarios;
-
-        setStep(3, 'pass');
-
-        // RENDERIZAR RESULTADO
-        document.getElementById('res-fraction').textContent = classification.fraction;
-        document.getElementById('res-desc').textContent = classification.description;
-        document.getElementById('res-path').textContent = classification.path || 'Clasificación LIGIE';
-        
-        const conf = classification.confidence || 0;
-        const level = conf >= 80 ? 'high' : conf >= 60 ? 'medium' : 'low';
-        document.getElementById('confidence-fill').className = `confidence-fill ${level}`;
-        document.getElementById('confidence-fill').style.width = `${conf}%`;
-        document.getElementById('confidence-text').textContent = `${conf}%`;
-
-        document.getElementById('res-customs-value').textContent = `$${valorAduanaMXN.toFixed(2)} MXN`;
-        document.getElementById('res-igi').textContent = `$${igiMXN.toFixed(2)} MXN (${(igiRate*100).toFixed(1)}%)`;
-        document.getElementById('res-dta').textContent = `$${dtaMXN.toFixed(2)} MXN`;
-        document.getElementById('res-preval').textContent = `$${CONFIG.PREVALIDACION.toFixed(2)} MXN`;
-        
-        document.getElementById('iva-label').querySelector('span').textContent = `IVA (${(ivaRate*100).toFixed(0)}%)`;
-        document.getElementById('res-iva').textContent = `$${ivaMXN.toFixed(2)} MXN`;
-        
-        document.getElementById('ieps-row').style.display = 'none';
-        document.getElementById('res-ieps').style.display = 'none';
-
-        document.getElementById('res-subtotal').textContent = `$${subtotal.toFixed(2)} MXN`;
-        document.getElementById('res-fees').textContent = `$${honorarios.toFixed(2)} MXN`;
-        document.getElementById('res-total').textContent = `$${total.toFixed(2)} MXN`;
-
-        // REQUERIMIENTOS
-        const reqDiv = document.getElementById('res-requirements');
-        let reqHTML = '';
-        if (allNoms.length > 0) {
-          reqHTML += `<div class="alert-box warning">📋 <strong>NOMs aplicables:</strong> ${allNoms.join(', ')}</div>`;
-        }
-        if (localCheck.certificates?.length) {
-          reqHTML += `<div class="alert-box info">🔖 <strong>Certificados/Permisos:</strong> ${localCheck.certificates.join(', ')}</div>`;
-        }
-        if (classification.notes?.length) {
-          reqHTML += `<div class="alert-box info">📝 <strong>Notas:</strong> ${classification.notes.join(' | ')}</div>`;
-        }
-        if (!isTMEC && origin !== 'MX') {
-          reqHTML += `<div class="alert-box info">🌍 Origen no T-MEC. Verifica certificación de origen.</div>`;
-        }
-        if (conf < 60) {
-          reqHTML += `<div class="alert-box warning">⚠️ Confianza baja (<60%). Recomendamos validación manual por Agente Aduanal.</div>`;
-        }
-        reqDiv.innerHTML = reqHTML;
-
-        document.getElementById('quote-result').classList.add('show');
-        speak('Clasificación y cotización generadas.', 'es');
-
-      } catch (error) {
-        console.error(error);
-        setStep(2, 'fail');
-        showAlert('❌ Error en el motor de análisis. Verifica conexión y API Key.', 'blocker');
-      } finally {
-        btn.disabled = false; btn.innerHTML = '🧠 Clasificar LIGIE + Cotizar';
-      }
-    }
-
-    function resetValidationSteps() {
-      [1,2,3].forEach(i => {
-        const icon = document.getElementById(`icon-${i}`);
-        icon.className = 'step-icon pending';
-        icon.textContent = i;
-      });
-    }
-    function setStep(num, status) {
-      const icon = document.getElementById(`icon-${num}`);
-      icon.className = `step-icon ${status}`;
-      if (status === 'pass') icon.textContent = '✓';
-      if (status === 'fail') icon.textContent = '✕';
-    }
-
-    function showAlert(msg, type) {
-      const div = document.getElementById('quote-alerts');
-      div.innerHTML = `<div class="alert-box ${type}">${type === 'blocker' ? '🚫' : type === 'warning' ? '💡' : type === 'success' ? '✅' : 'ℹ️'} ${msg}</div>`;
-    }
-
-    // ============================================
-    // VISITS & DASHBOARD
-    // ============================================
-    function saveVisit() {
-      if (!state.currentVisit) return;
-      state.currentVisit.endTime = new Date();
-      state.currentVisit.duration = Math.round((state.currentVisit.endTime - state.currentVisit.startTime) / 60000);
-      state.visits.unshift(state.currentVisit);
-      if (state.visits.length > 50) state.visits.pop();
-      localStorage.setItem('lenoah_visits', JSON.stringify(state.visits));
-      updateVisitList(); updateDashboard(); state.currentVisit = null;
-    }
-    function updateVisitList() {
-      const list = document.getElementById('visits-list');
-      const today = new Date().toDateString();
-      const todayVisits = state.visits.filter(v => new Date(v.startTime).toDateString() === today);
-      document.getElementById('visit-count').textContent = todayVisits.length;
-      if (todayVisits.length === 0) { list.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">Sin visitas</div>'; return; }
-      list.innerHTML = todayVisits.map(v => `<div class="visit-item"><div><div class="visit-name">${v.name || 'Visitante'}</div><div class="visit-meta">${v.reason?.slice(0, 25) || 'Consulta'} · ${v.duration || '?'}m</div></div><div style="font-size: 0.8rem; color: var(--text-muted);">${new Date(v.startTime).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div></div>`).join('');
-    }
-    function updateDashboard() {
-      const today = new Date().toDateString();
-      const todayVisits = state.visits.filter(v => new Date(v.startTime).toDateString() === today);
-      document.getElementById('stat-total').textContent = todayVisits.length;
-      const avg = todayVisits.length > 0 ? Math.round(todayVisits.reduce((s, v) => s + (v.duration || 0), 0) / todayVisits.length) : 0;
-      document.getElementById('stat-avg').textContent = `${avg}m`;
-      const hours = {}; todayVisits.forEach(v => { const h = new Date(v.startTime).getHours(); hours[h] = (hours[h] || 0) + 1; });
-      const peak = Object.entries(hours).sort((a,b) => b[1] - a[1])[0]?.[0];
-      document.getElementById('stat-peak').textContent = peak ? `${peak}:00` : '--';
-      const langCount = todayVisits.reduce((acc, v) => { acc[v.lang || 'es'] = (acc[v.lang || 'es'] || 0) + 1; return acc; }, {});
-      document.getElementById('stat-lang').textContent = Object.entries(langCount).sort((a,b) => b[1] - a[1])[0]?.[0]?.toUpperCase() || 'ES';
-    }
-    function exportVisitsCSV() {
-      if (state.visits.length === 0) { alert('No hay visitas'); return; }
-      const headers = ['Fecha', 'Hora', 'Nombre', 'Motivo', 'Duración', 'Idioma'];
-      const rows = state.visits.map(v => [new Date(v.startTime).toLocaleDateString(), new Date(v.startTime).toLocaleTimeString(), v.name || 'N/A', (v.reason || 'Consulta').replace(/,/g, ';'), v.duration || 0, v.lang || 'es']);
-      const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = `lenoah_visitas_${new Date().toISOString().slice(0,10)}.csv`; a.click();
-    }
-
-    // ============================================
-    // UTILITIES
-    // ============================================
-    function updateClock() { document.getElementById('clock').textContent = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }
-    async function fetchWeather() {
-      try { const res = await fetch(CONFIG.WEATHER_ENDPOINT); const data = await res.json(); document.getElementById('weather').textContent = `${Math.round(data.current_weather?.temperature || 22)}°`; } catch { document.getElementById('weather').textContent = '--°'; }
-    }
-    document.addEventListener('touchstart', (e) => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
-    let lastTouchEnd = 0; document.addEventListener('touchend', (e) => { const now = Date.now(); if (now - lastTouchEnd <= 0.3) e.preventDefault(); lastTouchEnd = now; }, false);
-  </script>
+    </script>
 </body>
 </html>
