@@ -1,1308 +1,695 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="LenoahHost">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#05070a">
-<meta name="display" content="standalone">
-<title>LenoahHost · Nova Prestige</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@200;300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#05070a;--deep:#080c12;--surface:#0d1420;--card:#111926;
-  --jade:#3ecf8e;--jade2:#2ab377;--jade-dim:rgba(62,207,142,.10);--jade-glow:rgba(62,207,142,.28);
-  --amber:#f0b429;--rose:#f87171;--text:#e2ddd6;--text-2:#8b8680;--text-3:#3d3c3a;
-  --border:rgba(62,207,142,.14);--border2:rgba(62,207,142,.28);
-  --font-d:'DM Serif Display',serif;--font-b:'Outfit',sans-serif;--font-m:'DM Mono',monospace;
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
-html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--font-b);font-weight:300;}
-body{cursor:auto;}
-#cur,#cur2{display:none;}@media(pointer:fine){#cur{display:block;position:fixed;width:7px;height:7px;background:var(--jade);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 12px var(--jade);}#cur2{display:block;position:fixed;width:32px;height:32px;border:1px solid rgba(62,207,142,.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s;}}
-#bgC{position:fixed;inset:0;z-index:0;}
-.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0a0a12" />
+  <title>LenoahHost · Cotizador General</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050508; --bg-panel: #0a0a14; --bg-card: #111120;
+      --led-primary: #00d4ff; --led-primary-glow: rgba(0, 212, 255, 0.4);
+      --led-secondary: #7c3aed; --led-warm: #f59e0b;
+      --led-success: #10b981; --led-danger: #ef4444;
+      --text: #f0f4ff; --text-dim: #8b9dc3; --text-muted: #5a6a8a;
+      --border: rgba(100, 120, 180, 0.15);
+      --font-robot: 'Inter', sans-serif; --font-serif: 'Playfair Display', serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body { min-height: 100vh; background: var(--bg); color: var(--text); font-family: var(--font-robot); font-size: 15px; line-height: 1.5; overflow-x: hidden; }
+    #setup-screen { position: fixed; inset: 0; background: linear-gradient(135deg, var(--bg), #0a0a18); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; padding: 2rem; }
+    #setup-screen.hidden { display: none; }
+    .setup-container { max-width: 500px; width: 100%; text-align: center; animation: slideUp 0.6s ease; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .setup-logo { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, var(--led-primary), var(--led-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .setup-input { width: 100%; padding: 1rem; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1rem; margin-bottom: 1rem; }
+    .setup-input:focus { outline: none; border-color: var(--led-primary); box-shadow: 0 0 20px var(--led-primary-glow); }
+    .setup-btn { width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--led-primary), var(--led-secondary)); color: #000; border: none; border-radius: 12px; font-weight: 600; font-size: 1.1rem; cursor: pointer; }
+    .setup-help { margin-top: 1.5rem; text-align: left; background: var(--bg-panel); padding: 1.25rem; border-radius: 12px; font-size: 0.85rem; color: var(--text-dim); }
+    .setup-help ol { padding-left: 1.3rem; margin: 0.75rem 0; }
+    .setup-help a { color: var(--led-primary); text-decoration: none; }
 
-/* IDLE */
-#idle{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .9s,visibility .9s;}
-#idle.gone{opacity:0;visibility:hidden;pointer-events:none;}
-.idle-wordmark{font-family:var(--font-d);font-size:clamp(52px,9vw,90px);letter-spacing:.12em;color:var(--text);text-transform:uppercase;line-height:1;margin-bottom:4px;}
-.idle-wordmark b{color:var(--jade);font-weight:400;}
-.idle-rule{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--jade),transparent);animation:rExp 2s .5s ease forwards;}
-@keyframes rExp{to{width:200px;}}
-.idle-sub{margin-top:14px;font-size:10px;letter-spacing:.55em;text-transform:uppercase;color:var(--text-2);margin-bottom:44px;}
-.idle-strip{display:flex;align-items:center;gap:28px;padding:14px 28px;border:1px solid var(--border);background:rgba(13,20,32,.6);backdrop-filter:blur(12px);margin-bottom:44px;}
-.si{display:flex;flex-direction:column;align-items:center;gap:3px;}
-.sv{font-family:var(--font-d);font-size:26px;color:var(--text);}
-.sl{font-size:9px;letter-spacing:.35em;text-transform:uppercase;color:var(--text-2);}
-.sdiv{width:1px;height:34px;background:var(--border);}
-.idle-quote{font-family:var(--font-d);font-style:italic;font-size:clamp(15px,2.2vw,20px);color:rgba(226,221,214,.38);text-align:center;max-width:480px;line-height:1.75;min-height:64px;display:flex;align-items:center;justify-content:center;padding:0 24px;transition:opacity .55s;margin-bottom:44px;}
-.idle-sensor{display:flex;align-items:center;gap:14px;}
-.sorb{width:44px;height:44px;border-radius:50%;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;position:relative;}
-.sorb::before{content:'';position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(62,207,142,.15);animation:sonar 2.4s ease-in-out infinite;}
-.sorb::after{content:'';position:absolute;inset:-15px;border-radius:50%;border:1px solid rgba(62,207,142,.07);animation:sonar 2.4s ease-in-out infinite .5s;}
-@keyframes sonar{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.08);opacity:.3}}
-.sico{width:18px;height:18px;stroke:var(--jade);fill:none;stroke-width:1.5;stroke-linecap:round;}
-.stxt{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--text-2);}
+    #app { position: relative; z-index: 10; min-height: 100vh; display: flex; flex-direction: column; opacity: 0; transition: opacity 0.5s; }
+    #app.ready { opacity: 1; }
+    header { position: sticky; top: 0; display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.25rem; background: rgba(10, 10, 20, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); z-index: 50; }
+    .brand { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--led-primary), var(--led-secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #000; }
+    .brand-text { font-family: var(--font-serif); font-weight: 600; font-size: 1.2rem; }
+    .brand-text span { color: var(--led-primary); }
+    .header-status { display: flex; gap: 1.25rem; font-size: 0.85rem; color: var(--text-dim); }
 
-/* WAKE */
-#wkL{position:fixed;inset:0;z-index:75;pointer-events:none;opacity:0;transition:opacity .3s;}
-#wkL.on{opacity:1;}
-#wkC{width:100%;height:100%;}
+    .tabs { display: flex; gap: 0.25rem; padding: 0.5rem 1rem; background: var(--bg-panel); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { flex: 0 0 auto; padding: 0.6rem 1.1rem; background: transparent; border: none; color: var(--text-muted); font-size: 0.9rem; font-weight: 500; border-radius: 10px; cursor: pointer; }
+    .tab.active { color: var(--led-primary); background: rgba(0, 212, 255, 0.1); }
 
-/* APP */
-#app{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .7s .4s,visibility .7s .4s;overflow:hidden;}
-#app.on{opacity:1;visibility:visible;}
+    #content { flex: 1; display: flex; flex-direction: column; padding: 1.25rem; gap: 1.25rem; overflow-y: auto; max-width: 1200px; margin: 0 auto; width: 100%; }
+    @media (min-width: 1024px) { #content { flex-direction: row; align-items: flex-start; } #chat-section { flex: 1; } #side-panel { flex: 0 0 450px; } }
+    .tab-content { display: none; animation: fadeIn 0.3s; }
+    .tab-content.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* HEADER */
-.hdr{display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid var(--border);background:rgba(5,7,10,.95);backdrop-filter:blur(20px);flex-shrink:0;height:52px;overflow:hidden;}
-.hdr-brand{display:flex;align-items:baseline;gap:12px;}
-.hdr-name{font-family:var(--font-d);font-size:19px;letter-spacing:.18em;text-transform:uppercase;}
-.hdr-name span{color:var(--jade);}
-.hdr-dot{width:1px;height:13px;background:var(--border2);}
-.hdr-sub{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--text-2);}
-.hdr-r{display:flex;align-items:center;gap:18px;}
-.hdr-wx{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-2);}
-.hdr-clock{font-family:var(--font-m);font-size:19px;color:var(--text-2);letter-spacing:.06em;}
-.tabs{display:flex;gap:2px;}
-.tab{padding:6px 13px;border:none;background:transparent;font-family:var(--font-b);font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--text-2);cursor:pointer;border-bottom:2px solid transparent;transition:all .25s;}
-.tab.on{color:var(--jade);border-bottom-color:var(--jade);}.tab.on#tabQuote{color:var(--amber);border-bottom-color:var(--amber);}
-.tab:hover{color:var(--text);}
+    #chat-section { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px; }
+    .robot-avatar { width: 120px; height: 120px; margin-bottom: 1.5rem; position: relative; }
+    .robot-avatar-circle { width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, #1a1a2e, #0f0f1a); border: 3px solid var(--led-primary); box-shadow: 0 0 40px var(--led-primary-glow); display: flex; align-items: center; justify-content: center; }
+    .robot-avatar-circle.speaking { animation: speakGlow 0.5s infinite; }
+    @keyframes speakGlow { 0%, 100% { box-shadow: 0 0 40px var(--led-primary-glow); } 50% { box-shadow: 0 0 60px var(--led-primary-glow); } }
+    .robot-eyes-container { display: flex; gap: 20px; }
+    .robot-eye-main { width: 22px; height: 22px; background: var(--led-primary); border-radius: 50%; box-shadow: 0 0 10px var(--led-primary); }
+    .robot-mouth-main { position: absolute; bottom: 30%; left: 50%; transform: translateX(-50%); width: 40px; height: 4px; background: var(--led-primary); border-radius: 3px; }
+    .robot-mouth-main.speaking { animation: speakMouth 0.4s infinite; }
+    @keyframes speakMouth { 0%, 100% { width: 40px; height: 4px; } 50% { width: 30px; height: 12px; border-radius: 50%; } }
+    .message-display { min-height: 60px; text-align: center; font-size: 1.1rem; line-height: 1.5; color: var(--text); margin-bottom: 1rem; max-width: 500px; padding: 0 1rem; }
+    .message-display.thinking { color: var(--text-dim); font-style: italic; }
+    .voice-controls { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .mic-btn { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--led-primary), var(--led-secondary)); border: none; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; }
+    .mic-btn.listening { animation: micPulse 1.5s infinite; background: linear-gradient(135deg, var(--led-warm), #d97706); }
+    @keyframes micPulse { 0%, 100% { box-shadow: 0 6px 25px rgba(245, 158, 11, 0.4); } 50% { box-shadow: 0 6px 40px rgba(245, 158, 11, 0.6); } }
+    .control-btn { padding: 0.5rem 0.9rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-size: 0.9rem; cursor: pointer; }
+    .control-btn.active { background: var(--led-primary); color: #000; }
 
-/* STAGE */
-.stage{display:flex;flex-direction:column;overflow:hidden;flex:1;min-height:0;}
+    #side-panel { display: flex; flex-direction: column; gap: 1rem; }
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); }
+    .card-title { font-family: var(--font-serif); font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+    .card-body { padding: 1.25rem; }
 
-/* AVATAR */
-.avp{display:none;}
-.apbg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(62,207,142,.04) 0%,transparent 65%);pointer-events:none;}
-.cm{position:absolute;width:20px;height:20px;opacity:.32;}
-.cm-tl{top:16px;left:16px;border-top:1px solid var(--jade);border-left:1px solid var(--jade);}
-.cm-tr{top:16px;right:16px;border-top:1px solid var(--jade);border-right:1px solid var(--jade);}
-.cm-bl{bottom:16px;left:16px;border-bottom:1px solid var(--jade);border-left:1px solid var(--jade);}
-.cm-br{bottom:16px;right:16px;border-bottom:1px solid var(--jade);border-right:1px solid var(--jade);}
-.ow{position:relative;width:195px;height:195px;margin-bottom:18px;}
-.oa{position:absolute;inset:-26px;border-radius:50%;background:radial-gradient(circle,rgba(62,207,142,.07) 0%,transparent 70%);animation:aura 4s ease-in-out infinite;}
-@keyframes aura{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.12);opacity:1}}
-.or1{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(62,207,142,.2);animation:sp1 22s linear infinite;}
-.or1::before{content:'';position:absolute;width:8px;height:8px;background:var(--jade);border-radius:50%;top:-4px;left:50%;transform:translateX(-50%);box-shadow:0 0 16px var(--jade),0 0 32px var(--jade-glow);}
-@keyframes sp1{to{transform:rotate(360deg);}}
-.or2{position:absolute;inset:14px;border-radius:50%;border:1px solid rgba(62,207,142,.09);animation:sp1 16s linear infinite reverse;}
-.or2::after{content:'';position:absolute;width:5px;height:5px;background:var(--jade);border-radius:50%;bottom:-2.5px;right:22%;opacity:.5;}
-.of{position:absolute;inset:26px;border-radius:50%;background:radial-gradient(circle at 37% 30%,#1b2535 0%,#0a0e18 55%,#05070a 100%);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.of::before{content:'';position:absolute;width:55%;height:38%;top:8%;left:22%;background:radial-gradient(ellipse,rgba(62,207,142,.06) 0%,transparent 80%);border-radius:50%;}
-#faceC{width:90px;height:90px;position:relative;z-index:1;}
-.avst{text-align:center;margin-bottom:12px;}
-.avlbl{font-size:8px;letter-spacing:.45em;text-transform:uppercase;color:var(--text-3);margin-bottom:4px;}
-.avval{font-family:var(--font-d);font-size:22px;color:var(--text);transition:color .4s;}
-.avval.sp{color:var(--jade);}
-.wave{display:flex;align-items:center;gap:2px;height:28px;margin-bottom:12px;}
-.wb{width:2px;border-radius:2px;background:var(--jade);height:5px;opacity:.18;transition:height .08s,opacity .08s;}
-.wb.on{opacity:.8;}
-.vc{display:flex;align-items:center;gap:8px;padding:5px 12px;border:1px solid var(--border);background:var(--jade-dim);font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:0;transform:translateY(5px);transition:opacity .4s,transform .4s;}
-.vc.show{opacity:1;transform:none;}
-.vcl{color:var(--text-3);}.vcn{color:var(--jade);font-weight:500;}
-.qs-row{display:flex;gap:8px;margin-top:16px;}
-.qs{flex:1;padding:8px 8px;border:1px solid var(--border);background:rgba(13,20,32,.5);text-align:center;}
-.qsv{font-family:var(--font-m);font-size:17px;color:var(--jade);}
-.qsl{font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-2);margin-top:2px;}
+    .form-group { margin-bottom: 1rem; }
+    .form-label { display: block; font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.5rem; }
+    .form-input, .form-select { width: 100%; padding: 0.85rem 1rem; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1rem; }
+    .form-input:focus, .form-select:focus { outline: none; border-color: var(--led-primary); }
+    .textarea { min-height: 100px; resize: vertical; }
+    .btn-primary { width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--led-primary), var(--led-secondary)); color: #000; border: none; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--led-primary-glow); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-/* RIGHT */
-.rp{display:flex;flex-direction:column;background:rgba(8,12,18,.95);backdrop-filter:blur(18px);flex:1;min-height:0;border-top:1px solid var(--border);}
-.tc{display:none;flex:1;min-height:0;overflow:hidden;flex-direction:column;}
-.tc.on{display:flex;}
+    .quote-result { display: none; margin-top: 1rem; animation: slideUp 0.4s; }
+    .quote-result.show { display: block; }
+    .fraction-card { background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(124, 58, 237, 0.05)); border: 1px solid var(--led-primary); border-radius: 16px; padding: 1.25rem; margin-bottom: 1rem; }
+    .fraction-code { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; color: var(--led-primary); letter-spacing: 0.05em; }
+    .fraction-path { font-size: 0.85rem; color: var(--text-dim); margin: 0.5rem 0; font-family: var(--font-mono); }
+    .confidence-meter { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--bg-panel); border-radius: 10px; margin-top: 0.75rem; }
+    .confidence-bar { flex: 1; height: 6px; background: var(--bg-card); border-radius: 3px; overflow: hidden; }
+    .confidence-fill { height: 100%; transition: width 0.5s; }
+    .confidence-fill.high { background: var(--led-success); }
+    .confidence-fill.medium { background: var(--led-warm); }
+    .confidence-fill.low { background: var(--led-danger); }
 
-/* CHAT */
-.msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
-.msgs::-webkit-scrollbar{width:3px;}.msgs::-webkit-scrollbar-thumb{background:var(--border);}
-.msg{display:flex;flex-direction:column;gap:4px;animation:mIn .4s cubic-bezier(.22,1,.36,1) both;}
-@keyframes mIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.msg.nova{align-items:flex-start;}.msg.vis{align-items:flex-end;}
-.mwho{font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--text-3);}
-.mbody{max-width:90%;padding:10px 14px;font-size:12.5px;line-height:1.7;font-weight:300;}
-.msg.nova .mbody{background:var(--jade-dim);border:1px solid var(--border);border-left:2px solid var(--jade);border-radius:0 4px 4px 4px;color:var(--text);}
-.msg.vis .mbody{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:4px 0 4px 4px;color:var(--text-2);}
-.thinking{display:flex;gap:5px;align-items:center;padding:10px 14px;background:var(--jade-dim);border:1px solid var(--border);border-left:2px solid var(--jade);}
-.td{width:4px;height:4px;border-radius:50%;background:var(--jade);animation:td 1.1s ease-in-out infinite;}
-.td:nth-child(2){animation-delay:.18s}.td:nth-child(3){animation-delay:.36s}
-@keyframes td{0%,100%{opacity:.2;transform:translateY(0)}50%{opacity:1;transform:translateY(-5px)}}
-.ctrls{padding:13px 15px;border-top:1px solid var(--border);}
-.mic-row{display:flex;align-items:center;gap:11px;margin-bottom:9px;}
-.micbtn{width:44px;height:44px;border-radius:50%;border:1px solid var(--border2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;flex-shrink:0;position:relative;}
-.micbtn:hover{background:var(--jade-dim);border-color:var(--jade);}
-.micbtn.hot{background:var(--jade-dim);border-color:var(--jade);box-shadow:0 0 20px var(--jade-dim);}
-.micbtn.hot::before{content:'';position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(62,207,142,.3);animation:mr 1.5s ease-in-out infinite;}
-@keyframes mr{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.06);opacity:.4}}
-.mico{width:16px;height:16px;stroke:var(--jade);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
-.trw{flex:1;overflow:hidden;}
-.trh{font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;}
-.trt{font-size:12px;color:var(--text-2);font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:16px;}
-.brow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
-.cbtn{padding:8px 4px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:8px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .22s;border-radius:1px;}
-.cbtn:hover{border-color:var(--jade);color:var(--jade);background:var(--jade-dim);}
+    .calc-grid { display: grid; gap: 0.5rem; margin: 1rem 0; }
+    .calc-row { display: flex; justify-content: space-between; padding: 0.5rem 0; font-size: 0.95rem; border-bottom: 1px dashed var(--border); }
+    .calc-row:last-child { border-bottom: none; }
+    .calc-row.label { color: var(--text-dim); }
+    .calc-row.value { font-weight: 600; }
+    .calc-row.total { padding-top: 0.75rem; margin-top: 0.5rem; border-top: 2px dashed var(--border); font-size: 1.1rem; color: var(--led-primary); font-weight: 700; }
+    
+    .alert-box { padding: 1rem; border-radius: 12px; margin: 1rem 0; display: flex; gap: 0.75rem; align-items: flex-start; font-size: 0.9rem; line-height: 1.4; }
+    .alert-box.info { background: rgba(0, 212, 255, 0.1); border: 1px solid var(--led-primary); }
+    .alert-box.warning { background: rgba(245, 158, 11, 0.15); border: 2px solid var(--led-warm); color: var(--led-warm); }
+    .alert-box.danger { background: rgba(239, 68, 68, 0.15); border: 2px solid var(--led-danger); color: var(--led-danger); }
 
-/* VISITS */
-.vp{flex:1;overflow-y:auto;padding:15px;}
-.vp::-webkit-scrollbar{width:3px;}.vp::-webkit-scrollbar-thumb{background:var(--border);}
-.vhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:9px;border-bottom:1px solid var(--border);}
-.vtit{font-size:9px;letter-spacing:.35em;text-transform:uppercase;color:var(--text-2);}
-.vcnt{font-family:var(--font-m);font-size:11px;color:var(--jade);}
-.vrow{display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:center;padding:9px 11px;border:1px solid var(--border);margin-bottom:5px;background:rgba(13,20,32,.4);animation:mIn .4s both;}
-.vrt{font-family:var(--font-m);font-size:10px;color:var(--text-2);}
-.vri{overflow:hidden;}
-.vrn{font-size:12px;color:var(--text);font-weight:400;margin-bottom:2px;}
-.vrr{font-size:10px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.vrb{padding:3px 7px;border:1px solid var(--border);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--jade);}
-.nv{text-align:center;padding:36px 16px;font-family:var(--font-d);font-style:italic;font-size:15px;color:var(--text-3);}
-.expbtn{width:100%;padding:9px;margin-top:9px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:9px;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;transition:all .25s;}
-.expbtn:hover{border-color:var(--jade);color:var(--jade);background:var(--jade-dim);}
+    .disclaimer { margin-top: 1rem; padding: 0.75rem; background: var(--bg-panel); border-left: 3px solid var(--text-muted); font-size: 0.8rem; color: var(--text-dim); line-height: 1.4; }
+    .btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+    .btn-secondary { padding: 0.75rem 1.25rem; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-weight: 500; cursor: pointer; flex: 1; }
+    .btn-secondary:hover { border-color: var(--led-primary); }
 
-/* DASHBOARD */
-.dp{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:10px;}
-.dp::-webkit-scrollbar{width:3px;}.dp::-webkit-scrollbar-thumb{background:var(--border);}
-.dkpis{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
-.kpi{padding:12px;border:1px solid var(--border);background:rgba(13,20,32,.5);}
-.kpiv{font-family:var(--font-m);font-size:24px;color:var(--jade);line-height:1;}
-.kpil{font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--text-2);margin-top:4px;}
-.kpis{font-size:10px;color:var(--text-3);margin-top:2px;}
-.dst{font-size:8px;letter-spacing:.35em;text-transform:uppercase;color:var(--text-2);margin-bottom:7px;}
-.hchart{display:flex;align-items:flex-end;gap:3px;height:55px;padding:0 2px;}
-.hb{flex:1;background:var(--jade-dim);border:1px solid var(--border);border-bottom:none;transition:height .6s;min-height:4px;cursor:pointer;}
-.hb:hover{background:rgba(62,207,142,.25);}
-.hlbls{display:flex;gap:3px;padding:0 2px;margin-top:16px;}
-.hl{flex:1;text-align:center;font-size:7px;color:var(--text-3);}
-.rrl{display:flex;flex-direction:column;gap:5px;}
-.rrow{display:flex;align-items:center;gap:9px;}
-.rbw{flex:1;height:3px;background:var(--surface);border-radius:2px;overflow:hidden;}
-.rb{height:100%;background:var(--jade);border-radius:2px;transition:width .8s;}
-.rln{font-size:9px;color:var(--text-2);width:85px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.rpc{font-family:var(--font-m);font-size:9px;color:var(--jade);width:30px;text-align:right;}
+    .visits-list { max-height: 200px; overflow-y: auto; }
+    .visit-item { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .visit-item:last-child { border-bottom: none; }
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+    .stat-card { background: var(--bg-panel); padding: 0.8rem; border-radius: 12px; text-align: center; border: 1px solid var(--border); }
+    .stat-value { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--led-primary); }
+    .stat-label { font-size: 0.75rem; color: var(--text-muted); }
 
-/* FOOTER */
-.ftr{display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-top:1px solid var(--border);background:rgba(5,7,10,.95);backdrop-filter:blur(20px);height:36px;flex-shrink:0;}
-.fi{font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--text-3);display:flex;align-items:center;gap:7px;}
-.fp{width:4px;height:4px;border-radius:50%;background:var(--jade);opacity:.6;}
-.fpw{background:var(--amber);}
-
-/* CAM */
-#camBox{position:fixed;bottom:54px;left:12px;width:68px;height:52px;border:1px solid var(--border);overflow:hidden;opacity:.33;z-index:200;display:none;}
-#camVid{width:100%;height:100%;object-fit:cover;}
-.clbl{position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:6px;letter-spacing:.18em;color:var(--jade);background:rgba(0,0,0,.6);padding:1px;}
-
-/* TOAST */
-.toast{position:fixed;top:66px;left:50%;transform:translateX(-50%) translateY(-12px);background:var(--jade-dim);border:1px solid var(--border2);color:var(--jade);font-size:10px;letter-spacing:.2em;padding:8px 18px;z-index:400;opacity:0;transition:all .35s;pointer-events:none;text-transform:uppercase;font-family:var(--font-b);}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-/* ── MOBILE RESPONSIVE ── */
-html,body{
-  height:100%;
-  height: -webkit-fill-available;
-  overflow:hidden;
-  position:fixed;
-  width:100%;
-}
-#app{
-  position:fixed;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  height:100%;
-  height:-webkit-fill-available;
-  overflow:hidden;
-}
-.stage{
-  flex:1;
-  min-height:0;
-  overflow:hidden;
-}
-.rp{
-  flex:1;
-  min-height:0;
-  overflow:hidden;
-}
-.tc{
-  flex:1;
-  min-height:0;
-}
-/* Tabs - scrollable horizontal */
-.tabs{
-  display:flex;
-  gap:0;
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
-  flex:1;
-}
-.tabs::-webkit-scrollbar{display:none;}
-.tab{
-  padding:8px 10px;
-  font-size:8px;
-  letter-spacing:.15em;
-  white-space:nowrap;
-  flex-shrink:0;
-  -webkit-tap-highlight-color:transparent;
-  border:none;
-  border-bottom:2px solid transparent;
-}
-/* Header compact */
-.hdr-sub,.hdr-dot,.hdr-wx{display:none;}
-.hdr-clock{font-size:14px;}
-.hdr-name{font-size:15px;letter-spacing:.1em;}
-/* Footer compact */
-.ftr{padding:0 12px;}
-.fi{font-size:7px;letter-spacing:.15em;}
-/* Bottom controls touch-friendly */
-.cbtn{padding:12px 4px;font-size:8px;-webkit-tap-highlight-color:transparent;}
-.micbtn{width:52px;height:52px;}
-/* Idle screen mobile */
-.idle-wordmark{font-size:clamp(36px,11vw,70px);}
-.idle-strip{gap:14px;padding:10px 14px;flex-wrap:wrap;justify-content:center;}
-.idle-quote{font-size:14px;min-height:48px;}
-/* Tablet landscape - show avatar */
-@media(min-width:768px) and (orientation:landscape){
-  .stage{flex-direction:row;}
-  .avp{display:flex;flex:0 0 280px;}
-  .rp{flex:1;border-left:1px solid var(--border);border-top:none;}
-  .hdr-sub,.hdr-dot{display:flex;}
-  .hdr-wx{display:flex;}
-}
-/* Safe area for notched phones */
-#app{
-  padding-top:env(safe-area-inset-top);
-  padding-bottom:env(safe-area-inset-bottom);
-}
-
-</style>
+    @media (max-width: 767px) {
+      .robot-avatar { width: 100px; height: 100px; }
+      .header-status { display: none; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
 </head>
 <body>
-<div id="cur"></div><div id="cur2"></div>
-<div class="grain"></div>
-<canvas id="bgC"></canvas>
-<div id="wkL"><canvas id="wkC"></canvas></div>
-<div class="toast" id="toast"></div>
 
-<!-- IDLE -->
-<div id="idle">
-  <div class="idle-wordmark">L<b>e</b>noah</div>
-  <div class="idle-rule"></div>
-  <div class="idle-sub">Comercializadora · Asistente de Recepción Inteligente</div>
-  <div class="idle-strip">
-    <div class="si"><div class="sv" id="iClock">--:--</div><div class="sl">Hora</div></div>
-    <div class="sdiv"></div>
-    <div class="si"><div class="sv" id="iTemp">--°</div><div class="sl">Tijuana</div></div>
-    <div class="sdiv"></div>
-    <div class="si"><div class="sv" id="iVis">0</div><div class="sl">Visitas hoy</div></div>
-    <div class="sdiv"></div>
-    <div class="si"><div class="sv" id="iDay">—</div><div class="sl">Día</div></div>
+  <!-- SETUP SCREEN -->
+  <div id="setup-screen">
+    <div class="setup-container">
+      <div class="setup-logo">L e noah</div>
+      <p style="color: var(--text-dim); margin: 1rem 0 2rem;">Cotizador General · Basado en LIGIE</p>
+      <input type="password" id="api-key-input" class="setup-input" placeholder="AIzaSy..." autocomplete="off" />
+      <button id="save-key-btn" class="setup-btn">✓ Guardar y Entrar</button>
+      <div class="setup-help">
+        <strong>¿Dónde obtengo mi API Key?</strong>
+        <ol>
+          <li>Ve a <a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a></li>
+          <li>Inicia sesión → "Get API Key" → "Create API Key"</li>
+          <li>Copia y pega arriba</li>
+        </ol>
+        🔒 Tu key se guarda solo en esta tablet.
+      </div>
+    </div>
   </div>
-  <div class="idle-quote" id="iQuote">"Bienvenido. Cada visita es una oportunidad."</div>
-  <div class="idle-sensor">
-    <div class="sorb">
-      <svg class="sico" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-    </div>
-    <div class="stxt" id="sTxt">Sistema activo · Detectando presencia</div>
-  </div>
-</div>
 
-<!-- APP -->
-<div id="app">
-  <header class="hdr">
-    <div class="hdr-brand">
-      <div class="hdr-name">L<span>e</span>noah</div>
-      <div class="hdr-dot"></div>
-      <div class="hdr-sub">Nova · IA Recepción</div>
-    </div>
-    <div class="hdr-r">
-      <div class="hdr-wx"><span id="wxIco">🌤</span><span id="wxT">--°C</span></div>
-      <div class="tabs">
-        <button class="tab on" onclick="swTab('chat',this)" ontouchstart="">Conversación</button>
-        <button class="tab" onclick="swTab('visits',this)" ontouchstart="">Visitas</button>
-        <button class="tab" onclick="swTab('dash',this)" ontouchstart="">Dashboard</button>
-        <button class="tab" id="tabVeh" onclick="swTab('vehicle',this)" ontouchstart="" style="color:#60a5fa">🚗 Vehículos</button>
-        <button class="tab" id="tabQuote" onclick="swTab('quote',this)" ontouchstart="" style="color:var(--amber)">⬡ Cotización</button>
+  <!-- MAIN APP -->
+  <div id="app">
+    <header>
+      <div class="brand">
+        <div class="brand-icon">L</div>
+        <div class="brand-text">L<span>e</span>noah</div>
       </div>
-      <div class="hdr-clock" id="hClock">00:00</div>
-    </div>
-  </header>
+      <div class="header-status">
+        <div>🕐 <span id="clock">--:--</span></div>
+        <div>🌤 <span id="weather">--°</span></div>
+        <div> <span id="visit-count">0</span></div>
+      </div>
+    </header>
 
-  <div class="stage">
-    <!-- AVATAR -->
-    <div class="avp">
-      <div class="apbg"></div>
-      <div class="cm cm-tl"></div><div class="cm cm-tr"></div>
-      <div class="cm cm-bl"></div><div class="cm cm-br"></div>
-      <div class="ow">
-        <div class="oa"></div><div class="or1"></div><div class="or2"></div>
-        <div class="of"><canvas id="faceC" width="90" height="90"></canvas></div>
-      </div>
-      <div class="wave" id="waveEl">
-        <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
-        <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
-        <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
-        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
-      </div>
-      <div class="avst">
-        <div class="avlbl" id="stLbl">Estado</div>
-        <div class="avval" id="stVal">En espera</div>
-      </div>
-      <div class="vc" id="vcChip"><span class="vcl">Visitante</span><span class="vcn" id="vcName">—</span></div>
-      <div class="qs-row">
-        <div class="qs"><div class="qsv" id="qsV">0</div><div class="qsl">Visitas hoy</div></div>
-        <div class="qs"><div class="qsv" id="qsT" style="font-size:12px;padding-top:2px">--:--</div><div class="qsl">Última</div></div>
-        <div class="qs"><div class="qsv" id="qsA">0m</div><div class="qsl">Prom. espera</div></div>
-      </div>
-    </div>
+    <nav class="tabs">
+      <button class="tab active" data-tab="conversation">💬 Conversación</button>
+      <button class="tab" data-tab="visits">📋 Visitas</button>
+      <button class="tab" data-tab="dashboard">📊 Dashboard</button>
+      <button class="tab" data-tab="quote">⬡ Cotizador General</button>
+    </nav>
 
-    <!-- RIGHT PANEL -->
-    <div class="rp">
+    <main id="content">
       <!-- CHAT -->
-      <div class="tc on" id="tc-chat">
-        <div class="msgs" id="msgs"></div>
-        <div class="ctrls">
-          <div class="mic-row">
-            <button class="micbtn" id="micBtn" onclick="togMic()" style="-webkit-tap-highlight-color:transparent;">
-              <svg class="mico" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="17" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
-            </button>
-            <div class="trw">
-              <div class="trh">Transcripción en vivo</div>
-              <div class="trt" id="trTxt">Presione el micrófono para comenzar…</div>
+      <section id="chat-section" class="tab-content active">
+        <div class="robot-avatar">
+          <div class="robot-avatar-circle" id="avatar-circle">
+            <div class="robot-eyes-container">
+              <div class="robot-eye-main"></div>
+              <div class="robot-eye-main"></div>
             </div>
-          </div>
-          <div class="brow">
-            <button class="cbtn" onclick="newVisit()">Nueva visita</button>
-            <button class="cbtn" onclick="cycLang()">ES · EN</button>
-            <button class="cbtn" onclick="enterIdle()">Modo espera</button>
+            <div class="robot-mouth-main" id="mouth"></div>
           </div>
         </div>
-      </div>
-
-      <!-- VISITS -->
-      <div class="tc" id="tc-visits">
-        <div class="vp">
-          <div class="vhdr">
-            <div class="vtit">Registro — Hoy</div>
-            <div class="vcnt" id="vCntLbl">0 visitas</div>
-          </div>
-          <div id="vList"><div class="nv">Sin visitas aún.<br>Nova las registra automáticamente.</div></div>
-          <button class="expbtn" onclick="expVisits()">↓ Exportar CSV</button>
+        <div class="message-display" id="message-area">
+          Hola, soy Nova. Puedo ayudarte con consultas generales o guiarte al cotizador. ¿En qué puedo ayudarte hoy?
         </div>
-      </div>
-
-      <!-- DASHBOARD -->
-      <div class="tc" id="tc-dash">
-        <div class="dp">
-          <div class="dkpis">
-            <div class="kpi"><div class="kpiv" id="dk1">0</div><div class="kpil">Visitas hoy</div><div class="kpis">Total del día</div></div>
-            <div class="kpi"><div class="kpiv" id="dk2">0m</div><div class="kpil">Espera prom.</div><div class="kpis">Por visita</div></div>
-            <div class="kpi"><div class="kpiv" id="dk3">—</div><div class="kpil">Hora pico</div><div class="kpis">Más actividad</div></div>
-            <div class="kpi"><div class="kpiv" id="dk4">ES</div><div class="kpil">Idioma</div><div class="kpis">Conversaciones</div></div>
-          </div>
-          <div><div class="dst">Visitas por hora</div><div class="hchart" id="hChart"></div><div class="hlbls" id="hLbls"></div></div>
-          <div><div class="dst">Motivos frecuentes</div><div class="rrl" id="rList"><div style="font-size:10px;color:var(--text-3);text-align:center;padding:10px">Los motivos se detectan automáticamente vía IA</div></div></div>
+        <div class="voice-controls">
+          <button id="mic-btn" title="Presiona para hablar">🎤</button>
+          <button id="lang-toggle" class="control-btn">ES · EN</button>
+          <button id="new-visit-btn" class="control-btn">＋ Visita</button>
         </div>
-      </div>
+      </section>
 
-      <!-- COTIZACIÓN ARANCELARIA -->
-      <div class="tc" id="tc-quote">
-        <div id="qz-panel" style="flex:1;overflow-y:auto;padding:14px 14px 0;scrollbar-width:thin;scrollbar-color:rgba(62,207,142,.14) transparent;"></div>
-        <div id="qz-controls" style="padding:12px 14px;border-top:1px solid var(--border);flex-shrink:0;">
-          <div style="display:flex;gap:8px;margin-bottom:8px;">
-            <input id="qzInput" type="text" placeholder="Describe la mercancía o responde la pregunta…"
-              style="flex:1;padding:9px 12px;background:rgba(5,7,10,.8);border:1px solid var(--border2);color:var(--text);font-family:var(--font-b);font-size:12px;outline:none;border-radius:1px;"
-              onkeydown="if(event.key==='Enter')qzSend()"/>
-            <button onclick="qzSend()" style="padding:9px 16px;border:1px solid var(--jade);background:var(--jade-dim);color:var(--jade);font-family:var(--font-b);font-size:9px;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;">Enviar</button>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-            <button class="cbtn" onclick="qzReset()">Nueva consulta</button>
-            <button class="cbtn" onclick="qzSaveQuote()">Guardar cotización</button>
-            <button class="cbtn" id="qzMicBtn" onclick="qzToggleMic()">🎤 Voz</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- MÓDULO VEHICULAR -->
-      <div class="tc" id="tc-vehicle">
-        <div id="vh-panel" style="flex:1;overflow-y:auto;padding:14px;scrollbar-width:thin;scrollbar-color:rgba(96,165,250,.14) transparent;display:flex;flex-direction:column;gap:12px;">
-
-          <!-- SELECTOR DE TIPO -->
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;" id="vh-type-sel">
-            <button onclick="vhSetType('auto')" id="vht-auto" class="vhtbtn active-type" style="padding:12px 6px;border:1px solid rgba(96,165,250,.5);background:rgba(96,165,250,.1);color:#93c5fd;font-family:var(--font-b);font-size:9px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;border-radius:1px;">
-              🚗<br>Auto / SUV<br>Pickup
-            </button>
-            <button onclick="vhSetType('truck')" id="vht-truck" class="vhtbtn" style="padding:12px 6px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:9px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;border-radius:1px;">
-              🚛<br>Tractocamión<br>Camión carga
-            </button>
-            <button onclick="vhSetType('machinery')" id="vht-mach" class="vhtbtn" style="padding:12px 6px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:9px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;border-radius:1px;">
-              🏗<br>Maquinaria<br>Equipo pesado
-            </button>
-          </div>
-
-          <!-- VIN INPUT SECTION -->
-          <div id="vh-vin-section" style="border:1px solid rgba(96,165,250,.2);padding:14px;background:rgba(96,165,250,.04);">
-            <div style="font-size:8px;letter-spacing:.35em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px;">① Número de Identificación Vehicular (VIN / NIV)</div>
-            <div style="display:flex;gap:8px;margin-bottom:8px;">
-              <input id="vinInput" type="text" maxlength="17" placeholder="Ej: 1HGBH41JXMN109186"
-                oninput="this.value=this.value.toUpperCase();vhValidateVin(this.value)"
-                style="flex:1;padding:10px 12px;background:rgba(5,7,10,.8);border:1px solid rgba(96,165,250,.3);color:#93c5fd;font-family:var(--font-m);font-size:14px;letter-spacing:.1em;outline:none;border-radius:1px;text-transform:uppercase;"
-                onkeydown="if(event.key==='Enter')vhDecodeVin()"/>
-              <button onclick="vhDecodeVin()" id="vinBtn" style="padding:10px 14px;border:1px solid #60a5fa;background:rgba(96,165,250,.1);color:#60a5fa;font-family:var(--font-b);font-size:9px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;opacity:.5;" disabled>Analizar</button>
+      <!-- SIDE PANEL -->
+      <aside id="side-panel">
+        <!-- VISITS -->
+        <div id="visits-tab" class="tab-content card">
+          <div class="card-header"><div class="card-title">📋 Registro</div></div>
+          <div class="card-body">
+            <div class="visits-list" id="visits-list">
+              <div style="text-align: center; color: var(--text-muted); padding: 2rem;">Sin visitas</div>
             </div>
-            <div id="vin-progress" style="display:flex;gap:3px;margin-bottom:6px;">
-              <!-- 17 progress squares filled as user types -->
-            </div>
-            <div id="vin-hint" style="font-size:10px;color:var(--text-3);line-height:1.5;">
-              Ingresa los 17 caracteres del VIN. Se encuentra en el tablero del vehículo, en la puerta del conductor o en los documentos del título.
+            <div style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+              <button id="export-csv" class="control-btn" style="width: 100%;">↓ Exportar CSV</button>
             </div>
           </div>
+        </div>
 
-          <!-- MANUAL SECTION (no VIN) -->
-          <div id="vh-manual-section" style="border:1px solid var(--border);padding:12px;">
-            <div style="font-size:8px;letter-spacing:.35em;text-transform:uppercase;color:var(--text-2);margin-bottom:8px;">② O describe el vehículo / equipo manualmente</div>
-            <input id="vhDesc" type="text" placeholder="Ej: Peterbilt 389 2017, motor Paccar MX-13, 550HP…"
-              style="width:100%;padding:9px 12px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-b);font-size:12px;outline:none;border-radius:1px;margin-bottom:8px;"
-              onkeydown="if(event.key==='Enter')vhAnalyzeManual()"/>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
-              <div>
-                <div style="font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:4px;">Valor factura (USD)</div>
-                <input id="vhValue" type="number" placeholder="25000"
-                  style="width:100%;padding:8px 10px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-m);font-size:13px;outline:none;border-radius:1px;"/>
+        <!-- DASHBOARD -->
+        <div id="dashboard-tab" class="tab-content card">
+          <div class="card-header"><div class="card-title">📊 Dashboard</div></div>
+          <div class="card-body">
+            <div class="stats-grid">
+              <div class="stat-card"><div class="stat-value" id="stat-total">0</div><div class="stat-label">Visitas hoy</div></div>
+              <div class="stat-card"><div class="stat-value" id="stat-avg">0m</div><div class="stat-label">Espera prom.</div></div>
+              <div class="stat-card"><div class="stat-value" id="stat-peak">--</div><div class="stat-label">Hora pico</div></div>
+              <div class="stat-card"><div class="stat-value" id="stat-lang">ES</div><div class="stat-label">Idioma</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COTIZADOR GENERAL -->
+        <div id="quote-tab" class="tab-content card">
+          <div class="card-header">
+            <div class="card-title">⬡ Cotizador General (LIGIE)</div>
+            <span style="background: var(--led-success); color: #000; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">IA + REGLAS FISCALES</span>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label class="form-label">① Descripción detallada de la mercancía</label>
+              <textarea id="goods-desc" class="form-input textarea" placeholder="Ej: Válvulas de latón para sistemas de riego, nuevas, sin marcas, origen China, uso industrial"></textarea>
+              <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-muted);">
+                Incluye: material, uso, estado (nuevo/usado), origen real (no país de compra).
               </div>
-              <div>
-                <div style="font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:4px;">Destino</div>
-                <select id="vhDest" style="width:100%;padding:8px 10px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-b);font-size:12px;outline:none;border-radius:1px;cursor:pointer;">
-                  <option value="frontera">Franja fronteriza norte</option>
-                  <option value="resto">Resto del país</option>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+              <div class="form-group">
+                <label class="form-label">② País de origen real</label>
+                <select id="origin-country" class="form-select">
+                  <option value="US">🇺🇸 EE.UU. (T-MEC)</option>
+                  <option value="CA">🇨🇦 Canadá (T-MEC)</option>
+                  <option value="MX">🇲🇽 México</option>
+                  <option value="CN">🇨🇳 China</option>
+                  <option value="DE">🇩🇪 Alemania</option>
+                  <option value="other">🌍 Otro</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">③ Destino de importación</label>
+                <select id="destination" class="form-select">
+                  <option value="border">Franja fronteriza (IVA 8%)</option>
+                  <option value="national">Interior del país (IVA 16%)</option>
                 </select>
               </div>
             </div>
-            <button onclick="vhAnalyzeManual()" style="width:100%;padding:9px;border:1px solid var(--jade);background:var(--jade-dim);color:var(--jade);font-family:var(--font-b);font-size:9px;letter-spacing:.25em;text-transform:uppercase;cursor:pointer;">▶ Analizar y Cotizar</button>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;">
+              <div class="form-group">
+                <label class="form-label">Valor factura (USD)</label>
+                <input type="number" id="quote-value" class="form-input" placeholder="1000" min="0" step="0.01" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Flete Intl. (USD)</label>
+                <input type="number" id="freight-value" class="form-input" placeholder="150" min="0" step="0.01" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Seguro (USD)</label>
+                <input type="number" id="insurance-value" class="form-input" placeholder="15" min="0" step="0.01" />
+              </div>
+            </div>
+
+            <button id="calculate-quote" class="btn-primary">🧠 Cotizar con Clasificación LIGIE</button>
+            
+            <div id="quote-alerts"></div>
+            <div id="quote-result" class="quote-result">
+              <div class="fraction-card">
+                <div class="fraction-code" id="res-fraction">--</div>
+                <div style="font-size: 0.95rem; margin: 0.5rem 0;" id="res-desc">--</div>
+                <div class="fraction-path" id="res-path">Capítulo → Partida → Subpartida → Fracción</div>
+                <div class="confidence-meter">
+                  <span style="font-size: 0.8rem; color: var(--text-muted);">Confianza IA</span>
+                  <div class="confidence-bar">
+                    <div class="confidence-fill high" id="confidence-fill" style="width: 0%;"></div>
+                  </div>
+                  <span style="font-size: 0.8rem; font-weight: 600;" id="confidence-text">0%</span>
+                </div>
+              </div>
+
+              <div class="calc-grid">
+                <div class="calc-row label"><span>Valor en aduana (USD → MXN)</span></div>
+                <div class="calc-row value" id="res-customs-value">$--</div>
+                <div class="calc-row label"><span>IGI (Impuesto General)</span></div>
+                <div class="calc-row value" id="res-igi">$--</div>
+                <div class="calc-row label"><span>DTA (0.8%)</span></div>
+                <div class="calc-row value" id="res-dta">$--</div>
+                <div class="calc-row label"><span>Prevalidación</span></div>
+                <div class="calc-row value" id="res-preval">$--</div>
+                <div class="calc-row label" id="iva-label"><span>IVA</span></div>
+                <div class="calc-row value" id="res-iva">$--</div>
+                <div class="calc-row label" id="ieps-row" style="display:none;"><span>IEPS</span></div>
+                <div class="calc-row value" id="res-ieps" style="display:none;">$--</div>
+                <div class="calc-row total"><span>SUBTOTAL (Base + Impuestos)</span><span id="res-subtotal">$--</span></div>
+                <div class="calc-row label"><span>HONORARIOS (25%)</span></div>
+                <div class="calc-row value" id="res-fees">$--</div>
+                <div class="calc-row total"><span>TOTAL A PAGAR</span><span id="res-total">$-- MXN</span></div>
+              </div>
+
+              <div id="res-requirements"></div>
+              
+              <div class="disclaimer">
+                ⚖️ <strong>AVISO IMPORTANTE:</strong> Esta cotización es una <em>estimación preliminar</em> basada en inteligencia artificial y reglas fiscales vigentes. La clasificación arancelaria definitiva, aplicación de tratados y cumplimiento de NOMs/certificados debe ser validada por un Agente Aduanal autorizado. Lenoah Comercializadora no se hace responsable por diferencias en liquidación oficial.
+              </div>
+
+              <div class="btn-group">
+                <button class="btn-secondary" id="save-quote-btn">💾 Guardar</button>
+                <button class="btn-secondary" id="print-quote-btn">🖨️ Imprimir</button>
+                <button class="btn-secondary" id="new-quote-btn">↺ Nueva</button>
+              </div>
+            </div>
           </div>
-
         </div>
+      </aside>
+    </main>
 
-        <!-- RESULT AREA -->
-        <div id="vh-result" style="display:none;flex:1;overflow-y:auto;padding:12px;scrollbar-width:thin;scrollbar-color:rgba(96,165,250,.14) transparent;"></div>
-
-        <!-- BOTTOM CONTROLS -->
-        <div style="padding:10px 14px;border-top:1px solid var(--border);display:flex;gap:6px;flex-shrink:0;">
-          <button class="cbtn" onclick="vhReset()" style="flex:1;">Nueva consulta</button>
-          <button class="cbtn" onclick="vhSaveResult()" style="flex:1;" id="vhSaveBtn">Guardar resultado</button>
-          <button class="cbtn" id="vhMicBtn" onclick="vhToggleMic()" style="flex:1;">🎤 Dictar VIN</button>
-        </div>
-      </div>
-    </div>
+    <button id="change-key-btn" class="control-btn" style="position: fixed; bottom: 1rem; right: 1rem; z-index: 40;">⚙️ API</button>
   </div>
 
-  <footer class="ftr">
-    <div class="fi"><div class="fp"></div>Nova v5.0 · Lenoah Import Suite</div>
-    <div class="fi" id="fCam">Cámara: iniciando</div>
-    <div class="fi"><div class="fp"></div>Gemini 2.0 Flash</div>
-  </footer>
-</div>
+  <script>
+    /**
+     * LENOAH HOST · COTIZADOR GENERAL v8.1
+     * Basado en LIGIE + IA + Reglas Fiscales Locales + 25% Honorarios
+     */
 
-<div id="camBox"><video id="camVid" autoplay muted playsinline></video><div class="clbl">CAM</div></div>
+    const CONFIG = {
+      GEMINI_ENDPOINT: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
+      WEATHER_ENDPOINT: 'https://api.open-meteo.com/v1/forecast?latitude=32.5149&longitude=-117.0382&current_weather=true',
+      IDLE_TIMEOUT: 60000,
+      IVA_FRONTERA: 0.08,
+      IVA_GENERAL: 0.16,
+      DTA: 0.008,
+      PREVALIDACION: 450.00,
+      HONORARIOS: 0.25,
+      TIPO_CAMBIO: 17.50
+    };
 
-<!-- ══ API KEY SETUP SCREEN ══ -->
-<div id="setupScreen" style="
-  position:fixed;inset:0;z-index:999;
-  background:#05070a;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  font-family:'Outfit',sans-serif;
-">
-  <div style="width:100%;max-width:420px;padding:0 32px;">
-    <div style="font-family:'DM Serif Display',serif;font-size:48px;letter-spacing:.12em;color:#e2ddd6;text-transform:uppercase;margin-bottom:4px;text-align:center;">
-      L<span style="color:#3ecf8e;">e</span>noah
-    </div>
-    <div style="text-align:center;font-size:9px;letter-spacing:.5em;text-transform:uppercase;color:#8b8680;margin-bottom:48px;">
-      Configuración inicial · Nova IA
-    </div>
+    const state = {
+      apiKey: null, lang: 'es', isListening: false, isIdle: false,
+      idleTimer: null, visits: [], currentVisit: null,
+      recognition: null, synth: window.speechSynthesis
+    };
 
-    <div style="border:1px solid rgba(62,207,142,.14);padding:28px;background:rgba(13,20,32,.6);">
-      <div style="font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#3ecf8e;margin-bottom:8px;">
-        API Key de Gemini
-      </div>
-      <div style="font-size:12px;color:#8b8680;margin-bottom:20px;line-height:1.6;">
-        Ingresa tu API Key de Google Gemini. Se guarda solo en esta tablet y no aparece en ningún código.
-      </div>
-      <input id="keyInput" type="password"
-        placeholder="AIzaSy..."
-        style="
-          width:100%;padding:12px 14px;
-          background:rgba(5,7,10,.8);
-          border:1px solid rgba(62,207,142,.28);
-          color:#e2ddd6;font-family:'DM Mono',monospace;font-size:13px;
-          outline:none;margin-bottom:10px;
-          border-radius:1px;
-        "
-      />
-      <div style="display:flex;gap:8px;margin-bottom:16px;">
-        <button onclick="toggleKeyVis()" style="
-          flex:1;padding:9px;border:1px solid rgba(62,207,142,.2);background:transparent;
-          color:#8b8680;font-family:'Outfit',sans-serif;font-size:9px;letter-spacing:.22em;
-          text-transform:uppercase;cursor:pointer;
-        ">👁 Mostrar / Ocultar</button>
-        <button onclick="saveKey()" style="
-          flex:2;padding:9px;border:1px solid #3ecf8e;background:rgba(62,207,142,.1);
-          color:#3ecf8e;font-family:'Outfit',sans-serif;font-size:9px;letter-spacing:.22em;
-          text-transform:uppercase;cursor:pointer;
-        ">✓ Guardar y Entrar</button>
-      </div>
-      <div id="keyMsg" style="font-size:11px;color:#f87171;min-height:16px;text-align:center;"></div>
-    </div>
-
-    <div style="margin-top:20px;border:1px solid rgba(62,207,142,.1);padding:16px;background:rgba(13,20,32,.4);">
-      <div style="font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:#3d3c3a;margin-bottom:8px;">¿Dónde obtengo mi API Key?</div>
-      <div style="font-size:11px;color:#8b8680;line-height:1.7;">
-        1. Ve a <span style="color:#3ecf8e;">aistudio.google.com</span><br>
-        2. Inicia sesión con tu cuenta Google<br>
-        3. Clic en <b style="color:#e2ddd6;">"Get API Key"</b> → <b style="color:#e2ddd6;">"Create API Key"</b><br>
-        4. Copia la key y pégala aquí arriba
-      </div>
-    </div>
-
-    <div style="margin-top:12px;text-align:center;">
-      <button onclick="resetKey()" style="
-        background:transparent;border:none;
-        font-size:9px;letter-spacing:.22em;text-transform:uppercase;
-        color:#3d3c3a;cursor:pointer;text-decoration:underline;
-      ">Cambiar API Key</button>
-    </div>
-  </div>
-</div>
-
-<script>
-// ═══════════════════════════════════════════════════
-// LENOAH HOST v7 — SCRIPT GLOBAL LIMPIO
-// Todas las funciones en scope global para que los
-// onclick del HTML funcionen correctamente
-// ═══════════════════════════════════════════════════
-
-// ── API KEY ──────────────────────────────────────
-let GEMINI_KEY = '';
-function getKey(){ return localStorage.getItem('lh_apikey') || ''; }
-function saveKey(){
-  const val = document.getElementById('keyInput').value.trim();
-  if(!val || !val.startsWith('AIza')){
-    document.getElementById('keyMsg').textContent = 'Key inválida. Debe comenzar con "AIza..."'; return;
-  }
-  localStorage.setItem('lh_apikey', val);
-  GEMINI_KEY = val;
-  document.getElementById('setupScreen').style.display = 'none';
-  document.getElementById('keyMsg').textContent = '';
-  startApp();
-}
-function toggleKeyVis(){ const i = document.getElementById('keyInput'); i.type = i.type==='password'?'text':'password'; }
-function resetKey(){ localStorage.removeItem('lh_apikey'); location.reload(); }
-
-// ── CONSTANTS ────────────────────────────────────
-const DAYS = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-const QUOTES = [
-  '"Bienvenido. Cada visita es una oportunidad."',
-  '"Welcome. Excellence is our daily standard."',
-  '"En Lenoah, su tiempo es nuestra prioridad."',
-  '"Great partnerships begin with a warm welcome."',
-  '"La confianza se construye visita a visita."',
-  '"Innovation and hospitality, hand in hand."'
-];
-const SYSTEM_NOVA = `Eres Nova, la asistente de recepción con IA de Lenoah, comercializadora empresarial premium.
-PERSONALIDAD: Cálida, elegante, hospitalaria. Como recepcionista de hotel boutique 5 estrellas.
-Habla natural, máximo 2-3 oraciones. Detectas idioma (ES/EN) y respondes en ese idioma.
-FLUJO: 1)Saluda y preséntate como Nova de Lenoah 2)Pide el nombre 3)Úsalo naturalmente 4)Pregunta motivo de visita 5)Entretén mientras espera.
-INFO LENOAH: Comercializadora de soluciones empresariales premium. Servicios: distribución, importación, logística, consultoría. Tijuana, BC.
-Si detectas nombre incluye al final: [N:NombreAqui]
-Si detectas motivo incluye al final: [M:MotivoAqui]`;
-
-// ── STATE ────────────────────────────────────────
-let hist=[], isL=false, isSp=false, isIdle=true, rec=null;
-let visName='', lang='es-MX', visits=[], sesStart=null, curV=null;
-let carI=0, carT=null, mouth=0, blinkV=1, blinkC=0, blinkN=180;
-let mx=0, my=0, rx=0, ry=0;
-
-function todayKey(){ const d=new Date(); return `v_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`; }
-function nowT(){ const n=new Date(); return String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0'); }
-function fmt(n){ return '$'+n.toLocaleString('es-MX',{minimumFractionDigits:0,maximumFractionDigits:0}); }
-function showToast(msg, d=2600){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),d);
-}
-
-// ── CURSOR (desktop only) ────────────────────────
-function initCursor(){
-  const cur=document.getElementById('cur'), cur2=document.getElementById('cur2');
-  if(!cur || window.matchMedia('(pointer:coarse)').matches) return;
-  document.addEventListener('mousemove',e=>{
-    mx=e.clientX; my=e.clientY;
-    cur.style.left=mx+'px'; cur.style.top=my+'px';
-  });
-  (function ac(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; cur2.style.left=rx+'px'; cur2.style.top=ry+'px'; requestAnimationFrame(ac); })();
-}
-
-// ── BACKGROUND PARTICLES ─────────────────────────
-function initBG(){
-  const c=document.getElementById('bgC'); if(!c) return;
-  const ctx=c.getContext('2d');
-  let W,H,pts=[];
-  function rsz(){ W=c.width=innerWidth; H=c.height=innerHeight; }
-  rsz(); window.addEventListener('resize',rsz);
-  for(let i=0;i<70;i++) pts.push({x:Math.random()*2000,y:Math.random()*2000,vx:(Math.random()-.5)*.12,vy:(Math.random()-.5)*.12,r:Math.random()*1.2+.3,o:Math.random()*.28+.06});
-  function loop(){
-    ctx.clearRect(0,0,W,H);
-    pts.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0;
-      ctx.beginPath(); ctx.arc(p.x%W,p.y%H,p.r,0,Math.PI*2); ctx.fillStyle=`rgba(62,207,142,${p.o})`; ctx.fill(); });
-    for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){
-      const a=pts[i],b=pts[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);
-      if(d<100){ ctx.beginPath(); ctx.moveTo(a.x%W,a.y%H); ctx.lineTo(b.x%W,b.y%H);
-        ctx.strokeStyle=`rgba(62,207,142,${.05*(1-d/100)})`; ctx.lineWidth=.5; ctx.stroke(); }
-    }
-    requestAnimationFrame(loop);
-  }
-  loop();
-}
-
-// ── FACE CANVAS ──────────────────────────────────
-function initFace(){
-  const c=document.getElementById('faceC'); if(!c) return;
-  const ctx=c.getContext('2d');
-  function draw(){
-    ctx.clearRect(0,0,90,90);
-    [[28,34],[62,34]].forEach(([ex,ey])=>{
-      ctx.beginPath(); ctx.ellipse(ex,ey,5.5,6.5*blinkV,0,0,Math.PI*2);
-      ctx.fillStyle='rgba(62,207,142,.9)'; ctx.fill();
-      if(blinkV>.5){ ctx.beginPath(); ctx.arc(ex+2,ey-2,1.5,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,.5)'; ctx.fill(); }
+    // ============================================
+    // INITIALIZATION
+    // ============================================
+    document.addEventListener('DOMContentLoaded', async () => {
+      const savedKey = localStorage.getItem('lenoah_api_key');
+      if (savedKey) {
+        state.apiKey = savedKey;
+        document.getElementById('setup-screen').classList.add('hidden');
+        await initApp();
+      }
+      document.getElementById('save-key-btn').addEventListener('click', saveApiKey);
+      document.getElementById('change-key-btn').addEventListener('click', showSetupScreen);
+      setupEventListeners();
+      updateClock();
+      setInterval(updateClock, 60000);
+      fetchWeather();
+      setInterval(fetchWeather, 600000);
     });
-    ctx.beginPath(); ctx.moveTo(45,41); ctx.lineTo(41,50); ctx.lineTo(49,50);
-    ctx.strokeStyle='rgba(62,207,142,.18)'; ctx.lineWidth=.8; ctx.stroke();
-    const my2=62+mouth*7;
-    ctx.beginPath(); ctx.moveTo(32,60); ctx.quadraticCurveTo(45,my2,58,60);
-    ctx.strokeStyle='rgba(62,207,142,.85)'; ctx.lineWidth=1.8; ctx.lineCap='round'; ctx.stroke();
-    blinkC++;
-    if(blinkC>=blinkN){ blinkC=0; blinkN=100+Math.random()*220; }
-    if(blinkC<8) blinkV=blinkC<4?1-(blinkC/4):(blinkC-4)/4; else blinkV=1;
-    requestAnimationFrame(draw);
-  }
-  draw();
-}
 
-// ── WAVE & MOUTH ─────────────────────────────────
-let waveInt=null, mouthInt=null;
-function setWave(on){
-  const bars=document.querySelectorAll('.wb'); clearInterval(waveInt);
-  if(on){ bars.forEach(b=>b.classList.add('on')); waveInt=setInterval(()=>bars.forEach(b=>b.style.height=(Math.random()*24+4)+'px'),85); }
-  else { bars.forEach(b=>{ b.classList.remove('on'); b.style.height='5px'; }); }
-}
-function setMouth(on){
-  clearInterval(mouthInt);
-  if(on){ let t=0; mouthInt=setInterval(()=>{ mouth=Math.max(0,Math.sin(t)*.5+.5)*(0.4+Math.random()*.6); t+=.4; },80); }
-  else mouth=0;
-}
-
-// ── CLOCK ────────────────────────────────────────
-function tick(){
-  const n=new Date(), h=String(n.getHours()).padStart(2,'0'), m=String(n.getMinutes()).padStart(2,'0'), t=h+':'+m;
-  const hc=document.getElementById('hClock'); if(hc) hc.textContent=t;
-  const ic=document.getElementById('iClock'); if(ic) ic.textContent=t;
-  const id=document.getElementById('iDay'); if(id) id.textContent=DAYS[n.getDay()];
-  const qt=document.getElementById('qsT'); if(qt) qt.textContent=visits.length?visits[visits.length-1].time:'--:--';
-}
-
-// ── WEATHER ──────────────────────────────────────
-async function fetchWx(){
-  try{
-    const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=32.5149&longitude=-117.0382&current=temperature_2m,weather_code&timezone=America%2FLos_Angeles');
-    const d=await r.json(); const tmp=Math.round(d.current.temperature_2m), wc=d.current.weather_code;
-    const ico=wc===0?'☀️':wc<=2?'⛅':wc<=3?'☁️':wc<=48?'🌫':wc<=67?'🌧':wc<=82?'🌦':'⛈';
-    const it=document.getElementById('iTemp'); if(it) it.textContent=tmp+'°';
-    const wt=document.getElementById('wxT'); if(wt) wt.textContent=tmp+'°C';
-    const wi=document.getElementById('wxIco'); if(wi) wi.textContent=ico;
-  }catch(e){}
-}
-
-// ── STATUS ───────────────────────────────────────
-function setSt(lbl,val,sp=false){
-  const l=document.getElementById('stLbl'); if(l) l.textContent=lbl;
-  const v=document.getElementById('stVal'); if(v){ v.textContent=val; v.classList.toggle('sp',sp); }
-}
-
-// ── IDLE / WAKE ──────────────────────────────────
-function startCarousel(){
-  clearInterval(carT);
-  carT=setInterval(()=>{
-    const el=document.getElementById('iQuote'); if(!el) return;
-    el.style.opacity='0';
-    setTimeout(()=>{ carI=(carI+1)%QUOTES.length; el.textContent=QUOTES[carI]; el.style.opacity='1'; },500);
-  },4500);
-}
-function enterIdle(){
-  isIdle=true;
-  document.getElementById('idle').classList.remove('gone');
-  document.getElementById('app').classList.remove('on');
-  window.speechSynthesis?.cancel(); setWave(false); setMouth(false);
-  const iv=document.getElementById('iVis'); if(iv) iv.textContent=visits.length;
-  startCarousel();
-}
-function wakeUp(){
-  if(!isIdle) return;
-  clearInterval(carT);
-  playWake(()=>{
-    isIdle=false;
-    document.getElementById('idle').classList.add('gone');
-    document.getElementById('app').classList.add('on');
-    if(hist.length===0) setTimeout(greet,700);
-  });
-}
-
-// ── WAKE ANIMATION ───────────────────────────────
-function playWake(cb){
-  const ly=document.getElementById('wkL'), cv=document.getElementById('wkC');
-  const ctx=cv.getContext('2d'); cv.width=innerWidth; cv.height=innerHeight;
-  ly.classList.add('on');
-  const cx=innerWidth/2, cy=innerHeight/2, N=60, pts=[];
-  for(let i=0;i<N;i++){ const a=Math.random()*Math.PI*2, r=Math.max(innerWidth,innerHeight)*.75;
-    pts.push({x:cx+Math.cos(a)*r,y:cy+Math.sin(a)*r,tx:cx+(Math.random()-.5)*160,ty:cy+(Math.random()-.5)*160,r:Math.random()*2+.8,o:Math.random()*.7+.3}); }
-  let s=null;
-  function step(ts){ if(!s)s=ts; const p=Math.min((ts-s)/1000,1),e=1-Math.pow(1-p,3);
-    ctx.clearRect(0,0,cv.width,cv.height);
-    if(p>.45){ const bp=(p-.45)/.55,g=ctx.createRadialGradient(cx,cy,0,cx,cy,260*bp);
-      g.addColorStop(0,`rgba(62,207,142,${.15*(1-bp)})`);g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.fillRect(0,0,cv.width,cv.height); }
-    pts.forEach(pt=>{ ctx.beginPath();ctx.arc(pt.x+(pt.tx-pt.x)*e,pt.y+(pt.ty-pt.y)*e,pt.r,0,Math.PI*2);ctx.fillStyle=`rgba(62,207,142,${pt.o*(1-p*.6)})`;ctx.fill(); });
-    if(p<1) requestAnimationFrame(step);
-    else{ ly.classList.remove('on');ctx.clearRect(0,0,cv.width,cv.height);if(cb)cb(); }
-  }
-  requestAnimationFrame(step);
-}
-
-// ── CAMERA ───────────────────────────────────────
-let camCtx=null, camCv=null, prevFr=null, motC=0;
-async function initCam(){
-  try{
-    const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:160,height:120},audio:false});
-    const vid=document.getElementById('camVid'); vid.srcObject=stream;
-    document.getElementById('camBox').style.display='block';
-    camCv=document.createElement('canvas'); camCv.width=80; camCv.height=60;
-    camCtx=camCv.getContext('2d',{willReadFrequently:true});
-    vid.addEventListener('playing',()=>motLoop(vid));
-    const fc=document.getElementById('fCam'); if(fc) fc.innerHTML='<div class="fp"></div>Cámara: activa';
-    const st=document.getElementById('sTxt'); if(st) st.textContent='Detección activa · Acérquese';
-  }catch(e){
-    const fc=document.getElementById('fCam'); if(fc) fc.innerHTML='<div class="fp fpw"></div>Cámara: no disponible';
-    const st=document.getElementById('sTxt'); if(st) st.textContent='Toque la pantalla para comenzar';
-  }
-}
-function motLoop(vid){
-  function f(){ if(!isIdle){requestAnimationFrame(f);return;}
-    camCtx.drawImage(vid,0,0,80,60); const fr=camCtx.getImageData(0,0,80,60);
-    if(prevFr){ let diff=0; for(let i=0;i<fr.data.length;i+=4) diff+=Math.abs(fr.data[i]-prevFr[i])+Math.abs(fr.data[i+1]-prevFr[i+1])+Math.abs(fr.data[i+2]-prevFr[i+2]);
-      if(diff/(80*60*3)>9&&motC<=0){ motC=100; const st=document.getElementById('sTxt'); if(st) st.textContent='¡Presencia detectada!'; setTimeout(wakeUp,350); } }
-    prevFr=[...fr.data]; if(motC>0) motC--; requestAnimationFrame(f);
-  }
-  requestAnimationFrame(f);
-}
-
-// ── MESSAGES ─────────────────────────────────────
-function addMsg(role,text){
-  const w=document.createElement('div'); w.className='msg '+role;
-  const who=document.createElement('div'); who.className='mwho'; who.textContent=role==='nova'?'NOVA · Lenoah':'Visitante';
-  const b=document.createElement('div'); b.className='mbody'; b.textContent=text;
-  w.appendChild(who); w.appendChild(b);
-  const ms=document.getElementById('msgs'); ms.appendChild(w); ms.scrollTop=ms.scrollHeight;
-}
-function showThink(){
-  const w=document.createElement('div'); w.className='msg nova'; w.id='think';
-  const who=document.createElement('div'); who.className='mwho'; who.textContent='NOVA · Lenoah';
-  const b=document.createElement('div'); b.className='thinking'; b.innerHTML='<div class="td"></div><div class="td"></div><div class="td"></div>';
-  w.appendChild(who); w.appendChild(b); const ms=document.getElementById('msgs'); ms.appendChild(w); ms.scrollTop=ms.scrollHeight;
-}
-function hideThink(){ document.getElementById('think')?.remove(); }
-
-// ── VISITS ───────────────────────────────────────
-function startSes(){ sesStart=new Date(); curV={name:'',reason:'',time:nowT(),duration:0,lang:lang.startsWith('es')?'ES':'EN'}; }
-function closeSes(name,reason){
-  if(!curV) return; if(name) curV.name=name; if(reason) curV.reason=reason;
-  if(sesStart) curV.duration=Math.round((new Date()-sesStart)/60000);
-  visits.push({...curV}); localStorage.setItem(todayKey(),JSON.stringify(visits));
-  curV=null; sesStart=null; renderVisits(); updDash(); updQS();
-}
-function updQS(){
-  const qv=document.getElementById('qsV'); if(qv) qv.textContent=visits.length;
-  const iv=document.getElementById('iVis'); if(iv) iv.textContent=visits.length;
-  const avg=visits.length?Math.round(visits.reduce((a,v)=>a+(v.duration||0),0)/visits.length):0;
-  const qa=document.getElementById('qsA'); if(qa) qa.textContent=avg+'m';
-}
-function renderVisits(){
-  const list=document.getElementById('vList'), lbl=document.getElementById('vCntLbl');
-  if(!list) return;
-  if(lbl) lbl.textContent=visits.length+' visita'+(visits.length!==1?'s':'');
-  if(!visits.length){ list.innerHTML='<div class="nv">Sin visitas aún.<br>Nova las registra automáticamente.</div>'; return; }
-  list.innerHTML='';
-  [...visits].reverse().forEach(v=>{
-    const row=document.createElement('div'); row.className='vrow';
-    row.innerHTML=`<div class="vrt">${v.time}</div><div class="vri"><div class="vrn">${v.name||'Visitante'}</div><div class="vrr">${v.reason||'Sin especificar'}</div></div><div class="vrb">${v.lang||'ES'}</div>`;
-    list.appendChild(row);
-  });
-}
-function expVisits(){
-  if(!visits.length){ showToast('Sin visitas para exportar'); return; }
-  const h='Hora,Nombre,Motivo,Duración,Idioma\n', rows=visits.map(v=>`${v.time},"${v.name||''}","${v.reason||''}",${v.duration||0},${v.lang||'ES'}`).join('\n');
-  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([h+rows],{type:'text/csv'}));
-  a.download=`lenoah_${todayKey()}.csv`; a.click(); showToast('CSV exportado');
-}
-function updDash(){
-  const total=visits.length, avg=total?Math.round(visits.reduce((a,v)=>a+(v.duration||0),0)/total):0;
-  const hf={}; visits.forEach(v=>{ const h=parseInt(v.time); hf[h]=(hf[h]||0)+1; });
-  const peak=Object.keys(hf).sort((a,b)=>hf[b]-hf[a])[0];
-  const es=visits.filter(v=>v.lang==='ES').length, en=visits.filter(v=>v.lang==='EN').length;
-  ['dk1','dk2','dk3','dk4'].forEach((id,i)=>{
-    const el=document.getElementById(id); if(!el) return;
-    if(i===0) el.textContent=total;
-    else if(i===1) el.textContent=avg+'m';
-    else if(i===2) el.textContent=peak?peak+':00':'—';
-    else el.textContent=en>es?'EN':'ES';
-  });
-  const chart=document.getElementById('hChart'), lbls=document.getElementById('hLbls');
-  if(!chart) return; chart.innerHTML=''; if(lbls) lbls.innerHTML='';
-  const hours=[8,9,10,11,12,13,14,15,16,17,18,19], mx2=Math.max(...hours.map(h=>hf[h]||0),1);
-  hours.forEach(h=>{
-    const v=hf[h]||0, bar=document.createElement('div'); bar.className='hb'; bar.style.height=`${(v/mx2)*50+4}px`; bar.title=`${h}:00 — ${v}`; chart.appendChild(bar);
-    if(lbls){ const l=document.createElement('div'); l.className='hl'; l.textContent=h; lbls.appendChild(l); }
-  });
-  const rl=document.getElementById('rList'); if(!rl) return;
-  const reasons={}; visits.forEach(v=>{ if(v.reason&&v.reason!='Sin especificar'){ const k=v.reason.substring(0,18); reasons[k]=(reasons[k]||0)+1; } });
-  if(!Object.keys(reasons).length){ rl.innerHTML='<div style="font-size:10px;color:var(--text-3);text-align:center;padding:10px">Los motivos se detectan automáticamente</div>'; return; }
-  const tot2=Object.values(reasons).reduce((a,b)=>a+b,0); rl.innerHTML='';
-  Object.entries(reasons).sort((a,b)=>b[1]-a[1]).slice(0,5).forEach(([r,c])=>{
-    const pct=Math.round((c/tot2)*100), row=document.createElement('div'); row.className='rrow';
-    row.innerHTML=`<div class="rln">${r}</div><div class="rbw"><div class="rb" style="width:${pct}%"></div></div><div class="rpc">${pct}%</div>`;
-    rl.appendChild(row);
-  });
-}
-
-// ── GEMINI CHAT ───────────────────────────────────
-async function ask(userText){
-  addMsg('vis',userText); document.getElementById('trTxt').textContent='…';
-  setSt('Procesando','Pensando…'); setWave(false); showThink();
-  hist.push({role:'user',parts:[{text:userText}]});
-  if(curV) curV.lang=/[áéíóúñ¿¡]/i.test(userText)?'ES':'EN';
-  try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
-      {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-        system_instruction:{parts:[{text:SYSTEM_NOVA}]},contents:hist,generationConfig:{maxOutputTokens:200,temperature:.88}})});
-    const data=await res.json();
-    let reply=data.candidates?.[0]?.content?.parts?.[0]?.text||'Disculpa, hubo un error.';
-    const nm=reply.match(/\[N:([^\]]+)\]/),mo=reply.match(/\[M:([^\]]+)\]/);
-    if(nm&&!visName){ visName=nm[1].trim(); document.getElementById('vcName').textContent=visName; document.getElementById('vcChip').classList.add('show'); if(curV) curV.name=visName; }
-    if(mo&&curV) curV.reason=mo[1].trim();
-    reply=reply.replace(/\[N:[^\]]+\]/g,'').replace(/\[M:[^\]]+\]/g,'').trim();
-    hist.push({role:'model',parts:[{text:reply}]}); hideThink(); addMsg('nova',reply); speak(reply);
-  }catch(e){ hideThink(); const err='Disculpa, error de conexión.'; addMsg('nova',err); speak(err); }
-}
-
-// ── SPEECH SYNTHESIS ─────────────────────────────
-function speak(text){
-  if(!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text); u.lang=lang; u.rate=.93; u.pitch=1.07;
-  const vs=window.speechSynthesis.getVoices();
-  const pref=vs.find(v=>lang.startsWith('es')?v.name.match(/Paulina|Monica|Luciana|es-/i):v.name.match(/Samantha|Karen|Victoria|en-/i));
-  if(pref) u.voice=pref;
-  u.onstart=()=>{ isSp=true; setSt('Nova habla','Respondiendo…',true); setWave(true); setMouth(true); };
-  u.onend=()=>{ isSp=false; setSt('En espera','Lista'); setWave(false); setMouth(false); };
-  window.speechSynthesis.speak(u);
-}
-
-// ── MICROPHONE (REPARADO) ────────────────────────
-function togMic(){
-  if(isL){ stopMic(); return; }
-  // Pedir permiso explícitamente — esto muestra el diálogo del navegador
-  navigator.mediaDevices.getUserMedia({audio:true, video:false})
-    .then(stream=>{
-      // Permiso concedido — liberar el stream (solo necesitábamos el permiso)
-      stream.getTracks().forEach(t=>t.stop());
-      // Ahora iniciar SpeechRecognition
-      startSpeechRec();
-    })
-    .catch(err=>{
-      console.error('Mic permission error:', err);
-      showToast('⚠ Activa el micrófono en Ajustes del navegador', 4000);
-    });
-}
-function startSpeechRec(){
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SR){ showToast('Voz no disponible en este navegador'); return; }
-  rec = new SR();
-  rec.lang = lang;
-  rec.continuous = false;
-  rec.interimResults = true;
-  rec.maxAlternatives = 1;
-  rec.onstart = ()=>{
-    isL = true;
-    document.getElementById('micBtn').classList.add('hot');
-    setSt('Escuchando','Habla ahora…');
-    setWave(true);
-    document.getElementById('trTxt').textContent = '🎤 Escuchando…';
-  };
-  rec.onresult = e=>{
-    let interim='', final='';
-    for(let i=e.resultIndex; i<e.results.length; i++){
-      const t=e.results[i][0].transcript;
-      if(e.results[i].isFinal) final+=t; else interim+=t;
+    function saveApiKey() {
+      const key = document.getElementById('api-key-input').value.trim();
+      if (key.startsWith('AIzaSy') && key.length > 30) {
+        localStorage.setItem('lenoah_api_key', key);
+        state.apiKey = key;
+        document.getElementById('setup-screen').classList.add('hidden');
+        initApp();
+      } else { alert('⚠️ API Key inválida'); }
     }
-    document.getElementById('trTxt').textContent = final||interim||'…';
-    if(final.trim()) ask(final.trim());
-  };
-  rec.onerror = e=>{
-    console.error('SpeechRec error:', e.error);
-    if(e.error==='not-allowed') showToast('⚠ Micrófono bloqueado. Ve a Ajustes > Privacidad > Micrófono', 5000);
-    else if(e.error==='no-speech') document.getElementById('trTxt').textContent='Sin voz detectada. Intente de nuevo.';
-    else showToast('Error micrófono: '+e.error);
-    stopMic();
-  };
-  rec.onend = ()=>{ stopMic(); };
-  try{ rec.start(); }
-  catch(e){ showToast('Error al iniciar micrófono: '+e.message); stopMic(); }
-}
-function stopMic(){
-  isL = false;
-  try{ rec?.stop(); }catch(e){}
-  rec = null;
-  const btn=document.getElementById('micBtn'); if(btn) btn.classList.remove('hot');
-  if(!isSp){ setSt('En espera','Lista'); setWave(false); }
-  document.getElementById('trTxt').textContent = 'Toca el micrófono para hablar…';
-}
+    function showSetupScreen() {
+      document.getElementById('setup-screen').classList.remove('hidden');
+      document.getElementById('app').classList.remove('ready');
+    }
 
-// ── GREET / VISIT CONTROLS ────────────────────────
-function greet(){
-  startSes();
-  const msg='Buenos días, bienvenido a Lenoah. Soy Nova, su asistente de recepción. ¿Me podría decir su nombre para atenderle mejor?';
-  addMsg('nova',msg); speak(msg); hist.push({role:'model',parts:[{text:msg}]}); setSt('Nova habla','Saludando',true);
-}
-function newVisit(){
-  if(visName||hist.length>2) closeSes(visName,'');
-  hist=[]; visName='';
-  document.getElementById('msgs').innerHTML='';
-  document.getElementById('vcChip').classList.remove('show');
-  document.getElementById('trTxt').textContent='Toca el micrófono para hablar…';
-  window.speechSynthesis?.cancel(); setWave(false); setMouth(false); setSt('En espera','Nueva visita');
-  setTimeout(greet,300);
-}
-function cycLang(){
-  lang=lang.startsWith('es')?'en-US':'es-MX';
-  if(rec) rec.lang=lang;
-  showToast(lang.startsWith('es')?'Idioma: Español / English':'Language: English / Español');
-}
+    async function initApp() {
+      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        state.recognition = new SpeechRecognition();
+        state.recognition.lang = 'es-MX';
+        state.recognition.interimResults = true;
+        state.recognition.continuous = false;
+        state.recognition.onresult = handleSpeechResult;
+        state.recognition.onend = () => { state.isListening = false; updateMicButton(); };
+      }
+      const savedVisits = localStorage.getItem('lenoah_visits');
+      if (savedVisits) {
+        state.visits = JSON.parse(savedVisits);
+        updateVisitList();
+        updateDashboard();
+      }
+      document.getElementById('app').classList.add('ready');
+      resetIdleTimer();
+    }
 
-// ── TAB SWITCHING (REPARADO) ─────────────────────
-function swTab(name, btn){
-  // Hide all tabs
-  document.querySelectorAll('.tc').forEach(t=>{ t.style.display='none'; t.classList.remove('on'); });
-  // Show selected
-  const target = document.getElementById('tc-'+name);
-  if(target){ target.style.display='flex'; target.classList.add('on'); }
-  // Update tab buttons
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  if(btn) btn.classList.add('on');
-  // Tab-specific init
-  if(name==='dash') updDash();
-  if(name==='visits') renderVisits();
-  if(name==='quote' && document.getElementById('qz-panel') && !document.getElementById('qz-panel').innerHTML.includes('Clasificador')) qzReset();
-  if(name==='vehicle') vhInitPanel();
-}
+    function setupEventListeners() {
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById(tab.dataset.tab === 'conversation' ? 'chat-section' : `${tab.dataset.tab}-tab`).classList.add('active');
+          resetIdleTimer();
+        });
+      });
+      document.getElementById('mic-btn').addEventListener('click', toggleListening);
+      document.getElementById('lang-toggle').addEventListener('click', () => {
+        state.lang = state.lang === 'es' ? 'en' : 'es';
+        document.getElementById('lang-toggle').textContent = state.lang === 'es' ? 'ES · EN' : 'EN · ES';
+        if (state.recognition) state.recognition.lang = state.lang === 'es' ? 'es-MX' : 'en-US';
+      });
+      document.getElementById('new-visit-btn').addEventListener('click', () => {
+        if (state.currentVisit) saveVisit();
+        state.currentVisit = { id: Date.now(), name: '', reason: '', startTime: new Date(), lang: state.lang };
+      });
+      document.getElementById('calculate-quote').addEventListener('click', calculateGeneralQuote);
+      document.getElementById('export-csv').addEventListener('click', exportVisitsCSV);
+      document.getElementById('save-quote-btn')?.addEventListener('click', () => alert('✅ Cotización guardada en historial'));
+      document.getElementById('print-quote-btn')?.addEventListener('click', () => window.print());
+      document.getElementById('new-quote-btn')?.addEventListener('click', () => {
+        document.getElementById('quote-result').classList.remove('show');
+        document.getElementById('quote-alerts').innerHTML = '';
+      });
+    }
 
-// ── COTIZACIÓN (QUOTE MODULE) ─────────────────────
-let qzState={step:'idle',product:'',origin:'',tlc:false,invoiceUSD:0,freightUSD:0}, qzHist=[], qzRec2=null, qzL=false;
-const CLASSIFIER_PROMPT=`Eres un clasificador arancelario experto en comercio exterior mexicano.
-Guía al usuario para clasificar su mercancía bajo la TIGIE 2022 y generar cotización preliminar.
-PASO 1: Pide descripción detallada del producto.
-PASO 2: Pregunta país de origen (no de compra). Si es EE.UU. pregunta si tiene Certificado T-MEC.
-PASO 3: Pide valor en factura USD, flete internacional USD.
-PASO 4: Propón fracción arancelaria y al final incluye JSON:
-[CLASIFICACION:{"fraccion":"XXXXXXXX","descripcion":"texto","igi":XX,"ieps":0,"tlc_igi":0,"confianza":"ALTA|MEDIA|BAJA","alternativas":[],"restricciones":[],"noms":[]}]
-Sé conciso, profesional. Siempre añade: "Cotización preliminar. Un agente aduanal certificado validará la clasificación final."`;
+    // ============================================
+    // VOICE
+    // ============================================
+    function toggleListening() {
+      if (!state.recognition) { alert('❌ No soporta reconocimiento de voz'); return; }
+      if (state.isListening) { state.recognition.stop(); state.isListening = false; }
+      else { state.recognition.lang = state.lang === 'es' ? 'es-MX' : 'en-US'; state.recognition.start(); state.isListening = true; }
+      updateMicButton();
+    }
+    function updateMicButton() {
+      const btn = document.getElementById('mic-btn');
+      btn.classList.toggle('listening', state.isListening);
+      btn.innerHTML = state.isListening ? '🔴' : '🎤';
+    }
+    function handleSpeechResult(event) {
+      const transcript = Array.from(event.results).map(r => r.transcript).join('');
+      if (transcript.trim()) {
+        document.getElementById('message-area').textContent = transcript;
+        processUserMessage(transcript);
+      }
+    }
+    function speak(text, lang = null) {
+      if (!state.synth) return;
+      state.synth.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = lang || (state.lang === 'es' ? 'es-MX' : 'en-US');
+      utterance.rate = 0.95;
+      const mouth = document.getElementById('mouth');
+      const circle = document.getElementById('avatar-circle');
+      utterance.onstart = () => { if(mouth) mouth.classList.add('speaking'); if(circle) circle.classList.add('speaking'); };
+      utterance.onend = () => { if(mouth) mouth.classList.remove('speaking'); if(circle) circle.classList.remove('speaking'); };
+      state.synth.speak(utterance);
+    }
 
-function qzPanel(){ return document.getElementById('qz-panel'); }
-function qzBubble(role,html){
-  const p=qzPanel(); if(!p) return;
-  const w=document.createElement('div'); w.style.cssText=`display:flex;flex-direction:column;gap:3px;margin-bottom:12px;${role==='nova'?'align-items:flex-start':'align-items:flex-end'}`;
-  const who=document.createElement('div'); who.style.cssText='font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--text-3);'; who.textContent=role==='nova'?'NOVA · Clasificador':'Cliente';
-  const b=document.createElement('div');
-  b.style.cssText=role==='nova'?'max-width:95%;padding:10px 13px;background:var(--jade-dim);border:1px solid var(--border);border-left:2px solid var(--jade);font-size:12px;line-height:1.65;color:var(--text);border-radius:0 4px 4px 4px;':'max-width:88%;padding:9px 13px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);font-size:12px;color:var(--text-2);border-radius:4px 0 4px 4px;line-height:1.65;';
-  b.innerHTML=html; w.appendChild(who); w.appendChild(b); p.appendChild(w); p.scrollTop=p.scrollHeight;
-}
-function qzThink(){ const p=qzPanel(); if(!p) return; const w=document.createElement('div'); w.id='qzt'; w.style.cssText='display:flex;flex-direction:column;gap:3px;margin-bottom:12px;'; w.innerHTML='<div style="font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--text-3);">NOVA · Clasificador</div><div class="thinking"><div class="td"></div><div class="td"></div><div class="td"></div></div>'; p.appendChild(w); p.scrollTop=p.scrollHeight; }
-function qzHideThink(){ document.getElementById('qzt')?.remove(); }
-async function qzSend(){
-  const val=document.getElementById('qzInput').value.trim(); if(!val) return;
-  qzBubble('user',val); document.getElementById('qzInput').value='';
-  qzHist.push({role:'user',parts:[{text:val}]}); qzThink();
-  const lower=val.toLowerCase();
-  if(lower.includes('eeuu')||lower.includes('estados unidos')||lower.includes('usa')) qzState.origin='EE.UU.';
-  if(lower.includes('tmec')||lower.includes('t-mec')||lower.includes('certificado de origen')) qzState.tlc=true;
-  const nm=val.match(/(\d[\d,\.]+)/); if(nm){ const n=parseFloat(nm[1].replace(/,/g,'')); if(!qzState.invoiceUSD) qzState.invoiceUSD=n; }
-  try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
-      {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system_instruction:{parts:[{text:CLASSIFIER_PROMPT}]},contents:qzHist,generationConfig:{maxOutputTokens:500,temperature:.3}})});
-    const d=await res.json(); let reply=d.candidates?.[0]?.content?.parts?.[0]?.text||'Error de conexión.';
-    const cd=reply.match(/\[CLASIFICACION:(.*?)\]/s); let clean=reply.replace(/\[CLASIFICACION:.*?\]/s,'').trim();
-    qzHideThink(); qzBubble('nova',clean.replace(/\n/g,'<br>')); qzHist.push({role:'model',parts:[{text:reply}]});
-    if(cd){ try{
-      const j=JSON.parse(cd[1]); const inv=qzState.invoiceUSD||0; const fr=inv*.06; const ins=inv*.015;
-      const va=(inv+fr+ins)*20.5; const igiPct=qzState.tlc?0:(j.igi||10);
-      const igi=va*(igiPct/100); const iva=(va+igi)*.16; const dta=va*.008;
-      const sub=igi+iva+dta; const hon=sub*.30; const tot=sub+hon;
-      const cfColor=j.confianza==='ALTA'?'#3ecf8e':j.confianza==='MEDIA'?'#f0b429':'#f87171';
-      qzBubble('nova',`<div style="margin-bottom:8px;font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--text-2);">RESULTADO DE CLASIFICACIÓN</div>
-<div style="font-family:var(--font-m);font-size:20px;color:var(--jade);margin-bottom:3px;">${j.fraccion}</div>
-<div style="font-size:11px;color:var(--text);margin-bottom:8px;">${j.descripcion}</div>
-<div style="font-size:9px;color:${cfColor};border:1px solid ${cfColor};padding:2px 8px;display:inline-block;margin-bottom:10px;">${j.confianza}</div>
-${inv>0?`<div style="border:1px solid var(--border);padding:9px;margin-bottom:8px;font-size:11px;">
-<div style="display:grid;grid-template-columns:1fr auto;gap:3px;">
-<div style="color:var(--text-2);">Valor en aduana</div><div style="font-family:var(--font-m);color:#93c5fd;">${fmt(va)}</div>
-<div style="color:var(--text-2);">IGI (${igiPct}%${qzState.tlc?' T-MEC':''})</div><div style="font-family:var(--font-m);color:var(--text-2);">${fmt(igi)}</div>
-<div style="color:var(--text-2);">IVA 16%</div><div style="font-family:var(--font-m);color:var(--text-2);">${fmt(iva)}</div>
-<div style="color:var(--text-2);">DTA 8‰</div><div style="font-family:var(--font-m);color:var(--text-2);">${fmt(dta)}</div>
-</div></div>
-<div style="border:1px solid rgba(240,180,41,.3);padding:9px;background:rgba(240,180,41,.05);">
-<div style="display:grid;grid-template-columns:1fr auto;gap:3px;font-size:11px;">
-<div style="color:var(--amber);">Honorarios Lenoah (30%)</div><div style="font-family:var(--font-m);color:var(--amber);">${fmt(hon)}</div>
-<div style="font-size:13px;color:var(--text);font-weight:500;">TOTAL</div><div style="font-family:var(--font-m);font-size:15px;color:var(--jade);">${fmt(tot)}</div>
-</div></div>`:'<div style="font-size:10px;color:var(--text-3);">Ingresa el valor en factura para calcular impuestos.</div>'}
-${j.noms&&j.noms.length?`<div style="margin-top:8px;border:1px solid rgba(240,180,41,.2);padding:8px;font-size:10px;color:#f0b429;">📋 ${j.noms.join(' · ')}</div>`:''}
-${j.restricciones&&j.restricciones.length?`<div style="margin-top:6px;border:1px solid rgba(248,113,113,.2);padding:8px;font-size:10px;color:#f87171;">⚠ ${j.restricciones.join(' · ')}</div>`:''}
-<div style="margin-top:8px;font-size:9px;color:var(--text-3);">Cotización preliminar orientativa. Tipo cambio ref. ~$20.50. Un agente aduanal de Lenoah validará la clasificación final.</div>`);
-    }catch(e){} }
-  }catch(e){ qzHideThink(); qzBubble('nova','Error de conexión. Verifica internet e intenta de nuevo.'); }
-}
-function qzReset(){
-  const p=qzPanel(); if(!p) return;
-  p.innerHTML=''; qzHist=[]; qzState={step:'idle',product:'',origin:'',tlc:false,invoiceUSD:0,freightUSD:0};
-  const div=document.createElement('div'); div.style.cssText='display:flex;align-items:center;gap:10px;margin:10px 0 14px;';
-  div.innerHTML='<div style="flex:1;height:1px;background:var(--border);"></div><div style="font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--text-3);">Clasificador Arancelario</div><div style="flex:1;height:1px;background:var(--border);"></div>'; p.appendChild(div);
-  qzBubble('nova',`<div style="font-family:var(--font-d);font-style:italic;font-size:14px;margin-bottom:10px;">Clasificador Arancelario · México</div>
-<div style="font-size:11px;color:var(--text-2);line-height:1.65;margin-bottom:12px;">Puedo clasificar tu mercancía en la fracción arancelaria correcta (TIGIE 2022), calcular IGI, IVA y DTA, detectar NOMs y restricciones, y generar una cotización preliminar con honorarios.</div>
-<button onclick="qzStart()" style="width:100%;padding:9px;border:1px solid var(--jade);background:var(--jade-dim);color:var(--jade);font-family:var(--font-b);font-size:9px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">▶ Iniciar consulta</button>`);
-}
-function qzStart(){
-  qzHist=[]; qzState={step:'product',product:'',origin:'',tlc:false,invoiceUSD:0,freightUSD:0};
-  qzHist.push({role:'user',parts:[{text:'Hola, quiero clasificar una mercancía para importar a México.'}]});
-  qzSend(); const qi=document.getElementById('qzInput'); if(qi) qi.focus();
-}
-function qzSaveQuote(){ showToast('Guarda la pantalla con captura de pantalla'); }
-function qzToggleMic(){
-  if(qzL){ if(qzRec2){try{qzRec2.stop();}catch(e){}} qzL=false; const b=document.getElementById('qzMicBtn'); if(b) b.textContent='🎤 Voz'; return; }
-  navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
-    stream.getTracks().forEach(t=>t.stop());
-    const SR=window.SpeechRecognition||window.webkitSpeechRecognition; if(!SR){ showToast('Voz no disponible'); return; }
-    qzRec2=new SR(); qzRec2.lang=lang; qzRec2.continuous=false; qzRec2.interimResults=false;
-    qzRec2.onresult=e=>{ const txt=e.results[0][0].transcript; const qi=document.getElementById('qzInput'); if(qi) qi.value=txt; qzSend(); };
-    qzRec2.onend=()=>{ qzL=false; const b=document.getElementById('qzMicBtn'); if(b) b.textContent='🎤 Voz'; };
-    qzRec2.onerror=()=>{ qzL=false; };
-    qzRec2.start(); qzL=true; const b=document.getElementById('qzMicBtn'); if(b) b.textContent='🔴 Escuchando';
-  }).catch(()=>showToast('⚠ Activa el micrófono en Ajustes'));
-}
+    async function processUserMessage(message) {
+      if (!state.apiKey) { speak('Configura API Key', 'es'); return; }
+      document.getElementById('message-area').textContent = 'Pensando...';
+      document.getElementById('message-area').classList.add('thinking');
+      if (!state.currentVisit && /hola|hello|buenos|me llamo/i.test(message)) {
+        state.currentVisit = { id: Date.now(), name: '', reason: '', startTime: new Date(), lang: state.lang };
+      }
+      const systemPrompt = `Eres Nova, asistente de Lenoah. Responde brevemente (máx 3 líneas). Detecta idioma. Si preguntan por cotizaciones, sugiere usar la pestaña "Cotizador General". Usuario: "${message}"`;
+      try {
+        const response = await fetch(`${CONFIG.GEMINI_ENDPOINT}?key=${state.apiKey}`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contents: [{ parts: [{ text: systemPrompt }] }], generationConfig: { temperature: 0.3 } })
+        });
+        const data = await response.json();
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Entendido.';
+        document.getElementById('message-area').textContent = reply;
+        document.getElementById('message-area').classList.remove('thinking');
+        speak(reply);
+        if (state.currentVisit) {
+          if (!state.currentVisit.name && /me llamo|soy/i.test(message.toLowerCase())) {
+            const match = message.match(/(?:me llamo|soy)\s+([A-Za-zÁ-ú\s]+)/i);
+            if (match) state.currentVisit.name = match[1].trim();
+          }
+          state.currentVisit.reason = message.slice(0, 100);
+        }
+      } catch { document.getElementById('message-area').textContent = '⚠️ Error de conexión.'; document.getElementById('message-area').classList.remove('thinking'); }
+      resetIdleTimer();
+    }
 
-// ── VEHICLE MODULE ────────────────────────────────
-let vhType='auto', vhCurrentResult=null, vhRec3=null, vhL=false;
-function vhInitPanel(){
-  const vi=document.getElementById('vinInput'); if(!vi) return;
-  if(!vi.getAttribute('data-init')){ vi.setAttribute('data-init','1'); vhSetType('auto'); }
-}
-function vhSetType(type){
-  vhType=type;
-  document.querySelectorAll('.vhtbtn').forEach(b=>{ b.style.borderColor='var(--border)'; b.style.background='transparent'; b.style.color='var(--text-2)'; });
-  const id=type==='auto'?'vht-auto':type==='truck'?'vht-truck':'vht-mach';
-  const a=document.getElementById(id); if(a){ a.style.borderColor='rgba(96,165,250,.5)'; a.style.background='rgba(96,165,250,.1)'; a.style.color='#93c5fd'; }
-  const d=document.getElementById('vhDesc'); if(d) d.placeholder=type==='auto'?'Ej: Ford F-150 2019, V8 gasolina':type==='truck'?'Ej: Peterbilt 389 2017, Paccar MX-13 550HP':'Ej: Caterpillar 320 excavadora 2018';
-}
-function vhValidateVin(val){
-  const prog=document.getElementById('vin-progress'); if(!prog) return;
-  prog.innerHTML=Array.from({length:17},(_,i)=>`<div style="flex:1;height:6px;background:${i<val.length?'#60a5fa':'var(--border)'};border-radius:1px;"></div>`).join('');
-  const btn=document.getElementById('vinBtn'), hint=document.getElementById('vin-hint');
-  if(val.length===17){
-    if(btn){ btn.disabled=false; btn.style.opacity='1'; }
-    const c0=val[0]; const isTmec='12345'.includes(c0);
-    const country=c0==='1'||c0==='4'||c0==='5'?'EE.UU.':c0==='2'?'Canadá':c0==='3'?'México':c0==='J'?'Japón':c0==='K'?'Corea':c0==='W'?'Alemania':'Desconocido';
-    const yearMap='ABCDEFGHJKLMNPRSTUVWXYZ123456789';
-    const yearBase=[1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011];
-    const yi=yearMap.indexOf(val[9]); let yr=yi>=0?yearBase[yi]:null;
-    if(yr&&yr<2000) yr+=30;
-    const age=yr?2026-yr:null;
-    if(hint) hint.innerHTML=`País: <b style="color:${isTmec?'#3ecf8e':'#f87171'}">${country}</b>${isTmec?' <span style="color:#3ecf8e">✓ T-MEC posible</span>':' <span style="color:#f87171">⚠ No T-MEC</span>'}${yr?` · Año-modelo: <b style="color:var(--text);">${yr}</b> (${age} años)`:''}`;
-  } else {
-    if(btn){ btn.disabled=true; btn.style.opacity='.5'; }
-    if(hint&&val.length<17) hint.innerHTML=`<span style="color:var(--text-3);">${val.length}/17 caracteres</span>`;
-  }
-}
-async function vhDecodeVin(){
-  const vin=document.getElementById('vinInput').value.trim().toUpperCase();
-  if(vin.length!==17){ showToast('El VIN debe tener exactamente 17 caracteres'); return; }
-  const inv=parseFloat(document.getElementById('vhValue').value)||0;
-  const dest=document.getElementById('vhDest').value;
-  document.getElementById('vh-panel').style.display='none';
-  const rd=document.getElementById('vh-result'); rd.style.display='flex'; rd.style.flexDirection='column';
-  rd.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:12px;"><div class="thinking"><div class="td"></div><div class="td"></div><div class="td"></div></div><div style="font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--text-3);">Analizando VIN con IA…</div></div>';
-  const c0=vin[0]; const isTmec='12345'.includes(c0);
-  const country=c0==='1'||c0==='4'||c0==='5'?'EE.UU.':c0==='2'?'Canadá':c0==='3'?'México':c0==='J'?'Japón':c0==='K'?'Corea':c0==='W'?'Alemania':'Desconocido';
-  const ym='ABCDEFGHJKLMNPRSTUVWXYZ123456789'; const yb=[1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011];
-  const yi=ym.indexOf(vin[9]); let yr=yi>=0?yb[yi]:null; if(yr&&yr<2000) yr+=30;
-  const age=yr?2026-yr:null;
-  const prompt=`Eres experto en identificación vehicular y comercio exterior mexicano.
-VIN: ${vin} | País ensamble: ${country} | Año-modelo estimado: ${yr||'desconocido'} (${age||'?'} años) | T-MEC posible: ${isTmec?'SÍ':'NO'} | WMI: ${vin.substring(0,3)} | VDS: ${vin.substring(3,9)} | Tipo seleccionado: ${vhType} | Valor factura: $${inv} USD | Destino: ${dest==='frontera'?'Franja fronteriza norte (Tijuana/BC)':'Resto del país'} | Año actual: 2026
+    // ============================================
+    // COTIZADOR GENERAL (LIGIE + IA + REGLAS)
+    // ============================================
+    async function calculateGeneralQuote() {
+      const desc = document.getElementById('goods-desc').value.trim();
+      const origin = document.getElementById('origin-country').value;
+      const destination = document.getElementById('destination').value;
+      const valorUSD = parseFloat(document.getElementById('quote-value').value) || 0;
+      const fleteUSD = parseFloat(document.getElementById('freight-value').value) || 0;
+      const seguroUSD = parseFloat(document.getElementById('insurance-value').value) || 0;
 
-Identifica marca/modelo, fracción TIGIE, si aplica Decreto DOF Nov-2024 (vigente hasta Nov-2026), aranceles, NOMs y restricciones.
-Decreto: aplica a vehículos origen MX/US/CA. Franja norte: 1% (5-9 años), 10% (10+ años). Resto país: 10% (solo 8-9 años).
-Con T-MEC certificado el IGI es 0%. Sin T-MEC aplica arancel general.
+      if (!desc) { showAlert('⚠️ Describe la mercancía', 'warning'); return; }
+      if (!valorUSD) { showAlert('⚠️ Ingresa el valor en factura', 'warning'); return; }
 
-Análisis narrativo máx 150 palabras, luego JSON:
-[VH:{"marca":"texto","tipo":"texto","fraccion":"XXXXXXXX","desc_fr":"texto","aplica_decreto":true/false,"motivo":"texto","igi_pct":X,"noms":["texto"],"padron":true/false,"restricciones":["texto"],"confianza":"ALTA|MEDIA|BAJA"}]`;
-  try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
-      {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:600,temperature:.2}})});
-    const d=await res.json(); const reply=d.candidates?.[0]?.content?.parts?.[0]?.text||'';
-    const jm=reply.match(/\[VH:(.*?)\]/s); const ai=jm?JSON.parse(jm[1]):null;
-    const narr=reply.replace(/\[VH:.*?\]/s,'').trim();
-    vhRenderResult(vin,country,yr,age,isTmec,ai,narr,inv,dest,rd);
-  }catch(e){ rd.innerHTML=`<div style="padding:16px;color:#f87171;">Error de conexión.<br><button onclick="vhReset()" style="margin-top:10px;padding:8px 16px;border:1px solid var(--border);background:transparent;color:var(--text-2);cursor:pointer;">← Volver</button></div>`; }
-}
-async function vhAnalyzeManual(){
-  const desc=document.getElementById('vhDesc').value.trim(); if(!desc){ showToast('Describe el vehículo primero'); return; }
-  const inv=parseFloat(document.getElementById('vhValue').value)||0;
-  const dest=document.getElementById('vhDest').value;
-  document.getElementById('vh-panel').style.display='none';
-  const rd=document.getElementById('vh-result'); rd.style.display='flex'; rd.style.flexDirection='column';
-  rd.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:12px;"><div class="thinking"><div class="td"></div><div class="td"></div><div class="td"></div></div><div style="font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--text-3);">Clasificando con IA…</div></div>';
-  const types={auto:'Auto/SUV/Pickup',truck:'Tractocamión/Camión de carga',machinery:'Maquinaria/Equipo pesado'};
-  const prompt=`Experto en clasificación arancelaria vehicular México. Cliente quiere importar: "${desc}". Tipo: ${types[vhType]}. Valor: $${inv} USD. Destino: ${dest==='frontera'?'Franja fronteriza norte':'Resto del país'}. Año: 2026.
-Determina: identificación, fracción TIGIE, si aplica Decreto Nov-2024 (vigente hasta Nov-2026), aranceles decreto, NOMs, Padrón Importadores.
-Decreto: origen MX/US/CA. Franja: 1%(5-9años), 10%(10+años). Resto: 10%(8-9años). T-MEC certificado: IGI 0%.
-Análisis máx 150 palabras, luego JSON:
-[VH:{"marca":"texto","tipo":"texto","fraccion":"XXXXXXXX","desc_fr":"texto","aplica_decreto":true/false,"motivo":"texto","igi_pct":X,"noms":["texto"],"padron":true/false,"restricciones":["texto"],"confianza":"ALTA|MEDIA|BAJA"}]`;
-  try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
-      {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:600,temperature:.2}})});
-    const d=await res.json(); const reply=d.candidates?.[0]?.content?.parts?.[0]?.text||'';
-    const jm=reply.match(/\[VH:(.*?)\]/s); const ai=jm?JSON.parse(jm[1]):null;
-    const narr=reply.replace(/\[VH:.*?\]/s,'').trim();
-    vhRenderResult(null,null,null,null,true,ai,narr,inv,dest,rd);
-  }catch(e){ rd.innerHTML=`<div style="padding:16px;color:#f87171;">Error de conexión.<br><button onclick="vhReset()" style="margin-top:10px;padding:8px 16px;border:1px solid var(--border);background:transparent;color:var(--text-2);cursor:pointer;">← Volver</button></div>`; }
-}
-function vhRenderResult(vin,country,yr,age,isTmec,ai,narr,inv,dest,rd){
-  if(!ai){ rd.innerHTML=`<div style="padding:14px;font-size:12px;color:var(--text-2);overflow-y:auto;">${narr.replace(/\n/g,'<br>')}<br><br><button onclick="vhReset()" style="padding:8px 16px;border:1px solid var(--border);background:transparent;color:var(--text-2);cursor:pointer;">← Volver</button></div>`; return; }
-  const igiPct=isTmec?0:(ai.igi_pct||10);
-  const fr=inv*.06, ins=inv*.015, va=(inv+fr+ins)*20.5;
-  const igi=va*(igiPct/100), iva=(va+igi)*.16, dta=va*.008;
-  const sub=igi+iva+dta, hon=sub*.30, tot=sub+hon;
-  const cc=ai.confianza==='ALTA'?'#3ecf8e':ai.confianza==='MEDIA'?'#f0b429':'#f87171';
-  const dc=ai.aplica_decreto?'#3ecf8e':'#f87171';
-  rd.innerHTML=`<div style="overflow-y:auto;flex:1;padding:14px;">
-<div style="border:1px solid rgba(96,165,250,.3);padding:12px;margin-bottom:10px;background:rgba(96,165,250,.05);">
-  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
-    <div><div style="font-size:14px;color:#93c5fd;font-weight:500;">${ai.marca||'Analizado'}</div><div style="font-size:10px;color:var(--text-2);">${ai.tipo||''}</div></div>
-    <div style="text-align:right;"><div style="font-size:8px;color:${cc};border:1px solid ${cc};padding:2px 7px;margin-bottom:3px;">${ai.confianza}</div><div style="font-size:8px;color:${dc};">${ai.aplica_decreto?'✓ DECRETO':'✗ SIN DECRETO'}</div></div>
-  </div>
-  <div style="font-family:var(--font-m);font-size:18px;color:#60a5fa;margin-bottom:3px;">${ai.fraccion||'--------'}</div>
-  <div style="font-size:10px;color:var(--text-2);">${ai.desc_fr||''}</div>
-  ${vin?`<div style="font-size:9px;color:var(--text-3);margin-top:5px;">VIN: <span style="font-family:var(--font-m);">${vin}</span> · ${country}${yr?` · ${yr} (${age} años)`:''}${isTmec?' · <span style="color:#3ecf8e;">T-MEC</span>':''}</div>`:''}
-</div>
-${narr?`<div style="border:1px solid var(--border);padding:10px;margin-bottom:10px;font-size:11px;color:var(--text-2);line-height:1.65;overflow-y:auto;max-height:120px;">${narr.replace(/\n/g,'<br>')}</div>`:''}
-<div style="border:1px solid ${dc}40;padding:10px;margin-bottom:10px;background:${dc}08;">
-  <div style="font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:${dc};margin-bottom:5px;">Decreto DOF Nov-2024 · Vigente hasta 30-Nov-2026</div>
-  <div style="font-size:11px;color:var(--text-2);">${ai.motivo||''}</div>
-  ${ai.padron?`<div style="margin-top:6px;padding:4px 8px;border:1px solid #f0b429;font-size:10px;color:#f0b429;">⚠ Requiere Padrón de Importadores SAT</div>`:''}
-</div>
-${inv>0?`<div style="border:1px solid var(--border);padding:10px;margin-bottom:8px;">
-  <div style="font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:var(--text-2);margin-bottom:7px;">Estimación costos</div>
-  <div style="font-size:9px;color:var(--text-3);margin-bottom:6px;">TC ref: $20.50 MXN/USD</div>
-  <div style="display:grid;grid-template-columns:1fr auto;gap:3px;font-size:11px;">
-  <div style="color:var(--text-2);">Valor en aduana</div><div style="font-family:var(--font-m);color:#93c5fd;">${fmt(va)}</div>
-  <div style="color:var(--text-2);">IGI (${igiPct}%${isTmec?' T-MEC':''})</div><div style="font-family:var(--font-m);color:var(--text-2);">${fmt(igi)}</div>
-  <div style="color:var(--text-2);">IVA 16%</div><div style="font-family:var(--font-m);color:var(--text-2);">${fmt(iva)}</div>
-  <div style="color:var(--text-2);">DTA 8‰</div><div style="font-family:var(--font-m);color:var(--text-2);">${fmt(dta)}</div>
-  </div></div>
-  <div style="border:1px solid rgba(240,180,41,.3);padding:10px;margin-bottom:8px;background:rgba(240,180,41,.05);">
-  <div style="display:grid;grid-template-columns:1fr auto;font-size:11px;">
-  <div style="color:var(--amber);">Honorarios Lenoah (30%)</div><div style="font-family:var(--font-m);color:var(--amber);">${fmt(hon)}</div>
-  <div style="font-size:14px;font-weight:500;color:var(--text);">TOTAL ESTIMADO</div><div style="font-family:var(--font-m);font-size:16px;color:var(--jade);">${fmt(tot)}</div>
-  </div></div>`:`<div style="border:1px solid var(--border);padding:10px;margin-bottom:8px;font-size:11px;color:var(--text-3);">Ingresa el valor en factura para calcular impuestos.</div>`}
-${ai.noms&&ai.noms.length?`<div style="border:1px solid rgba(240,180,41,.2);padding:8px;margin-bottom:6px;font-size:10px;color:#f0b429;">📋 ${ai.noms.join(' · ')}</div>`:''}
-${ai.restricciones&&ai.restricciones.length?`<div style="border:1px solid rgba(248,113,113,.2);padding:8px;margin-bottom:6px;font-size:10px;color:#f87171;">⚠ ${ai.restricciones.join(' · ')}</div>`:''}
-<div style="padding:7px;border:1px solid var(--border);font-size:9px;color:var(--text-3);line-height:1.5;margin-bottom:10px;">⚠ Cotización preliminar orientativa. TC referencial ~$20.50. El agente aduanal de Lenoah validará la clasificación y emitirá el presupuesto definitivo. Decreto vigente hasta 30-Nov-2026.</div>
-<button onclick="vhReset()" style="width:100%;padding:9px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:9px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">← Nueva consulta</button>
-</div>`;
-  vhCurrentResult={ai,inv,tot};
-}
-function vhReset(){
-  const vp=document.getElementById('vh-panel'); if(vp) vp.style.display='flex';
-  const vr=document.getElementById('vh-result'); if(vr){ vr.style.display='none'; vr.innerHTML=''; }
-  const vi=document.getElementById('vinInput'); if(vi) vi.value='';
-  const vd=document.getElementById('vhDesc'); if(vd) vd.value='';
-  const vv=document.getElementById('vhValue'); if(vv) vv.value='';
-  const vpr=document.getElementById('vin-progress'); if(vpr) vpr.innerHTML='';
-  const vh=document.getElementById('vin-hint'); if(vh) vh.innerHTML='Ingresa los 17 caracteres del VIN. Se encuentra en el tablero, puerta del conductor o documentos del título.';
-  const vb=document.getElementById('vinBtn'); if(vb){ vb.disabled=true; vb.style.opacity='.5'; }
-  vhCurrentResult=null;
-}
-function vhSaveResult(){ showToast('Toma una captura de pantalla para guardar'); }
-function vhToggleMic(){
-  if(vhL){ if(vhRec3){try{vhRec3.stop();}catch(e){}} vhL=false; const b=document.getElementById('vhMicBtn'); if(b) b.textContent='🎤 Dictar VIN'; return; }
-  navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
-    stream.getTracks().forEach(t=>t.stop());
-    const SR=window.SpeechRecognition||window.webkitSpeechRecognition; if(!SR){ showToast('Voz no disponible'); return; }
-    vhRec3=new SR(); vhRec3.lang='es-MX'; vhRec3.continuous=false; vhRec3.interimResults=false;
-    vhRec3.onresult=e=>{ const raw=e.results[0][0].transcript.toUpperCase().replace(/[\s\-]/g,''); const vi=document.getElementById('vinInput'); if(vi){ vi.value=raw; vhValidateVin(raw); } };
-    vhRec3.onend=()=>{ vhL=false; const b=document.getElementById('vhMicBtn'); if(b) b.textContent='🎤 Dictar VIN'; };
-    vhRec3.onerror=()=>{ vhL=false; };
-    vhRec3.start(); vhL=true; const b=document.getElementById('vhMicBtn'); if(b) b.textContent='🔴 Escuchando';
-  }).catch(()=>showToast('⚠ Activa el micrófono en Ajustes'));
-}
+      const btn = document.getElementById('calculate-quote');
+      btn.disabled = true; btn.innerHTML = '🧠 Clasificando con IA...';
+      document.getElementById('quote-alerts').innerHTML = '';
+      document.getElementById('quote-result').classList.remove('show');
 
-// ── APP START ─────────────────────────────────────
-function startApp(){
-  GEMINI_KEY = getKey();
-  if(!GEMINI_KEY){ return; }
-  // Load saved visits
-  try{ visits=JSON.parse(localStorage.getItem(todayKey())||'[]'); }catch(e){ visits=[]; }
-  // Init all modules
-  initBG(); initFace(); initCursor(); initCam();
-  tick(); setInterval(tick,15000);
-  fetchWx(); setInterval(fetchWx,600000);
-  startCarousel();
-  renderVisits(); updDash(); updQS();
-  // Init tabs — make sure only chat is visible
-  document.querySelectorAll('.tc').forEach(t=>{ t.style.display='none'; t.classList.remove('on'); });
-  const chat=document.getElementById('tc-chat'); if(chat){ chat.style.display='flex'; chat.classList.add('on'); }
-  // Auto idle timer
-  let act=null;
-  function ra(){ clearTimeout(act); act=setTimeout(()=>{ if(!isIdle) enterIdle(); },120000); }
-  document.addEventListener('click',ra,{passive:true});
-  document.addEventListener('touchstart',ra,{passive:true});
-  // Wake on tap of idle screen
-  document.getElementById('idle')?.addEventListener('click', wakeUp);
-  document.getElementById('idle')?.addEventListener('touchend', e=>{ e.preventDefault(); wakeUp(); });
-  // Mic button touch
-  const micBtn=document.getElementById('micBtn');
-  if(micBtn){
-    micBtn.addEventListener('touchend', e=>{ e.preventDefault(); togMic(); }, {passive:false});
-  }
-  // Quote module init
-  setTimeout(qzReset, 100);
-  // Vehicle module init
-  setTimeout(vhInitPanel, 100);
-}
+      try {
+        // PROMPT ESTRUCTURADO PARA CLASIFICACIÓN LIGIE
+        const prompt = `Actúa como experto en clasificación arancelaria mexicana (LIGIE). Analiza esta mercancía y responde SOLO en JSON válido:
+        Mercancía: "${desc}"
+        Origen: ${origin}
+        
+        Reglas estrictas:
+        - Fracción: 8 dígitos (ej. 8481.80.99)
+        - IGI: 0 a 20% (realista según producto)
+        - IEPS: solo si aplica (alcohol, tabaco, combustibles, bebidas azucaradas, etc.)
+        - NOMs: lista oficial mexicana aplicable (ej. NOM-001-SCFI-2018)
+        - Confianza: 0-100
+        
+        JSON:
+        {
+          "fraction": "string",
+          "description": "string",
+          "path": "Capítulo XX → Partida XX.XX → Subpartida XX.XX.XX → Fracción XX.XX.XX.XX",
+          "igi_rate": 0.XX,
+          "ieps_applicable": boolean,
+          "ieps_rate": 0.XX | null,
+          "noms": ["string"],
+          "certificates": ["string"],
+          "confidence": 0-100,
+          "notes": ["string"]
+        }`;
 
-// ── BOOT ─────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', ()=>{
-  // Enter key on API key input
-  const ki=document.getElementById('keyInput');
-  if(ki) ki.addEventListener('keydown',e=>{ if(e.key==='Enter') saveKey(); });
-  // Check if key saved → start app, else show setup
-  if(getKey()){
-    document.getElementById('setupScreen').style.display='none';
-    startApp();
-  }
-  // Setup screen already visible by default
-});
-</script>
+        const response = await fetch(`${CONFIG.GEMINI_ENDPOINT}?key=${state.apiKey}`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.1, responseMimeType: 'application/json' } })
+        });
+        const data = await response.json();
+        const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+        const classification = JSON.parse(raw.match(/\{[\s\S]*\}/)?.[0] || '{}');
+
+        // VALIDACIÓN LOCAL DE REGLAS FISCALES
+        let igiRate = Math.min(Math.max(classification.igi_rate || 0, 0), 0.20);
+        let iePSRate = classification.ieps_applicable ? (classification.ieps_rate || 0.08) : 0;
+        const isTMEC = ['US', 'CA'].includes(origin);
+        if (isTMEC && igiRate > 0) {
+          igiRate = 0; // T-MEC = 0% para origen calificado
+        }
+
+        // CÁLCULO LOCAL (PRECISO)
+        const valorTotalUSD = valorUSD + fleteUSD + seguroUSD;
+        const valorAduanaMXN = valorTotalUSD * CONFIG.TIPO_CAMBIO;
+        const igiMXN = valorAduanaMXN * igiRate;
+        const dtaMXN = valorAduanaMXN * CONFIG.DTA;
+        const baseIVA = valorAduanaMXN + igiMXN + dtaMXN + CONFIG.PREVALIDACION;
+        const ivaRate = destination === 'border' ? CONFIG.IVA_FRONTERA : CONFIG.IVA_GENERAL;
+        const ivaMXN = baseIVA * ivaRate;
+        const iepsMXN = iePSRate > 0 ? baseIVA * iePSRate : 0;
+        const subtotal = baseIVA + ivaMXN + iepsMXN;
+        const honorarios = subtotal * CONFIG.HONORARIOS;
+        const total = subtotal + honorarios;
+
+        // RENDERIZAR RESULTADO
+        document.getElementById('res-fraction').textContent = classification.fraction || 'Por confirmar';
+        document.getElementById('res-desc').textContent = classification.description || desc.slice(0, 60);
+        document.getElementById('res-path').textContent = classification.path || 'Análisis en curso...';
+        
+        const conf = classification.confidence || 0;
+        const level = conf >= 80 ? 'high' : conf >= 60 ? 'medium' : 'low';
+        document.getElementById('confidence-fill').className = `confidence-fill ${level}`;
+        document.getElementById('confidence-fill').style.width = `${conf}%`;
+        document.getElementById('confidence-text').textContent = `${conf}%`;
+
+        document.getElementById('res-customs-value').textContent = `$${valorAduanaMXN.toFixed(2)} MXN`;
+        document.getElementById('res-igi').textContent = `$${igiMXN.toFixed(2)} MXN (${(igiRate*100).toFixed(1)}%)`;
+        document.getElementById('res-dta').textContent = `$${dtaMXN.toFixed(2)} MXN`;
+        document.getElementById('res-preval').textContent = `$${CONFIG.PREVALIDACION.toFixed(2)} MXN`;
+        
+        document.getElementById('iva-label').querySelector('span').textContent = `IVA (${(ivaRate*100).toFixed(0)}%)`;
+        document.getElementById('res-iva').textContent = `$${ivaMXN.toFixed(2)} MXN`;
+        
+        if (iePSRate > 0) {
+          document.getElementById('ieps-row').style.display = 'flex';
+          document.getElementById('res-ieps').style.display = 'block';
+          document.getElementById('res-ieps').textContent = `$${iepsMXN.toFixed(2)} MXN`;
+        } else {
+          document.getElementById('ieps-row').style.display = 'none';
+          document.getElementById('res-ieps').style.display = 'none';
+        }
+
+        document.getElementById('res-subtotal').textContent = `$${subtotal.toFixed(2)} MXN`;
+        document.getElementById('res-fees').textContent = `$${honorarios.toFixed(2)} MXN`;
+        document.getElementById('res-total').textContent = `$${total.toFixed(2)} MXN`;
+
+        // REQUERIMIENTOS
+        const reqDiv = document.getElementById('res-requirements');
+        let reqHTML = '';
+        if (classification.noms?.length) {
+          reqHTML += `<div class="alert-box info">📋 <strong>NOMs aplicables:</strong> ${classification.noms.join(', ')}</div>`;
+        }
+        if (classification.certificates?.length) {
+          reqHTML += `<div class="alert-box info">🔖 <strong>Certificados requeridos:</strong> ${classification.certificates.join(', ')}</div>`;
+        }
+        if (classification.notes?.length) {
+          reqHTML += `<div class="alert-box info">📝 <strong>Notas:</strong> ${classification.notes.join(' | ')}</div>`;
+        }
+        if (!isTMEC && origin !== 'MX') {
+          reqHTML += `<div class="alert-box warning">⚠️ Origen no T-MEC. Verifica certificación de origen para evitar aranceles.</div>`;
+        }
+        reqDiv.innerHTML = reqHTML;
+
+        document.getElementById('quote-result').classList.add('show');
+        speak('Cotización generada. Total estimado: ' + total.toFixed(0) + ' pesos.', 'es');
+
+      } catch (error) {
+        console.error(error);
+        showAlert('❌ Error al clasificar. Verifica conexión y API Key.', 'danger');
+      } finally {
+        btn.disabled = false; btn.innerHTML = '🧠 Cotizar con Clasificación LIGIE';
+      }
+    }
+
+    function showAlert(msg, type) {
+      const div = document.getElementById('quote-alerts');
+      div.innerHTML = `<div class="alert-box ${type}">${type === 'danger' ? '🚫' : '⚠️'} ${msg}</div>`;
+    }
+
+    // ============================================
+    // VISITS & DASHBOARD
+    // ============================================
+    function saveVisit() {
+      if (!state.currentVisit) return;
+      state.currentVisit.endTime = new Date();
+      state.currentVisit.duration = Math.round((state.currentVisit.endTime - state.currentVisit.startTime) / 60000);
+      state.visits.unshift(state.currentVisit);
+      if (state.visits.length > 50) state.visits.pop();
+      localStorage.setItem('lenoah_visits', JSON.stringify(state.visits));
+      updateVisitList(); updateDashboard(); state.currentVisit = null;
+    }
+    function updateVisitList() {
+      const list = document.getElementById('visits-list');
+      const today = new Date().toDateString();
+      const todayVisits = state.visits.filter(v => new Date(v.startTime).toDateString() === today);
+      document.getElementById('visit-count').textContent = todayVisits.length;
+      if (todayVisits.length === 0) { list.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">Sin visitas</div>'; return; }
+      list.innerHTML = todayVisits.map(v => `<div class="visit-item"><div><div class="visit-name">${v.name || 'Visitante'}</div><div class="visit-meta">${v.reason?.slice(0, 25) || 'Consulta'} · ${v.duration || '?'}m</div></div><div style="font-size: 0.8rem; color: var(--text-muted);">${new Date(v.startTime).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div></div>`).join('');
+    }
+    function updateDashboard() {
+      const today = new Date().toDateString();
+      const todayVisits = state.visits.filter(v => new Date(v.startTime).toDateString() === today);
+      document.getElementById('stat-total').textContent = todayVisits.length;
+      const avg = todayVisits.length > 0 ? Math.round(todayVisits.reduce((s, v) => s + (v.duration || 0), 0) / todayVisits.length) : 0;
+      document.getElementById('stat-avg').textContent = `${avg}m`;
+      const hours = {}; todayVisits.forEach(v => { const h = new Date(v.startTime).getHours(); hours[h] = (hours[h] || 0) + 1; });
+      const peak = Object.entries(hours).sort((a,b) => b[1] - a[1])[0]?.[0];
+      document.getElementById('stat-peak').textContent = peak ? `${peak}:00` : '--';
+      const langCount = todayVisits.reduce((acc, v) => { acc[v.lang || 'es'] = (acc[v.lang || 'es'] || 0) + 1; return acc; }, {});
+      document.getElementById('stat-lang').textContent = Object.entries(langCount).sort((a,b) => b[1] - a[1])[0]?.[0]?.toUpperCase() || 'ES';
+    }
+    function exportVisitsCSV() {
+      if (state.visits.length === 0) { alert('No hay visitas'); return; }
+      const headers = ['Fecha', 'Hora', 'Nombre', 'Motivo', 'Duración', 'Idioma'];
+      const rows = state.visits.map(v => [new Date(v.startTime).toLocaleDateString(), new Date(v.startTime).toLocaleTimeString(), v.name || 'N/A', (v.reason || 'Consulta').replace(/,/g, ';'), v.duration || 0, v.lang || 'es']);
+      const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = `lenoah_visitas_${new Date().toISOString().slice(0,10)}.csv`; a.click();
+    }
+
+    // ============================================
+    // UTILITIES
+    // ============================================
+    function updateClock() { document.getElementById('clock').textContent = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }
+    async function fetchWeather() {
+      try { const res = await fetch(CONFIG.WEATHER_ENDPOINT); const data = await res.json(); document.getElementById('weather').textContent = `${Math.round(data.current_weather?.temperature || 22)}°`; } catch { document.getElementById('weather').textContent = '--°'; }
+    }
+    function resetIdleTimer() { clearTimeout(state.idleTimer); if (state.isIdle) { state.isIdle = false; } state.idleTimer = setTimeout(() => { state.isIdle = true; }, CONFIG.IDLE_TIMEOUT); }
+    document.addEventListener('touchstart', (e) => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+    let lastTouchEnd = 0; document.addEventListener('touchend', (e) => { const now = Date.now(); if (now - lastTouchEnd <= 300) e.preventDefault(); lastTouchEnd = now; }, false);
+  </script>
 </body>
 </html>
