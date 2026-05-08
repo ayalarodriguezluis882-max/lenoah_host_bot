@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#0a0a12" />
-  <title>LenoahHost · Cotizador Inteligente v9</title>
+  <title>LenoahHost · Cotizador Inteligente v10</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -118,6 +118,7 @@
     .alert-box.blocker { background: rgba(239, 68, 68, 0.2); border: 2px solid var(--led-danger); color: var(--led-danger); }
     .alert-box.warning { background: rgba(245, 158, 11, 0.2); border: 2px solid var(--led-warm); color: var(--led-warm); }
     .alert-box.info { background: rgba(0, 212, 255, 0.1); border: 1px solid var(--led-primary); }
+    .alert-box.success { background: rgba(16, 185, 129, 0.15); border: 1px solid var(--led-success); }
 
     .disclaimer { margin-top: 1rem; padding: 0.75rem; background: var(--bg-panel); border-left: 3px solid var(--text-muted); font-size: 0.8rem; color: var(--text-dim); line-height: 1.4; }
     .btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
@@ -145,7 +146,7 @@
   <div id="setup-screen">
     <div class="setup-container">
       <div class="setup-logo">L e noah</div>
-      <p style="color: var(--text-dim); margin: 1rem 0 2rem;">Cotizador Inteligente v9.0 · LIGIE + Ley Aduanera</p>
+      <p style="color: var(--text-dim); margin: 1rem 0 2rem;">Cotizador Inteligente v10.0 · LIGIE + Ley Aduanera</p>
       <input type="password" id="api-key-input" class="setup-input" placeholder="AIzaSy..." autocomplete="off" />
       <button id="save-key-btn" class="setup-btn">✓ Guardar y Entrar</button>
       <div class="setup-help">
@@ -194,7 +195,7 @@
           </div>
         </div>
         <div class="message-display" id="message-area">
-          Hola, soy Nova. Valido legalidad y clasifico según LIGIE antes de cotizar. ¿En qué puedo ayudarte?
+          Hola, soy Nova. Analizo legalidad y clasifico según LIGIE con inteligencia contextual. ¿En qué puedo ayudarte?
         </div>
         <div class="voice-controls">
           <button id="mic-btn" title="Presiona para hablar">🎤</button>
@@ -235,14 +236,14 @@
         <div id="quote-tab" class="tab-content card">
           <div class="card-header">
             <div class="card-title">⬡ Cotizador LIGIE Inteligente</div>
-            <span style="background: var(--led-success); color: #000; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">VALIDACIÓN LEGAL + IA</span>
+            <span style="background: var(--led-success); color: #000; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">CONTEXTO + VALIDACIÓN</span>
           </div>
           <div class="card-body">
             <div class="form-group">
               <label class="form-label">① Descripción detallada de la mercancía</label>
               <textarea id="goods-desc" class="form-input textarea" placeholder="Ej: Válvulas de latón para sistemas de riego, nuevas, sin marcas, origen China, uso industrial"></textarea>
               <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-muted);">
-                Incluye: material, uso, estado (nuevo/usado), origen real. La IA validará legalidad antes de clasificar.
+                Incluye: material, uso, estado, origen real. La IA analizará contexto, no solo palabras clave.
               </div>
             </div>
             
@@ -288,18 +289,18 @@
             
             <!-- PANEL DE VALIDACIÓN EN VIVO -->
             <div id="validation-panel" class="validation-panel" style="display: none;">
-              <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--led-secondary);">🔍 Proceso de Validación</div>
+              <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--led-secondary);">🔍 Proceso de Análisis Contextual</div>
               <div class="validation-step" id="step-1">
                 <div class="step-icon pending" id="icon-1">1</div>
-                <div>Verificando legalidad (Ley Aduanera Art. 61, 64, 66)...</div>
+                <div>Análisis de legalidad y restricciones (Ley Aduanera + LIGIE)...</div>
               </div>
               <div class="validation-step" id="step-2">
                 <div class="step-icon pending" id="icon-2">2</div>
-                <div>Clasificación arancelaria LIGIE (Reglas Generales + Notas Explicativas)...</div>
+                <div>Clasificación arancelaria precisa...</div>
               </div>
               <div class="validation-step" id="step-3">
                 <div class="step-icon pending" id="icon-3">3</div>
-                <div>Cálculo fiscal (IGI, DTA, IVA, Prevalidación, Honorarios 25%)...</div>
+                <div>Cálculo fiscal y honorarios...</div>
               </div>
             </div>
 
@@ -339,7 +340,7 @@
               <div id="res-requirements"></div>
               
               <div class="disclaimer">
-                ⚖️ <strong>AVISO LEGAL:</strong> Esta cotización es una <em>estimación preliminar</em> generada por inteligencia artificial con base en la LIGIE, Ley Aduanera y Reglamento vigentes. La clasificación arancelaria definitiva, aplicación de tratados y cumplimiento de NOMs/certificados debe ser validada por un Agente Aduanal autorizado por el SAT. Lenoah no asume responsabilidad por diferencias en liquidación oficial.
+                ⚖️ <strong>AVISO LEGAL:</strong> Esta cotización es una estimación preliminar basada en LIGIE y normativa vigente. La clasificación definitiva y cumplimiento de NOMs/certificados debe ser validada por un Agente Aduanal autorizado. Lenoah no asume responsabilidad por diferencias en liquidación oficial.
               </div>
 
               <div class="btn-group">
@@ -358,8 +359,9 @@
 
   <script>
     /**
-     * LENOAH HOST · COTIZADOR INTELIGENTE v9.0
-     * VALIDACIÓN LEGAL + CLASIFICACIÓN LIGIE REAL + CÁLCULO FISCAL PRECISO
+     * LENOAH HOST · COTIZADOR INTELIGENTE v10.0
+     * ANÁLISIS CONTEXTUAL + LIGIE REAL + CÁLCULO FISCAL PRECISO
+     * Sin listas de bloqueo ciegas. IA contextual con fallback de clarificación.
      */
 
     const CONFIG = {
@@ -372,17 +374,6 @@
       HONORARIOS: 0.25,
       TIPO_CAMBIO: 17.50
     };
-
-    // LISTA DE MERCANCÍAS PROHIBIDAS/CONTROLADAS EN MÉXICO
-    const PROHIBITED_KEYWORDS = [
-      'fentanilo', 'fentanyl', 'cocaína', 'cocaina', 'heroína', 'heroina', 'metanfetamina', 'metanfetamine',
-      'droga', 'narcótico', 'narcotico', 'estupefaciente', 'psicotrópico',
-      'arma', 'pistola', 'rifle', 'ametralladora', 'escopeta', 'munición', 'explosivo', 'dinamita',
-      'material radiactivo', 'uranio', 'plutonio', 'material nuclear',
-      'órgano humano', 'tejido humano', 'sangre humana', 'células madre',
-      'especie protegida', 'marfil', 'madera prohibida', 'cocodrilo', 'tortuga marina',
-      'producto pirata', 'falsificación', 'réplica no autorizada', 'contrabando'
-    ];
 
     const state = {
       apiKey: null, lang: 'es', isListening: false, visits: [], currentVisit: null,
@@ -528,7 +519,7 @@
     }
 
     // ============================================
-    // MOTOR DE COTIZACIÓN INTELIGENTE v9.0
+    // MOTOR DE COTIZACIÓN INTELIGENTE v10.0
     // ============================================
     async function calculateIntelligentQuote() {
       const desc = document.getElementById('goods-desc').value.trim();
@@ -538,83 +529,85 @@
       const fleteUSD = parseFloat(document.getElementById('freight-value').value) || 0;
       const seguroUSD = parseFloat(document.getElementById('insurance-value').value) || 0;
 
-      if (!desc) { showAlert('⚠️ Describe la mercancía para validar legalidad', 'warning'); return; }
+      if (!desc) { showAlert('⚠️ Describe la mercancía para analizar contexto', 'warning'); return; }
       if (!valorUSD) { showAlert('⚠️ Ingresa el valor en factura', 'warning'); return; }
 
       const btn = document.getElementById('calculate-quote');
-      btn.disabled = true; btn.innerHTML = '🔍 Validando...';
+      btn.disabled = true; btn.innerHTML = '🔍 Analizando...';
       document.getElementById('quote-alerts').innerHTML = '';
       document.getElementById('quote-result').classList.remove('show');
       document.getElementById('validation-panel').style.display = 'block';
       resetValidationSteps();
 
       try {
-        // PASO 1: VALIDACIÓN LEGAL (Ley Aduanera Art. 61, 64, 66)
-        setStep(1, 'checking');
-        if (containsProhibited(desc)) {
-          setStep(1, 'fail');
-          showAlert('🚫 MERCANCÍA PROHIBIDA: La descripción coincide con sustancias/artículos restringidos por la Ley Aduanera de México. No es posible importar ni cotizar este producto.', 'blocker');
-          speak('Artículo prohibido por ley aduanera. No se puede cotizar.', 'es');
-          btn.disabled = false; btn.innerHTML = '🧠 Validar + Clasificar + Cotizar';
-          return;
-        }
-        setStep(1, 'pass');
-
-        // PASO 2: CLASIFICACIÓN LIGIE CON IA ESTRICTA
-        setStep(2, 'checking');
-        const prompt = `Actúa como Agente Aduanal experto en clasificación arancelaria mexicana (LIGIE 2024, Reglas Generales, Notas Explicativas OMA).
-        Mercancía: "${desc}"
+        // PROMPT CONTEXTUAL INTELIGENTE
+        const prompt = `Eres un Agente Aduanal mexicano experto en LIGIE 2024 y Ley Aduanera.
+        Analiza esta mercancía para importación a México:
+        Descripción: "${desc}"
         Origen: ${origin}
-        
-        PRIMERO: Verifica si es legal importar en México. Si es ilegal/prohibido/controlado, devuelve legal: false.
-        SEGUNDO: Clasifica según LIGIE real. No inventes fracciones.
-        TERCERO: Responde SOLO en JSON válido:
+
+        INSTRUCCIONES CRÍTICAS:
+        1. Solo marca "legal": false si es EXPRESAMENTE PROHIBIDA (narcóticos, armas de fuego, residuos tóxicos, especies protegidas CITES).
+        2. Si es regulada (químicos, alimentos, electrónicos, maquinaria, textiles), es LEGAL pero requiere NOMs/certificados. Marca "legal": true y "status": "restringida".
+        3. Si la descripción es ambigua, pide más detalles en "clarification", pero NO la bloquees. Asume uso comercial/legal si no dice lo contrario.
+        4. Clasifica con LIGIE realista. Si no estás seguro, baja confianza pero da tu mejor estimación.
+        5. Responde SOLO en JSON válido:
         {
           "legal": boolean,
-          "legal_reason": "string",
-          "fraction": "string (8 dígitos ej. 8481.80.99)",
+          "status": "permitida | restringida | prohibida",
+          "fraction": "string (8 dígitos LIGIE ej. 8481.80.99)",
           "description": "string",
           "path": "string (Capítulo XX → Partida XX.XX → Subpartida XX.XX.XX → Fracción)",
           "igi_rate": number (0 a 0.20),
-          "ieps_applicable": boolean,
-          "ieps_rate": number | null,
           "noms": ["string"],
           "certificates": ["string"],
           "confidence": number (0-100),
-          "notes": ["string"]
+          "clarification": "string | null"
         }`;
 
+        setStep(1, 'checking');
         const response = await fetch(`${CONFIG.GEMINI_ENDPOINT}?key=${state.apiKey}`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.05, responseMimeType: 'application/json' } })
+          body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.1, responseMimeType: 'application/json' } })
         });
         const data = await response.json();
         const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-        const classification = JSON.parse(raw.match(/\{[\s\S]*\}/)?.[0] || '{}');
+        const analysis = JSON.parse(raw.match(/\{[\s\S]*\}/)?.[0] || '{}');
 
-        if (!classification.legal) {
-          setStep(2, 'fail');
-          showAlert(`🚫 ${classification.legal_reason || 'Mercancía no apta para importación legal según normativa mexicana.'}`, 'blocker');
-          speak('La mercancía no cumple requisitos legales para importación.', 'es');
+        // Manejo de clarificación
+        if (analysis.clarification && analysis.confidence < 60) {
+          setStep(1, 'fail');
+          showAlert(`💡 ${analysis.clarification}`, 'warning');
+          speak('Necesito más detalles para clasificar correctamente.', 'es');
           btn.disabled = false; btn.innerHTML = '🧠 Validar + Clasificar + Cotizar';
           return;
         }
 
-        if (!classification.fraction || classification.confidence < 50) {
-          setStep(2, 'fail');
-          showAlert('⚠️ CLASIFICACIÓN INCIERTA: La IA no pudo determinar una fracción LIGIE con confianza suficiente. Se requiere revisión manual por Agente Aduanal.', 'warning');
-          speak('Clasificación incierta. Requiere revisión humana.', 'es');
+        // Bloqueo solo si es expresamente prohibida
+        if (analysis.status === 'prohibida' || analysis.legal === false) {
+          setStep(1, 'fail');
+          showAlert(`🚫 ${analysis.clarification || 'Mercancía prohibida por normativa mexicana. No se puede importar ni cotizar.'}`, 'blocker');
+          speak('Artículo prohibido por ley. No se puede cotizar.', 'es');
           btn.disabled = false; btn.innerHTML = '🧠 Validar + Clasificar + Cotizar';
           return;
         }
-        setStep(2, 'pass');
 
-        // PASO 3: CÁLCULO FISCAL PRECISO
+        setStep(1, 'pass');
+
+        // Si es restringida pero legal, continuamos
+        if (analysis.status === 'restringida') {
+          showAlert(`✅ Legalidad verificada. Requiere permisos/NOMs según normativa mexicana.`, 'success');
+        } else {
+          showAlert(`✅ Mercancía permitida. Sin restricciones especiales.`, 'success');
+        }
+
+        // CLASIFICACIÓN Y CÁLCULO
+        setStep(2, 'checking');
         setStep(3, 'checking');
-        let igiRate = Math.min(Math.max(classification.igi_rate || 0, 0), 0.20);
-        let iepsRate = classification.ieps_applicable ? (classification.ieps_rate || 0.08) : 0;
+
+        let igiRate = Math.min(Math.max(analysis.igi_rate || 0, 0), 0.20);
         const isTMEC = ['US', 'CA'].includes(origin);
-        if (isTMEC) igiRate = 0; // T-MEC = 0% para origen calificado
+        if (isTMEC && igiRate > 0) igiRate = 0; // T-MEC = 0%
 
         const valorTotalUSD = valorUSD + fleteUSD + seguroUSD;
         const valorAduanaMXN = valorTotalUSD * CONFIG.TIPO_CAMBIO;
@@ -623,19 +616,19 @@
         const baseIVA = valorAduanaMXN + igiMXN + dtaMXN + CONFIG.PREVALIDACION;
         const ivaRate = destination === 'border' ? CONFIG.IVA_FRONTERA : CONFIG.IVA_GENERAL;
         const ivaMXN = baseIVA * ivaRate;
-        const iepsMXN = iepsRate > 0 ? baseIVA * iepsRate : 0;
-        const subtotal = baseIVA + ivaMXN + iepsMXN;
+        const subtotal = baseIVA + ivaMXN;
         const honorarios = subtotal * CONFIG.HONORARIOS;
         const total = subtotal + honorarios;
 
+        setStep(2, 'pass');
         setStep(3, 'pass');
 
         // RENDERIZAR RESULTADO
-        document.getElementById('res-fraction').textContent = classification.fraction;
-        document.getElementById('res-desc').textContent = classification.description || desc.slice(0, 60);
-        document.getElementById('res-path').textContent = classification.path || 'Clasificación LIGIE validada';
+        document.getElementById('res-fraction').textContent = analysis.fraction || 'Por confirmar';
+        document.getElementById('res-desc').textContent = analysis.description || desc.slice(0, 60);
+        document.getElementById('res-path').textContent = analysis.path || 'Clasificación LIGIE estimada';
         
-        const conf = classification.confidence;
+        const conf = analysis.confidence || 0;
         const level = conf >= 80 ? 'high' : conf >= 60 ? 'medium' : 'low';
         document.getElementById('confidence-fill').className = `confidence-fill ${level}`;
         document.getElementById('confidence-fill').style.width = `${conf}%`;
@@ -649,14 +642,8 @@
         document.getElementById('iva-label').querySelector('span').textContent = `IVA (${(ivaRate*100).toFixed(0)}%)`;
         document.getElementById('res-iva').textContent = `$${ivaMXN.toFixed(2)} MXN`;
         
-        if (iePSRate > 0) {
-          document.getElementById('ieps-row').style.display = 'flex';
-          document.getElementById('res-ieps').style.display = 'block';
-          document.getElementById('res-ieps').textContent = `$${iepsMXN.toFixed(2)} MXN`;
-        } else {
-          document.getElementById('ieps-row').style.display = 'none';
-          document.getElementById('res-ieps').style.display = 'none';
-        }
+        document.getElementById('ieps-row').style.display = 'none';
+        document.getElementById('res-ieps').style.display = 'none';
 
         document.getElementById('res-subtotal').textContent = `$${subtotal.toFixed(2)} MXN`;
         document.getElementById('res-fees').textContent = `$${honorarios.toFixed(2)} MXN`;
@@ -665,27 +652,22 @@
         // REQUERIMIENTOS
         const reqDiv = document.getElementById('res-requirements');
         let reqHTML = '';
-        if (classification.noms?.length) reqHTML += `<div class="alert-box info">📋 <strong>NOMs aplicables:</strong> ${classification.noms.join(', ')}</div>`;
-        if (classification.certificates?.length) reqHTML += `<div class="alert-box info">🔖 <strong>Certificados requeridos:</strong> ${classification.certificates.join(', ')}</div>`;
-        if (classification.notes?.length) reqHTML += `<div class="alert-box info">📝 <strong>Notas LIGIE:</strong> ${classification.notes.join(' | ')}</div>`;
-        if (!isTMEC && origin !== 'MX') reqHTML += `<div class="alert-box warning">⚠️ Origen no T-MEC. Verifica certificación de origen para evitar aranceles adicionales.</div>`;
+        if (analysis.noms?.length) reqHTML += `<div class="alert-box info">📋 <strong>NOMs aplicables:</strong> ${analysis.noms.join(', ')}</div>`;
+        if (analysis.certificates?.length) reqHTML += `<div class="alert-box info">🔖 <strong>Certificados requeridos:</strong> ${analysis.certificates.join(', ')}</div>`;
+        if (analysis.status === 'restringida') reqHTML += `<div class="alert-box warning">⚠️ Requiere permisos especiales. Verifica con tu Agente Aduanal.</div>`;
+        if (!isTMEC && origin !== 'MX') reqHTML += `<div class="alert-box info">🌍 Origen no T-MEC. Verifica certificación de origen.</div>`;
         reqDiv.innerHTML = reqHTML;
 
         document.getElementById('quote-result').classList.add('show');
-        speak('Clasificación y cotización generadas correctamente.', 'es');
+        speak('Clasificación y cotización generadas.', 'es');
 
       } catch (error) {
         console.error(error);
         setStep(2, 'fail');
-        showAlert('❌ Error en el motor de clasificación. Verifica conexión y API Key.', 'blocker');
+        showAlert('❌ Error en el motor de análisis. Verifica conexión y API Key.', 'blocker');
       } finally {
         btn.disabled = false; btn.innerHTML = '🧠 Validar + Clasificar + Cotizar';
       }
-    }
-
-    function containsProhibited(text) {
-      const lower = text.toLowerCase();
-      return PROHIBITED_KEYWORDS.some(keyword => lower.includes(keyword));
     }
 
     function resetValidationSteps() {
@@ -704,7 +686,7 @@
 
     function showAlert(msg, type) {
       const div = document.getElementById('quote-alerts');
-      div.innerHTML = `<div class="alert-box ${type}">${type === 'blocker' ? '🚫' : type === 'warning' ? '⚠️' : 'ℹ️'} ${msg}</div>`;
+      div.innerHTML = `<div class="alert-box ${type}">${type === 'blocker' ? '🚫' : type === 'warning' ? '💡' : type === 'success' ? '✅' : 'ℹ️'} ${msg}</div>`;
     }
 
     // ============================================
