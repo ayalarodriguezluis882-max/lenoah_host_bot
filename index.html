@@ -405,20 +405,119 @@ html,body{
       </div>
 
       <!-- COTIZACIÓN ARANCELARIA -->
+      <!-- MÓDULO CLASIFICADOR GENERAL v2 — TIGIE/LIGIE 2026 -->
       <div class="tc" id="tc-quote">
-        <div id="qz-panel" style="flex:1;overflow-y:auto;padding:14px 14px 0;scrollbar-width:thin;scrollbar-color:rgba(62,207,142,.14) transparent;"></div>
-        <div id="qz-controls" style="padding:12px 14px;border-top:1px solid var(--border);flex-shrink:0;">
-          <div style="display:flex;gap:8px;margin-bottom:8px;">
-            <input id="qzInput" type="text" placeholder="Describe la mercancía o responde la pregunta…"
-              style="flex:1;padding:9px 12px;background:rgba(5,7,10,.8);border:1px solid var(--border2);color:var(--text);font-family:var(--font-b);font-size:12px;outline:none;border-radius:1px;"
-              onkeydown="if(event.key==='Enter')qzSend()"/>
-            <button onclick="qzSend()" style="padding:9px 16px;border:1px solid var(--jade);background:var(--jade-dim);color:var(--jade);font-family:var(--font-b);font-size:9px;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;">Enviar</button>
+
+        <!-- FORMULARIO INICIAL -->
+        <div id="qz-form" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;">
+
+          <!-- DESCRIPCIÓN -->
+          <div style="border:1px solid var(--border2);padding:12px;background:var(--jade-dim);">
+            <div style="font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--jade);margin-bottom:8px;">① Describe la mercancía con el mayor detalle posible</div>
+            <textarea id="qzDesc" rows="3" placeholder="Ej: Camisas de algodón para hombre, tejido plano, manga larga, nuevas, empacadas individualmente. Uso: venta al menudeo."
+              style="width:100%;padding:9px 11px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-b);font-size:12px;outline:none;border-radius:1px;resize:vertical;line-height:1.5;"></textarea>
+            <div style="font-size:9px;color:var(--text-3);margin-top:5px;">Incluye: material, uso final, si es nuevo/usado, unidad de medida, marca si es relevante</div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-            <button class="cbtn" onclick="qzReset()">Nueva consulta</button>
-            <button class="cbtn" onclick="qzSaveQuote()">Guardar cotización</button>
-            <button class="cbtn" id="qzMicBtn" onclick="qzToggleMic()">🎤 Voz</button>
+
+          <!-- ORIGEN Y TLC -->
+          <div style="border:1px solid var(--border);padding:12px;">
+            <div style="font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--text-2);margin-bottom:10px;">② Origen y tratado comercial</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+              <div>
+                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">País de fabricación</div>
+                <select id="qzOrigen" onchange="qzOnOrigen()" style="width:100%;padding:7px 8px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-b);font-size:11px;outline:none;cursor:pointer;border-radius:1px;">
+                  <option value="usa">🇺🇸 Estados Unidos</option>
+                  <option value="mexico">🇲🇽 México</option>
+                  <option value="canada">🇨🇦 Canadá</option>
+                  <option value="china">🇨🇳 China</option>
+                  <option value="japon">🇯🇵 Japón</option>
+                  <option value="corea">🇰🇷 Corea del Sur</option>
+                  <option value="alemania">🇩🇪 Alemania</option>
+                  <option value="taiwan">🇹🇼 Taiwán</option>
+                  <option value="india">🇮🇳 India</option>
+                  <option value="vietnam">🇻🇳 Vietnam</option>
+                  <option value="italia">🇮🇹 Italia</option>
+                  <option value="brasil">🇧🇷 Brasil</option>
+                  <option value="otro">🌐 Otro país</option>
+                </select>
+              </div>
+              <div>
+                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Tratado aplicable</div>
+                <select id="qzTlc" style="width:100%;padding:7px 8px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-b);font-size:11px;outline:none;cursor:pointer;border-radius:1px;">
+                  <option value="tmec">T-MEC (Cert. de Origen)</option>
+                  <option value="tlcue">TLC México-UE</option>
+                  <option value="cptpp">CPTPP</option>
+                  <option value="ninguno">Sin tratado (tasa NMF)</option>
+                </select>
+              </div>
+            </div>
+            <div id="qzTlcNote" style="font-size:10px;padding:6px 9px;border:1px solid rgba(62,207,142,.3);color:#3ecf8e;display:none;"></div>
           </div>
+
+          <!-- DATOS FINANCIEROS -->
+          <div style="border:1px solid var(--border);padding:12px;">
+            <div style="font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--text-2);margin-bottom:10px;">③ Datos financieros de la operación</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+              <div>
+                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Valor en factura (USD) *</div>
+                <input id="qzValor" type="number" placeholder="5000" min="0"
+                  style="width:100%;padding:7px 9px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-m);font-size:13px;outline:none;border-radius:1px;"/>
+              </div>
+              <div>
+                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Flete internacional (USD)</div>
+                <input id="qzFlete" type="number" placeholder="Dejar vacío = estimado 6%"
+                  style="width:100%;padding:7px 9px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-m);font-size:13px;outline:none;border-radius:1px;"/>
+              </div>
+              <div>
+                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Seguro (USD)</div>
+                <input id="qzSeguro" type="number" placeholder="Dejar vacío = estimado 1.5%"
+                  style="width:100%;padding:7px 9px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-m);font-size:13px;outline:none;border-radius:1px;"/>
+              </div>
+              <div>
+                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Tipo de cambio (MXN/USD)</div>
+                <input id="qzTc" type="number" placeholder="20.50" value="20.50" step="0.01"
+                  style="width:100%;padding:7px 9px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-m);font-size:13px;outline:none;border-radius:1px;"/>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+              <div>
+                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Cantidad / Unidades</div>
+                <input id="qzCantidad" type="number" placeholder="1"
+                  style="width:100%;padding:7px 9px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-m);font-size:13px;outline:none;border-radius:1px;"/>
+              </div>
+              <div>
+                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Aduana de entrada</div>
+                <select id="qzAduana" style="width:100%;padding:7px 8px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-b);font-size:11px;outline:none;cursor:pointer;border-radius:1px;">
+                  <option value="tijuana">Tijuana / Otay</option>
+                  <option value="mexicali">Mexicali</option>
+                  <option value="nogales">Nogales</option>
+                  <option value="cdj">Ciudad Juárez</option>
+                  <option value="laredo">Nuevo Laredo</option>
+                  <option value="veracruz">Veracruz</option>
+                  <option value="manzanillo">Manzanillo</option>
+                  <option value="otra">Otra aduana</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- BOTÓN CLASIFICAR -->
+          <button onclick="qzClasificar()" style="width:100%;padding:14px;border:1px solid var(--jade);background:var(--jade-dim);color:var(--jade);font-family:var(--font-b);font-size:10px;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;border-radius:1px;flex-shrink:0;">
+            ▶ CLASIFICAR Y COTIZAR
+          </button>
+
+          <div style="font-size:9px;color:var(--text-3);text-align:center;line-height:1.5;padding-bottom:8px;">
+            Basado en LIGIE/TIGIE vigente 2026 · Reforma DOF 29-Dic-2025 · Ley Aduanera Art. 56
+          </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div id="qz-result" style="display:none;flex:1;overflow-y:auto;padding:12px;scrollbar-width:thin;"></div>
+
+        <!-- CONTROLES -->
+        <div style="padding:8px 12px;border-top:1px solid var(--border);display:flex;gap:6px;flex-shrink:0;">
+          <button class="cbtn" onclick="qzReset()" style="flex:1;">Nueva consulta</button>
+          <button class="cbtn" id="qzMicBtn" onclick="qzToggleMic()" style="flex:1;">🎤 Dictar</button>
         </div>
       </div>
 
@@ -1064,95 +1163,393 @@ function swTab(name, btn){
 }
 
 // ── COTIZACIÓN (QUOTE MODULE) ─────────────────────
-let qzState={step:'idle',product:'',origin:'',tlc:false,invoiceUSD:0,freightUSD:0}, qzHist=[], qzRec2=null, qzL=false;
-const CLASSIFIER_PROMPT=`Eres un clasificador arancelario experto en comercio exterior mexicano.
-Guía al usuario para clasificar su mercancía bajo la TIGIE 2022 y generar cotización preliminar.
-PASO 1: Pide descripción detallada del producto.
-PASO 2: Pregunta país de origen (no de compra). Si es EE.UU. pregunta si tiene Certificado T-MEC.
-PASO 3: Pide valor en factura USD, flete internacional USD.
-PASO 4: Propón fracción arancelaria y al final incluye JSON:
-[CLASIFICACION:{"fraccion":"XXXXXXXX","descripcion":"texto","igi":XX,"ieps":0,"tlc_igi":0,"confianza":"ALTA|MEDIA|BAJA","alternativas":[],"restricciones":[],"noms":[]}]
-Sé conciso, profesional. Siempre añade: "Cotización preliminar. Un agente aduanal certificado validará la clasificación final."`;
+// ── CLASIFICADOR GENERAL v2 — TIGIE/LIGIE 2026 ────
+// Motor de cálculo basado en:
+// • Ley Aduanera Art. 56 (Valor en Aduana = CIF)
+// • LIGIE/TIGIE reforma DOF 29-Dic-2025 (vigente 1-Ene-2026)
+// • Decreto PROSEC y reforma 23-Abr-2026
+// • IVA Ley del IVA Art. 1 (16%)
+// • DTA Ley Federal de Derechos Art. 49 (8‰ del VEA)
+// • IEPS según fracción arancelaria
 
-function qzPanel(){ return document.getElementById('qz-panel'); }
-function qzBubble(role,html){
-  const p=qzPanel(); if(!p) return;
-  const w=document.createElement('div'); w.style.cssText=`display:flex;flex-direction:column;gap:3px;margin-bottom:12px;${role==='nova'?'align-items:flex-start':'align-items:flex-end'}`;
-  const who=document.createElement('div'); who.style.cssText='font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--text-3);'; who.textContent=role==='nova'?'NOVA · Clasificador':'Cliente';
-  const b=document.createElement('div');
-  b.style.cssText=role==='nova'?'max-width:95%;padding:10px 13px;background:var(--jade-dim);border:1px solid var(--border);border-left:2px solid var(--jade);font-size:12px;line-height:1.65;color:var(--text);border-radius:0 4px 4px 4px;':'max-width:88%;padding:9px 13px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);font-size:12px;color:var(--text-2);border-radius:4px 0 4px 4px;line-height:1.65;';
-  b.innerHTML=html; w.appendChild(who); w.appendChild(b); p.appendChild(w); p.scrollTop=p.scrollHeight;
+let qzRec2=null, qzL=false;
+
+// Nota fiscal: IVA base = VEA + IGI + IEPS + DTA (Art. 1 LIVA)
+// DTA = VEA × 0.008 (tope $10,000 USD para importaciones hasta esa suma)
+// IEPS se calcula sobre precio enajenación (ad valorem) o tasa específica
+
+// Países con TLC vigente con México
+const TLC_PAISES = {
+  usa: { nombre: 'EE.UU.', tlc: 'T-MEC', igi_pref: 0, nota: 'Requiere Certificado de Origen T-MEC vigente del exportador' },
+  canada: { nombre: 'Canadá', tlc: 'T-MEC', igi_pref: 0, nota: 'Requiere Certificado de Origen T-MEC vigente' },
+  mexico: { nombre: 'México', tlc: 'Nacional', igi_pref: 0, nota: 'Mercancía de origen nacional, sin IGI' },
+  japon: { nombre: 'Japón', tlc: 'CPTPP', igi_pref: 0, nota: 'Aplica preferencia CPTPP con Certificado de Origen' },
+  corea: { nombre: 'Corea del Sur', tlc: 'TLC México-Corea', igi_pref: 0, nota: 'TLC México-Corea, requiere Form AK' },
+  alemania: { nombre: 'Alemania', tlc: 'TLCUEM', igi_pref: 0, nota: 'TLC México-UE requiere EUR.1 o declaración en factura' },
+  italia: { nombre: 'Italia', tlc: 'TLCUEM', igi_pref: 0, nota: 'TLC México-UE requiere EUR.1 o declaración en factura' },
+  chile: { nombre: 'Chile', tlc: 'TLC México-Chile', igi_pref: 0, nota: 'Requiere Certificado de Origen Form. MCH' },
+  colombia: { nombre: 'Colombia', tlc: 'G3', igi_pref: 0, nota: 'Acuerdo G3 (México-Colombia), requiere certificado' },
+  china: { nombre: 'China', tlc: null, igi_pref: null, nota: 'Sin TLC — aplica tasa NMF/BASE TIGIE 2026. Posibles cuotas compensatorias.' },
+  india: { nombre: 'India', tlc: null, igi_pref: null, nota: 'Sin TLC — aplica tasa NMF/BASE TIGIE 2026' },
+  vietnam: { nombre: 'Vietnam', tlc: 'CPTPP', igi_pref: 0, nota: 'Aplica preferencia CPTPP con certificado de origen' },
+  taiwan: { nombre: 'Taiwán', tlc: null, igi_pref: null, nota: 'Sin TLC — aplica tasa NMF/BASE TIGIE 2026' },
+  brasil: { nombre: 'Brasil', tlc: 'ACE 53', igi_pref: null, nota: 'ACE 53 aplica solo para algunos productos automotrices' },
+  otro: { nombre: 'Otro país', tlc: null, igi_pref: null, nota: 'Sin TLC conocido — aplica tasa NMF/BASE TIGIE 2026' }
+};
+
+function qzOnOrigen() {
+  const origen = document.getElementById('qzOrigen').value;
+  const tlcSel = document.getElementById('qzTlc');
+  const note = document.getElementById('qzTlcNote');
+  const info = TLC_PAISES[origen];
+  if(!info) return;
+  if(info.tlc) {
+    tlcSel.value = info.tlc === 'T-MEC' ? 'tmec' : info.tlc === 'TLCUEM' ? 'tlcue' : info.tlc === 'CPTPP' ? 'cptpp' : 'ninguno';
+    note.style.display = 'block';
+    note.textContent = '✓ ' + info.nota;
+    note.style.borderColor = 'rgba(62,207,142,.3)';
+    note.style.color = '#3ecf8e';
+  } else {
+    tlcSel.value = 'ninguno';
+    note.style.display = 'block';
+    note.textContent = '⚠ ' + info.nota;
+    note.style.borderColor = 'rgba(248,113,113,.3)';
+    note.style.color = '#f87171';
+  }
 }
-function qzThink(){ const p=qzPanel(); if(!p) return; const w=document.createElement('div'); w.id='qzt'; w.style.cssText='display:flex;flex-direction:column;gap:3px;margin-bottom:12px;'; w.innerHTML='<div style="font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--text-3);">NOVA · Clasificador</div><div class="thinking"><div class="td"></div><div class="td"></div><div class="td"></div></div>'; p.appendChild(w); p.scrollTop=p.scrollHeight; }
-function qzHideThink(){ document.getElementById('qzt')?.remove(); }
-async function qzSend(){
-  const val=document.getElementById('qzInput').value.trim(); if(!val) return;
-  qzBubble('user',val); document.getElementById('qzInput').value='';
-  qzHist.push({role:'user',parts:[{text:val}]}); qzThink();
-  const lower=val.toLowerCase();
-  if(lower.includes('eeuu')||lower.includes('estados unidos')||lower.includes('usa')) qzState.origin='EE.UU.';
-  if(lower.includes('tmec')||lower.includes('t-mec')||lower.includes('certificado de origen')) qzState.tlc=true;
-  const nm=val.match(/(\d[\d,\.]+)/); if(nm){ const n=parseFloat(nm[1].replace(/,/g,'')); if(!qzState.invoiceUSD) qzState.invoiceUSD=n; }
-  try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
-      {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system_instruction:{parts:[{text:CLASSIFIER_PROMPT}]},contents:qzHist,generationConfig:{maxOutputTokens:500,temperature:.3}})});
-    const d=await res.json(); let reply=d.candidates?.[0]?.content?.parts?.[0]?.text||'Error de conexión.';
-    const cd=reply.match(/\[CLASIFICACION:(.*?)\]/s); let clean=reply.replace(/\[CLASIFICACION:.*?\]/s,'').trim();
-    qzHideThink(); qzBubble('nova',clean.replace(/\n/g,'<br>')); qzHist.push({role:'model',parts:[{text:reply}]});
-    if(cd){ try{
-      const j=JSON.parse(cd[1]); const inv=qzState.invoiceUSD||0; const fr=inv*.06; const ins=inv*.015;
-      const va=(inv+fr+ins)*20.5; const igiPct=qzState.tlc?0:(j.igi||10);
-      const igi=va*(igiPct/100); const iva=(va+igi)*.16; const dta=va*.008;
-      const sub=igi+iva+dta; const hon=sub*.30; const tot=sub+hon;
-      const cfColor=j.confianza==='ALTA'?'#3ecf8e':j.confianza==='MEDIA'?'#f0b429':'#f87171';
-      qzBubble('nova',`<div style="margin-bottom:8px;font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--text-2);">RESULTADO DE CLASIFICACIÓN</div>
-<div style="font-family:var(--font-m);font-size:20px;color:var(--jade);margin-bottom:3px;">${j.fraccion}</div>
-<div style="font-size:11px;color:var(--text);margin-bottom:8px;">${j.descripcion}</div>
-<div style="font-size:9px;color:${cfColor};border:1px solid ${cfColor};padding:2px 8px;display:inline-block;margin-bottom:10px;">${j.confianza}</div>
-${inv>0?`<div style="border:1px solid var(--border);padding:9px;margin-bottom:8px;font-size:11px;">
-<div style="display:grid;grid-template-columns:1fr auto;gap:3px;">
-<div style="color:var(--text-2);">Valor en aduana</div><div style="font-family:var(--font-m);color:#93c5fd;">${fmt(va)}</div>
-<div style="color:var(--text-2);">IGI (${igiPct}%${qzState.tlc?' T-MEC':''})</div><div style="font-family:var(--font-m);color:var(--text-2);">${fmt(igi)}</div>
-<div style="color:var(--text-2);">IVA 16%</div><div style="font-family:var(--font-m);color:var(--text-2);">${fmt(iva)}</div>
-<div style="color:var(--text-2);">DTA 8‰</div><div style="font-family:var(--font-m);color:var(--text-2);">${fmt(dta)}</div>
-</div></div>
-<div style="border:1px solid rgba(240,180,41,.3);padding:9px;background:rgba(240,180,41,.05);">
-<div style="display:grid;grid-template-columns:1fr auto;gap:3px;font-size:11px;">
-<div style="color:var(--amber);">Honorarios Lenoah (30%)</div><div style="font-family:var(--font-m);color:var(--amber);">${fmt(hon)}</div>
-<div style="font-size:13px;color:var(--text);font-weight:500;">TOTAL</div><div style="font-family:var(--font-m);font-size:15px;color:var(--jade);">${fmt(tot)}</div>
-</div></div>`:'<div style="font-size:10px;color:var(--text-3);">Ingresa el valor en factura para calcular impuestos.</div>'}
-${j.noms&&j.noms.length?`<div style="margin-top:8px;border:1px solid rgba(240,180,41,.2);padding:8px;font-size:10px;color:#f0b429;">📋 ${j.noms.join(' · ')}</div>`:''}
-${j.restricciones&&j.restricciones.length?`<div style="margin-top:6px;border:1px solid rgba(248,113,113,.2);padding:8px;font-size:10px;color:#f87171;">⚠ ${j.restricciones.join(' · ')}</div>`:''}
-<div style="margin-top:8px;font-size:9px;color:var(--text-3);">Cotización preliminar orientativa. Tipo cambio ref. ~$20.50. Un agente aduanal de Lenoah validará la clasificación final.</div>`);
-    }catch(e){} }
-  }catch(e){ qzHideThink(); qzBubble('nova','Error de conexión. Verifica internet e intenta de nuevo.'); }
+
+// CÁLCULO OFICIAL según Ley Aduanera y LIVA
+function calcImpuestos(valorFactura, fleteInput, seguroInput, tcInput, igiPct, iepsPct, iepsEspecifico, esExento) {
+  const tc = parseFloat(tcInput) || 20.50;
+  const inv = parseFloat(valorFactura) || 0;
+  // Incrementables Art. 65 Ley Aduanera
+  const flete  = parseFloat(fleteInput) > 0 ? parseFloat(fleteInput) : inv * 0.06;
+  const seguro = parseFloat(seguroInput) > 0 ? parseFloat(seguroInput) : inv * 0.015;
+  // VEA = CIF en MXN (Art. 56 Ley Aduanera)
+  const vea_usd = inv + flete + seguro;
+  const vea = vea_usd * tc;
+  // IGI (Ad valorem sobre VEA)
+  const igi_pct = esExento ? 0 : (parseFloat(igiPct) || 0);
+  const igi = vea * (igi_pct / 100);
+  // DTA: 0.8% del VEA (Art. 49 LFD) — tope para operaciones ≤ $500,000 USD
+  const dta = vea * 0.008;
+  // IEPS (si aplica) — base es el VEA
+  let ieps = 0;
+  if(iepsPct > 0) ieps = vea * (parseFloat(iepsPct) / 100);
+  if(iepsEspecifico > 0) ieps = iepsEspecifico; // tasa específica MXN por unidad
+  // BASE IVA = VEA + IGI + IEPS + DTA (Art. 1 LIVA y Art. 27 CFF)
+  const base_iva = vea + igi + ieps + dta;
+  const iva = base_iva * 0.16;
+  // Subtotal contribuciones (sin VEA)
+  const subtotal = igi + ieps + dta + iva;
+  // Honorarios Lenoah
+  const honorarios = subtotal * 0.30;
+  const total = subtotal + honorarios;
+  return { inv, flete, seguro, vea_usd, vea, tc, igi_pct, igi, dta, ieps, iepsPct, base_iva, iva, subtotal, honorarios, total };
 }
-function qzReset(){
-  const p=qzPanel(); if(!p) return;
-  p.innerHTML=''; qzHist=[]; qzState={step:'idle',product:'',origin:'',tlc:false,invoiceUSD:0,freightUSD:0};
-  const div=document.createElement('div'); div.style.cssText='display:flex;align-items:center;gap:10px;margin:10px 0 14px;';
-  div.innerHTML='<div style="flex:1;height:1px;background:var(--border);"></div><div style="font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--text-3);">Clasificador Arancelario</div><div style="flex:1;height:1px;background:var(--border);"></div>'; p.appendChild(div);
-  qzBubble('nova',`<div style="font-family:var(--font-d);font-style:italic;font-size:14px;margin-bottom:10px;">Clasificador Arancelario · México</div>
-<div style="font-size:11px;color:var(--text-2);line-height:1.65;margin-bottom:12px;">Puedo clasificar tu mercancía en la fracción arancelaria correcta (TIGIE 2022), calcular IGI, IVA y DTA, detectar NOMs y restricciones, y generar una cotización preliminar con honorarios.</div>
-<button onclick="qzStart()" style="width:100%;padding:9px;border:1px solid var(--jade);background:var(--jade-dim);color:var(--jade);font-family:var(--font-b);font-size:9px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">▶ Iniciar consulta</button>`);
+
+async function qzClasificar() {
+  const desc    = document.getElementById('qzDesc')?.value.trim() || '';
+  const origen  = document.getElementById('qzOrigen')?.value || 'usa';
+  const tlc     = document.getElementById('qzTlc')?.value || 'tmec';
+  const valor   = document.getElementById('qzValor')?.value || '0';
+  const flete   = document.getElementById('qzFlete')?.value || '';
+  const seguro  = document.getElementById('qzSeguro')?.value || '';
+  const tc      = document.getElementById('qzTc')?.value || '20.50';
+  const cant    = document.getElementById('qzCantidad')?.value || '1';
+  const aduana  = document.getElementById('qzAduana')?.value || 'tijuana';
+
+  if(!desc) { showToast('Describe la mercancía antes de continuar'); return; }
+  if(!valor || parseFloat(valor) <= 0) { showToast('Ingresa el valor en factura'); return; }
+
+  // Show result panel, hide form
+  document.getElementById('qz-form').style.display = 'none';
+  const rd = document.getElementById('qz-result');
+  rd.style.display = 'block';
+  rd.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;gap:14px;"><div class="thinking"><div class="td"></div><div class="td"></div><div class="td"></div></div><div style="font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--text-3);text-align:center;">Clasificando con IA · TIGIE 2026<br><span style="font-size:9px;">Consultando fracción arancelaria exacta…</span></div></div>';
+
+  const origenInfo = TLC_PAISES[origen] || TLC_PAISES.otro;
+  const tieneTlc = tlc !== 'ninguno';
+  const aduanaLabel = {tijuana:'Tijuana/Otay',mexicali:'Mexicali',nogales:'Nogales',cdj:'Cd. Juárez',laredo:'Nuevo Laredo',veracruz:'Veracruz',manzanillo:'Manzanillo',otra:'Otra aduana'}[aduana] || aduana;
+
+  const SYSTEM_CLASIFICADOR = `Eres un agente aduanal mexicano con 20 años de experiencia, especialista en clasificación arancelaria bajo el Sistema Armonizado y la LIGIE/TIGIE vigente en México.
+
+NORMATIVA QUE DEBES APLICAR (2026):
+- TIGIE: Tarifa de la Ley de los Impuestos Generales de Importación y de Exportación, vigente 2026
+- REFORMA TIGIE DOF 29-Dic-2025: vigente desde 1-Ene-2026. Afecta 1,463+ fracciones arancelarias.
+  * Textil/vestido (Cap. 50-64): tasas NMF subieron a 25-45%
+  * Cerámica/vidrio (Cap. 69-70): 25-36%
+  * Acero/aluminio (Cap. 72-73-76): 25-50%
+  * Maquinaria/electrónica/auto (Cap. 83-85-87-90): 5-35%
+  * Calzado (Cap. 64): hasta 35%
+  * Muebles (Cap. 94): hasta 35%
+  * IMPORTANTE: Estas tasas NMF aplican SOLO a países SIN TLC con México
+  * Con T-MEC, TLCUEM, CPTPP u otro TLC: aplica tasa preferencial (generalmente 0%)
+- Decreto PROSEC DOF 23-Abr-2026: permite tasas preferenciales/0% en insumos para sectores industriales
+- Ley Aduanera: Valor en Aduana = CIF (precio + flete + seguro hasta aduana mexicana) Art. 56 LA
+- Restricciones No Arancelarias: RRNA en la VUCEM para fracciones con permisos previos SADER, COFEPRIS, SEDENA, SE
+- NOMs: Normas Oficiales Mexicanas obligatorias por fracción
+- IEPS: Aplica a bebidas alcohólicas, tabaco, combustibles, bebidas saborizadas, alimentos alta densidad calórica, plaguicidas
+
+TU PROCESO DE CLASIFICACIÓN:
+1. Identifica el capítulo del Sistema Armonizado (2 dígitos)
+2. Determina la partida (4 dígitos)
+3. Determina la subpartida (6 dígitos)
+4. Determina la fracción TIGIE exacta (8 dígitos)
+5. Verifica si la fracción fue modificada por el Decreto DOF 29-Dic-2025
+6. Determina tasa IGI general (NMF) y tasa preferencial con TLC si aplica
+7. Verifica restricciones no arancelarias, NOMs, permisos previos
+8. Determina si aplica IEPS y en qué porcentaje o tasa específica
+
+INSTRUCCIONES DE RESPUESTA:
+- Análisis máximo 200 palabras explicando la clasificación y el razonamiento
+- SIEMPRE termina con el JSON en una sola línea sin saltos de línea
+- Usa el formato EXACTO indicado sin modificaciones
+
+JSON OBLIGATORIO al final (una sola línea):
+[QZ:{"fraccion":"XXXXXXXX","desc_tigie":"descripcion oficial TIGIE","capitulo":XX,"partida":"XXXX","unidad_medida":"KG/PZA/L/etc","igi_nmf":XX,"igi_tlc":X,"ieps_pct":0,"ieps_especifico":0,"aplica_prosec":false,"confianza":"ALTA","alternativas":["XXXXXXXX"],"restricciones_na":[],"noms":["NOM-XXX"],"permisos":[],"cuotas_compensatorias":false,"notas_clasificacion":"texto"}]`;
+
+  const userPrompt = `MERCANCÍA A CLASIFICAR:
+Descripción: ${desc}
+País de fabricación/origen: ${origenInfo.nombre}
+Tratado comercial: ${tlc === 'tmec' ? 'T-MEC' : tlc === 'tlcue' ? 'TLC México-UE' : tlc === 'cptpp' ? 'CPTPP' : 'Sin tratado (NMF)'}
+¿Tiene certificado de origen válido?: ${tieneTlc ? 'SÍ' : 'NO'}
+Valor en factura: $${valor} USD
+Cantidad: ${cant} unidades
+Aduana de entrada: ${aduanaLabel}
+Año de operación: 2026
+
+Clasifica esta mercancía en la fracción arancelaria TIGIE correcta y proporciona todos los datos requeridos.`;
+
+  try {
+    if(!GEMINI_KEY) throw new Error('API Key no configurada. Ve a configuración.');
+
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: SYSTEM_CLASIFICADOR }] },
+          contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+          generationConfig: { maxOutputTokens: 1000, temperature: 0.1, topP: 0.85 }
+        })
+      }
+    );
+
+    if(!res.ok) {
+      const errBody = await res.text();
+      throw new Error(`API ${res.status}: ${errBody.substring(0,300)}`);
+    }
+
+    const data = await res.json();
+    if(data.error) throw new Error(data.error.message);
+
+    const fullText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    if(!fullText) throw new Error('Respuesta vacía de la API');
+
+    // Robust JSON extraction
+    let ai = null;
+    const rawMatch = fullText.match(/\[QZ:([\s\S]*?)\]/);
+    if(rawMatch) {
+      let jsonStr = rawMatch[1]
+        .replace(/\n/g, ' ').replace(/\r/g, '').replace(/\t/g, ' ')
+        .replace(/,\s*}/g, '}').replace(/,\s*]/g, ']')
+        .replace(/:\s*undefined/g, ':null');
+      try { ai = JSON.parse(jsonStr); }
+      catch(e) {
+        // Try fixing common issues
+        jsonStr = jsonStr.replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3');
+        try { ai = JSON.parse(jsonStr); } catch(e2) { console.error('JSON parse failed:', e2, jsonStr.substring(0,200)); }
+      }
+    }
+
+    const narrative = fullText.replace(/\[QZ:[\s\S]*?\]/g, '').trim();
+
+    // Calculate with correct formulas
+    const tieneTlcActual = tieneTlc && (ai?.igi_tlc !== undefined && ai?.igi_tlc !== null);
+    const igiPctUsar = tieneTlcActual ? (ai?.igi_tlc || 0) : (ai?.igi_nmf || 10);
+    const calc = calcImpuestos(valor, flete, seguro, tc, igiPctUsar, ai?.ieps_pct || 0, ai?.ieps_especifico || 0, false);
+
+    qzRenderResult(ai, narrative, calc, { desc, origen: origenInfo.nombre, tlc, tieneTlc, cant, aduanaLabel, igiPctUsar, tieneTlcActual });
+
+  } catch(err) {
+    console.error('qzClasificar error:', err);
+    rd.innerHTML = `
+    <div style="padding:16px;flex:1;">
+      <div style="border:1px solid rgba(248,113,113,.3);padding:14px;background:rgba(248,113,113,.05);margin-bottom:12px;">
+        <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#f87171;margin-bottom:6px;">Error al clasificar</div>
+        <div style="font-size:12px;color:var(--text-2);line-height:1.6;">${err.message}</div>
+      </div>
+      <div style="border:1px solid var(--border);padding:12px;font-size:11px;color:var(--text-2);line-height:1.65;margin-bottom:12px;">
+        <b style="color:var(--text);">Verifica:</b><br>
+        • API Key de Gemini configurada correctamente<br>
+        • Conexión a internet activa<br>
+        • Key no haya alcanzado el límite de uso
+      </div>
+      <button onclick="qzReset()" style="width:100%;padding:10px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:9px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">← Intentar de nuevo</button>
+    </div>`;
+  }
 }
-function qzStart(){
-  qzHist=[]; qzState={step:'product',product:'',origin:'',tlc:false,invoiceUSD:0,freightUSD:0};
-  qzHist.push({role:'user',parts:[{text:'Hola, quiero clasificar una mercancía para importar a México.'}]});
-  qzSend(); const qi=document.getElementById('qzInput'); if(qi) qi.focus();
+
+function qzRenderResult(ai, narrative, calc, meta) {
+  const rd = document.getElementById('qz-result');
+
+  const confColor = !ai ? '#f87171' : ai.confianza === 'ALTA' ? '#3ecf8e' : ai.confianza === 'MEDIA' ? '#f0b429' : '#f87171';
+  const tlcBadge = meta.tieneTlcActual
+    ? `<span style="color:#3ecf8e;font-size:9px;border:1px solid rgba(62,207,142,.4);padding:1px 6px;">✓ ${meta.tlc.toUpperCase()}</span>`
+    : `<span style="color:#f87171;font-size:9px;border:1px solid rgba(248,113,113,.4);padding:1px 6px;">NMF/BASE</span>`;
+
+  rd.innerHTML = `<div style="display:flex;flex-direction:column;gap:10px;">
+
+<!-- FRACCIÓN ARANCELARIA -->
+<div style="border:1px solid var(--border2);padding:13px;background:var(--jade-dim);">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+    <div>
+      <div style="font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--jade);margin-bottom:4px;">Fracción Arancelaria TIGIE 2026</div>
+      <div style="font-family:var(--font-m);font-size:26px;color:var(--jade);letter-spacing:.1em;">${ai?.fraccion || '--------'}</div>
+    </div>
+    <div style="text-align:right;display:flex;flex-direction:column;gap:4px;">
+      <div style="font-size:9px;color:${confColor};border:1px solid ${confColor};padding:2px 8px;">${ai?.confianza || '?'}</div>
+      ${tlcBadge}
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--text);line-height:1.5;margin-bottom:6px;">${ai?.desc_tigie || 'Descripción no disponible'}</div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;">
+    <div style="font-size:10px;color:var(--text-2);">Cap. ${ai?.capitulo || '--'} · Partida ${ai?.partida || '----'} · Unidad: ${ai?.unidad_medida || '--'}</div>
+    <div style="font-size:10px;color:var(--text-2);">Origen: ${meta.origen}</div>
+    <div style="font-size:10px;color:var(--text-2);">Aduana: ${meta.aduanaLabel}</div>
+  </div>
+  ${ai?.alternativas?.length ? `<div style="font-size:9px;color:var(--text-3);margin-top:5px;">Fracciones alternativas: ${ai.alternativas.join(', ')}</div>` : ''}
+</div>
+
+<!-- ANÁLISIS IA -->
+${narrative ? `<div style="border:1px solid var(--border);padding:10px;font-size:11px;color:var(--text-2);line-height:1.65;max-height:140px;overflow-y:auto;">${narrative.replace(/\n/g,'<br>')}</div>` : ''}
+
+<!-- DESGLOSE VALOR EN ADUANA -->
+<div style="border:1px solid var(--border);padding:12px;">
+  <div style="font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:var(--text-2);margin-bottom:8px;">Determinación del Valor en Aduana · Art. 56 Ley Aduanera (Método CIF)</div>
+  <div style="display:grid;grid-template-columns:1fr auto;gap:4px;font-size:11px;row-gap:5px;">
+    <div style="color:var(--text-2);">Valor comercial en factura</div>
+    <div style="font-family:var(--font-m);color:var(--text);text-align:right;">$${calc.inv.toLocaleString()} USD</div>
+    <div style="color:var(--text-2);">+ Flete internacional ${!document.getElementById('qzFlete')?.value ? '(est. 6%)' : ''}</div>
+    <div style="font-family:var(--font-m);color:var(--text-2);text-align:right;">$${calc.flete.toFixed(2)} USD</div>
+    <div style="color:var(--text-2);">+ Seguro ${!document.getElementById('qzSeguro')?.value ? '(est. 1.5%)' : ''}</div>
+    <div style="font-family:var(--font-m);color:var(--text-2);text-align:right;">$${calc.seguro.toFixed(2)} USD</div>
+    <div style="color:var(--text);border-top:1px solid var(--border);padding-top:4px;">= Valor en Aduana (USD)</div>
+    <div style="font-family:var(--font-m);color:#93c5fd;border-top:1px solid var(--border);padding-top:4px;text-align:right;">$${calc.vea_usd.toFixed(2)} USD</div>
+    <div style="color:var(--text-2);">TC: $${calc.tc} MXN/USD</div>
+    <div style="font-family:var(--font-m);font-size:14px;color:var(--jade);text-align:right;">${fmt(calc.vea)}</div>
+  </div>
+</div>
+
+<!-- CONTRIBUCIONES -->
+<div style="border:1px solid var(--border);padding:12px;">
+  <div style="font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:var(--text-2);margin-bottom:8px;">Contribuciones a pagar · LIGIE/TIGIE vigente 2026</div>
+  <div style="display:grid;grid-template-columns:1fr auto;gap:4px;font-size:11px;row-gap:5px;">
+
+    <!-- IGI -->
+    <div style="color:var(--text-2);">
+      IGI ${meta.tieneTlcActual ? `(${meta.tlc.toUpperCase()} · ${calc.igi_pct}%)` : `(NMF · ${calc.igi_pct}%)`}
+      ${!meta.tieneTlcActual && ai?.igi_nmf > 20 ? '<div style="font-size:9px;color:#f0b429;">⚠ Tasa alta · Reforma DOF Dic-2025</div>' : ''}
+    </div>
+    <div style="font-family:var(--font-m);color:${calc.igi === 0 ? '#3ecf8e' : 'var(--text-2)'};text-align:right;">${fmt(calc.igi)}${calc.igi === 0 ? ' ✓' : ''}</div>
+
+    ${calc.ieps > 0 ? `
+    <div style="color:var(--text-2);">IEPS (${calc.iepsPct}%)</div>
+    <div style="font-family:var(--font-m);color:var(--text-2);text-align:right;">${fmt(calc.ieps)}</div>` : ''}
+
+    <!-- DTA -->
+    <div style="color:var(--text-2);">DTA (8‰ del VEA · Art. 49 LFD)</div>
+    <div style="font-family:var(--font-m);color:var(--text-2);text-align:right;">${fmt(calc.dta)}</div>
+
+    <!-- Base IVA -->
+    <div style="color:var(--text-3);font-size:10px;">Base IVA (VEA+IGI${calc.ieps>0?'+IEPS':''} +DTA)</div>
+    <div style="font-family:var(--font-m);color:var(--text-3);font-size:10px;text-align:right;">${fmt(calc.base_iva)}</div>
+
+    <!-- IVA -->
+    <div style="color:var(--text-2);">IVA (16% · Art. 1 LIVA)</div>
+    <div style="font-family:var(--font-m);color:var(--text-2);text-align:right;">${fmt(calc.iva)}</div>
+
+    <!-- Subtotal -->
+    <div style="color:var(--text);border-top:1px solid var(--border);padding-top:5px;font-weight:500;">Subtotal contribuciones</div>
+    <div style="font-family:var(--font-m);color:var(--text);border-top:1px solid var(--border);padding-top:5px;text-align:right;">${fmt(calc.subtotal)}</div>
+  </div>
+</div>
+
+<!-- HONORARIOS Y TOTAL -->
+<div style="border:1px solid rgba(240,180,41,.35);padding:12px;background:rgba(240,180,41,.05);">
+  <div style="display:grid;grid-template-columns:1fr auto;gap:4px;font-size:11px;row-gap:5px;">
+    <div style="color:var(--amber);">Honorarios agencia Lenoah (+30%)</div>
+    <div style="font-family:var(--font-m);color:var(--amber);text-align:right;">${fmt(calc.honorarios)}</div>
+  </div>
+  <div style="height:1px;background:rgba(240,180,41,.25);margin:8px 0;"></div>
+  <div style="display:grid;grid-template-columns:1fr auto;">
+    <div style="font-size:16px;font-weight:500;color:var(--text);">TOTAL ESTIMADO</div>
+    <div style="font-family:var(--font-m);font-size:20px;color:var(--jade);text-align:right;">${fmt(calc.total)}</div>
+  </div>
+  <div style="font-size:9px;color:var(--text-3);margin-top:5px;">Contribuciones: ${fmt(calc.subtotal)} + Honorarios: ${fmt(calc.honorarios)}</div>
+</div>
+
+<!-- RESTRICCIONES Y NOMs -->
+${ai?.cuotas_compensatorias ? `<div style="border:1px solid rgba(248,113,113,.4);padding:10px;background:rgba(248,113,113,.07);font-size:11px;color:#f87171;"><b>⛔ ALERTA: Esta fracción puede tener cuotas compensatorias vigentes.</b> Verificar en VUCEM antes de importar.</div>` : ''}
+${(ai?.restricciones_na?.length || ai?.permisos?.length) ? `
+<div style="border:1px solid rgba(248,113,113,.25);padding:10px;">
+  <div style="font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:#f87171;margin-bottom:6px;">Restricciones No Arancelarias · Permisos Previos</div>
+  ${(ai?.restricciones_na||[]).map(r=>`<div style="font-size:11px;color:var(--text-2);margin-bottom:3px;">• ${r}</div>`).join('')}
+  ${(ai?.permisos||[]).map(p=>`<div style="font-size:11px;color:#f0b429;margin-bottom:3px;">📋 ${p}</div>`).join('')}
+</div>` : ''}
+${ai?.noms?.length ? `
+<div style="border:1px solid rgba(240,180,41,.25);padding:10px;">
+  <div style="font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:#f0b429;margin-bottom:6px;">NOMs Obligatorias</div>
+  ${ai.noms.map(n=>`<div style="font-size:11px;color:var(--text-2);margin-bottom:3px;">📋 ${n}</div>`).join('')}
+</div>` : ''}
+${ai?.notas_clasificacion ? `<div style="border:1px solid var(--border);padding:9px;font-size:10px;color:var(--text-3);line-height:1.55;">${ai.notas_clasificacion}</div>` : ''}
+
+<!-- DISCLAIMER LEGAL -->
+<div style="border:1px solid var(--border);padding:9px;background:rgba(5,7,10,.5);">
+  <div style="font-size:9px;color:var(--text-3);line-height:1.6;">
+    ⚠ <b style="color:var(--text-2);">Cotización preliminar orientativa.</b> Basada en TIGIE/LIGIE vigente, reforma DOF 29-Dic-2025 y decreto PROSEC DOF 23-Abr-2026. TC referencial $${calc.tc} MXN/USD. El DTA tiene topes y exenciones no aplicados en esta estimación. El IGI final puede variar según la valoración aduanera y documentación. Un agente aduanal certificado de <b style="color:var(--jade);">Lenoah</b> validará la clasificación arancelaria correcta y emitirá el presupuesto definitivo.
+  </div>
+</div>
+
+<!-- BOTÓN VOLVER -->
+<button onclick="qzReset()" style="width:100%;padding:10px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:9px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">← Nueva clasificación</button>
+
+</div>`;
 }
-function qzSaveQuote(){ showToast('Guarda la pantalla con captura de pantalla'); }
-function qzToggleMic(){
-  if(qzL){ if(qzRec2){try{qzRec2.stop();}catch(e){}} qzL=false; const b=document.getElementById('qzMicBtn'); if(b) b.textContent='🎤 Voz'; return; }
-  navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
-    stream.getTracks().forEach(t=>t.stop());
-    const SR=window.SpeechRecognition||window.webkitSpeechRecognition; if(!SR){ showToast('Voz no disponible'); return; }
-    qzRec2=new SR(); qzRec2.lang=lang; qzRec2.continuous=false; qzRec2.interimResults=false;
-    qzRec2.onresult=e=>{ const txt=e.results[0][0].transcript; const qi=document.getElementById('qzInput'); if(qi) qi.value=txt; qzSend(); };
-    qzRec2.onend=()=>{ qzL=false; const b=document.getElementById('qzMicBtn'); if(b) b.textContent='🎤 Voz'; };
-    qzRec2.onerror=()=>{ qzL=false; };
-    qzRec2.start(); qzL=true; const b=document.getElementById('qzMicBtn'); if(b) b.textContent='🔴 Escuchando';
-  }).catch(()=>showToast('⚠ Activa el micrófono en Ajustes'));
+
+function qzReset() {
+  const form = document.getElementById('qz-form');
+  const result = document.getElementById('qz-result');
+  if(form) form.style.display = 'flex';
+  if(result) { result.style.display = 'none'; result.innerHTML = ''; }
+}
+
+function qzSaveQuote() { showToast('Toma una captura de pantalla para guardar'); }
+
+function qzToggleMic() {
+  if(qzL) {
+    if(qzRec2) { try{qzRec2.stop();}catch(e){} }
+    qzL = false;
+    const b = document.getElementById('qzMicBtn'); if(b) b.textContent = '🎤 Dictar';
+    return;
+  }
+  navigator.mediaDevices.getUserMedia({audio:true}).then(stream => {
+    stream.getTracks().forEach(t => t.stop());
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if(!SR) { showToast('Voz no disponible'); return; }
+    qzRec2 = new SR(); qzRec2.lang = lang; qzRec2.continuous = false; qzRec2.interimResults = false;
+    qzRec2.onresult = e => {
+      const txt = e.results[0][0].transcript;
+      const d = document.getElementById('qzDesc');
+      if(d) d.value = (d.value ? d.value + ' ' : '') + txt;
+    };
+    qzRec2.onend = () => { qzL = false; const b = document.getElementById('qzMicBtn'); if(b) b.textContent = '🎤 Dictar'; };
+    qzRec2.onerror = () => { qzL = false; };
+    qzRec2.start(); qzL = true;
+    const b = document.getElementById('qzMicBtn'); if(b) b.textContent = '🔴 Dictando';
+  }).catch(() => showToast('⚠ Activa el micrófono en Ajustes'));
 }
 
 // ── VEHICLE MODULE ────────────────────────────────
