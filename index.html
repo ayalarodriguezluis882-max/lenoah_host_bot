@@ -929,23 +929,36 @@ function lhSaveAll() {
 }
 
 // Round Robin — returns next key to use
+// ── ROUND ROBIN ENGINE (REPARADO) ─────────────────
+// rrCurrentKey guarda cuál key se está usando AHORA
+// rrNextKey() solo obtiene la key actual y avanza el puntero
+// rrMarkError() marca la key actual como fallida y rota
+
+let rrCurrentKey = ''; // key activa en la llamada actual
+
 function rrNextKey() {
   if(!rrKeys.length) return GEMINI_KEY;
-  const key = rrKeys[rrIndex];
-  rrCallCount[rrIndex]++;
+  // Guardar cuál key vamos a usar ANTES de avanzar
+  rrCurrentKey = rrKeys[rrIndex];
+  rrCallCount[rrIndex] = (rrCallCount[rrIndex] || 0) + 1;
+  // Avanzar para la PRÓXIMA llamada
   rrIndex = (rrIndex + 1) % rrKeys.length;
-  GEMINI_KEY = key; // update global
-  return key;
+  GEMINI_KEY = rrCurrentKey;
+  console.log(`RR: usando key #${rrKeys.indexOf(rrCurrentKey)+1} de ${rrKeys.length}`);
+  return rrCurrentKey;
 }
 
-// If a key hits quota error, skip it temporarily
-function rrHandleQuotaError(key) {
-  const idx = rrKeys.indexOf(key);
-  if(idx >= 0 && rrKeys.length > 1) {
-    console.log('Key', idx+1, 'hit quota, rotating...');
-    rrIndex = (idx + 1) % rrKeys.length;
-    GEMINI_KEY = rrKeys[rrIndex];
+// Llamar con la key que falló (NO llamar rrNextKey() aquí)
+function rrMarkError(failedKey, reason) {
+  const idx = rrKeys.indexOf(failedKey);
+  console.warn(`Key #${idx+1} error: ${reason}`);
+  if(rrKeys.length <= 1) return; // solo una key, no hay alternativa
+  // Asegurar que el índice apunte a una key diferente
+  if(rrCurrentKey === rrKeys[rrIndex]) {
+    rrIndex = (rrIndex + 1) % rrKeys.length;
   }
+  GEMINI_KEY = rrKeys[rrIndex];
+  console.log(`RR: rotando a key #${rrIndex+1}`);
 }
 
 function lhResetAll() {
@@ -954,6 +967,62 @@ function lhResetAll() {
     location.reload();
   }
 }
+// ── UNIVERSAL API CALL WITH RETRY ─────────────────
+// All modules use this — automatically retries with next key on quota error
+async function geminiCall(body, maxRetries) {
+  maxRetries = maxRetries || Math.min(rrKeys.length || 1, 5);
+  let lastErr = '';
+  for(let i=0; i<maxRetries; i++){
+    const key = rrNextKey();
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,
+        { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }
+      );
+      if(!res.ok){
+        const errTxt = await res.text();
+        if(res.status===429||res.status===403||res.status===401){
+          rrMarkError(key, `HTTP ${res.status}`);
+          lastErr = `Key #${rrKeys.indexOf(key)+1} — límite (${res.status}). Rotando...`;
+          console.warn(lastErr);
+          continue;
+        }
+        throw new Error(`HTTP ${res.status}: ${errTxt.substring(0,150)}`);
+      }
+      const data = await res.json();
+      if(data.error){
+        const msg = data.error.message || JSON.stringify(data.error);
+        const code = data.error.code || 0;
+        if(code===429||code===403||msg.toLowerCase().includes('quota')||msg.toLowerCase().includes('limit')||msg.toLowerCase().includes('rate')){
+          rrMarkError(key, msg);
+          lastErr = msg;
+          console.warn(`Key quota error: ${msg}`);
+          continue;
+        }
+        throw new Error(msg);
+      }
+      const candidate = data.candidates?.[0];
+      if(!candidate) throw new Error('Sin candidatos en la respuesta');
+      if(candidate.finishReason==='SAFETY') throw new Error('Bloqueado por filtros de seguridad');
+      const text = candidate.content?.parts?.[0]?.text || '';
+      if(!text) throw new Error('Respuesta de texto vacía');
+      return text; // success!
+    } catch(e){
+      lastErr = e.message;
+      if(!e.message.includes('límite') && !e.message.includes('quota') && !e.message.includes('Rotando')){
+        // Non-quota error — don't retry
+        throw e;
+      }
+    }
+  }
+  throw new Error(
+    rrKeys.length > 1
+      ? `Todas las ${rrKeys.length} API Keys alcanzaron su límite de consultas. Espera 1 minuto e intenta de nuevo.`
+      : `Límite de la API Key alcanzado. Espera 1 minuto o agrega más keys en ⚙ Configuración.`
+  );
+}
+
+
 
 // Legacy compat
 function getKey(){ return rrKeys[0] || ''; }
@@ -1244,22 +1313,42 @@ function updDash(){
 
 // ── GEMINI CHAT ───────────────────────────────────
 async function ask(userText){
-  addMsg('vis',userText); document.getElementById('trTxt').textContent='…';
+  addMsg('vis',userText);
+  document.getElementById('trTxt').textContent='…';
   setSt('Procesando','Pensando…'); setWave(false); showThink();
   hist.push({role:'user',parts:[{text:userText}]});
   if(curV) curV.lang=/[áéíóúñ¿¡]/i.test(userText)?'ES':'EN';
+
+  let lastError = '';
   try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${rrNextKey()}`,
-      {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-        system_instruction:{parts:[{text:SYSTEM_NOVA}]},contents:hist,generationConfig:{maxOutputTokens:200,temperature:.88}})});
-    const data=await res.json();
-    let reply=data.candidates?.[0]?.content?.parts?.[0]?.text||'Disculpa, hubo un error.';
-    const nm=reply.match(/\[N:([^\]]+)\]/),mo=reply.match(/\[M:([^\]]+)\]/);
-    if(nm&&!visName){ visName=nm[1].trim(); document.getElementById('vcName').textContent=visName; document.getElementById('vcChip').classList.add('show'); if(curV) curV.name=visName; }
-    if(mo&&curV) curV.reason=mo[1].trim();
-    reply=reply.replace(/\[N:[^\]]+\]/g,'').replace(/\[M:[^\]]+\]/g,'').trim();
-    hist.push({role:'model',parts:[{text:reply}]}); hideThink(); addMsg('nova',reply); speak(reply);
-  }catch(e){ hideThink(); const err='Disculpa, error de conexión.'; addMsg('nova',err); speak(err); }
+      let reply = await geminiCall({
+        system_instruction:{parts:[{text:SYSTEM_NOVA}]},
+        contents:hist,
+        generationConfig:{maxOutputTokens:200, temperature:.88}
+      });
+
+      // Extract name/reason tags
+      const nm=reply.match(/\[N:([^\]]+)\]/), mo=reply.match(/\[M:([^\]]+)\]/);
+      if(nm&&!visName){
+        visName=nm[1].trim();
+        document.getElementById('vcName').textContent=visName;
+        document.getElementById('vcChip').classList.add('show');
+        if(curV) curV.name=visName;
+      }
+      if(mo&&curV) curV.reason=mo[1].trim();
+      reply=reply.replace(/\[N:[^\]]+\]/g,'').replace(/\[M:[^\]]+\]/g,'').trim();
+
+      hist.push({role:'model',parts:[{text:reply}]});
+      hideThink(); addMsg('nova',reply); speak(reply);
+  } catch(e){
+    lastError = e.message;
+    console.error('ask() error:', e.message);
+    hideThink();
+    const errMsg = lastError.includes('límite') || lastError.includes('Keys') || lastError.includes('Espera')
+      ? lastError
+      : `Error de conexión. ${lastError.substring(0,60)}`;
+    addMsg('nova', errMsg); speak(errMsg);
+  }
 }
 
 // ── SPEECH SYNTHESIS ─────────────────────────────
@@ -1533,32 +1622,13 @@ Año de operación: 2026
 Clasifica esta mercancía en la fracción arancelaria TIGIE correcta y proporciona todos los datos requeridos.`;
 
   try {
-    if(!GEMINI_KEY) throw new Error('API Key no configurada. Ve a configuración.');
+    if(!rrKeys.length) throw new Error('API Key no configurada. Toca ⚙ para configurar.');
 
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${rrNextKey()}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: SYSTEM_CLASIFICADOR }] },
-          contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
-          generationConfig: { maxOutputTokens: 1000, temperature: 0.1, topP: 0.85 }
-        })
-      }
-    );
-
-    if(!res.ok) {
-      const errBody = await res.text();
-      if(res.status === 429) { rrHandleQuotaError(rrNextKey()); throw new Error('Cuota de esta API Key agotada. Rotando a la siguiente key automáticamente. Intenta de nuevo.'); }
-      throw new Error(`API ${res.status}: ${errBody.substring(0,300)}`);
-    }
-
-    const data = await res.json();
-    if(data.error) throw new Error(data.error.message);
-
-    const fullText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    if(!fullText) throw new Error('Respuesta vacía de la API');
+    const fullText = await geminiCall({
+      system_instruction: { parts: [{ text: SYSTEM_CLASIFICADOR }] },
+      contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+      generationConfig: { maxOutputTokens: 1000, temperature: 0.1, topP: 0.85 }
+    });
 
     // Robust JSON extraction
     let ai = null;
@@ -2085,31 +2155,12 @@ Análisis narrativo máximo 180 palabras, LUEGO el JSON. El JSON debe estar en u
 IMPORTANTE: El JSON debe ser válido, sin comillas dobles dentro de strings de texto. Usa comillas simples en textos si necesitas comillas.`;
 
   try {
-    if(!GEMINI_KEY) { throw new Error('API key no configurada'); }
+    if(!rrKeys.length) throw new Error('API Key no configurada. Toca ⚙ para configurar.');
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${rrNextKey()}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          generationConfig: { maxOutputTokens: 900, temperature: 0.15, topP: 0.8 }
-        })
-      }
-    );
-
-    if(!response.ok) {
-      const errText = await response.text();
-      throw new Error(`API error ${response.status}: ${errText.substring(0, 200)}`);
-    }
-
-    const data = await response.json();
-
-    if(data.error) throw new Error(data.error.message || 'Error de API');
-
-    const fullText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    if(!fullText) throw new Error('Respuesta vacía de la API');
+    const fullText = await geminiCall({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: { maxOutputTokens: 900, temperature: 0.15, topP: 0.8 }
+    });
 
     // Extract JSON - try multiple patterns
     let aiData = null;
