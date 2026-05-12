@@ -1,2489 +1,676 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<!-- PWA Full Config — quita barra de navegación en iOS y Android -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="LenoahHost">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#05070a">
-<meta name="msapplication-navbutton-color" content="#05070a">
-<meta name="msapplication-starturl" content="/">
-<!-- Manifest inline via JS — no necesita archivo externo -->
-<script>
-(function(){
-  const manifest = {
-    name: "LenoahHost · Nova IA",
-    short_name: "LenoahHost",
-    description: "Asistente de recepción inteligente con clasificador arancelario",
-    start_url: window.location.href,
-    display: "standalone",
-    orientation: "any",
-    background_color: "#05070a",
-    theme_color: "#05070a",
-    icons: [
-      { src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%2305070a'/%3E%3Ctext x='96' y='130' font-size='120' text-anchor='middle' fill='%233ecf8e' font-family='serif'%3EL%3C/text%3E%3C/svg%3E", sizes: "192x192", type: "image/svg+xml" },
-      { src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%2305070a'/%3E%3Ctext x='256' y='350' font-size='320' text-anchor='middle' fill='%233ecf8e' font-family='serif'%3EL%3C/text%3E%3C/svg%3E", sizes: "512x512", type: "image/svg+xml" }
-    ]
-  };
-  const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('link');
-  link.rel = 'manifest'; link.href = url;
-  document.head.appendChild(link);
-})();
-</script>
-<title>LenoahHost · Nova Prestige</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@200;300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#05070a;--deep:#080c12;--surface:#0d1420;--card:#111926;
-  --jade:#3ecf8e;--jade2:#2ab377;--jade-dim:rgba(62,207,142,.10);--jade-glow:rgba(62,207,142,.28);
-  --amber:#f0b429;--rose:#f87171;--text:#e2ddd6;--text-2:#8b8680;--text-3:#3d3c3a;
-  --border:rgba(62,207,142,.14);--border2:rgba(62,207,142,.28);
-  --font-d:'DM Serif Display',serif;--font-b:'Outfit',sans-serif;--font-m:'DM Mono',monospace;
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
-html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--font-b);font-weight:300;}
-body{cursor:auto;}
-#cur,#cur2{display:none;}@media(pointer:fine){#cur{display:block;position:fixed;width:7px;height:7px;background:var(--jade);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 12px var(--jade);}#cur2{display:block;position:fixed;width:32px;height:32px;border:1px solid rgba(62,207,142,.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s;}}
-#bgC{position:fixed;inset:0;z-index:0;}
-.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
-
-/* IDLE */
-#idle{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .9s,visibility .9s;}
-#idle.gone{opacity:0;visibility:hidden;pointer-events:none;}
-.idle-wordmark{font-family:var(--font-d);font-size:clamp(52px,9vw,90px);letter-spacing:.12em;color:var(--text);text-transform:uppercase;line-height:1;margin-bottom:4px;}
-.idle-wordmark b{color:var(--jade);font-weight:400;}
-.idle-rule{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--jade),transparent);animation:rExp 2s .5s ease forwards;}
-@keyframes rExp{to{width:200px;}}
-.idle-sub{margin-top:14px;font-size:10px;letter-spacing:.55em;text-transform:uppercase;color:var(--text-2);margin-bottom:44px;}
-.idle-strip{display:flex;align-items:center;gap:28px;padding:14px 28px;border:1px solid var(--border);background:rgba(13,20,32,.6);backdrop-filter:blur(12px);margin-bottom:44px;}
-.si{display:flex;flex-direction:column;align-items:center;gap:3px;}
-.sv{font-family:var(--font-d);font-size:26px;color:var(--text);}
-.sl{font-size:9px;letter-spacing:.35em;text-transform:uppercase;color:var(--text-2);}
-.sdiv{width:1px;height:34px;background:var(--border);}
-.idle-quote{font-family:var(--font-d);font-style:italic;font-size:clamp(15px,2.2vw,20px);color:rgba(226,221,214,.38);text-align:center;max-width:480px;line-height:1.75;min-height:64px;display:flex;align-items:center;justify-content:center;padding:0 24px;transition:opacity .55s;margin-bottom:44px;}
-.idle-sensor{display:flex;align-items:center;gap:14px;}
-.sorb{width:44px;height:44px;border-radius:50%;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;position:relative;}
-.sorb::before{content:'';position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(62,207,142,.15);animation:sonar 2.4s ease-in-out infinite;}
-.sorb::after{content:'';position:absolute;inset:-15px;border-radius:50%;border:1px solid rgba(62,207,142,.07);animation:sonar 2.4s ease-in-out infinite .5s;}
-@keyframes sonar{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.08);opacity:.3}}
-.sico{width:18px;height:18px;stroke:var(--jade);fill:none;stroke-width:1.5;stroke-linecap:round;}
-.stxt{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--text-2);}
-
-/* WAKE */
-#wkL{position:fixed;inset:0;z-index:75;pointer-events:none;opacity:0;transition:opacity .3s;}
-#wkL.on{opacity:1;}
-#wkC{width:100%;height:100%;}
-
-/* APP */
-#app{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .7s .4s,visibility .7s .4s;overflow:hidden;}
-#app.on{opacity:1;visibility:visible;}
-
-/* HEADER */
-.hdr{display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid var(--border);background:rgba(5,7,10,.95);backdrop-filter:blur(20px);flex-shrink:0;height:52px;overflow:hidden;}
-.hdr-brand{display:flex;align-items:baseline;gap:12px;}
-.hdr-name{font-family:var(--font-d);font-size:19px;letter-spacing:.18em;text-transform:uppercase;}
-.hdr-name span{color:var(--jade);}
-.hdr-dot{width:1px;height:13px;background:var(--border2);}
-.hdr-sub{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--text-2);}
-.hdr-r{display:flex;align-items:center;gap:18px;}
-.hdr-wx{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-2);}
-.hdr-clock{font-family:var(--font-m);font-size:19px;color:var(--text-2);letter-spacing:.06em;}
-.tabs{display:flex;gap:2px;}
-.tab{padding:6px 13px;border:none;background:transparent;font-family:var(--font-b);font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--text-2);cursor:pointer;border-bottom:2px solid transparent;transition:all .25s;}
-.tab.on{color:var(--jade);border-bottom-color:var(--jade);}.tab.on#tabQuote{color:var(--amber);border-bottom-color:var(--amber);}
-.tab:hover{color:var(--text);}
-
-/* STAGE */
-.stage{display:flex;flex-direction:column;overflow:hidden;flex:1;min-height:0;}
-
-/* AVATAR */
-.avp{display:none;}
-.apbg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(62,207,142,.04) 0%,transparent 65%);pointer-events:none;}
-.cm{position:absolute;width:20px;height:20px;opacity:.32;}
-.cm-tl{top:16px;left:16px;border-top:1px solid var(--jade);border-left:1px solid var(--jade);}
-.cm-tr{top:16px;right:16px;border-top:1px solid var(--jade);border-right:1px solid var(--jade);}
-.cm-bl{bottom:16px;left:16px;border-bottom:1px solid var(--jade);border-left:1px solid var(--jade);}
-.cm-br{bottom:16px;right:16px;border-bottom:1px solid var(--jade);border-right:1px solid var(--jade);}
-.ow{position:relative;width:195px;height:195px;margin-bottom:18px;}
-.oa{position:absolute;inset:-26px;border-radius:50%;background:radial-gradient(circle,rgba(62,207,142,.07) 0%,transparent 70%);animation:aura 4s ease-in-out infinite;}
-@keyframes aura{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.12);opacity:1}}
-.or1{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(62,207,142,.2);animation:sp1 22s linear infinite;}
-.or1::before{content:'';position:absolute;width:8px;height:8px;background:var(--jade);border-radius:50%;top:-4px;left:50%;transform:translateX(-50%);box-shadow:0 0 16px var(--jade),0 0 32px var(--jade-glow);}
-@keyframes sp1{to{transform:rotate(360deg);}}
-.or2{position:absolute;inset:14px;border-radius:50%;border:1px solid rgba(62,207,142,.09);animation:sp1 16s linear infinite reverse;}
-.or2::after{content:'';position:absolute;width:5px;height:5px;background:var(--jade);border-radius:50%;bottom:-2.5px;right:22%;opacity:.5;}
-.of{position:absolute;inset:26px;border-radius:50%;background:radial-gradient(circle at 37% 30%,#1b2535 0%,#0a0e18 55%,#05070a 100%);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.of::before{content:'';position:absolute;width:55%;height:38%;top:8%;left:22%;background:radial-gradient(ellipse,rgba(62,207,142,.06) 0%,transparent 80%);border-radius:50%;}
-#faceC{width:90px;height:90px;position:relative;z-index:1;}
-.avst{text-align:center;margin-bottom:12px;}
-.avlbl{font-size:8px;letter-spacing:.45em;text-transform:uppercase;color:var(--text-3);margin-bottom:4px;}
-.avval{font-family:var(--font-d);font-size:22px;color:var(--text);transition:color .4s;}
-.avval.sp{color:var(--jade);}
-.wave{display:flex;align-items:center;gap:2px;height:28px;margin-bottom:12px;}
-.wb{width:2px;border-radius:2px;background:var(--jade);height:5px;opacity:.18;transition:height .08s,opacity .08s;}
-.wb.on{opacity:.8;}
-.vc{display:flex;align-items:center;gap:8px;padding:5px 12px;border:1px solid var(--border);background:var(--jade-dim);font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:0;transform:translateY(5px);transition:opacity .4s,transform .4s;}
-.vc.show{opacity:1;transform:none;}
-.vcl{color:var(--text-3);}.vcn{color:var(--jade);font-weight:500;}
-.qs-row{display:flex;gap:8px;margin-top:16px;}
-.qs{flex:1;padding:8px 8px;border:1px solid var(--border);background:rgba(13,20,32,.5);text-align:center;}
-.qsv{font-family:var(--font-m);font-size:17px;color:var(--jade);}
-.qsl{font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-2);margin-top:2px;}
-
-/* RIGHT */
-.rp{display:flex;flex-direction:column;background:rgba(8,12,18,.95);backdrop-filter:blur(18px);flex:1;min-height:0;border-top:1px solid var(--border);}
-.tc{display:none;flex:1;min-height:0;overflow:hidden;flex-direction:column;}
-.tc.on{display:flex;}
-
-/* CHAT */
-.msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
-.msgs::-webkit-scrollbar{width:3px;}.msgs::-webkit-scrollbar-thumb{background:var(--border);}
-.msg{display:flex;flex-direction:column;gap:4px;animation:mIn .4s cubic-bezier(.22,1,.36,1) both;}
-@keyframes mIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.msg.nova{align-items:flex-start;}.msg.vis{align-items:flex-end;}
-.mwho{font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--text-3);}
-.mbody{max-width:90%;padding:10px 14px;font-size:12.5px;line-height:1.7;font-weight:300;}
-.msg.nova .mbody{background:var(--jade-dim);border:1px solid var(--border);border-left:2px solid var(--jade);border-radius:0 4px 4px 4px;color:var(--text);}
-.msg.vis .mbody{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:4px 0 4px 4px;color:var(--text-2);}
-.thinking{display:flex;gap:5px;align-items:center;padding:10px 14px;background:var(--jade-dim);border:1px solid var(--border);border-left:2px solid var(--jade);}
-.td{width:4px;height:4px;border-radius:50%;background:var(--jade);animation:td 1.1s ease-in-out infinite;}
-.td:nth-child(2){animation-delay:.18s}.td:nth-child(3){animation-delay:.36s}
-@keyframes td{0%,100%{opacity:.2;transform:translateY(0)}50%{opacity:1;transform:translateY(-5px)}}
-.ctrls{padding:13px 15px;border-top:1px solid var(--border);}
-.mic-row{display:flex;align-items:center;gap:11px;margin-bottom:9px;}
-.micbtn{width:44px;height:44px;border-radius:50%;border:1px solid var(--border2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;flex-shrink:0;position:relative;}
-.micbtn:hover{background:var(--jade-dim);border-color:var(--jade);}
-.micbtn.hot{background:var(--jade-dim);border-color:var(--jade);box-shadow:0 0 20px var(--jade-dim);}
-.micbtn.hot::before{content:'';position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(62,207,142,.3);animation:mr 1.5s ease-in-out infinite;}
-@keyframes mr{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.06);opacity:.4}}
-.mico{width:16px;height:16px;stroke:var(--jade);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
-.trw{flex:1;overflow:hidden;}
-.trh{font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;}
-.trt{font-size:12px;color:var(--text-2);font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:16px;}
-.brow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
-.cbtn{padding:8px 4px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:8px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .22s;border-radius:1px;}
-.cbtn:hover{border-color:var(--jade);color:var(--jade);background:var(--jade-dim);}
-
-/* VISITS */
-.vp{flex:1;overflow-y:auto;padding:15px;}
-.vp::-webkit-scrollbar{width:3px;}.vp::-webkit-scrollbar-thumb{background:var(--border);}
-.vhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:9px;border-bottom:1px solid var(--border);}
-.vtit{font-size:9px;letter-spacing:.35em;text-transform:uppercase;color:var(--text-2);}
-.vcnt{font-family:var(--font-m);font-size:11px;color:var(--jade);}
-.vrow{display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:center;padding:9px 11px;border:1px solid var(--border);margin-bottom:5px;background:rgba(13,20,32,.4);animation:mIn .4s both;}
-.vrt{font-family:var(--font-m);font-size:10px;color:var(--text-2);}
-.vri{overflow:hidden;}
-.vrn{font-size:12px;color:var(--text);font-weight:400;margin-bottom:2px;}
-.vrr{font-size:10px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.vrb{padding:3px 7px;border:1px solid var(--border);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--jade);}
-.nv{text-align:center;padding:36px 16px;font-family:var(--font-d);font-style:italic;font-size:15px;color:var(--text-3);}
-.expbtn{width:100%;padding:9px;margin-top:9px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:9px;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;transition:all .25s;}
-.expbtn:hover{border-color:var(--jade);color:var(--jade);background:var(--jade-dim);}
-
-/* DASHBOARD */
-.dp{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:10px;}
-.dp::-webkit-scrollbar{width:3px;}.dp::-webkit-scrollbar-thumb{background:var(--border);}
-.dkpis{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
-.kpi{padding:12px;border:1px solid var(--border);background:rgba(13,20,32,.5);}
-.kpiv{font-family:var(--font-m);font-size:24px;color:var(--jade);line-height:1;}
-.kpil{font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--text-2);margin-top:4px;}
-.kpis{font-size:10px;color:var(--text-3);margin-top:2px;}
-.dst{font-size:8px;letter-spacing:.35em;text-transform:uppercase;color:var(--text-2);margin-bottom:7px;}
-.hchart{display:flex;align-items:flex-end;gap:3px;height:55px;padding:0 2px;}
-.hb{flex:1;background:var(--jade-dim);border:1px solid var(--border);border-bottom:none;transition:height .6s;min-height:4px;cursor:pointer;}
-.hb:hover{background:rgba(62,207,142,.25);}
-.hlbls{display:flex;gap:3px;padding:0 2px;margin-top:16px;}
-.hl{flex:1;text-align:center;font-size:7px;color:var(--text-3);}
-.rrl{display:flex;flex-direction:column;gap:5px;}
-.rrow{display:flex;align-items:center;gap:9px;}
-.rbw{flex:1;height:3px;background:var(--surface);border-radius:2px;overflow:hidden;}
-.rb{height:100%;background:var(--jade);border-radius:2px;transition:width .8s;}
-.rln{font-size:9px;color:var(--text-2);width:85px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.rpc{font-family:var(--font-m);font-size:9px;color:var(--jade);width:30px;text-align:right;}
-
-/* FOOTER */
-.ftr{display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-top:1px solid var(--border);background:rgba(5,7,10,.95);backdrop-filter:blur(20px);height:36px;flex-shrink:0;}
-.fi{font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--text-3);display:flex;align-items:center;gap:7px;}
-.fp{width:4px;height:4px;border-radius:50%;background:var(--jade);opacity:.6;}
-.fpw{background:var(--amber);}
-
-/* CAM */
-#camBox{position:fixed;bottom:54px;left:12px;width:68px;height:52px;border:1px solid var(--border);overflow:hidden;opacity:.33;z-index:200;display:none;}
-#camVid{width:100%;height:100%;object-fit:cover;}
-.clbl{position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:6px;letter-spacing:.18em;color:var(--jade);background:rgba(0,0,0,.6);padding:1px;}
-
-/* TOAST */
-.toast{position:fixed;top:66px;left:50%;transform:translateX(-50%) translateY(-12px);background:var(--jade-dim);border:1px solid var(--border2);color:var(--jade);font-size:10px;letter-spacing:.2em;padding:8px 18px;z-index:400;opacity:0;transition:all .35s;pointer-events:none;text-transform:uppercase;font-family:var(--font-b);}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-/* ── MOBILE RESPONSIVE + PWA ── */
-html,body{
-  height:100%;
-  height: -webkit-fill-available;
-  overflow:hidden;
-  position:fixed;
-  width:100%;
-  /* Full screen in standalone mode */
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
-}
-/* Hide browser UI elements in PWA mode */
-@media all and (display-mode: standalone) {
-  html,body { background: #05070a; }
-  .hdr { padding-top: max(8px, env(safe-area-inset-top)); }
-}
-/* iOS Safari full-height fix */
-@supports (-webkit-touch-callout: none) {
-  html { height: -webkit-fill-available; }
-  body { min-height: -webkit-fill-available; }
-}
-/* Install banner */
-#installBanner {
-  position:fixed;bottom:0;left:0;right:0;z-index:500;
-  background:#0d1420;border-top:1px solid rgba(62,207,142,.3);
-  padding:12px 20px;display:flex;align-items:center;gap:12px;
-  transform:translateY(100%);transition:transform .4s ease;
-}
-#installBanner.show { transform:translateY(0); }
-#app{
-  position:fixed;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  height:100%;
-  height:-webkit-fill-available;
-  overflow:hidden;
-}
-.stage{
-  flex:1;
-  min-height:0;
-  overflow:hidden;
-}
-.rp{
-  flex:1;
-  min-height:0;
-  overflow:hidden;
-}
-.tc{
-  flex:1;
-  min-height:0;
-}
-/* Tabs - scrollable horizontal */
-.tabs{
-  display:flex;
-  gap:0;
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
-  flex:1;
-}
-.tabs::-webkit-scrollbar{display:none;}
-.tab{
-  padding:8px 10px;
-  font-size:8px;
-  letter-spacing:.15em;
-  white-space:nowrap;
-  flex-shrink:0;
-  -webkit-tap-highlight-color:transparent;
-  border:none;
-  border-bottom:2px solid transparent;
-}
-/* Header compact */
-.hdr-sub,.hdr-dot,.hdr-wx{display:none;}
-.hdr-clock{font-size:14px;}
-.hdr-name{font-size:15px;letter-spacing:.1em;}
-/* Footer compact */
-.ftr{padding:0 12px;}
-.fi{font-size:7px;letter-spacing:.15em;}
-/* Bottom controls touch-friendly */
-.cbtn{padding:12px 4px;font-size:8px;-webkit-tap-highlight-color:transparent;}
-.micbtn{width:52px;height:52px;}
-/* Idle screen mobile */
-.idle-wordmark{font-size:clamp(36px,11vw,70px);}
-.idle-strip{gap:14px;padding:10px 14px;flex-wrap:wrap;justify-content:center;}
-.idle-quote{font-size:14px;min-height:48px;}
-/* Tablet landscape - show avatar */
-@media(min-width:768px) and (orientation:landscape){
-  .stage{flex-direction:row;}
-  .avp{display:flex;flex:0 0 280px;}
-  .rp{flex:1;border-left:1px solid var(--border);border-top:none;}
-  .hdr-sub,.hdr-dot{display:flex;}
-  .hdr-wx{display:flex;}
-}
-/* Safe area for notched phones */
-#app{
-  padding-top:env(safe-area-inset-top);
-  padding-bottom:env(safe-area-inset-bottom);
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LenoahHost · Nova Prestige - Cotizador</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F59E0B',
+                        secondary: '#FB923C',
+                        accent: '#FDBA74',
+                        dark: '#78350F',
+                        light: '#FFFBEB'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #FFFBEB 0%, #FED7AA 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+        .gradient-primary {
+            background: linear-gradient(135deg, #F59E0B 0%, #FB923C 100%);
+        }
+        .gradient-secondary {
+            background: linear-gradient(135deg, #FB923C 0%, #FDBA74 100%);
+        }
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(245, 158, 11, 0.3);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #F59E0B 0%, #FB923C 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4);
+        }
+    </style>
 </head>
-<body>
-<div id="cur"></div><div id="cur2"></div>
-<div class="grain"></div>
-<canvas id="bgC"></canvas>
-<div id="wkL"><canvas id="wkC"></canvas></div>
-<div class="toast" id="toast"></div>
+<body class="min-h-screen text-gray-800">
 
-<!-- IDLE -->
-<div id="idle">
-  <div class="idle-wordmark">L<b>e</b>noah</div>
-  <div class="idle-rule"></div>
-  <div class="idle-sub">Comercializadora · Asistente de Recepción Inteligente</div>
-  <div class="idle-strip">
-    <div class="si"><div class="sv" id="iClock">--:--</div><div class="sl">Hora</div></div>
-    <div class="sdiv"></div>
-    <div class="si"><div class="sv" id="iTemp">--°</div><div class="sl">Tijuana</div></div>
-    <div class="sdiv"></div>
-    <div class="si"><div class="sv" id="iVis">0</div><div class="sl">Visitas hoy</div></div>
-    <div class="sdiv"></div>
-    <div class="si"><div class="sv" id="iDay">—</div><div class="sl">Día</div></div>
-  </div>
-  <div class="idle-quote" id="iQuote">"Bienvenido. Cada visita es una oportunidad."</div>
-  <div class="idle-sensor">
-    <div class="sorb">
-      <svg class="sico" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-    </div>
-    <div class="stxt" id="sTxt">Sistema activo · Detectando presencia</div>
-  </div>
-</div>
-
-<!-- APP -->
-<div id="app">
-  <header class="hdr">
-    <div class="hdr-brand">
-      <div class="hdr-name">L<span>e</span>noah</div>
-      <div class="hdr-dot"></div>
-      <div class="hdr-sub">Nova · IA Recepción</div>
-    </div>
-    <div class="hdr-r">
-      <div class="hdr-wx"><span id="wxIco">🌤</span><span id="wxT">--°C</span></div>
-      <div class="tabs">
-        <button class="tab on" onclick="swTab('chat',this)" ontouchstart="">Conversación</button>
-        <button class="tab" onclick="swTab('visits',this)" ontouchstart="">Visitas</button>
-        <button class="tab" onclick="swTab('dash',this)" ontouchstart="">Dashboard</button>
-        <button class="tab" id="tabVeh" onclick="swTab('vehicle',this)" ontouchstart="" style="color:#60a5fa">🚗 Vehículos</button>
-        <button class="tab" id="tabQuote" onclick="swTab('quote',this)" ontouchstart="" style="color:var(--amber)">⬡ Cotización</button>
-      </div>
-      <div class="hdr-clock" id="hClock">00:00</div><button onclick="lhOpenSettings()" style="padding:4px 8px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-size:14px;cursor:pointer;border-radius:1px;" title="Configurar API Keys">⚙</button>
-    </div>
-  </header>
-
-  <div class="stage">
-    <!-- AVATAR -->
-    <div class="avp">
-      <div class="apbg"></div>
-      <div class="cm cm-tl"></div><div class="cm cm-tr"></div>
-      <div class="cm cm-bl"></div><div class="cm cm-br"></div>
-      <div class="ow">
-        <div class="oa"></div><div class="or1"></div><div class="or2"></div>
-        <div class="of"><canvas id="faceC" width="90" height="90"></canvas></div>
-      </div>
-      <div class="wave" id="waveEl">
-        <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
-        <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
-        <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
-        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
-      </div>
-      <div class="avst">
-        <div class="avlbl" id="stLbl">Estado</div>
-        <div class="avval" id="stVal">En espera</div>
-      </div>
-      <div class="vc" id="vcChip"><span class="vcl">Visitante</span><span class="vcn" id="vcName">—</span></div>
-      <div class="qs-row">
-        <div class="qs"><div class="qsv" id="qsV">0</div><div class="qsl">Visitas hoy</div></div>
-        <div class="qs"><div class="qsv" id="qsT" style="font-size:12px;padding-top:2px">--:--</div><div class="qsl">Última</div></div>
-        <div class="qs"><div class="qsv" id="qsA">0m</div><div class="qsl">Prom. espera</div></div>
-      </div>
-    </div>
-
-    <!-- RIGHT PANEL -->
-    <div class="rp">
-      <!-- CHAT -->
-      <div class="tc on" id="tc-chat">
-        <div class="msgs" id="msgs"></div>
-        <div class="ctrls">
-          <div class="mic-row">
-            <button class="micbtn" id="micBtn" onclick="togMic()" style="-webkit-tap-highlight-color:transparent;">
-              <svg class="mico" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="17" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
-            </button>
-            <div class="trw">
-              <div class="trh">Transcripción en vivo</div>
-              <div class="trt" id="trTxt">Presione el micrófono para comenzar…</div>
+    <!-- Header -->
+    <header class="gradient-primary text-white shadow-2xl sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                        <i class="fas fa-ship text-2xl text-primary"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">LenoahHost · Nova Prestige</h1>
+                        <p class="text-sm text-orange-100">L e noah Comercializadora · Asistente de Importación Inteligente</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 text-sm">
+                    <div class="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full">
+                        <i class="fas fa-clock"></i>
+                        <span id="clock">--:--</span>
+                    </div>
+                    <div class="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full">
+                        <i class="fas fa-thermometer-half"></i>
+                        <span>--° Tijuana</span>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="brow">
-            <button class="cbtn" onclick="newVisit()">Nueva visita</button>
-            <button class="cbtn" onclick="cycLang()">ES · EN</button>
-            <button class="cbtn" onclick="enterIdle()">Modo espera</button>
-          </div>
         </div>
-      </div>
+    </header>
 
-      <!-- VISITS -->
-      <div class="tc" id="tc-visits">
-        <div class="vp">
-          <div class="vhdr">
-            <div class="vtit">Registro — Hoy</div>
-            <div class="vcnt" id="vCntLbl">0 visitas</div>
-          </div>
-          <div id="vList"><div class="nv">Sin visitas aún.<br>Nova las registra automáticamente.</div></div>
-          <button class="expbtn" onclick="expVisits()">↓ Exportar CSV</button>
-        </div>
-      </div>
-
-      <!-- DASHBOARD -->
-      <div class="tc" id="tc-dash">
-        <div class="dp">
-          <div class="dkpis">
-            <div class="kpi"><div class="kpiv" id="dk1">0</div><div class="kpil">Visitas hoy</div><div class="kpis">Total del día</div></div>
-            <div class="kpi"><div class="kpiv" id="dk2">0m</div><div class="kpil">Espera prom.</div><div class="kpis">Por visita</div></div>
-            <div class="kpi"><div class="kpiv" id="dk3">—</div><div class="kpil">Hora pico</div><div class="kpis">Más actividad</div></div>
-            <div class="kpi"><div class="kpiv" id="dk4">ES</div><div class="kpil">Idioma</div><div class="kpis">Conversaciones</div></div>
-          </div>
-          <div><div class="dst">Visitas por hora</div><div class="hchart" id="hChart"></div><div class="hlbls" id="hLbls"></div></div>
-          <div><div class="dst">Motivos frecuentes</div><div class="rrl" id="rList"><div style="font-size:10px;color:var(--text-3);text-align:center;padding:10px">Los motivos se detectan automáticamente vía IA</div></div></div>
-        </div>
-      </div>
-
-      <!-- COTIZACIÓN ARANCELARIA -->
-      <!-- MÓDULO CLASIFICADOR GENERAL v2 — TIGIE/LIGIE 2026 -->
-      <div class="tc" id="tc-quote">
-
-        <!-- FORMULARIO INICIAL -->
-        <div id="qz-form" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;">
-
-          <!-- DESCRIPCIÓN -->
-          <div style="border:1px solid var(--border2);padding:12px;background:var(--jade-dim);">
-            <div style="font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--jade);margin-bottom:8px;">① Describe la mercancía con el mayor detalle posible</div>
-            <textarea id="qzDesc" rows="3" placeholder="Ej: Camisas de algodón para hombre, tejido plano, manga larga, nuevas, empacadas individualmente. Uso: venta al menudeo."
-              style="width:100%;padding:9px 11px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-b);font-size:12px;outline:none;border-radius:1px;resize:vertical;line-height:1.5;"></textarea>
-            <div style="font-size:9px;color:var(--text-3);margin-top:5px;">Incluye: material, uso final, si es nuevo/usado, unidad de medida, marca si es relevante</div>
-          </div>
-
-          <!-- ORIGEN Y TLC -->
-          <div style="border:1px solid var(--border);padding:12px;">
-            <div style="font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--text-2);margin-bottom:10px;">② Origen y tratado comercial</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-              <div>
-                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">País de fabricación</div>
-                <select id="qzOrigen" onchange="qzOnOrigen()" style="width:100%;padding:7px 8px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-b);font-size:11px;outline:none;cursor:pointer;border-radius:1px;">
-                  <option value="usa">🇺🇸 Estados Unidos</option>
-                  <option value="mexico">🇲🇽 México</option>
-                  <option value="canada">🇨🇦 Canadá</option>
-                  <option value="china">🇨🇳 China</option>
-                  <option value="japon">🇯🇵 Japón</option>
-                  <option value="corea">🇰🇷 Corea del Sur</option>
-                  <option value="alemania">🇩🇪 Alemania</option>
-                  <option value="taiwan">🇹🇼 Taiwán</option>
-                  <option value="india">🇮🇳 India</option>
-                  <option value="vietnam">🇻🇳 Vietnam</option>
-                  <option value="italia">🇮🇹 Italia</option>
-                  <option value="brasil">🇧🇷 Brasil</option>
-                  <option value="otro">🌐 Otro país</option>
-                </select>
-              </div>
-              <div>
-                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Tratado aplicable</div>
-                <select id="qzTlc" style="width:100%;padding:7px 8px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-b);font-size:11px;outline:none;cursor:pointer;border-radius:1px;">
-                  <option value="tmec">T-MEC (Cert. de Origen)</option>
-                  <option value="tlcue">TLC México-UE</option>
-                  <option value="cptpp">CPTPP</option>
-                  <option value="ninguno">Sin tratado (tasa NMF)</option>
-                </select>
-              </div>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-[88px] z-40">
+        <div class="container mx-auto px-4">
+            <div class="flex overflow-x-auto gap-2 py-3" id="mainNav">
+                <button onclick="showSection('dashboard')" class="nav-btn active px-6 py-2 rounded-full gradient-primary text-white font-medium whitespace-nowrap">
+                    <i class="fas fa-home mr-2"></i>Dashboard
+                </button>
+                <button onclick="showSection('cotizacion')" class="nav-btn px-6 py-2 rounded-full bg-orange-100 text-primary font-medium whitespace-nowrap hover:bg-orange-200 transition">
+                    <i class="fas fa-calculator mr-2"></i>Cotización
+                </button>
+                <button onclick="showSection('vehiculos')" class="nav-btn px-6 py-2 rounded-full bg-orange-100 text-primary font-medium whitespace-nowrap hover:bg-orange-200 transition">
+                    <i class="fas fa-car mr-2"></i>Vehículos
+                </button>
+                <button onclick="showSection('historial')" class="nav-btn px-6 py-2 rounded-full bg-orange-100 text-primary font-medium whitespace-nowrap hover:bg-orange-200 transition">
+                    <i class="fas fa-history mr-2"></i>Historial
+                </button>
             </div>
-            <div id="qzTlcNote" style="font-size:10px;padding:6px 9px;border:1px solid rgba(62,207,142,.3);color:#3ecf8e;display:none;"></div>
-          </div>
-
-          <!-- DATOS FINANCIEROS -->
-          <div style="border:1px solid var(--border);padding:12px;">
-            <div style="font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--text-2);margin-bottom:10px;">③ Datos financieros de la operación</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-              <div>
-                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Valor en factura (USD) *</div>
-                <input id="qzValor" type="number" placeholder="5000" min="0"
-                  style="width:100%;padding:7px 9px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-m);font-size:13px;outline:none;border-radius:1px;"/>
-              </div>
-              <div>
-                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Flete internacional (USD)</div>
-                <input id="qzFlete" type="number" placeholder="Dejar vacío = estimado 6%"
-                  style="width:100%;padding:7px 9px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-m);font-size:13px;outline:none;border-radius:1px;"/>
-              </div>
-              <div>
-                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Seguro (USD)</div>
-                <input id="qzSeguro" type="number" placeholder="Dejar vacío = estimado 1.5%"
-                  style="width:100%;padding:7px 9px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-m);font-size:13px;outline:none;border-radius:1px;"/>
-              </div>
-              <div>
-                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Tipo de cambio (MXN/USD)</div>
-                <input id="qzTc" type="number" placeholder="20.50" value="20.50" step="0.01"
-                  style="width:100%;padding:7px 9px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-m);font-size:13px;outline:none;border-radius:1px;"/>
-              </div>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-              <div>
-                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Cantidad / Unidades</div>
-                <input id="qzCantidad" type="number" placeholder="1"
-                  style="width:100%;padding:7px 9px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-m);font-size:13px;outline:none;border-radius:1px;"/>
-              </div>
-              <div>
-                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Aduana de entrada</div>
-                <select id="qzAduana" style="width:100%;padding:7px 8px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-b);font-size:11px;outline:none;cursor:pointer;border-radius:1px;">
-                  <option value="tijuana">Tijuana / Otay</option>
-                  <option value="mexicali">Mexicali</option>
-                  <option value="nogales">Nogales</option>
-                  <option value="cdj">Ciudad Juárez</option>
-                  <option value="laredo">Nuevo Laredo</option>
-                  <option value="veracruz">Veracruz</option>
-                  <option value="manzanillo">Manzanillo</option>
-                  <option value="otra">Otra aduana</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <!-- BOTÓN CLASIFICAR -->
-          <button onclick="qzClasificar()" style="width:100%;padding:14px;border:1px solid var(--jade);background:var(--jade-dim);color:var(--jade);font-family:var(--font-b);font-size:10px;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;border-radius:1px;flex-shrink:0;">
-            ▶ CLASIFICAR Y COTIZAR
-          </button>
-
-          <div style="font-size:9px;color:var(--text-3);text-align:center;line-height:1.5;padding-bottom:8px;">
-            Basado en LIGIE/TIGIE vigente 2026 · Reforma DOF 29-Dic-2025 · Ley Aduanera Art. 56
-          </div>
         </div>
+    </nav>
 
-        <!-- RESULTADO -->
-        <div id="qz-result" style="display:none;flex:1;overflow-y:auto;padding:12px;scrollbar-width:thin;"></div>
-
-        <!-- CONTROLES -->
-        <div style="padding:8px 12px;border-top:1px solid var(--border);display:flex;gap:6px;flex-shrink:0;">
-          <button class="cbtn" onclick="qzReset()" style="flex:1;">Nueva consulta</button>
-          <button class="cbtn" id="qzMicBtn" onclick="qzToggleMic()" style="flex:1;">🎤 Dictar</button>
-        </div>
-      </div>
-
-      <!-- MÓDULO VEHICULAR v2 -->
-      <div class="tc" id="tc-vehicle">
-
-        <!-- WIZARD PANEL -->
-        <div id="vh-panel" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;">
-
-          <!-- TIPO -->
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;">
-            <button onclick="vhSetType('auto')" id="vht-auto" class="vhtbtn" style="padding:10px 4px;border:1px solid rgba(96,165,250,.5);background:rgba(96,165,250,.1);color:#93c5fd;font-family:var(--font-b);font-size:8px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:1px;line-height:1.6;">🚗<br>Auto/SUV<br>Pickup</button>
-            <button onclick="vhSetType('truck')" id="vht-truck" class="vhtbtn" style="padding:10px 4px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:8px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:1px;line-height:1.6;">🚛<br>Tractocamión<br>Carga</button>
-            <button onclick="vhSetType('machinery')" id="vht-mach" class="vhtbtn" style="padding:10px 4px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:8px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:1px;line-height:1.6;">🏗<br>Maquinaria<br>Equipo</button>
-          </div>
-
-          <!-- SELECTOR MARCA / MODELO / AÑO -->
-          <div style="border:1px solid rgba(96,165,250,.2);padding:12px;background:rgba(96,165,250,.03);">
-            <div style="font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:#60a5fa;margin-bottom:10px;">① Selecciona el vehículo</div>
-
-            <!-- BÚSQUEDA RÁPIDA -->
-            <div style="position:relative;margin-bottom:8px;">
-              <input id="vhSearch" type="text" placeholder="Buscar marca o modelo… ej: F-150, Silverado, Kenworth"
-                oninput="vhFilterSearch(this.value)"
-                style="width:100%;padding:9px 12px;background:rgba(5,7,10,.8);border:1px solid rgba(96,165,250,.3);color:var(--text);font-family:var(--font-b);font-size:12px;outline:none;border-radius:1px;"/>
-              <div id="vhSearchResults" style="display:none;position:absolute;left:0;right:0;top:100%;background:#0d1420;border:1px solid rgba(96,165,250,.3);border-top:none;z-index:50;max-height:160px;overflow-y:auto;scrollbar-width:thin;"></div>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <div class="mb-8 text-center">
+                <h2 class="text-4xl font-bold text-dark mb-2">Bienvenido a Lenoah</h2>
+                <p class="text-lg text-orange-600">"Cada importación es una oportunidad"</p>
             </div>
 
-            <!-- SELECTS CASCADA -->
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;">
-              <div>
-                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Marca</div>
-                <select id="vhMarca" onchange="vhOnMarca()" style="width:100%;padding:7px 8px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-b);font-size:11px;outline:none;cursor:pointer;border-radius:1px;">
-                  <option value="">-- Marca --</option>
-                </select>
-              </div>
-              <div>
-                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Modelo</div>
-                <select id="vhModelo" onchange="vhOnModelo()" style="width:100%;padding:7px 8px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-b);font-size:11px;outline:none;cursor:pointer;border-radius:1px;" disabled>
-                  <option value="">-- Modelo --</option>
-                </select>
-              </div>
-              <div>
-                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Año</div>
-                <select id="vhAnio" onchange="vhOnAnio()" style="width:100%;padding:7px 8px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-b);font-size:11px;outline:none;cursor:pointer;border-radius:1px;" disabled>
-                  <option value="">-- Año --</option>
-                </select>
-              </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="glass-effect rounded-2xl p-6 shadow-xl hover-lift border-2 border-orange-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center text-white">
+                            <i class="fas fa-car text-xl"></i>
+                        </div>
+                        <span class="text-3xl font-bold text-primary" id="totalVehiculos">0</span>
+                    </div>
+                    <h3 class="text-gray-600 font-medium">Vehículos Cotizados</h3>
+                </div>
+
+                <div class="glass-effect rounded-2xl p-6 shadow-xl hover-lift border-2 border-orange-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 gradient-secondary rounded-xl flex items-center justify-center text-white">
+                            <i class="fas fa-dollar-sign text-xl"></i>
+                        </div>
+                        <span class="text-3xl font-bold text-secondary" id="totalIngresos">$0</span>
+                    </div>
+                    <h3 class="text-gray-600 font-medium">Ingresos por Honorarios</h3>
+                </div>
+
+                <div class="glass-effect rounded-2xl p-6 shadow-xl hover-lift border-2 border-orange-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center text-white">
+                            <i class="fas fa-clock text-xl"></i>
+                        </div>
+                        <span class="text-3xl font-bold text-orange-600" id="tiempoPromedio">0m</span>
+                    </div>
+                    <h3 class="text-gray-600 font-medium">Tiempo Prom. Espera</h3>
+                </div>
+
+                <div class="glass-effect rounded-2xl p-6 shadow-xl hover-lift border-2 border-orange-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-xl flex items-center justify-center text-white">
+                            <i class="fas fa-chart-line text-xl"></i>
+                        </div>
+                        <span class="text-3xl font-bold text-amber-600" id="horaPico">--:--</span>
+                    </div>
+                    <h3 class="text-gray-600 font-medium">Hora de Más Actividad</h3>
+                </div>
             </div>
 
-            <!-- CHIP SELECCIONADO -->
-            <div id="vhSelectedChip" style="display:none;padding:7px 10px;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.3);font-size:11px;color:#93c5fd;margin-bottom:8px;"></div>
+            <!-- Quick Actions -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <button onclick="showSection('cotizacion')" class="glass-effect rounded-2xl p-8 shadow-xl hover-lift border-2 border-orange-300 text-center group">
+                    <div class="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center text-white mx-auto mb-4 group-hover:scale-110 transition">
+                        <i class="fas fa-plus text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-2">Nueva Cotización</h3>
+                    <p class="text-gray-600">Cotiza vehículos del catálogo Anexo 2</p>
+                </button>
 
-            <!-- CONDICIÓN -->
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:6px;">
-              <button onclick="vhSetCond('excelente',this)" class="vcond" style="padding:6px 4px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:8px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:1px;">⭐ Excelente</button>
-              <button onclick="vhSetCond('bueno',this)" class="vcond" style="padding:6px 4px;border:1px solid var(--jade);background:var(--jade-dim);color:var(--jade);font-family:var(--font-b);font-size:8px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:1px;">✓ Bueno</button>
-              <button onclick="vhSetCond('regular',this)" class="vcond" style="padding:6px 4px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:8px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:1px;">⚠ Regular</button>
+                <button onclick="showSection('vehiculos')" class="glass-effect rounded-2xl p-8 shadow-xl hover-lift border-2 border-orange-300 text-center group">
+                    <div class="w-16 h-16 gradient-secondary rounded-2xl flex items-center justify-center text-white mx-auto mb-4 group-hover:scale-110 transition">
+                        <i class="fas fa-list text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-2">Catálogo de Vehículos</h3>
+                    <p class="text-gray-600">Consulta todos los modelos disponibles</p>
+                </button>
+
+                <button onclick="exportarCSV()" class="glass-effect rounded-2xl p-8 shadow-xl hover-lift border-2 border-orange-300 text-center group">
+                    <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center text-white mx-auto mb-4 group-hover:scale-110 transition">
+                        <i class="fas fa-download text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-2">Exportar Datos</h3>
+                    <p class="text-gray-600">Descarga reportes en CSV</p>
+                </button>
             </div>
-          </div>
+        </section>
 
-          <!-- DATOS ADICIONALES -->
-          <div style="border:1px solid var(--border);padding:12px;">
-            <div style="font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--text-2);margin-bottom:10px;">② Datos de la operación</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
-              <div>
-                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Kilómetros</div>
-                <input id="vhKm" type="number" placeholder="85000"
-                  style="width:100%;padding:7px 9px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-m);font-size:12px;outline:none;border-radius:1px;"/>
-              </div>
-              <div>
-                <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Destino final</div>
-                <select id="vhDest" style="width:100%;padding:7px 8px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-b);font-size:11px;outline:none;cursor:pointer;border-radius:1px;">
-                  <option value="frontera">Franja fronteriza</option>
-                  <option value="resto">Resto del país</option>
-                </select>
-              </div>
+        <!-- Cotización Section -->
+        <section id="cotizacion" class="section hidden">
+            <div class="max-w-4xl mx-auto">
+                <div class="glass-effect rounded-3xl shadow-2xl p-8 border-2 border-orange-200">
+                    <h2 class="text-3xl font-bold text-dark mb-6 flex items-center gap-3">
+                        <div class="w-10 h-10 gradient-primary rounded-lg flex items-center justify-center text-white">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        Nueva Cotización de Vehículo
+                    </h2>
+
+                    <form id="cotizacionForm" class="space-y-6">
+                        <!-- Tipo de Vehículo -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <button type="button" onclick="selectTipo('auto')" class="tipo-btn p-4 rounded-xl border-2 border-orange-200 hover:border-primary hover:bg-orange-50 transition text-center">
+                                <i class="fas fa-car text-3xl text-primary mb-2"></i>
+                                <p class="font-medium">Auto / SUV</p>
+                            </button>
+                            <button type="button" onclick="selectTipo('pickup')" class="tipo-btn p-4 rounded-xl border-2 border-orange-200 hover:border-primary hover:bg-orange-50 transition text-center">
+                                <i class="fas fa-truck-pickup text-3xl text-primary mb-2"></i>
+                                <p class="font-medium">Pickup</p>
+                            </button>
+                            <button type="button" onclick="selectTipo('tractocamion')" class="tipo-btn p-4 rounded-xl border-2 border-orange-200 hover:border-primary hover:bg-orange-50 transition text-center">
+                                <i class="fas fa-truck-monster text-3xl text-primary mb-2"></i>
+                                <p class="font-medium">Tractocamión</p>
+                            </button>
+                        </div>
+
+                        <!-- Fracción Arancelaria -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Fracción Arancelaria</label>
+                            <select id="fraccionArancelaria" class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 focus:border-primary focus:ring-4 focus:ring-orange-100 transition outline-none" onchange="cargarModelos()">
+                                <option value="">Seleccione fracción...</option>
+                                <option value="8703.21.02">8703.21.02 - Autos cilindrada ≤ 1,000 cm³</option>
+                                <option value="8703.22.02">8703.22.02 - Autos cilindrada > 1,000 ≤ 1,500 cm³</option>
+                                <option value="8703.23.02">8703.23.02 - Autos cilindrada > 1,500 ≤ 3,000 cm³</option>
+                                <option value="8703.24.02">8703.24.02 - Autos cilindrada > 3,000 cm³</option>
+                                <option value="8704.21.04">8704.21.04 - Camiones ≤ 5 toneladas</option>
+                                <option value="8704.22.07">8704.22.07 - Camiones > 5 ≤ 20 toneladas</option>
+                                <option value="8704.23.02">8704.23.02 - Camiones > 20 toneladas</option>
+                            </select>
+                        </div>
+
+                        <!-- Marca -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Marca</label>
+                            <select id="marca" class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 focus:border-primary focus:ring-4 focus:ring-orange-100 transition outline-none" onchange="cargarModelosPorMarca()">
+                                <option value="">Seleccione marca...</option>
+                            </select>
+                        </div>
+
+                        <!-- Modelo -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Modelo</label>
+                            <select id="modelo" class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 focus:border-primary focus:ring-4 focus:ring-orange-100 transition outline-none" onchange="calcularPrecio()">
+                                <option value="">Seleccione modelo...</option>
+                            </select>
+                        </div>
+
+                        <!-- Año -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Año del Vehículo</label>
+                            <select id="anio" class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 focus:border-primary focus:ring-4 focus:ring-orange-100 transition outline-none" onchange="calcularPrecio()">
+                                <option value="">Seleccione año...</option>
+                                <option value="10">10 años o más</option>
+                                <option value="9">9 años</option>
+                                <option value="8">8 años</option>
+                                <option value="7">7 años</option>
+                                <option value="6">6 años</option>
+                                <option value="5">5 años</option>
+                                <option value="4">4 años</option>
+                                <option value="3">3 años</option>
+                                <option value="2">2 años</option>
+                                <option value="1">1 año o menos</option>
+                            </select>
+                        </div>
+
+                        <!-- Precio Base -->
+                        <div class="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl p-6 border-2 border-orange-200">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <p class="text-sm text-gray-600 mb-1">Precio Base (Catálogo)</p>
+                                    <p class="text-2xl font-bold text-primary" id="precioBase">$0.00 USD</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600 mb-1">Honorarios (25%)</p>
+                                    <p class="text-2xl font-bold text-secondary" id="precioHonorarios">$0.00 USD</p>
+                                </div>
+                                <div class="bg-gradient-to-r from-primary to-secondary rounded-lg p-4 text-white">
+                                    <p class="text-sm mb-1">Precio Total</p>
+                                    <p class="text-3xl font-bold" id="precioTotal">$0.00 USD</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Datos del Cliente -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Nombre del Cliente</label>
+                                <input type="text" id="clienteNombre" class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 focus:border-primary focus:ring-4 focus:ring-orange-100 transition outline-none" placeholder="Nombre completo">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Teléfono</label>
+                                <input type="tel" id="clienteTelefono" class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 focus:border-primary focus:ring-4 focus:ring-orange-100 transition outline-none" placeholder="(664) 000-0000">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Correo Electrónico</label>
+                            <input type="email" id="clienteEmail" class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 focus:border-primary focus:ring-4 focus:ring-orange-100 transition outline-none" placeholder="cliente@email.com">
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="flex gap-4 pt-4">
+                            <button type="button" onclick="guardarCotizacion()" class="flex-1 btn-primary text-white font-bold py-4 px-8 rounded-xl shadow-lg">
+                                <i class="fas fa-save mr-2"></i>Guardar Cotización
+                            </button>
+                            <button type="button" onclick="imprimirCotizacion()" class="flex-1 bg-white text-primary font-bold py-4 px-8 rounded-xl border-2 border-primary hover:bg-orange-50 transition shadow-lg">
+                                <i class="fas fa-print mr-2"></i>Imprimir
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div style="margin-bottom:8px;">
-              <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">Valor factura USD <span style="color:var(--jade);font-size:8px;">(opcional — si no se llena, la IA estima el valor)</span></div>
-              <input id="vhValue" type="number" placeholder="Dejar vacío para estimación automática"
-                style="width:100%;padding:7px 9px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-m);font-size:12px;outline:none;border-radius:1px;"/>
+        </section>
+
+        <!-- Vehículos Section -->
+        <section id="vehiculos" class="section hidden">
+            <div class="glass-effect rounded-3xl shadow-2xl p-8 border-2 border-orange-200">
+                <h2 class="text-3xl font-bold text-dark mb-6 flex items-center gap-3">
+                    <div class="w-10 h-10 gradient-primary rounded-lg flex items-center justify-center text-white">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    Catálogo de Vehículos - Anexo 2
+                </h2>
+
+                <!-- Filtros -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div>
+                        <input type="text" id="buscarVehiculo" placeholder="Buscar vehículo..." class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 focus:border-primary focus:ring-4 focus:ring-orange-100 transition outline-none" onkeyup="filtrarVehiculos()">
+                    </div>
+                    <select id="filtroMarca" class="px-4 py-3 rounded-xl border-2 border-orange-200 focus:border-primary focus:ring-4 focus:ring-orange-100 transition outline-none" onchange="filtrarVehiculos()">
+                        <option value="">Todas las marcas</option>
+                    </select>
+                    <select id="filtroAnio" class="px-4 py-3 rounded-xl border-2 border-orange-200 focus:border-primary focus:ring-4 focus:ring-orange-100 transition outline-none" onchange="filtrarVehiculos()">
+                        <option value="">Todos los años</option>
+                        <option value="10">10+ años</option>
+                        <option value="5">5-9 años</option>
+                        <option value="1">0-4 años</option>
+                    </select>
+                </div>
+
+                <!-- Tabla de Vehículos -->
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="gradient-primary text-white">
+                            <tr>
+                                <th class="px-6 py-3 text-left">Fracción</th>
+                                <th class="px-6 py-3 text-left">Marca</th>
+                                <th class="px-6 py-3 text-left">Modelo</th>
+                                <th class="px-6 py-3 text-left">Año</th>
+                                <th class="px-6 py-3 text-right">Precio Base</th>
+                                <th class="px-6 py-3 text-right">Con Honorarios</th>
+                                <th class="px-6 py-3 text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaVehiculos" class="divide-y divide-orange-200">
+                            <!-- Se llena dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div style="margin-bottom:8px;">
-              <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">País de origen <span style="color:#60a5fa;">(donde se fabricó, no donde se compra)</span></div>
-              <select id="vhOrigen" style="width:100%;padding:7px 8px;background:rgba(5,7,10,.8);border:1px solid var(--border);color:var(--text);font-family:var(--font-b);font-size:11px;outline:none;cursor:pointer;border-radius:1px;">
-                <option value="usa">EE.UU. (T-MEC aplica)</option>
-                <option value="mexico">México (T-MEC aplica)</option>
-                <option value="canada">Canadá (T-MEC aplica)</option>
-                <option value="japon">Japón (sin T-MEC)</option>
-                <option value="corea">Corea del Sur (sin T-MEC)</option>
-                <option value="alemania">Alemania (sin T-MEC)</option>
-                <option value="china">China (sin T-MEC)</option>
-                <option value="otro">Otro país (sin T-MEC)</option>
-              </select>
+        </section>
+
+        <!-- Historial Section -->
+        <section id="historial" class="section hidden">
+            <div class="glass-effect rounded-3xl shadow-2xl p-8 border-2 border-orange-200">
+                <h2 class="text-3xl font-bold text-dark mb-6 flex items-center gap-3">
+                    <div class="w-10 h-10 gradient-primary rounded-lg flex items-center justify-center text-white">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    Historial de Cotizaciones
+                </h2>
+                <div id="listaCotizaciones" class="space-y-4">
+                    <!-- Se llena dinámicamente -->
+                </div>
             </div>
+        </section>
+    </main>
 
-            <!-- VIN OPCIONAL -->
-            <div style="margin-bottom:8px;">
-              <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;">VIN / NIV <span style="color:var(--text-3);">(opcional, mejora precisión)</span></div>
-              <div style="display:flex;gap:6px;">
-                <input id="vinInput" type="text" maxlength="17" placeholder="Ej: 1FTFW1ET5DFA12345"
-                  oninput="this.value=this.value.toUpperCase();vhValidateVin(this.value)"
-                  style="flex:1;padding:7px 9px;background:rgba(5,7,10,.8);border:1px solid rgba(96,165,250,.2);color:#93c5fd;font-family:var(--font-m);font-size:11px;letter-spacing:.08em;outline:none;border-radius:1px;text-transform:uppercase;"/>
-                <button onclick="vhToggleMic()" id="vhMicBtn" style="padding:7px 10px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-size:11px;cursor:pointer;border-radius:1px;">🎤</button>
-              </div>
-              <div id="vin-hint" style="font-size:9px;color:var(--text-3);margin-top:3px;"></div>
-            </div>
-          </div>
+    <script>
+        // Base de datos de vehículos del Anexo 2
+        const vehiculosCatalogo = {
+            '8703.21.02': {
+                'CHEVROLET': {
+                    'CRUZE': { '10': 11175, '9': 14475, '8': 16200, '7': 18500, '6': 20800, '5': 23100, '4': 25400, '3': 27700, '2': 30000, '1': 32300 },
+                    'SPARK': { '10': 7175, '9': 8708, '8': 10069, '7': 11430, '6': 12791, '5': 14152, '4': 15513, '3': 16874, '2': 18235, '1': 19596 }
+                },
+                'FORD': {
+                    'FIESTA': { '10': 7738, '9': 9100, '8': 10462, '7': 11824, '6': 13186, '5': 14548, '4': 15910, '3': 17272, '2': 18634, '1': 19996 },
+                    'FOCUS': { '10': 10569, '9': 12154, '8': 13739, '7': 15324, '6': 16909, '5': 18494, '4': 20079, '3': 21664, '2': 23249, '1': 24834 }
+                }
+            },
+            '8703.22.02': {
+                'HONDA': {
+                    'CIVIC': { '10': 12938, '9': 14654, '8': 16370, '7': 18086, '6': 19802, '5': 21518, '4': 23234, '3': 24950, '2': 26666, '1': 28382 },
+                    'ACCORD': { '10': 19063, '9': 21838, '8': 24613, '7': 27388, '6': 30163, '5': 32938, '4': 35713, '3': 38488, '2': 41263, '1': 44038 }
+                },
+                'TOYOTA': {
+                    'COROLLA': { '10': 12075, '9': 14357, '8': 16639, '7': 18921, '6': 21203, '5': 23485, '4': 25767, '3': 28049, '2': 30331, '1': 32613 },
+                    'CAMRY': { '10': 16119, '9': 18831, '8': 21543, '7': 24255, '6': 26967, '5': 29679, '4': 32391, '3': 35103, '2': 37815, '1': 40527 }
+                }
+            },
+            '8704.21.04': {
+                'FORD': {
+                    'F-150': { '10': 23363, '9': 26875, '8': 30387, '7': 33899, '6': 37411, '5': 40923, '4': 44435, '3': 47947, '2': 51459, '1': 54971 },
+                    'F-250': { '10': 24820, '9': 28324, '8': 31828, '7': 35332, '6': 38836, '5': 42340, '4': 45844, '3': 49348, '2': 52852, '1': 56356 }
+                },
+                'CHEVROLET': {
+                    'SILVERADO 1500': { '10': 16750, '9': 17890, '8': 20450, '7': 23010, '6': 25570, '5': 28130, '4': 30690, '3': 33250, '2': 35810, '1': 38370 },
+                    'SILVERADO 2500': { '10': 15991, '9': 17642, '8': 20150, '7': 22658, '6': 25166, '5': 27674, '4': 30182, '3': 32690, '2': 35198, '1': 37706 }
+                }
+            },
+            '8704.22.07': {
+                'FREIGHTLINER': {
+                    'CASCADIA': { '10': 59000, '9': 68350, '8': 77700, '7': 87050, '6': 96400, '5': 105750, '4': 115100, '3': 124450, '2': 133800, '1': 143150 },
+                    'CENTURY CLASS': { '10': 6150, '9': 8350, '8': 10550, '7': 12750, '6': 14950, '5': 17150, '4': 19350, '3': 21550, '2': 23750, '1': 25950 }
+                },
+                'INTERNATIONAL': {
+                    'PROSTAR': { '10': 62783, '9': 72438, '8': 82093, '7': 91748, '6': 101403, '5': 111058, '4': 120713, '3': 130368, '2': 140023, '1': 149678 },
+                    'LONESTAR': { '10': 76500, '9': 88350, '8': 100200, '7': 112050, '6': 123900, '5': 135750, '4': 147600, '3': 159450, '2': 171300, '1': 183150 }
+                }
+            }
+        };
 
-          <!-- BOTÓN COTIZAR -->
-          <button onclick="vhCotizar()" id="vhCotizarBtn" style="width:100%;padding:13px;border:1px solid #60a5fa;background:rgba(96,165,250,.1);color:#93c5fd;font-family:var(--font-b);font-size:10px;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;border-radius:1px;flex-shrink:0;">
-            ▶ COTIZAR IMPORTACIÓN
-          </button>
+        let cotizaciones = [];
+        let tipoVehiculoSeleccionado = '';
 
-        </div>
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarReloj();
+            setInterval(actualizarReloj, 1000);
+            cargarMarcas();
+            cargarVehiculosTabla();
+        });
 
-        <!-- RESULT AREA -->
-        <div id="vh-result" style="display:none;flex:1;overflow-y:auto;padding:12px;scrollbar-width:thin;scrollbar-color:rgba(96,165,250,.14) transparent;"></div>
-
-        <!-- BOTTOM CONTROLS -->
-        <div style="padding:8px 12px;border-top:1px solid var(--border);display:flex;gap:6px;flex-shrink:0;">
-          <button class="cbtn" onclick="vhReset()" style="flex:1;">Nueva consulta</button>
-          <button class="cbtn" onclick="showToast('Captura la pantalla para guardar')" style="flex:1;">Guardar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <footer class="ftr">
-    <div class="fi"><div class="fp"></div>Nova v5.0 · Lenoah Import Suite</div>
-    <div class="fi" id="fCam">Cámara: iniciando</div>
-    <div class="fi" id="keyIndicator"><div class="fp"></div>Round Robin · Keys</div>
-  </footer>
-</div>
-
-<div id="camBox"><video id="camVid" autoplay muted playsinline></video><div class="clbl">CAM</div></div>
-
-<!-- ══ API KEY SETUP SCREEN ══ -->
-<!-- PWA Install Banner -->
-<div id="installBanner">
-  <div style="font-size:20px;">📱</div>
-  <div style="flex:1;">
-    <div style="font-size:11px;color:#e2ddd6;font-weight:500;">Instala LenoahHost como app</div>
-    <div style="font-size:10px;color:#8b8680;">Sin barra de navegación · Funciona sin internet</div>
-  </div>
-  <button onclick="lhInstall()" style="padding:8px 14px;border:1px solid #3ecf8e;background:rgba(62,207,142,.1);color:#3ecf8e;font-family:'Outfit',sans-serif;font-size:9px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">Instalar</button>
-  <button onclick="document.getElementById('installBanner').classList.remove('show')" style="padding:8px;border:none;background:transparent;color:#8b8680;cursor:pointer;font-size:16px;">✕</button>
-</div>
-
-<div id="setupScreen" style="position:fixed;inset:0;z-index:999;background:#05070a;overflow-y:auto;font-family:'Outfit',sans-serif;">
-  <div style="min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:40px 24px 40px;">
-
-    <!-- LOGO -->
-    <div style="text-align:center;margin-bottom:32px;">
-      <div style="font-family:'DM Serif Display',serif;font-size:clamp(40px,10vw,64px);letter-spacing:.12em;color:#e2ddd6;text-transform:uppercase;line-height:1;">
-        L<span style="color:#3ecf8e;">e</span>noah
-      </div>
-      <div style="width:0;height:1px;background:linear-gradient(90deg,transparent,#3ecf8e,transparent);margin:12px auto;animation:rExp 1.5s ease forwards;"></div>
-      <div style="font-size:9px;letter-spacing:.5em;text-transform:uppercase;color:#8b8680;margin-top:10px;">
-        Import Suite · Nova IA · Configuración
-      </div>
-    </div>
-
-    <!-- KEYS PANEL -->
-    <div style="width:100%;max-width:480px;">
-
-      <!-- KEY 1 — OBLIGATORIA -->
-      <div style="border:1px solid rgba(62,207,142,.35);padding:20px;background:rgba(13,20,32,.7);margin-bottom:10px;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-          <div style="width:28px;height:28px;border-radius:50%;background:rgba(62,207,142,.15);border:1px solid rgba(62,207,142,.5);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;color:#3ecf8e;flex-shrink:0;">1</div>
-          <div>
-            <div style="font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:#3ecf8e;">API Key Principal</div>
-            <div style="font-size:9px;color:#8b8680;">Obligatoria · Primera en el Round Robin</div>
-          </div>
-          <div id="k1status" style="margin-left:auto;font-size:18px;"></div>
-        </div>
-        <div style="display:flex;gap:6px;">
-          <input id="k1" type="password" placeholder="AIzaSy... (obligatoria)"
-            style="flex:1;padding:10px 12px;background:rgba(5,7,10,.8);border:1px solid rgba(62,207,142,.28);color:#e2ddd6;font-family:'DM Mono',monospace;font-size:12px;outline:none;border-radius:1px;"
-            oninput="lhCheckKey(1,this.value)" onkeydown="if(event.key==='Enter')lhSaveAll()"/>
-          <button onclick="lhToggle('k1')" style="padding:10px;border:1px solid rgba(62,207,142,.2);background:transparent;color:#8b8680;cursor:pointer;font-size:14px;">👁</button>
-        </div>
-      </div>
-
-      <!-- KEYS 2-5 — OPCIONALES -->
-      <div style="border:1px solid rgba(62,207,142,.14);background:rgba(13,20,32,.5);margin-bottom:16px;">
-        <div style="padding:14px 18px 10px;border-bottom:1px solid rgba(62,207,142,.1);">
-          <div style="font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:#8b8680;">Keys adicionales · Opcionales · Round Robin automático</div>
-        </div>
-
-        <!-- K2 -->
-        <div style="padding:12px 18px;border-bottom:1px solid rgba(62,207,142,.08);">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-            <div style="width:22px;height:22px;border-radius:50%;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.3);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;color:#60a5fa;flex-shrink:0;">2</div>
-            <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#8b8680;">API Key #2</div>
-            <div id="k2status" style="margin-left:auto;font-size:14px;"></div>
-          </div>
-          <div style="display:flex;gap:5px;">
-            <input id="k2" type="password" placeholder="Opcional"
-              style="flex:1;padding:8px 10px;background:rgba(5,7,10,.7);border:1px solid rgba(96,165,250,.18);color:#e2ddd6;font-family:'DM Mono',monospace;font-size:11px;outline:none;border-radius:1px;"
-              oninput="lhCheckKey(2,this.value)"/>
-            <button onclick="lhToggle('k2')" style="padding:8px;border:1px solid rgba(96,165,250,.15);background:transparent;color:#8b8680;cursor:pointer;font-size:12px;">👁</button>
-          </div>
-        </div>
-
-        <!-- K3 -->
-        <div style="padding:12px 18px;border-bottom:1px solid rgba(62,207,142,.08);">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-            <div style="width:22px;height:22px;border-radius:50%;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.3);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;color:#60a5fa;flex-shrink:0;">3</div>
-            <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#8b8680;">API Key #3</div>
-            <div id="k3status" style="margin-left:auto;font-size:14px;"></div>
-          </div>
-          <div style="display:flex;gap:5px;">
-            <input id="k3" type="password" placeholder="Opcional"
-              style="flex:1;padding:8px 10px;background:rgba(5,7,10,.7);border:1px solid rgba(96,165,250,.18);color:#e2ddd6;font-family:'DM Mono',monospace;font-size:11px;outline:none;border-radius:1px;"
-              oninput="lhCheckKey(3,this.value)"/>
-            <button onclick="lhToggle('k3')" style="padding:8px;border:1px solid rgba(96,165,250,.15);background:transparent;color:#8b8680;cursor:pointer;font-size:12px;">👁</button>
-          </div>
-        </div>
-
-        <!-- K4 -->
-        <div style="padding:12px 18px;border-bottom:1px solid rgba(62,207,142,.08);">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-            <div style="width:22px;height:22px;border-radius:50%;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.3);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;color:#60a5fa;flex-shrink:0;">4</div>
-            <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#8b8680;">API Key #4</div>
-            <div id="k4status" style="margin-left:auto;font-size:14px;"></div>
-          </div>
-          <div style="display:flex;gap:5px;">
-            <input id="k4" type="password" placeholder="Opcional"
-              style="flex:1;padding:8px 10px;background:rgba(5,7,10,.7);border:1px solid rgba(96,165,250,.18);color:#e2ddd6;font-family:'DM Mono',monospace;font-size:11px;outline:none;border-radius:1px;"
-              oninput="lhCheckKey(4,this.value)"/>
-            <button onclick="lhToggle('k4')" style="padding:8px;border:1px solid rgba(96,165,250,.15);background:transparent;color:#8b8680;cursor:pointer;font-size:12px;">👁</button>
-          </div>
-        </div>
-
-        <!-- K5 -->
-        <div style="padding:12px 18px;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-            <div style="width:22px;height:22px;border-radius:50%;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.3);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;color:#60a5fa;flex-shrink:0;">5</div>
-            <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#8b8680;">API Key #5</div>
-            <div id="k5status" style="margin-left:auto;font-size:14px;"></div>
-          </div>
-          <div style="display:flex;gap:5px;">
-            <input id="k5" type="password" placeholder="Opcional"
-              style="flex:1;padding:8px 10px;background:rgba(5,7,10,.7);border:1px solid rgba(96,165,250,.18);color:#e2ddd6;font-family:'DM Mono',monospace;font-size:11px;outline:none;border-radius:1px;"
-              oninput="lhCheckKey(5,this.value)"/>
-            <button onclick="lhToggle('k5')" style="padding:8px;border:1px solid rgba(96,165,250,.15);background:transparent;color:#8b8680;cursor:pointer;font-size:12px;">👁</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- INFO ROUND ROBIN -->
-      <div style="border:1px solid rgba(62,207,142,.1);padding:14px 16px;background:rgba(13,20,32,.4);margin-bottom:16px;display:flex;gap:12px;align-items:flex-start;">
-        <div style="font-size:20px;flex-shrink:0;">🔄</div>
-        <div>
-          <div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:#3ecf8e;margin-bottom:4px;">Sistema Round Robin</div>
-          <div style="font-size:11px;color:#8b8680;line-height:1.6;">Las consultas se distribuyen automáticamente entre todas las keys activas. Si una alcanza su límite, el sistema cambia a la siguiente sin interrupciones.</div>
-        </div>
-      </div>
-
-      <!-- ERROR MSG -->
-      <div id="setupMsg" style="font-size:11px;color:#f87171;text-align:center;min-height:16px;margin-bottom:10px;"></div>
-
-      <!-- BOTÓN GUARDAR -->
-      <button onclick="lhSaveAll()" style="width:100%;padding:14px;border:1px solid #3ecf8e;background:rgba(62,207,142,.1);color:#3ecf8e;font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:.35em;text-transform:uppercase;cursor:pointer;margin-bottom:10px;border-radius:1px;">
-        ✓ GUARDAR Y ENTRAR AL SISTEMA
-      </button>
-
-      <!-- GUÍA -->
-      <div style="border:1px solid rgba(62,207,142,.08);padding:14px 16px;background:rgba(13,20,32,.3);">
-        <div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:#3d3c3a;margin-bottom:8px;">¿Cómo obtener las API Keys?</div>
-        <div style="font-size:11px;color:#8b8680;line-height:1.7;">
-          1. Ve a <span style="color:#3ecf8e;">aistudio.google.com</span><br>
-          2. Inicia sesión con una cuenta Google<br>
-          3. Clic en <b style="color:#e2ddd6;">"Get API Key"</b> → <b style="color:#e2ddd6;">"Create API Key"</b><br>
-          4. Repite con cuentas Google diferentes para tener más keys<br>
-          <span style="color:#3d3c3a;font-size:10px;">Cada cuenta tiene cuota gratuita separada · Gemini 2.0 Flash</span>
-        </div>
-      </div>
-
-      <!-- LINK CAMBIAR KEYS -->
-      <div style="text-align:center;margin-top:14px;">
-        <button onclick="lhResetAll()" style="background:transparent;border:none;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#3d3c3a;cursor:pointer;text-decoration:underline;">
-          Borrar todas las keys guardadas
-        </button>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<script>
-// ═══════════════════════════════════════════════════
-// LENOAH HOST v7 — SCRIPT GLOBAL LIMPIO
-// Todas las funciones en scope global para que los
-// onclick del HTML funcionen correctamente
-// ═══════════════════════════════════════════════════
-
-// ── API KEY MANAGER · ROUND ROBIN ────────────────
-let GEMINI_KEY = '';
-let rrKeys = [];    // array de keys activas
-let rrIndex = 0;    // puntero round robin
-let rrCallCount = [];  // contador de llamadas por key
-
-// Guardar/cargar keys del localStorage
-const LS_KEYS = 'lh_apikeys_v2';
-
-function lhLoadSaved() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(LS_KEYS) || '[]');
-    for(let i=1;i<=5;i++) {
-      const el = document.getElementById('k'+i);
-      if(el && saved[i-1]) {
-        el.value = saved[i-1];
-        lhCheckKey(i, saved[i-1]);
-      }
-    }
-  } catch(e) {}
-}
-
-function lhCheckKey(n, val) {
-  const statusEl = document.getElementById('k'+n+'status');
-  if(!statusEl) return;
-  if(!val) { statusEl.textContent = ''; return; }
-  if(val.startsWith('AIza') && val.length > 20) {
-    statusEl.textContent = '✅';
-  } else {
-    statusEl.textContent = '❌';
-  }
-}
-
-function lhToggle(id) {
-  const el = document.getElementById(id);
-  if(el) el.type = el.type === 'password' ? 'text' : 'password';
-}
-
-function lhSaveAll() {
-  const vals = [];
-  const msg = document.getElementById('setupMsg');
-  for(let i=1;i<=5;i++) {
-    const v = (document.getElementById('k'+i)?.value || '').trim();
-    vals.push(v);
-  }
-  // Validate key 1
-  if(!vals[0] || !vals[0].startsWith('AIza') || vals[0].length < 20) {
-    if(msg) msg.textContent = '⚠ La Key #1 es obligatoria y debe comenzar con "AIza..."';
-    return;
-  }
-  // Save all
-  localStorage.setItem(LS_KEYS, JSON.stringify(vals));
-  // Build active keys list
-  rrKeys = vals.filter(v => v && v.startsWith('AIza') && v.length > 20);
-  rrIndex = 0;
-  rrCallCount = new Array(rrKeys.length).fill(0);
-  GEMINI_KEY = rrKeys[0];
-  if(msg) msg.textContent = '';
-  document.getElementById('setupScreen').style.display = 'none';
-  startApp();
-}
-
-// Round Robin — returns next key to use
-// ── ROUND ROBIN ENGINE (REPARADO) ─────────────────
-// rrCurrentKey guarda cuál key se está usando AHORA
-// rrNextKey() solo obtiene la key actual y avanza el puntero
-// rrMarkError() marca la key actual como fallida y rota
-
-let rrCurrentKey = ''; // key activa en la llamada actual
-
-function rrNextKey() {
-  if(!rrKeys.length) return GEMINI_KEY;
-  // Guardar cuál key vamos a usar ANTES de avanzar
-  rrCurrentKey = rrKeys[rrIndex];
-  rrCallCount[rrIndex] = (rrCallCount[rrIndex] || 0) + 1;
-  // Avanzar para la PRÓXIMA llamada
-  rrIndex = (rrIndex + 1) % rrKeys.length;
-  GEMINI_KEY = rrCurrentKey;
-  console.log(`RR: usando key #${rrKeys.indexOf(rrCurrentKey)+1} de ${rrKeys.length}`);
-  return rrCurrentKey;
-}
-
-// Llamar con la key que falló (NO llamar rrNextKey() aquí)
-function rrMarkError(failedKey, reason) {
-  const idx = rrKeys.indexOf(failedKey);
-  console.warn(`Key #${idx+1} error: ${reason}`);
-  if(rrKeys.length <= 1) return; // solo una key, no hay alternativa
-  // Asegurar que el índice apunte a una key diferente
-  if(rrCurrentKey === rrKeys[rrIndex]) {
-    rrIndex = (rrIndex + 1) % rrKeys.length;
-  }
-  GEMINI_KEY = rrKeys[rrIndex];
-  console.log(`RR: rotando a key #${rrIndex+1}`);
-}
-
-function lhResetAll() {
-  if(confirm('¿Borrar todas las keys guardadas?')) {
-    localStorage.removeItem(LS_KEYS);
-    location.reload();
-  }
-}
-// ── UNIVERSAL API CALL WITH RETRY ─────────────────
-// All modules use this — automatically retries with next key on quota error
-async function geminiCall(body, maxRetries) {
-  maxRetries = maxRetries || Math.min(rrKeys.length || 1, 5);
-  let lastErr = '';
-  for(let i=0; i<maxRetries; i++){
-    const key = rrNextKey();
-    try {
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,
-        { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }
-      );
-      if(!res.ok){
-        const errTxt = await res.text();
-        if(res.status===429||res.status===403||res.status===401){
-          rrMarkError(key, `HTTP ${res.status}`);
-          lastErr = `Key #${rrKeys.indexOf(key)+1} — límite (${res.status}). Rotando...`;
-          console.warn(lastErr);
-          continue;
+        function actualizarReloj() {
+            const ahora = new Date();
+            const horas = String(ahora.getHours()).padStart(2, '0');
+            const minutos = String(ahora.getMinutes()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${horas}:${minutos}`;
         }
-        throw new Error(`HTTP ${res.status}: ${errTxt.substring(0,150)}`);
-      }
-      const data = await res.json();
-      if(data.error){
-        const msg = data.error.message || JSON.stringify(data.error);
-        const code = data.error.code || 0;
-        if(code===429||code===403||msg.toLowerCase().includes('quota')||msg.toLowerCase().includes('limit')||msg.toLowerCase().includes('rate')){
-          rrMarkError(key, msg);
-          lastErr = msg;
-          console.warn(`Key quota error: ${msg}`);
-          continue;
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+            document.getElementById(sectionId).classList.add('active');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('gradient-primary', 'text-white');
+                btn.classList.add('bg-orange-100', 'text-primary');
+            });
+            event.target.closest('.nav-btn').classList.remove('bg-orange-100', 'text-primary');
+            event.target.closest('.nav-btn').classList.add('gradient-primary', 'text-white');
         }
-        throw new Error(msg);
-      }
-      const candidate = data.candidates?.[0];
-      if(!candidate) throw new Error('Sin candidatos en la respuesta');
-      if(candidate.finishReason==='SAFETY') throw new Error('Bloqueado por filtros de seguridad');
-      const text = candidate.content?.parts?.[0]?.text || '';
-      if(!text) throw new Error('Respuesta de texto vacía');
-      return text; // success!
-    } catch(e){
-      lastErr = e.message;
-      if(!e.message.includes('límite') && !e.message.includes('quota') && !e.message.includes('Rotando')){
-        // Non-quota error — don't retry
-        throw e;
-      }
-    }
-  }
-  throw new Error(
-    rrKeys.length > 1
-      ? `Todas las ${rrKeys.length} API Keys alcanzaron su límite de consultas. Espera 1 minuto e intenta de nuevo.`
-      : `Límite de la API Key alcanzado. Espera 1 minuto o agrega más keys en ⚙ Configuración.`
-  );
-}
 
-
-
-// Legacy compat
-function getKey(){ return rrKeys[0] || ''; }
-function resetKey(){ lhResetAll(); }
-
-// ── CONSTANTS ────────────────────────────────────
-const DAYS = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-const QUOTES = [
-  '"Bienvenido. Cada visita es una oportunidad."',
-  '"Welcome. Excellence is our daily standard."',
-  '"En Lenoah, su tiempo es nuestra prioridad."',
-  '"Great partnerships begin with a warm welcome."',
-  '"La confianza se construye visita a visita."',
-  '"Innovation and hospitality, hand in hand."'
-];
-const SYSTEM_NOVA = `Eres Nova, la asistente de recepción con IA de Lenoah, comercializadora empresarial premium.
-PERSONALIDAD: Cálida, elegante, hospitalaria. Como recepcionista de hotel boutique 5 estrellas.
-Habla natural, máximo 2-3 oraciones. Detectas idioma (ES/EN) y respondes en ese idioma.
-FLUJO: 1)Saluda y preséntate como Nova de Lenoah 2)Pide el nombre 3)Úsalo naturalmente 4)Pregunta motivo de visita 5)Entretén mientras espera.
-INFO LENOAH: Comercializadora de soluciones empresariales premium. Servicios: distribución, importación, logística, consultoría. Tijuana, BC.
-Si detectas nombre incluye al final: [N:NombreAqui]
-Si detectas motivo incluye al final: [M:MotivoAqui]`;
-
-// ── STATE ────────────────────────────────────────
-let hist=[], isL=false, isSp=false, isIdle=true, rec=null;
-let visName='', lang='es-MX', visits=[], sesStart=null, curV=null;
-let carI=0, carT=null, mouth=0, blinkV=1, blinkC=0, blinkN=180;
-let mx=0, my=0, rx=0, ry=0;
-
-function todayKey(){ const d=new Date(); return `v_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`; }
-function nowT(){ const n=new Date(); return String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0'); }
-function fmt(n){ return '$'+n.toLocaleString('es-MX',{minimumFractionDigits:0,maximumFractionDigits:0}); }
-function showToast(msg, d=2600){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),d);
-}
-
-// ── CURSOR (desktop only) ────────────────────────
-function initCursor(){
-  const cur=document.getElementById('cur'), cur2=document.getElementById('cur2');
-  if(!cur || window.matchMedia('(pointer:coarse)').matches) return;
-  document.addEventListener('mousemove',e=>{
-    mx=e.clientX; my=e.clientY;
-    cur.style.left=mx+'px'; cur.style.top=my+'px';
-  });
-  (function ac(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; cur2.style.left=rx+'px'; cur2.style.top=ry+'px'; requestAnimationFrame(ac); })();
-}
-
-// ── BACKGROUND PARTICLES ─────────────────────────
-function initBG(){
-  const c=document.getElementById('bgC'); if(!c) return;
-  const ctx=c.getContext('2d');
-  let W,H,pts=[];
-  function rsz(){ W=c.width=innerWidth; H=c.height=innerHeight; }
-  rsz(); window.addEventListener('resize',rsz);
-  for(let i=0;i<70;i++) pts.push({x:Math.random()*2000,y:Math.random()*2000,vx:(Math.random()-.5)*.12,vy:(Math.random()-.5)*.12,r:Math.random()*1.2+.3,o:Math.random()*.28+.06});
-  function loop(){
-    ctx.clearRect(0,0,W,H);
-    pts.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0;
-      ctx.beginPath(); ctx.arc(p.x%W,p.y%H,p.r,0,Math.PI*2); ctx.fillStyle=`rgba(62,207,142,${p.o})`; ctx.fill(); });
-    for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){
-      const a=pts[i],b=pts[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);
-      if(d<100){ ctx.beginPath(); ctx.moveTo(a.x%W,a.y%H); ctx.lineTo(b.x%W,b.y%H);
-        ctx.strokeStyle=`rgba(62,207,142,${.05*(1-d/100)})`; ctx.lineWidth=.5; ctx.stroke(); }
-    }
-    requestAnimationFrame(loop);
-  }
-  loop();
-}
-
-// ── FACE CANVAS ──────────────────────────────────
-function initFace(){
-  const c=document.getElementById('faceC'); if(!c) return;
-  const ctx=c.getContext('2d');
-  function draw(){
-    ctx.clearRect(0,0,90,90);
-    [[28,34],[62,34]].forEach(([ex,ey])=>{
-      ctx.beginPath(); ctx.ellipse(ex,ey,5.5,6.5*blinkV,0,0,Math.PI*2);
-      ctx.fillStyle='rgba(62,207,142,.9)'; ctx.fill();
-      if(blinkV>.5){ ctx.beginPath(); ctx.arc(ex+2,ey-2,1.5,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,.5)'; ctx.fill(); }
-    });
-    ctx.beginPath(); ctx.moveTo(45,41); ctx.lineTo(41,50); ctx.lineTo(49,50);
-    ctx.strokeStyle='rgba(62,207,142,.18)'; ctx.lineWidth=.8; ctx.stroke();
-    const my2=62+mouth*7;
-    ctx.beginPath(); ctx.moveTo(32,60); ctx.quadraticCurveTo(45,my2,58,60);
-    ctx.strokeStyle='rgba(62,207,142,.85)'; ctx.lineWidth=1.8; ctx.lineCap='round'; ctx.stroke();
-    blinkC++;
-    if(blinkC>=blinkN){ blinkC=0; blinkN=100+Math.random()*220; }
-    if(blinkC<8) blinkV=blinkC<4?1-(blinkC/4):(blinkC-4)/4; else blinkV=1;
-    requestAnimationFrame(draw);
-  }
-  draw();
-}
-
-// ── WAVE & MOUTH ─────────────────────────────────
-let waveInt=null, mouthInt=null;
-function setWave(on){
-  const bars=document.querySelectorAll('.wb'); clearInterval(waveInt);
-  if(on){ bars.forEach(b=>b.classList.add('on')); waveInt=setInterval(()=>bars.forEach(b=>b.style.height=(Math.random()*24+4)+'px'),85); }
-  else { bars.forEach(b=>{ b.classList.remove('on'); b.style.height='5px'; }); }
-}
-function setMouth(on){
-  clearInterval(mouthInt);
-  if(on){ let t=0; mouthInt=setInterval(()=>{ mouth=Math.max(0,Math.sin(t)*.5+.5)*(0.4+Math.random()*.6); t+=.4; },80); }
-  else mouth=0;
-}
-
-// ── CLOCK ────────────────────────────────────────
-function tick(){
-  const n=new Date(), h=String(n.getHours()).padStart(2,'0'), m=String(n.getMinutes()).padStart(2,'0'), t=h+':'+m;
-  const hc=document.getElementById('hClock'); if(hc) hc.textContent=t;
-  const ic=document.getElementById('iClock'); if(ic) ic.textContent=t;
-  const id=document.getElementById('iDay'); if(id) id.textContent=DAYS[n.getDay()];
-  const qt=document.getElementById('qsT'); if(qt) qt.textContent=visits.length?visits[visits.length-1].time:'--:--';
-}
-
-// ── WEATHER ──────────────────────────────────────
-async function fetchWx(){
-  try{
-    const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=32.5149&longitude=-117.0382&current=temperature_2m,weather_code&timezone=America%2FLos_Angeles');
-    const d=await r.json(); const tmp=Math.round(d.current.temperature_2m), wc=d.current.weather_code;
-    const ico=wc===0?'☀️':wc<=2?'⛅':wc<=3?'☁️':wc<=48?'🌫':wc<=67?'🌧':wc<=82?'🌦':'⛈';
-    const it=document.getElementById('iTemp'); if(it) it.textContent=tmp+'°';
-    const wt=document.getElementById('wxT'); if(wt) wt.textContent=tmp+'°C';
-    const wi=document.getElementById('wxIco'); if(wi) wi.textContent=ico;
-  }catch(e){}
-}
-
-// ── STATUS ───────────────────────────────────────
-function setSt(lbl,val,sp=false){
-  const l=document.getElementById('stLbl'); if(l) l.textContent=lbl;
-  const v=document.getElementById('stVal'); if(v){ v.textContent=val; v.classList.toggle('sp',sp); }
-}
-
-// ── IDLE / WAKE ──────────────────────────────────
-function startCarousel(){
-  clearInterval(carT);
-  carT=setInterval(()=>{
-    const el=document.getElementById('iQuote'); if(!el) return;
-    el.style.opacity='0';
-    setTimeout(()=>{ carI=(carI+1)%QUOTES.length; el.textContent=QUOTES[carI]; el.style.opacity='1'; },500);
-  },4500);
-}
-function enterIdle(){
-  isIdle=true;
-  document.getElementById('idle').classList.remove('gone');
-  document.getElementById('app').classList.remove('on');
-  window.speechSynthesis?.cancel(); setWave(false); setMouth(false);
-  const iv=document.getElementById('iVis'); if(iv) iv.textContent=visits.length;
-  startCarousel();
-}
-function wakeUp(){
-  if(!isIdle) return;
-  clearInterval(carT);
-  playWake(()=>{
-    isIdle=false;
-    document.getElementById('idle').classList.add('gone');
-    document.getElementById('app').classList.add('on');
-    if(hist.length===0) setTimeout(greet,700);
-  });
-}
-
-// ── WAKE ANIMATION ───────────────────────────────
-function playWake(cb){
-  const ly=document.getElementById('wkL'), cv=document.getElementById('wkC');
-  const ctx=cv.getContext('2d'); cv.width=innerWidth; cv.height=innerHeight;
-  ly.classList.add('on');
-  const cx=innerWidth/2, cy=innerHeight/2, N=60, pts=[];
-  for(let i=0;i<N;i++){ const a=Math.random()*Math.PI*2, r=Math.max(innerWidth,innerHeight)*.75;
-    pts.push({x:cx+Math.cos(a)*r,y:cy+Math.sin(a)*r,tx:cx+(Math.random()-.5)*160,ty:cy+(Math.random()-.5)*160,r:Math.random()*2+.8,o:Math.random()*.7+.3}); }
-  let s=null;
-  function step(ts){ if(!s)s=ts; const p=Math.min((ts-s)/1000,1),e=1-Math.pow(1-p,3);
-    ctx.clearRect(0,0,cv.width,cv.height);
-    if(p>.45){ const bp=(p-.45)/.55,g=ctx.createRadialGradient(cx,cy,0,cx,cy,260*bp);
-      g.addColorStop(0,`rgba(62,207,142,${.15*(1-bp)})`);g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.fillRect(0,0,cv.width,cv.height); }
-    pts.forEach(pt=>{ ctx.beginPath();ctx.arc(pt.x+(pt.tx-pt.x)*e,pt.y+(pt.ty-pt.y)*e,pt.r,0,Math.PI*2);ctx.fillStyle=`rgba(62,207,142,${pt.o*(1-p*.6)})`;ctx.fill(); });
-    if(p<1) requestAnimationFrame(step);
-    else{ ly.classList.remove('on');ctx.clearRect(0,0,cv.width,cv.height);if(cb)cb(); }
-  }
-  requestAnimationFrame(step);
-}
-
-// ── CAMERA ───────────────────────────────────────
-let camCtx=null, camCv=null, prevFr=null, motC=0;
-async function initCam(){
-  try{
-    const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:160,height:120},audio:false});
-    const vid=document.getElementById('camVid'); vid.srcObject=stream;
-    document.getElementById('camBox').style.display='block';
-    camCv=document.createElement('canvas'); camCv.width=80; camCv.height=60;
-    camCtx=camCv.getContext('2d',{willReadFrequently:true});
-    vid.addEventListener('playing',()=>motLoop(vid));
-    const fc=document.getElementById('fCam'); if(fc) fc.innerHTML='<div class="fp"></div>Cámara: activa';
-    const st=document.getElementById('sTxt'); if(st) st.textContent='Detección activa · Acérquese';
-  }catch(e){
-    const fc=document.getElementById('fCam'); if(fc) fc.innerHTML='<div class="fp fpw"></div>Cámara: no disponible';
-    const st=document.getElementById('sTxt'); if(st) st.textContent='Toque la pantalla para comenzar';
-  }
-}
-function motLoop(vid){
-  function f(){ if(!isIdle){requestAnimationFrame(f);return;}
-    camCtx.drawImage(vid,0,0,80,60); const fr=camCtx.getImageData(0,0,80,60);
-    if(prevFr){ let diff=0; for(let i=0;i<fr.data.length;i+=4) diff+=Math.abs(fr.data[i]-prevFr[i])+Math.abs(fr.data[i+1]-prevFr[i+1])+Math.abs(fr.data[i+2]-prevFr[i+2]);
-      if(diff/(80*60*3)>9&&motC<=0){ motC=100; const st=document.getElementById('sTxt'); if(st) st.textContent='¡Presencia detectada!'; setTimeout(wakeUp,350); } }
-    prevFr=[...fr.data]; if(motC>0) motC--; requestAnimationFrame(f);
-  }
-  requestAnimationFrame(f);
-}
-
-// ── MESSAGES ─────────────────────────────────────
-function addMsg(role,text){
-  const w=document.createElement('div'); w.className='msg '+role;
-  const who=document.createElement('div'); who.className='mwho'; who.textContent=role==='nova'?'NOVA · Lenoah':'Visitante';
-  const b=document.createElement('div'); b.className='mbody'; b.textContent=text;
-  w.appendChild(who); w.appendChild(b);
-  const ms=document.getElementById('msgs'); ms.appendChild(w); ms.scrollTop=ms.scrollHeight;
-}
-function showThink(){
-  const w=document.createElement('div'); w.className='msg nova'; w.id='think';
-  const who=document.createElement('div'); who.className='mwho'; who.textContent='NOVA · Lenoah';
-  const b=document.createElement('div'); b.className='thinking'; b.innerHTML='<div class="td"></div><div class="td"></div><div class="td"></div>';
-  w.appendChild(who); w.appendChild(b); const ms=document.getElementById('msgs'); ms.appendChild(w); ms.scrollTop=ms.scrollHeight;
-}
-function hideThink(){ document.getElementById('think')?.remove(); }
-
-// ── VISITS ───────────────────────────────────────
-function startSes(){ sesStart=new Date(); curV={name:'',reason:'',time:nowT(),duration:0,lang:lang.startsWith('es')?'ES':'EN'}; }
-function closeSes(name,reason){
-  if(!curV) return; if(name) curV.name=name; if(reason) curV.reason=reason;
-  if(sesStart) curV.duration=Math.round((new Date()-sesStart)/60000);
-  visits.push({...curV}); localStorage.setItem(todayKey(),JSON.stringify(visits));
-  curV=null; sesStart=null; renderVisits(); updDash(); updQS();
-}
-function updQS(){
-  const qv=document.getElementById('qsV'); if(qv) qv.textContent=visits.length;
-  const iv=document.getElementById('iVis'); if(iv) iv.textContent=visits.length;
-  const avg=visits.length?Math.round(visits.reduce((a,v)=>a+(v.duration||0),0)/visits.length):0;
-  const qa=document.getElementById('qsA'); if(qa) qa.textContent=avg+'m';
-}
-function renderVisits(){
-  const list=document.getElementById('vList'), lbl=document.getElementById('vCntLbl');
-  if(!list) return;
-  if(lbl) lbl.textContent=visits.length+' visita'+(visits.length!==1?'s':'');
-  if(!visits.length){ list.innerHTML='<div class="nv">Sin visitas aún.<br>Nova las registra automáticamente.</div>'; return; }
-  list.innerHTML='';
-  [...visits].reverse().forEach(v=>{
-    const row=document.createElement('div'); row.className='vrow';
-    row.innerHTML=`<div class="vrt">${v.time}</div><div class="vri"><div class="vrn">${v.name||'Visitante'}</div><div class="vrr">${v.reason||'Sin especificar'}</div></div><div class="vrb">${v.lang||'ES'}</div>`;
-    list.appendChild(row);
-  });
-}
-function expVisits(){
-  if(!visits.length){ showToast('Sin visitas para exportar'); return; }
-  const h='Hora,Nombre,Motivo,Duración,Idioma\n', rows=visits.map(v=>`${v.time},"${v.name||''}","${v.reason||''}",${v.duration||0},${v.lang||'ES'}`).join('\n');
-  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([h+rows],{type:'text/csv'}));
-  a.download=`lenoah_${todayKey()}.csv`; a.click(); showToast('CSV exportado');
-}
-function updDash(){
-  const total=visits.length, avg=total?Math.round(visits.reduce((a,v)=>a+(v.duration||0),0)/total):0;
-  const hf={}; visits.forEach(v=>{ const h=parseInt(v.time); hf[h]=(hf[h]||0)+1; });
-  const peak=Object.keys(hf).sort((a,b)=>hf[b]-hf[a])[0];
-  const es=visits.filter(v=>v.lang==='ES').length, en=visits.filter(v=>v.lang==='EN').length;
-  ['dk1','dk2','dk3','dk4'].forEach((id,i)=>{
-    const el=document.getElementById(id); if(!el) return;
-    if(i===0) el.textContent=total;
-    else if(i===1) el.textContent=avg+'m';
-    else if(i===2) el.textContent=peak?peak+':00':'—';
-    else el.textContent=en>es?'EN':'ES';
-  });
-  const chart=document.getElementById('hChart'), lbls=document.getElementById('hLbls');
-  if(!chart) return; chart.innerHTML=''; if(lbls) lbls.innerHTML='';
-  const hours=[8,9,10,11,12,13,14,15,16,17,18,19], mx2=Math.max(...hours.map(h=>hf[h]||0),1);
-  hours.forEach(h=>{
-    const v=hf[h]||0, bar=document.createElement('div'); bar.className='hb'; bar.style.height=`${(v/mx2)*50+4}px`; bar.title=`${h}:00 — ${v}`; chart.appendChild(bar);
-    if(lbls){ const l=document.createElement('div'); l.className='hl'; l.textContent=h; lbls.appendChild(l); }
-  });
-  const rl=document.getElementById('rList'); if(!rl) return;
-  const reasons={}; visits.forEach(v=>{ if(v.reason&&v.reason!='Sin especificar'){ const k=v.reason.substring(0,18); reasons[k]=(reasons[k]||0)+1; } });
-  if(!Object.keys(reasons).length){ rl.innerHTML='<div style="font-size:10px;color:var(--text-3);text-align:center;padding:10px">Los motivos se detectan automáticamente</div>'; return; }
-  const tot2=Object.values(reasons).reduce((a,b)=>a+b,0); rl.innerHTML='';
-  Object.entries(reasons).sort((a,b)=>b[1]-a[1]).slice(0,5).forEach(([r,c])=>{
-    const pct=Math.round((c/tot2)*100), row=document.createElement('div'); row.className='rrow';
-    row.innerHTML=`<div class="rln">${r}</div><div class="rbw"><div class="rb" style="width:${pct}%"></div></div><div class="rpc">${pct}%</div>`;
-    rl.appendChild(row);
-  });
-}
-
-// ── GEMINI CHAT ───────────────────────────────────
-async function ask(userText){
-  addMsg('vis',userText);
-  document.getElementById('trTxt').textContent='…';
-  setSt('Procesando','Pensando…'); setWave(false); showThink();
-  hist.push({role:'user',parts:[{text:userText}]});
-  if(curV) curV.lang=/[áéíóúñ¿¡]/i.test(userText)?'ES':'EN';
-
-  let lastError = '';
-  try{
-      let reply = await geminiCall({
-        system_instruction:{parts:[{text:SYSTEM_NOVA}]},
-        contents:hist,
-        generationConfig:{maxOutputTokens:200, temperature:.88}
-      });
-
-      // Extract name/reason tags
-      const nm=reply.match(/\[N:([^\]]+)\]/), mo=reply.match(/\[M:([^\]]+)\]/);
-      if(nm&&!visName){
-        visName=nm[1].trim();
-        document.getElementById('vcName').textContent=visName;
-        document.getElementById('vcChip').classList.add('show');
-        if(curV) curV.name=visName;
-      }
-      if(mo&&curV) curV.reason=mo[1].trim();
-      reply=reply.replace(/\[N:[^\]]+\]/g,'').replace(/\[M:[^\]]+\]/g,'').trim();
-
-      hist.push({role:'model',parts:[{text:reply}]});
-      hideThink(); addMsg('nova',reply); speak(reply);
-  } catch(e){
-    lastError = e.message;
-    console.error('ask() error:', e.message);
-    hideThink();
-    const errMsg = lastError.includes('límite') || lastError.includes('Keys') || lastError.includes('Espera')
-      ? lastError
-      : `Error de conexión. ${lastError.substring(0,60)}`;
-    addMsg('nova', errMsg); speak(errMsg);
-  }
-}
-
-// ── SPEECH SYNTHESIS ─────────────────────────────
-function speak(text){
-  if(!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text); u.lang=lang; u.rate=.93; u.pitch=1.07;
-  const vs=window.speechSynthesis.getVoices();
-  const pref=vs.find(v=>lang.startsWith('es')?v.name.match(/Paulina|Monica|Luciana|es-/i):v.name.match(/Samantha|Karen|Victoria|en-/i));
-  if(pref) u.voice=pref;
-  u.onstart=()=>{ isSp=true; setSt('Nova habla','Respondiendo…',true); setWave(true); setMouth(true); };
-  u.onend=()=>{ isSp=false; setSt('En espera','Lista'); setWave(false); setMouth(false); };
-  window.speechSynthesis.speak(u);
-}
-
-// ── MICROPHONE (REPARADO) ────────────────────────
-function togMic(){
-  if(isL){ stopMic(); return; }
-  // Pedir permiso explícitamente — esto muestra el diálogo del navegador
-  navigator.mediaDevices.getUserMedia({audio:true, video:false})
-    .then(stream=>{
-      // Permiso concedido — liberar el stream (solo necesitábamos el permiso)
-      stream.getTracks().forEach(t=>t.stop());
-      // Ahora iniciar SpeechRecognition
-      startSpeechRec();
-    })
-    .catch(err=>{
-      console.error('Mic permission error:', err);
-      showToast('⚠ Activa el micrófono en Ajustes del navegador', 4000);
-    });
-}
-function startSpeechRec(){
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SR){ showToast('Voz no disponible en este navegador'); return; }
-  rec = new SR();
-  rec.lang = lang;
-  rec.continuous = false;
-  rec.interimResults = true;
-  rec.maxAlternatives = 1;
-  rec.onstart = ()=>{
-    isL = true;
-    document.getElementById('micBtn').classList.add('hot');
-    setSt('Escuchando','Habla ahora…');
-    setWave(true);
-    document.getElementById('trTxt').textContent = '🎤 Escuchando…';
-  };
-  rec.onresult = e=>{
-    let interim='', final='';
-    for(let i=e.resultIndex; i<e.results.length; i++){
-      const t=e.results[i][0].transcript;
-      if(e.results[i].isFinal) final+=t; else interim+=t;
-    }
-    document.getElementById('trTxt').textContent = final||interim||'…';
-    if(final.trim()) ask(final.trim());
-  };
-  rec.onerror = e=>{
-    console.error('SpeechRec error:', e.error);
-    if(e.error==='not-allowed') showToast('⚠ Micrófono bloqueado. Ve a Ajustes > Privacidad > Micrófono', 5000);
-    else if(e.error==='no-speech') document.getElementById('trTxt').textContent='Sin voz detectada. Intente de nuevo.';
-    else showToast('Error micrófono: '+e.error);
-    stopMic();
-  };
-  rec.onend = ()=>{ stopMic(); };
-  try{ rec.start(); }
-  catch(e){ showToast('Error al iniciar micrófono: '+e.message); stopMic(); }
-}
-function stopMic(){
-  isL = false;
-  try{ rec?.stop(); }catch(e){}
-  rec = null;
-  const btn=document.getElementById('micBtn'); if(btn) btn.classList.remove('hot');
-  if(!isSp){ setSt('En espera','Lista'); setWave(false); }
-  document.getElementById('trTxt').textContent = 'Toca el micrófono para hablar…';
-}
-
-// ── GREET / VISIT CONTROLS ────────────────────────
-function greet(){
-  startSes();
-  const msg='Buenos días, bienvenido a Lenoah. Soy Nova, su asistente de recepción. ¿Me podría decir su nombre para atenderle mejor?';
-  addMsg('nova',msg); speak(msg); hist.push({role:'model',parts:[{text:msg}]}); setSt('Nova habla','Saludando',true);
-}
-function newVisit(){
-  if(visName||hist.length>2) closeSes(visName,'');
-  hist=[]; visName='';
-  document.getElementById('msgs').innerHTML='';
-  document.getElementById('vcChip').classList.remove('show');
-  document.getElementById('trTxt').textContent='Toca el micrófono para hablar…';
-  window.speechSynthesis?.cancel(); setWave(false); setMouth(false); setSt('En espera','Nueva visita');
-  setTimeout(greet,300);
-}
-function cycLang(){
-  lang=lang.startsWith('es')?'en-US':'es-MX';
-  if(rec) rec.lang=lang;
-  showToast(lang.startsWith('es')?'Idioma: Español / English':'Language: English / Español');
-}
-
-// ── TAB SWITCHING (REPARADO) ─────────────────────
-function swTab(name, btn){
-  // Hide all tabs
-  document.querySelectorAll('.tc').forEach(t=>{ t.style.display='none'; t.classList.remove('on'); });
-  // Show selected
-  const target = document.getElementById('tc-'+name);
-  if(target){ target.style.display='flex'; target.classList.add('on'); }
-  // Update tab buttons
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  if(btn) btn.classList.add('on');
-  // Tab-specific init
-  if(name==='dash') updDash();
-  if(name==='visits') renderVisits();
-  if(name==='quote' && document.getElementById('qz-panel') && !document.getElementById('qz-panel').innerHTML.includes('Clasificador')) qzReset();
-  if(name==='vehicle') vhInitPanel();
-}
-
-// ── COTIZACIÓN (QUOTE MODULE) ─────────────────────
-// ── CLASIFICADOR GENERAL v2 — TIGIE/LIGIE 2026 ────
-// Motor de cálculo basado en:
-// • Ley Aduanera Art. 56 (Valor en Aduana = CIF)
-// • LIGIE/TIGIE reforma DOF 29-Dic-2025 (vigente 1-Ene-2026)
-// • Decreto PROSEC y reforma 23-Abr-2026
-// • IVA Ley del IVA Art. 1 (16%)
-// • DTA Ley Federal de Derechos Art. 49 (8‰ del VEA)
-// • IEPS según fracción arancelaria
-
-let qzRec2=null, qzL=false;
-
-// Nota fiscal: IVA base = VEA + IGI + IEPS + DTA (Art. 1 LIVA)
-// DTA = VEA × 0.008 (tope $10,000 USD para importaciones hasta esa suma)
-// IEPS se calcula sobre precio enajenación (ad valorem) o tasa específica
-
-// Países con TLC vigente con México
-const TLC_PAISES = {
-  usa: { nombre: 'EE.UU.', tlc: 'T-MEC', igi_pref: 0, nota: 'Requiere Certificado de Origen T-MEC vigente del exportador' },
-  canada: { nombre: 'Canadá', tlc: 'T-MEC', igi_pref: 0, nota: 'Requiere Certificado de Origen T-MEC vigente' },
-  mexico: { nombre: 'México', tlc: 'Nacional', igi_pref: 0, nota: 'Mercancía de origen nacional, sin IGI' },
-  japon: { nombre: 'Japón', tlc: 'CPTPP', igi_pref: 0, nota: 'Aplica preferencia CPTPP con Certificado de Origen' },
-  corea: { nombre: 'Corea del Sur', tlc: 'TLC México-Corea', igi_pref: 0, nota: 'TLC México-Corea, requiere Form AK' },
-  alemania: { nombre: 'Alemania', tlc: 'TLCUEM', igi_pref: 0, nota: 'TLC México-UE requiere EUR.1 o declaración en factura' },
-  italia: { nombre: 'Italia', tlc: 'TLCUEM', igi_pref: 0, nota: 'TLC México-UE requiere EUR.1 o declaración en factura' },
-  chile: { nombre: 'Chile', tlc: 'TLC México-Chile', igi_pref: 0, nota: 'Requiere Certificado de Origen Form. MCH' },
-  colombia: { nombre: 'Colombia', tlc: 'G3', igi_pref: 0, nota: 'Acuerdo G3 (México-Colombia), requiere certificado' },
-  china: { nombre: 'China', tlc: null, igi_pref: null, nota: 'Sin TLC — aplica tasa NMF/BASE TIGIE 2026. Posibles cuotas compensatorias.' },
-  india: { nombre: 'India', tlc: null, igi_pref: null, nota: 'Sin TLC — aplica tasa NMF/BASE TIGIE 2026' },
-  vietnam: { nombre: 'Vietnam', tlc: 'CPTPP', igi_pref: 0, nota: 'Aplica preferencia CPTPP con certificado de origen' },
-  taiwan: { nombre: 'Taiwán', tlc: null, igi_pref: null, nota: 'Sin TLC — aplica tasa NMF/BASE TIGIE 2026' },
-  brasil: { nombre: 'Brasil', tlc: 'ACE 53', igi_pref: null, nota: 'ACE 53 aplica solo para algunos productos automotrices' },
-  otro: { nombre: 'Otro país', tlc: null, igi_pref: null, nota: 'Sin TLC conocido — aplica tasa NMF/BASE TIGIE 2026' }
-};
-
-function qzOnOrigen() {
-  const origen = document.getElementById('qzOrigen').value;
-  const tlcSel = document.getElementById('qzTlc');
-  const note = document.getElementById('qzTlcNote');
-  const info = TLC_PAISES[origen];
-  if(!info) return;
-  if(info.tlc) {
-    tlcSel.value = info.tlc === 'T-MEC' ? 'tmec' : info.tlc === 'TLCUEM' ? 'tlcue' : info.tlc === 'CPTPP' ? 'cptpp' : 'ninguno';
-    note.style.display = 'block';
-    note.textContent = '✓ ' + info.nota;
-    note.style.borderColor = 'rgba(62,207,142,.3)';
-    note.style.color = '#3ecf8e';
-  } else {
-    tlcSel.value = 'ninguno';
-    note.style.display = 'block';
-    note.textContent = '⚠ ' + info.nota;
-    note.style.borderColor = 'rgba(248,113,113,.3)';
-    note.style.color = '#f87171';
-  }
-}
-
-// CÁLCULO OFICIAL según Ley Aduanera y LIVA
-function calcImpuestos(valorFactura, fleteInput, seguroInput, tcInput, igiPct, iepsPct, iepsEspecifico, esExento) {
-  const tc = parseFloat(tcInput) || 20.50;
-  const inv = parseFloat(valorFactura) || 0;
-  // Incrementables Art. 65 Ley Aduanera
-  const flete  = parseFloat(fleteInput) > 0 ? parseFloat(fleteInput) : inv * 0.06;
-  const seguro = parseFloat(seguroInput) > 0 ? parseFloat(seguroInput) : inv * 0.015;
-  // VEA = CIF en MXN (Art. 56 Ley Aduanera)
-  const vea_usd = inv + flete + seguro;
-  const vea = vea_usd * tc;
-  // IGI (Ad valorem sobre VEA)
-  const igi_pct = esExento ? 0 : (parseFloat(igiPct) || 0);
-  const igi = vea * (igi_pct / 100);
-  // DTA: 0.8% del VEA (Art. 49 LFD) — tope para operaciones ≤ $500,000 USD
-  const dta = vea * 0.008;
-  // IEPS (si aplica) — base es el VEA
-  let ieps = 0;
-  if(iepsPct > 0) ieps = vea * (parseFloat(iepsPct) / 100);
-  if(iepsEspecifico > 0) ieps = iepsEspecifico; // tasa específica MXN por unidad
-  // BASE IVA = VEA + IGI + IEPS + DTA (Art. 1 LIVA y Art. 27 CFF)
-  const base_iva = vea + igi + ieps + dta;
-  const iva = base_iva * 0.16;
-  // Subtotal contribuciones (sin VEA)
-  const subtotal = igi + ieps + dta + iva;
-  // Honorarios Lenoah
-  const honorarios = subtotal * 0.30;
-  const total = subtotal + honorarios;
-  return { inv, flete, seguro, vea_usd, vea, tc, igi_pct, igi, dta, ieps, iepsPct, base_iva, iva, subtotal, honorarios, total };
-}
-
-async function qzClasificar() {
-  const desc    = document.getElementById('qzDesc')?.value.trim() || '';
-  const origen  = document.getElementById('qzOrigen')?.value || 'usa';
-  const tlc     = document.getElementById('qzTlc')?.value || 'tmec';
-  const valor   = document.getElementById('qzValor')?.value || '0';
-  const flete   = document.getElementById('qzFlete')?.value || '';
-  const seguro  = document.getElementById('qzSeguro')?.value || '';
-  const tc      = document.getElementById('qzTc')?.value || '20.50';
-  const cant    = document.getElementById('qzCantidad')?.value || '1';
-  const aduana  = document.getElementById('qzAduana')?.value || 'tijuana';
-
-  if(!desc) { showToast('Describe la mercancía antes de continuar'); return; }
-  if(!valor || parseFloat(valor) <= 0) { showToast('Ingresa el valor en factura'); return; }
-
-  // Show result panel, hide form
-  document.getElementById('qz-form').style.display = 'none';
-  const rd = document.getElementById('qz-result');
-  rd.style.display = 'block';
-  rd.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;gap:14px;"><div class="thinking"><div class="td"></div><div class="td"></div><div class="td"></div></div><div style="font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--text-3);text-align:center;">Clasificando con IA · TIGIE 2026<br><span style="font-size:9px;">Consultando fracción arancelaria exacta…</span></div></div>';
-
-  const origenInfo = TLC_PAISES[origen] || TLC_PAISES.otro;
-  const tieneTlc = tlc !== 'ninguno';
-  const aduanaLabel = {tijuana:'Tijuana/Otay',mexicali:'Mexicali',nogales:'Nogales',cdj:'Cd. Juárez',laredo:'Nuevo Laredo',veracruz:'Veracruz',manzanillo:'Manzanillo',otra:'Otra aduana'}[aduana] || aduana;
-
-  const SYSTEM_CLASIFICADOR = `Eres un agente aduanal mexicano con 20 años de experiencia, especialista en clasificación arancelaria bajo el Sistema Armonizado y la LIGIE/TIGIE vigente en México.
-
-NORMATIVA QUE DEBES APLICAR (2026):
-- TIGIE: Tarifa de la Ley de los Impuestos Generales de Importación y de Exportación, vigente 2026
-- REFORMA TIGIE DOF 29-Dic-2025: vigente desde 1-Ene-2026. Afecta 1,463+ fracciones arancelarias.
-  * Textil/vestido (Cap. 50-64): tasas NMF subieron a 25-45%
-  * Cerámica/vidrio (Cap. 69-70): 25-36%
-  * Acero/aluminio (Cap. 72-73-76): 25-50%
-  * Maquinaria/electrónica/auto (Cap. 83-85-87-90): 5-35%
-  * Calzado (Cap. 64): hasta 35%
-  * Muebles (Cap. 94): hasta 35%
-  * IMPORTANTE: Estas tasas NMF aplican SOLO a países SIN TLC con México
-  * Con T-MEC, TLCUEM, CPTPP u otro TLC: aplica tasa preferencial (generalmente 0%)
-- Decreto PROSEC DOF 23-Abr-2026: permite tasas preferenciales/0% en insumos para sectores industriales
-- Ley Aduanera: Valor en Aduana = CIF (precio + flete + seguro hasta aduana mexicana) Art. 56 LA
-- Restricciones No Arancelarias: RRNA en la VUCEM para fracciones con permisos previos SADER, COFEPRIS, SEDENA, SE
-- NOMs: Normas Oficiales Mexicanas obligatorias por fracción
-- IEPS: Aplica a bebidas alcohólicas, tabaco, combustibles, bebidas saborizadas, alimentos alta densidad calórica, plaguicidas
-
-TU PROCESO DE CLASIFICACIÓN:
-1. Identifica el capítulo del Sistema Armonizado (2 dígitos)
-2. Determina la partida (4 dígitos)
-3. Determina la subpartida (6 dígitos)
-4. Determina la fracción TIGIE exacta (8 dígitos)
-5. Verifica si la fracción fue modificada por el Decreto DOF 29-Dic-2025
-6. Determina tasa IGI general (NMF) y tasa preferencial con TLC si aplica
-7. Verifica restricciones no arancelarias, NOMs, permisos previos
-8. Determina si aplica IEPS y en qué porcentaje o tasa específica
-
-INSTRUCCIONES DE RESPUESTA:
-- Análisis máximo 200 palabras explicando la clasificación y el razonamiento
-- SIEMPRE termina con el JSON en una sola línea sin saltos de línea
-- Usa el formato EXACTO indicado sin modificaciones
-
-JSON OBLIGATORIO al final (una sola línea):
-[QZ:{"fraccion":"XXXXXXXX","desc_tigie":"descripcion oficial TIGIE","capitulo":XX,"partida":"XXXX","unidad_medida":"KG/PZA/L/etc","igi_nmf":XX,"igi_tlc":X,"ieps_pct":0,"ieps_especifico":0,"aplica_prosec":false,"confianza":"ALTA","alternativas":["XXXXXXXX"],"restricciones_na":[],"noms":["NOM-XXX"],"permisos":[],"cuotas_compensatorias":false,"notas_clasificacion":"texto"}]`;
-
-  const userPrompt = `MERCANCÍA A CLASIFICAR:
-Descripción: ${desc}
-País de fabricación/origen: ${origenInfo.nombre}
-Tratado comercial: ${tlc === 'tmec' ? 'T-MEC' : tlc === 'tlcue' ? 'TLC México-UE' : tlc === 'cptpp' ? 'CPTPP' : 'Sin tratado (NMF)'}
-¿Tiene certificado de origen válido?: ${tieneTlc ? 'SÍ' : 'NO'}
-Valor en factura: $${valor} USD
-Cantidad: ${cant} unidades
-Aduana de entrada: ${aduanaLabel}
-Año de operación: 2026
-
-Clasifica esta mercancía en la fracción arancelaria TIGIE correcta y proporciona todos los datos requeridos.`;
-
-  try {
-    if(!rrKeys.length) throw new Error('API Key no configurada. Toca ⚙ para configurar.');
-
-    const fullText = await geminiCall({
-      system_instruction: { parts: [{ text: SYSTEM_CLASIFICADOR }] },
-      contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
-      generationConfig: { maxOutputTokens: 1000, temperature: 0.1, topP: 0.85 }
-    });
-
-    // Robust JSON extraction
-    let ai = null;
-    const rawMatch = fullText.match(/\[QZ:([\s\S]*?)\]/);
-    if(rawMatch) {
-      let jsonStr = rawMatch[1]
-        .replace(/\n/g, ' ').replace(/\r/g, '').replace(/\t/g, ' ')
-        .replace(/,\s*}/g, '}').replace(/,\s*]/g, ']')
-        .replace(/:\s*undefined/g, ':null');
-      try { ai = JSON.parse(jsonStr); }
-      catch(e) {
-        // Try fixing common issues
-        jsonStr = jsonStr.replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3');
-        try { ai = JSON.parse(jsonStr); } catch(e2) { console.error('JSON parse failed:', e2, jsonStr.substring(0,200)); }
-      }
-    }
-
-    const narrative = fullText.replace(/\[QZ:[\s\S]*?\]/g, '').trim();
-
-    // Calculate with correct formulas
-    const tieneTlcActual = tieneTlc && (ai?.igi_tlc !== undefined && ai?.igi_tlc !== null);
-    const igiPctUsar = tieneTlcActual ? (ai?.igi_tlc || 0) : (ai?.igi_nmf || 10);
-    const calc = calcImpuestos(valor, flete, seguro, tc, igiPctUsar, ai?.ieps_pct || 0, ai?.ieps_especifico || 0, false);
-
-    qzRenderResult(ai, narrative, calc, { desc, origen: origenInfo.nombre, tlc, tieneTlc, cant, aduanaLabel, igiPctUsar, tieneTlcActual });
-
-  } catch(err) {
-    console.error('qzClasificar error:', err);
-    rd.innerHTML = `
-    <div style="padding:16px;flex:1;">
-      <div style="border:1px solid rgba(248,113,113,.3);padding:14px;background:rgba(248,113,113,.05);margin-bottom:12px;">
-        <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#f87171;margin-bottom:6px;">Error al clasificar</div>
-        <div style="font-size:12px;color:var(--text-2);line-height:1.6;">${err.message}</div>
-      </div>
-      <div style="border:1px solid var(--border);padding:12px;font-size:11px;color:var(--text-2);line-height:1.65;margin-bottom:12px;">
-        <b style="color:var(--text);">Verifica:</b><br>
-        • API Key de Gemini configurada correctamente<br>
-        • Conexión a internet activa<br>
-        • Key no haya alcanzado el límite de uso
-      </div>
-      <button onclick="qzReset()" style="width:100%;padding:10px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:9px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">← Intentar de nuevo</button>
-    </div>`;
-  }
-}
-
-function qzRenderResult(ai, narrative, calc, meta) {
-  const rd = document.getElementById('qz-result');
-
-  const confColor = !ai ? '#f87171' : ai.confianza === 'ALTA' ? '#3ecf8e' : ai.confianza === 'MEDIA' ? '#f0b429' : '#f87171';
-  const tlcBadge = meta.tieneTlcActual
-    ? `<span style="color:#3ecf8e;font-size:9px;border:1px solid rgba(62,207,142,.4);padding:1px 6px;">✓ ${meta.tlc.toUpperCase()}</span>`
-    : `<span style="color:#f87171;font-size:9px;border:1px solid rgba(248,113,113,.4);padding:1px 6px;">NMF/BASE</span>`;
-
-  rd.innerHTML = `<div style="display:flex;flex-direction:column;gap:10px;">
-
-<!-- FRACCIÓN ARANCELARIA -->
-<div style="border:1px solid var(--border2);padding:13px;background:var(--jade-dim);">
-  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-    <div>
-      <div style="font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--jade);margin-bottom:4px;">Fracción Arancelaria TIGIE 2026</div>
-      <div style="font-family:var(--font-m);font-size:26px;color:var(--jade);letter-spacing:.1em;">${ai?.fraccion || '--------'}</div>
-    </div>
-    <div style="text-align:right;display:flex;flex-direction:column;gap:4px;">
-      <div style="font-size:9px;color:${confColor};border:1px solid ${confColor};padding:2px 8px;">${ai?.confianza || '?'}</div>
-      ${tlcBadge}
-    </div>
-  </div>
-  <div style="font-size:11px;color:var(--text);line-height:1.5;margin-bottom:6px;">${ai?.desc_tigie || 'Descripción no disponible'}</div>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;">
-    <div style="font-size:10px;color:var(--text-2);">Cap. ${ai?.capitulo || '--'} · Partida ${ai?.partida || '----'} · Unidad: ${ai?.unidad_medida || '--'}</div>
-    <div style="font-size:10px;color:var(--text-2);">Origen: ${meta.origen}</div>
-    <div style="font-size:10px;color:var(--text-2);">Aduana: ${meta.aduanaLabel}</div>
-  </div>
-  ${ai?.alternativas?.length ? `<div style="font-size:9px;color:var(--text-3);margin-top:5px;">Fracciones alternativas: ${ai.alternativas.join(', ')}</div>` : ''}
-</div>
-
-<!-- ANÁLISIS IA -->
-${narrative ? `<div style="border:1px solid var(--border);padding:10px;font-size:11px;color:var(--text-2);line-height:1.65;max-height:140px;overflow-y:auto;">${narrative.replace(/\n/g,'<br>')}</div>` : ''}
-
-<!-- DESGLOSE VALOR EN ADUANA -->
-<div style="border:1px solid var(--border);padding:12px;">
-  <div style="font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:var(--text-2);margin-bottom:8px;">Determinación del Valor en Aduana · Art. 56 Ley Aduanera (Método CIF)</div>
-  <div style="display:grid;grid-template-columns:1fr auto;gap:4px;font-size:11px;row-gap:5px;">
-    <div style="color:var(--text-2);">Valor comercial en factura</div>
-    <div style="font-family:var(--font-m);color:var(--text);text-align:right;">$${calc.inv.toLocaleString()} USD</div>
-    <div style="color:var(--text-2);">+ Flete internacional ${!document.getElementById('qzFlete')?.value ? '(est. 6%)' : ''}</div>
-    <div style="font-family:var(--font-m);color:var(--text-2);text-align:right;">$${calc.flete.toFixed(2)} USD</div>
-    <div style="color:var(--text-2);">+ Seguro ${!document.getElementById('qzSeguro')?.value ? '(est. 1.5%)' : ''}</div>
-    <div style="font-family:var(--font-m);color:var(--text-2);text-align:right;">$${calc.seguro.toFixed(2)} USD</div>
-    <div style="color:var(--text);border-top:1px solid var(--border);padding-top:4px;">= Valor en Aduana (USD)</div>
-    <div style="font-family:var(--font-m);color:#93c5fd;border-top:1px solid var(--border);padding-top:4px;text-align:right;">$${calc.vea_usd.toFixed(2)} USD</div>
-    <div style="color:var(--text-2);">TC: $${calc.tc} MXN/USD</div>
-    <div style="font-family:var(--font-m);font-size:14px;color:var(--jade);text-align:right;">${fmt(calc.vea)}</div>
-  </div>
-</div>
-
-<!-- CONTRIBUCIONES -->
-<div style="border:1px solid var(--border);padding:12px;">
-  <div style="font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:var(--text-2);margin-bottom:8px;">Contribuciones a pagar · LIGIE/TIGIE vigente 2026</div>
-  <div style="display:grid;grid-template-columns:1fr auto;gap:4px;font-size:11px;row-gap:5px;">
-
-    <!-- IGI -->
-    <div style="color:var(--text-2);">
-      IGI ${meta.tieneTlcActual ? `(${meta.tlc.toUpperCase()} · ${calc.igi_pct}%)` : `(NMF · ${calc.igi_pct}%)`}
-      ${!meta.tieneTlcActual && ai?.igi_nmf > 20 ? '<div style="font-size:9px;color:#f0b429;">⚠ Tasa alta · Reforma DOF Dic-2025</div>' : ''}
-    </div>
-    <div style="font-family:var(--font-m);color:${calc.igi === 0 ? '#3ecf8e' : 'var(--text-2)'};text-align:right;">${fmt(calc.igi)}${calc.igi === 0 ? ' ✓' : ''}</div>
-
-    ${calc.ieps > 0 ? `
-    <div style="color:var(--text-2);">IEPS (${calc.iepsPct}%)</div>
-    <div style="font-family:var(--font-m);color:var(--text-2);text-align:right;">${fmt(calc.ieps)}</div>` : ''}
-
-    <!-- DTA -->
-    <div style="color:var(--text-2);">DTA (8‰ del VEA · Art. 49 LFD)</div>
-    <div style="font-family:var(--font-m);color:var(--text-2);text-align:right;">${fmt(calc.dta)}</div>
-
-    <!-- Base IVA -->
-    <div style="color:var(--text-3);font-size:10px;">Base IVA (VEA+IGI${calc.ieps>0?'+IEPS':''} +DTA)</div>
-    <div style="font-family:var(--font-m);color:var(--text-3);font-size:10px;text-align:right;">${fmt(calc.base_iva)}</div>
-
-    <!-- IVA -->
-    <div style="color:var(--text-2);">IVA (16% · Art. 1 LIVA)</div>
-    <div style="font-family:var(--font-m);color:var(--text-2);text-align:right;">${fmt(calc.iva)}</div>
-
-    <!-- Subtotal -->
-    <div style="color:var(--text);border-top:1px solid var(--border);padding-top:5px;font-weight:500;">Subtotal contribuciones</div>
-    <div style="font-family:var(--font-m);color:var(--text);border-top:1px solid var(--border);padding-top:5px;text-align:right;">${fmt(calc.subtotal)}</div>
-  </div>
-</div>
-
-<!-- HONORARIOS Y TOTAL -->
-<div style="border:1px solid rgba(240,180,41,.35);padding:12px;background:rgba(240,180,41,.05);">
-  <div style="display:grid;grid-template-columns:1fr auto;gap:4px;font-size:11px;row-gap:5px;">
-    <div style="color:var(--amber);">Honorarios agencia Lenoah (+30%)</div>
-    <div style="font-family:var(--font-m);color:var(--amber);text-align:right;">${fmt(calc.honorarios)}</div>
-  </div>
-  <div style="height:1px;background:rgba(240,180,41,.25);margin:8px 0;"></div>
-  <div style="display:grid;grid-template-columns:1fr auto;">
-    <div style="font-size:16px;font-weight:500;color:var(--text);">TOTAL ESTIMADO</div>
-    <div style="font-family:var(--font-m);font-size:20px;color:var(--jade);text-align:right;">${fmt(calc.total)}</div>
-  </div>
-  <div style="font-size:9px;color:var(--text-3);margin-top:5px;">Contribuciones: ${fmt(calc.subtotal)} + Honorarios: ${fmt(calc.honorarios)}</div>
-</div>
-
-<!-- RESTRICCIONES Y NOMs -->
-${ai?.cuotas_compensatorias ? `<div style="border:1px solid rgba(248,113,113,.4);padding:10px;background:rgba(248,113,113,.07);font-size:11px;color:#f87171;"><b>⛔ ALERTA: Esta fracción puede tener cuotas compensatorias vigentes.</b> Verificar en VUCEM antes de importar.</div>` : ''}
-${(ai?.restricciones_na?.length || ai?.permisos?.length) ? `
-<div style="border:1px solid rgba(248,113,113,.25);padding:10px;">
-  <div style="font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:#f87171;margin-bottom:6px;">Restricciones No Arancelarias · Permisos Previos</div>
-  ${(ai?.restricciones_na||[]).map(r=>`<div style="font-size:11px;color:var(--text-2);margin-bottom:3px;">• ${r}</div>`).join('')}
-  ${(ai?.permisos||[]).map(p=>`<div style="font-size:11px;color:#f0b429;margin-bottom:3px;">📋 ${p}</div>`).join('')}
-</div>` : ''}
-${ai?.noms?.length ? `
-<div style="border:1px solid rgba(240,180,41,.25);padding:10px;">
-  <div style="font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:#f0b429;margin-bottom:6px;">NOMs Obligatorias</div>
-  ${ai.noms.map(n=>`<div style="font-size:11px;color:var(--text-2);margin-bottom:3px;">📋 ${n}</div>`).join('')}
-</div>` : ''}
-${ai?.notas_clasificacion ? `<div style="border:1px solid var(--border);padding:9px;font-size:10px;color:var(--text-3);line-height:1.55;">${ai.notas_clasificacion}</div>` : ''}
-
-<!-- DISCLAIMER LEGAL -->
-<div style="border:1px solid var(--border);padding:9px;background:rgba(5,7,10,.5);">
-  <div style="font-size:9px;color:var(--text-3);line-height:1.6;">
-    ⚠ <b style="color:var(--text-2);">Cotización preliminar orientativa.</b> Basada en TIGIE/LIGIE vigente, reforma DOF 29-Dic-2025 y decreto PROSEC DOF 23-Abr-2026. TC referencial $${calc.tc} MXN/USD. El DTA tiene topes y exenciones no aplicados en esta estimación. El IGI final puede variar según la valoración aduanera y documentación. Un agente aduanal certificado de <b style="color:var(--jade);">Lenoah</b> validará la clasificación arancelaria correcta y emitirá el presupuesto definitivo.
-  </div>
-</div>
-
-<!-- BOTÓN VOLVER -->
-<button onclick="qzReset()" style="width:100%;padding:10px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:9px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">← Nueva clasificación</button>
-
-</div>`;
-}
-
-function qzReset() {
-  const form = document.getElementById('qz-form');
-  const result = document.getElementById('qz-result');
-  if(form) form.style.display = 'flex';
-  if(result) { result.style.display = 'none'; result.innerHTML = ''; }
-}
-
-function qzSaveQuote() { showToast('Toma una captura de pantalla para guardar'); }
-
-function qzToggleMic() {
-  if(qzL) {
-    if(qzRec2) { try{qzRec2.stop();}catch(e){} }
-    qzL = false;
-    const b = document.getElementById('qzMicBtn'); if(b) b.textContent = '🎤 Dictar';
-    return;
-  }
-  navigator.mediaDevices.getUserMedia({audio:true}).then(stream => {
-    stream.getTracks().forEach(t => t.stop());
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if(!SR) { showToast('Voz no disponible'); return; }
-    qzRec2 = new SR(); qzRec2.lang = lang; qzRec2.continuous = false; qzRec2.interimResults = false;
-    qzRec2.onresult = e => {
-      const txt = e.results[0][0].transcript;
-      const d = document.getElementById('qzDesc');
-      if(d) d.value = (d.value ? d.value + ' ' : '') + txt;
-    };
-    qzRec2.onend = () => { qzL = false; const b = document.getElementById('qzMicBtn'); if(b) b.textContent = '🎤 Dictar'; };
-    qzRec2.onerror = () => { qzL = false; };
-    qzRec2.start(); qzL = true;
-    const b = document.getElementById('qzMicBtn'); if(b) b.textContent = '🔴 Dictando';
-  }).catch(() => showToast('⚠ Activa el micrófono en Ajustes'));
-}
-
-// ── VEHICLE MODULE ────────────────────────────────
-// ── VEHICLE MODULE v2 ────────────────────────────
-let vhType='auto', vhCurrentResult=null, vhRec3=null, vhL=false, vhCondicion='bueno';
-
-// ── VEHICLE DATABASE ─────────────────────────────
-// Marcas y modelos más comunes en importaciones Lenoah Tijuana
-const VH_DB = {
-  auto: {
-    'Chevrolet':   ['Silverado','Tahoe','Suburban','Traverse','Equinox','Malibu','Camaro','Colorado','Blazer','Trailblazer'],
-    'Ford':        ['F-150','F-250','F-350','Explorer','Escape','Expedition','Edge','Mustang','Ranger','Bronco','Maverick'],
-    'GMC':         ['Sierra','Yukon','Terrain','Acadia','Canyon','Envoy'],
-    'RAM':         ['1500','2500','3500','ProMaster','Dakota'],
-    'Dodge':       ['Charger','Challenger','Durango','Journey','Grand Caravan'],
-    'Chrysler':    ['300','Pacifica','Voyager'],
-    'Jeep':        ['Wrangler','Grand Cherokee','Cherokee','Renegade','Gladiator','Compass'],
-    'Toyota':      ['Camry','Corolla','RAV4','Highlander','Tacoma','Tundra','4Runner','Sienna','Avalon','Venza','Land Cruiser'],
-    'Honda':       ['Civic','Accord','CR-V','Pilot','Odyssey','Ridgeline','HR-V','Passport'],
-    'Nissan':      ['Altima','Maxima','Sentra','Frontier','Titan','Pathfinder','Armada','Murano','Rogue','Kicks'],
-    'Hyundai':     ['Sonata','Elantra','Santa Fe','Tucson','Palisade','Kona','Ioniq'],
-    'Kia':         ['Sorento','Sportage','Telluride','Stinger','Soul','Carnival','K5'],
-    'Volkswagen':  ['Jetta','Passat','Tiguan','Atlas','Golf','Beetle','ID.4'],
-    'BMW':         ['3 Series','5 Series','7 Series','X3','X5','X7','M3','M5'],
-    'Mercedes':    ['C-Class','E-Class','S-Class','GLE','GLC','GLS','Sprinter'],
-    'Audi':        ['A4','A6','Q5','Q7','Q3','A3','e-tron'],
-    'Subaru':      ['Outback','Forester','Crosstrek','Impreza','Legacy','Ascent','WRX'],
-    'Mazda':       ['CX-5','CX-9','Mazda3','Mazda6','CX-30','MX-5'],
-    'Lexus':       ['RX','GX','LX','ES','IS','LS','NX'],
-    'Acura':       ['MDX','RDX','TLX','ILX'],
-    'Cadillac':    ['Escalade','XT5','XT6','CT5','CT4'],
-    'Lincoln':     ['Navigator','Aviator','Corsair','Nautilus'],
-    'Tesla':       ['Model 3','Model Y','Model S','Model X','Cybertruck'],
-    'Rivian':      ['R1T','R1S'],
-    'Buick':       ['Enclave','Encore','Envision','LaCrosse'],
-    'Pontiac':     ['G6','Solstice','Vibe'],
-    'Saturn':      ['Vue','Aura','Outlook'],
-    'Mitsubishi':  ['Outlander','Eclipse Cross','Galant','Lancer'],
-    'Infiniti':    ['QX60','QX80','Q50','Q70'],
-    'Genesis':     ['GV80','GV70','G80','G70'],
-    'Land Rover':  ['Defender','Discovery','Range Rover','Evoque'],
-    'Volvo':       ['XC90','XC60','S90','V90'],
-    'Porsche':     ['Cayenne','Macan','Panamera','911'],
-    'Hummer':      ['H2','H3','EV'],
-  },
-  truck: {
-    'Peterbilt':   ['389','579','567','387','386','357','348','337','330','320'],
-    'Kenworth':    ['T680','T800','W900','T660','T600','T300','C500'],
-    'Freightliner':['Cascadia','Columbia','Century','Classic','Coronado','M2','Sprinter'],
-    'International':['LT','RH','HX','LoneStar','ProStar','9400','8600'],
-    'Volvo Trucks':['VNL 860','VNL 760','VNL 660','VNL 780','VHD'],
-    'Mack':        ['Anthem','Pinnacle','Granite','TerraPro','LR'],
-    'Western Star':['5700','4900','4700','6900'],
-    'Isuzu':       ['NPR','NQR','NRR','FTR','FVR'],
-    'Hino':        ['258','268','338','195','155'],
-    'Ford Trucks': ['F-650','F-750','F-450 Super Duty'],
-    'Chevrolet/GMC Trucks':['Kodiak','TopKick'],
-  },
-  machinery: {
-    'Caterpillar': ['320','336','345','374','390','730','740','D6','D8','D9','980','990','950','966'],
-    'John Deere':  ['310','410','710','850','5075','6120','7210','8320','9570','44','27D'],
-    'Komatsu':     ['PC200','PC300','PC490','WA380','WA480','D61','D85','GD655'],
-    'Bobcat':      ['S650','S770','T870','A770','E50','E80','T450'],
-    'Case':        ['580','680','770','CX130','CX300','1150','1650','CX750'],
-    'Volvo CE':    ['EC220','EC300','EC480','L90','L120','A40','G930'],
-    'Liebherr':    ['LTM 1070','LTM 1100','LTM 1200','LR 1300','LTR 1100'],
-    'Grove':       ['RT760E','GMK5250L','AT622','TMS700'],
-    'Link-Belt':   ['TCC-1400','ATC-3210','RTC-8050'],
-    'Manitowoc':   ['2250','999','18000','21000'],
-    'JLG':         ['1200SJP','800AJ','600S','M450AJ'],
-    'Skytrak':     ['10042','6042','8042','12054'],
-    'Gradall':     ['XL4300','XL5210','XL7310'],
-    'New Holland': ['T7.270','T8.410','CR9080','L225','C238'],
-    'AGCO':        ['DT275B','8250','9235'],
-  }
-};
-
-// Años disponibles por tipo
-function vhGetAnios(marca, modelo) {
-  const currentYear = 2026;
-  const startYear = vhType === 'auto' ? 2005 : 2000;
-  const years = [];
-  for(let y = currentYear; y >= startYear; y--) years.push(y);
-  return years;
-}
-
-// Llenar selects
-function vhPopulateMarcas() {
-  const sel = document.getElementById('vhMarca');
-  if(!sel) return;
-  const db = VH_DB[vhType] || VH_DB.auto;
-  sel.innerHTML = '<option value="">-- Marca --</option>';
-  Object.keys(db).sort().forEach(m => {
-    const opt = document.createElement('option');
-    opt.value = m; opt.textContent = m;
-    sel.appendChild(opt);
-  });
-  const mod = document.getElementById('vhModelo');
-  const anio = document.getElementById('vhAnio');
-  if(mod){ mod.innerHTML='<option value="">-- Modelo --</option>'; mod.disabled=true; }
-  if(anio){ anio.innerHTML='<option value="">-- Año --</option>'; anio.disabled=true; }
-}
-
-function vhOnMarca() {
-  const marca = document.getElementById('vhMarca').value;
-  const modSel = document.getElementById('vhModelo');
-  const anioSel = document.getElementById('vhAnio');
-  if(!modSel) return;
-  modSel.innerHTML = '<option value="">-- Modelo --</option>';
-  modSel.disabled = !marca;
-  if(anioSel){ anioSel.innerHTML='<option value="">-- Año --</option>'; anioSel.disabled=true; }
-  if(!marca) return;
-  const db = VH_DB[vhType] || VH_DB.auto;
-  const modelos = db[marca] || [];
-  modelos.forEach(m => {
-    const opt = document.createElement('option');
-    opt.value = m; opt.textContent = m;
-    modSel.appendChild(opt);
-  });
-  vhUpdateChip();
-}
-
-function vhOnModelo() {
-  const anioSel = document.getElementById('vhAnio');
-  const modelo = document.getElementById('vhModelo').value;
-  if(!anioSel) return;
-  anioSel.innerHTML = '<option value="">-- Año --</option>';
-  anioSel.disabled = !modelo;
-  if(!modelo) return;
-  vhGetAnios().forEach(y => {
-    const opt = document.createElement('option');
-    opt.value = y; opt.textContent = y + ' (' + (2026 - y) + ' años)';
-    anioSel.appendChild(opt);
-  });
-  vhUpdateChip();
-}
-
-function vhOnAnio() { vhUpdateChip(); }
-
-function vhUpdateChip() {
-  const marca = document.getElementById('vhMarca')?.value || '';
-  const modelo = document.getElementById('vhModelo')?.value || '';
-  const anio = document.getElementById('vhAnio')?.value || '';
-  const chip = document.getElementById('vhSelectedChip');
-  if(!chip) return;
-  if(marca && modelo && anio) {
-    chip.style.display = 'block';
-    const age = 2026 - parseInt(anio);
-    chip.innerHTML = `<b>${anio} ${marca} ${modelo}</b> · ${age} años de antigüedad`;
-  } else if(marca || modelo) {
-    chip.style.display = 'block';
-    chip.innerHTML = `${marca} ${modelo} ${anio}`.trim() + ' — completa los 3 campos';
-    chip.style.color = '#f0b429';
-  } else {
-    chip.style.display = 'none';
-  }
-}
-
-// Búsqueda rápida
-function vhFilterSearch(val) {
-  const res = document.getElementById('vhSearchResults');
-  if(!res) return;
-  if(!val || val.length < 2) { res.style.display = 'none'; return; }
-  const db = VH_DB[vhType] || VH_DB.auto;
-  const q = val.toLowerCase();
-  const matches = [];
-  Object.entries(db).forEach(([marca, modelos]) => {
-    if(marca.toLowerCase().includes(q)) {
-      modelos.slice(0,3).forEach(m => matches.push({marca, modelo:m}));
-    }
-    modelos.forEach(m => {
-      if(m.toLowerCase().includes(q)) matches.push({marca, modelo:m});
-    });
-  });
-  if(!matches.length) { res.style.display = 'none'; return; }
-  res.style.display = 'block';
-  res.innerHTML = '';
-  matches.slice(0,8).forEach(({marca, modelo}) => {
-    const div = document.createElement('div');
-    div.style.cssText = 'padding:9px 12px;font-size:12px;color:var(--text);cursor:pointer;border-bottom:1px solid var(--border);';
-    div.textContent = marca + ' ' + modelo;
-    div.onmousedown = div.ontouchend = (e) => {
-      e.preventDefault();
-      vhSelectFromSearch(marca, modelo);
-    };
-    div.addEventListener('mouseover', () => div.style.background = 'var(--jade-dim)');
-    div.addEventListener('mouseout', () => div.style.background = '');
-    res.appendChild(div);
-  });
-}
-
-function vhSelectFromSearch(marca, modelo) {
-  const marcaSel = document.getElementById('vhMarca');
-  const modeloSel = document.getElementById('vhModelo');
-  const searchInput = document.getElementById('vhSearch');
-  const res = document.getElementById('vhSearchResults');
-  if(searchInput) searchInput.value = marca + ' ' + modelo;
-  if(res) res.style.display = 'none';
-  if(marcaSel) { marcaSel.value = marca; vhOnMarca(); }
-  setTimeout(() => {
-    if(modeloSel) { modeloSel.value = modelo; vhOnModelo(); }
-  }, 50);
-}
-
-function vhSetCond(cond, btn) {
-  vhCondicion = cond;
-  document.querySelectorAll('.vcond').forEach(b => {
-    b.style.borderColor = 'var(--border)';
-    b.style.background = 'transparent';
-    b.style.color = 'var(--text-2)';
-  });
-  if(btn) {
-    btn.style.borderColor = '#60a5fa';
-    btn.style.background = 'rgba(96,165,250,.1)';
-    btn.style.color = '#93c5fd';
-  }
-}
-
-function vhSetType(type) {
-  vhType = type;
-  document.querySelectorAll('.vhtbtn').forEach(b => {
-    b.style.borderColor = 'var(--border)';
-    b.style.background = 'transparent';
-    b.style.color = 'var(--text-2)';
-  });
-  const id = type === 'auto' ? 'vht-auto' : type === 'truck' ? 'vht-truck' : 'vht-mach';
-  const a = document.getElementById(id);
-  if(a) { a.style.borderColor = 'rgba(96,165,250,.5)'; a.style.background = 'rgba(96,165,250,.1)'; a.style.color = '#93c5fd'; }
-  vhPopulateMarcas();
-  // clear search
-  const s = document.getElementById('vhSearch'); if(s) s.value = '';
-  const r = document.getElementById('vhSearchResults'); if(r) r.style.display = 'none';
-}
-
-function vhValidateVin(val) {
-  const hint = document.getElementById('vin-hint'); if(!hint) return;
-  if(!val) { hint.innerHTML = ''; return; }
-  if(val.length < 17) { hint.innerHTML = `<span style="color:var(--text-3);">${val.length}/17 caracteres</span>`; return; }
-  const c0 = val[0];
-  const isTmec = '12345'.includes(c0);
-  const country = c0==='1'||c0==='4'||c0==='5' ? 'EE.UU.' : c0==='2' ? 'Canadá' : c0==='3' ? 'México' : c0==='J' ? 'Japón' : c0==='K' ? 'Corea' : c0==='W' ? 'Alemania' : 'Desconocido';
-  const ym = 'ABCDEFGHJKLMNPRSTUVWXYZ123456789';
-  const yb = [1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011];
-  const yi = ym.indexOf(val[9]); let yr = yi >= 0 ? yb[yi] : null;
-  if(yr && yr < 2000) yr += 30;
-  const age = yr ? 2026 - yr : null;
-  hint.innerHTML = `✓ Ensamblado en <b style="color:${isTmec?'#3ecf8e':'#f87171'}">${country}</b>${yr ? ` · Año-modelo: <b style="color:#93c5fd;">${yr}</b> (${age} años)` : ''}`;
-  // Auto-fill año selector if detected
-  if(yr) { const a = document.getElementById('vhAnio'); if(a && a.value == '') { /* suggest */ } }
-}
-
-async function vhCotizar() {
-  const marca = document.getElementById('vhMarca')?.value || '';
-  const modelo = document.getElementById('vhModelo')?.value || '';
-  const anio = document.getElementById('vhAnio')?.value || '';
-  const km = document.getElementById('vhKm')?.value || '';
-  const dest = document.getElementById('vhDest')?.value || 'frontera';
-  const origen = document.getElementById('vhOrigen')?.value || 'usa';
-  const invoiceRaw = parseFloat(document.getElementById('vhValue')?.value) || 0;
-  const vin = document.getElementById('vinInput')?.value || '';
-  const search = document.getElementById('vhSearch')?.value || '';
-
-  // Determine what we have
-  const vehicleDesc = marca && modelo && anio
-    ? `${anio} ${marca} ${modelo}`
-    : search || 'vehículo no especificado';
-
-  if(!marca && !modelo && !search) {
-    showToast('Selecciona o busca el vehículo primero'); return;
-  }
-
-  // Show loading
-  document.getElementById('vh-panel').style.display = 'none';
-  const rd = document.getElementById('vh-result');
-  rd.style.display = 'flex'; rd.style.flexDirection = 'column';
-  rd.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:14px;padding:20px;"><div class="thinking"><div class="td"></div><div class="td"></div><div class="td"></div></div><div style="font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--text-3);text-align:center;">Consultando Gemini IA…<br><span style="font-size:9px;color:var(--text-3);">Clasificando + valuando vehículo</span></div></div>';
-
-  const isTmec = ['usa','mexico','canada'].includes(origen);
-  const origenLabel = {usa:'EE.UU.',mexico:'México',canada:'Canadá',japon:'Japón',corea:'Corea del Sur',alemania:'Alemania',china:'China',otro:'Otro'}[origen] || origen;
-  const age = anio ? 2026 - parseInt(anio) : null;
-
-  const prompt = `Eres un experto en comercio exterior mexicano y valuación de vehículos.
-
-VEHÍCULO A IMPORTAR:
-- Descripción: ${vehicleDesc}
-${marca ? `- Marca: ${marca}` : ''}
-${modelo ? `- Modelo: ${modelo}` : ''}
-${anio ? `- Año-modelo: ${anio} (${age} años de antigüedad en 2026)` : ''}
-${km ? `- Kilometraje: ${km.toLocaleString()} km` : '- Kilometraje: no especificado'}
-- Condición: ${vhCondicion}
-- Tipo: ${vhType === 'auto' ? 'Automóvil/SUV/Pickup' : vhType === 'truck' ? 'Tractocamión/Camión de carga' : 'Maquinaria/Equipo pesado'}
-- País de origen (fabricación): ${origenLabel}
-- T-MEC aplicable: ${isTmec ? 'SÍ (origen TMEC)' : 'NO'}
-- Destino en México: ${dest === 'frontera' ? 'Franja fronteriza norte (Tijuana/BC)' : 'Resto del país'}
-${vin ? `- VIN: ${vin}` : ''}
-${invoiceRaw > 0 ? `- Valor en factura declarado: $${invoiceRaw} USD` : '- Valor en factura: NO declarado — DEBES ESTIMAR el valor de mercado'}
-- Año actual: 2026
-
-TU ANÁLISIS DEBE INCLUIR:
-
-1. IDENTIFICACIÓN: confirma o corrige la descripción del vehículo
-2. VALOR DE MERCADO: Si no hay valor de factura declarado, estima el valor de mercado en USD basándote en:
-   - Precios históricos de Kelley Blue Book / Edmunds para ese año/marca/modelo/condición
-   - Depreciación típica del vehículo
-   - Ajuste por kilometraje (si se proporcionó)
-   - Condición declarada (${vhCondicion})
-   DA UN RANGO: mínimo-máximo y un valor medio recomendado
-3. FRACCIÓN ARANCELARIA TIGIE (8 dígitos) correcta
-4. APLICACIÓN DEL DECRETO DOF Nov-2024 (vigente hasta 30-Nov-2026):
-   - Aplica SOLO a origen MX/US/CA
-   - Franja fronteriza norte: 1% IGI (5-9 años), 10% IGI (10+ años)
-   - Resto del país: 10% IGI (solo 8-9 años modelo)
-   - Con certificado T-MEC vigente: IGI 0% para mayoría de vehículos
-5. NOMs aplicables (emisiones, seguridad)
-6. Si requiere Padrón de Importadores
-7. Restricciones importantes
-
-Análisis narrativo máximo 180 palabras, LUEGO el JSON. El JSON debe estar en una sola línea sin saltos de línea ni caracteres especiales:
-[VH:{"marca":"TEXTO","modelo":"TEXTO","anio":NUMERO,"fraccion":"XXXXXXXX","desc_fr":"TEXTO","aplica_decreto":BOOL,"motivo":"TEXTO","igi_pct":NUMERO,"valor_estimado_usd":NUMERO,"valor_min_usd":NUMERO,"valor_max_usd":NUMERO,"noms":["TEXTO"],"padron":BOOL,"restricciones":["TEXTO"],"confianza":"ALTA"}]
-
-IMPORTANTE: El JSON debe ser válido, sin comillas dobles dentro de strings de texto. Usa comillas simples en textos si necesitas comillas.`;
-
-  try {
-    if(!rrKeys.length) throw new Error('API Key no configurada. Toca ⚙ para configurar.');
-
-    const fullText = await geminiCall({
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 900, temperature: 0.15, topP: 0.8 }
-    });
-
-    // Extract JSON - try multiple patterns
-    let aiData = null;
-    const patterns = [
-      /\[VH:(\{.*?\})\]/s,
-      /\[VH:(\{[^}]+\})\]/,
-      /VH:\s*(\{[^}]+\})/s
-    ];
-    for(const pat of patterns) {
-      const m = fullText.match(pat);
-      if(m) {
-        try {
-          // Clean JSON string
-          let jsonStr = m[1]
-            .replace(/\n/g, ' ')
-            .replace(/\r/g, '')
-            .replace(/,\s*}/g, '}')
-            .replace(/,\s*]/g, ']');
-          aiData = JSON.parse(jsonStr);
-          break;
-        } catch(parseErr) {
-          console.log('JSON parse attempt failed:', parseErr.message, 'JSON:', m[1].substring(0,200));
+        function selectTipo(tipo) {
+            tipoVehiculoSeleccionado = tipo;
+            document.querySelectorAll('.tipo-btn').forEach(btn => {
+                btn.classList.remove('gradient-primary', 'text-white');
+                btn.classList.add('border-orange-200');
+            });
+            event.target.closest('.tipo-btn').classList.remove('border-orange-200');
+            event.target.closest('.tipo-btn').classList.add('gradient-primary', 'text-white');
         }
-      }
-    }
 
-    const narrative = fullText.replace(/\[VH:.*?\]/s, '').replace(/\[VH:[\s\S]*$/,'').trim();
-    vhRenderResult(vehicleDesc, isTmec, origenLabel, aiData, narrative, invoiceRaw, dest, rd, marca, modelo, anio);
+        function cargarMarcas() {
+            const marcaSelect = document.getElementById('marca');
+            const filtroMarcaSelect = document.getElementById('filtroMarca');
+            const marcas = new Set();
 
-  } catch(err) {
-    console.error('vhCotizar error:', err);
-    rd.innerHTML = `
-      <div style="padding:20px;flex:1;display:flex;flex-direction:column;gap:14px;">
-        <div style="border:1px solid rgba(248,113,113,.3);padding:14px;background:rgba(248,113,113,.05);">
-          <div style="font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:#f87171;margin-bottom:8px;">Error de conexión</div>
-          <div style="font-size:12px;color:var(--text-2);line-height:1.6;">${err.message || 'No se pudo conectar con Gemini'}</div>
-        </div>
-        <div style="border:1px solid var(--border);padding:12px;font-size:11px;color:var(--text-2);line-height:1.65;">
-          <b style="color:var(--text);">Posibles causas:</b><br>
-          • API Key incorrecta o expirada<br>
-          • Sin conexión a internet<br>
-          • Límite de uso de la key alcanzado<br>
-          <br>
-          <b style="color:var(--text);">Solución:</b> Ve al ícono de configuración y verifica tu API Key de Google Gemini en <span style="color:var(--jade);">aistudio.google.com</span>
-        </div>
-        <button onclick="vhReset()" style="padding:10px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:9px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">← Volver</button>
-      </div>`;
-  }
-}
+            Object.values(vehiculosCatalogo).forEach(fraccion => {
+                Object.keys(fraccion).forEach(marca => marcas.add(marca));
+            });
 
-function vhRenderResult(vehicleDesc, isTmec, origenLabel, ai, narr, invoiceRaw, dest, rd, marca, modelo, anio) {
-  if(!ai) {
-    rd.innerHTML = `<div style="padding:14px;flex:1;overflow-y:auto;">
-      <div style="border:1px solid rgba(240,180,41,.3);padding:12px;margin-bottom:10px;font-size:11px;color:#f0b429;">
-        ⚠ La IA respondió pero no pudo generar el JSON de cotización. Mostrando análisis:
-      </div>
-      <div style="border:1px solid var(--border);padding:12px;font-size:11px;color:var(--text-2);line-height:1.7;">${(narr||'Sin respuesta').replace(/\n/g,'<br>')}</div>
-      <button onclick="vhReset()" style="width:100%;margin-top:12px;padding:10px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:9px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">← Volver</button>
-    </div>`;
-    return;
-  }
+            const marcasOrdenadas = Array.from(marcas).sort();
+            
+            marcaSelect.innerHTML = '<option value="">Seleccione marca...</option>';
+            filtroMarcaSelect.innerHTML = '<option value="">Todas las marcas</option>';
+            
+            marcasOrdenadas.forEach(marca => {
+                const option1 = new Option(marca, marca);
+                const option2 = new Option(marca, marca);
+                marcaSelect.add(option1);
+                filtroMarcaSelect.add(option2);
+            });
+        }
 
-  // Financial calc
-  const TC = 20.5;
-  // Use invoice if provided, otherwise use AI estimate
-  const invoiceUSD = invoiceRaw > 0 ? invoiceRaw : (ai.valor_estimado_usd || 0);
-  const fr = invoiceUSD * 0.06;
-  const ins = invoiceUSD * 0.015;
-  const va = (invoiceUSD + fr + ins) * TC;
-  const igiPct = isTmec ? 0 : (ai.igi_pct || 10);
-  const igi = va * (igiPct / 100);
-  const iva = (va + igi) * 0.16;
-  const dta = va * 0.008;
-  const sub = igi + iva + dta;
-  const hon = sub * 0.30;
-  const tot = sub + hon;
+        function cargarModelosPorMarca() {
+            const fraccion = document.getElementById('fraccionArancelaria').value;
+            const marca = document.getElementById('marca').value;
+            const modeloSelect = document.getElementById('modelo');
 
-  const cc = ai.confianza === 'ALTA' ? '#3ecf8e' : ai.confianza === 'MEDIA' ? '#f0b429' : '#f87171';
-  const dc = ai.aplica_decreto ? '#3ecf8e' : '#f87171';
-  const valorSource = invoiceRaw > 0 ? 'Valor factura declarado' : 'Valor estimado por IA (KBB/Mercado)';
+            modeloSelect.innerHTML = '<option value="">Seleccione modelo...</option>';
 
-  rd.innerHTML = `<div style="overflow-y:auto;flex:1;padding:14px;">
+            if (fraccion && marca && vehiculosCatalogo[fraccion] && vehiculosCatalogo[fraccion][marca]) {
+                const modelos = Object.keys(vehiculosCatalogo[fraccion][marca]).sort();
+                modelos.forEach(modelo => {
+                    modeloSelect.add(new Option(modelo, modelo));
+                });
+            }
+        }
 
-<!-- HEADER VEHÍCULO -->
-<div style="border:1px solid rgba(96,165,250,.35);padding:12px;margin-bottom:10px;background:rgba(96,165,250,.06);">
-  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
-    <div>
-      <div style="font-size:15px;color:#93c5fd;font-weight:500;">${ai.anio||anio||''} ${ai.marca||marca||''} ${ai.modelo||modelo||''}</div>
-      <div style="font-size:10px;color:var(--text-2);margin-top:2px;">Origen: ${origenLabel} ${isTmec?'<span style="color:#3ecf8e;">✓ T-MEC</span>':''}</div>
-    </div>
-    <div style="text-align:right;flex-shrink:0;margin-left:8px;">
-      <div style="font-size:8px;color:${cc};border:1px solid ${cc};padding:2px 7px;margin-bottom:3px;">${ai.confianza||'MEDIA'}</div>
-      <div style="font-size:8px;color:${dc};">${ai.aplica_decreto?'✓ DECRETO':'✗ SIN DECRETO'}</div>
-    </div>
-  </div>
-  <div style="font-family:var(--font-m);font-size:16px;color:#60a5fa;">${ai.fraccion||'--------'}</div>
-  <div style="font-size:10px;color:var(--text-2);margin-top:2px;">${ai.desc_fr||''}</div>
-</div>
+        function calcularPrecio() {
+            const fraccion = document.getElementById('fraccionArancelaria').value;
+            const marca = document.getElementById('marca').value;
+            const modelo = document.getElementById('modelo').value;
+            const anio = document.getElementById('anio').value;
 
-<!-- VALOR ESTIMADO -->
-${invoiceUSD > 0 ? `
-<div style="border:1px solid rgba(96,165,250,.2);padding:10px;margin-bottom:10px;background:rgba(96,165,250,.04);">
-  <div style="font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:#60a5fa;margin-bottom:6px;">💵 ${valorSource}</div>
-  <div style="font-family:var(--font-m);font-size:22px;color:#93c5fd;">$${invoiceUSD.toLocaleString()} USD</div>
-  ${!invoiceRaw && ai.valor_min_usd && ai.valor_max_usd ? `<div style="font-size:10px;color:var(--text-2);margin-top:3px;">Rango estimado: $${ai.valor_min_usd.toLocaleString()} – $${ai.valor_max_usd.toLocaleString()} USD</div>` : ''}
-  ${!invoiceRaw ? `<div style="font-size:9px;color:var(--text-3);margin-top:3px;">Estimación IA basada en KBB/mercado · El valor real depende del estado y equipamiento</div>` : ''}
-</div>` : `<div style="border:1px solid var(--border);padding:9px;margin-bottom:10px;font-size:11px;color:#f0b429;">⚠ Sin valor definido — ingresa el valor factura para calcular impuestos</div>`}
+            if (fraccion && marca && modelo && anio) {
+                const precioBase = vehiculosCatalogo[fraccion][marca][modelo][anio];
+                const honorarios = precioBase * 0.25;
+                const total = precioBase + honorarios;
 
-<!-- DECRETO -->
-<div style="border:1px solid ${dc}40;padding:10px;margin-bottom:10px;background:${dc}08;">
-  <div style="font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:${dc};margin-bottom:5px;">Decreto DOF Nov-2024 · Vigente hasta 30-Nov-2026</div>
-  <div style="font-size:11px;color:var(--text-2);line-height:1.55;">${ai.motivo||''}</div>
-  ${ai.padron ? `<div style="margin-top:6px;padding:4px 8px;border:1px solid #f0b429;font-size:10px;color:#f0b429;">⚠ Requiere Padrón de Importadores SAT</div>` : ''}
-</div>
+                document.getElementById('precioBase').textContent = `$${precioBase.toLocaleString('en-US', {minimumFractionDigits: 2})} USD`;
+                document.getElementById('precioHonorarios').textContent = `$${honorarios.toLocaleString('en-US', {minimumFractionDigits: 2})} USD`;
+                document.getElementById('precioTotal').textContent = `$${total.toLocaleString('en-US', {minimumFractionDigits: 2})} USD`;
+            }
+        }
 
-<!-- ANÁLISIS IA -->
-${narr ? `<div style="border:1px solid var(--border);padding:10px;margin-bottom:10px;font-size:11px;color:var(--text-2);line-height:1.65;max-height:130px;overflow-y:auto;">${narr.replace(/\n/g,'<br>')}</div>` : ''}
+        function guardarCotizacion() {
+            const cotizacion = {
+                id: Date.now(),
+                fecha: new Date().toLocaleString(),
+                fraccion: document.getElementById('fraccionArancelaria').value,
+                marca: document.getElementById('marca').value,
+                modelo: document.getElementById('modelo').value,
+                anio: document.getElementById('anio').value,
+                precioBase: document.getElementById('precioBase').textContent,
+                honorarios: document.getElementById('precioHonorarios').textContent,
+                total: document.getElementById('precioTotal').textContent,
+                cliente: {
+                    nombre: document.getElementById('clienteNombre').value,
+                    telefono: document.getElementById('clienteTelefono').value,
+                    email: document.getElementById('clienteEmail').value
+                }
+            };
 
-<!-- CÁLCULO DE IMPUESTOS -->
-${invoiceUSD > 0 ? `
-<div style="border:1px solid var(--border);padding:10px;margin-bottom:8px;">
-  <div style="font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--text-2);margin-bottom:7px;">Estimación de costos · TC ref: $20.50 MXN/USD</div>
-  <div style="display:grid;grid-template-columns:1fr auto;gap:3px;font-size:11px;row-gap:5px;">
-    <div style="color:var(--text-2);">Valor en factura</div><div style="font-family:var(--font-m);color:var(--text);text-align:right;">$${invoiceUSD.toLocaleString()} USD</div>
-    <div style="color:var(--text-2);">Flete est. (~6%)</div><div style="font-family:var(--font-m);color:var(--text-2);text-align:right;">${fmt(fr*TC)}</div>
-    <div style="color:var(--text-2);">Seguro (1.5%)</div><div style="font-family:var(--font-m);color:var(--text-2);text-align:right;">${fmt(ins*TC)}</div>
-    <div style="color:var(--text);border-top:1px solid var(--border);padding-top:4px;">Valor en aduana</div>
-    <div style="font-family:var(--font-m);color:#93c5fd;border-top:1px solid var(--border);padding-top:4px;text-align:right;">${fmt(va)}</div>
-    <div style="color:var(--text-2);">IGI (${igiPct}%${isTmec?' T-MEC':''})</div><div style="font-family:var(--font-m);color:var(--text-2);text-align:right;">${fmt(igi)}</div>
-    <div style="color:var(--text-2);">IVA 16%</div><div style="font-family:var(--font-m);color:var(--text-2);text-align:right;">${fmt(iva)}</div>
-    <div style="color:var(--text-2);">DTA 8‰</div><div style="font-family:var(--font-m);color:var(--text-2);text-align:right;">${fmt(dta)}</div>
-    <div style="color:var(--text);border-top:1px solid var(--border);padding-top:4px;font-weight:500;">Subtotal impuestos</div>
-    <div style="font-family:var(--font-m);color:var(--text);border-top:1px solid var(--border);padding-top:4px;text-align:right;">${fmt(sub)}</div>
-  </div>
-</div>
-<div style="border:1px solid rgba(240,180,41,.35);padding:10px;margin-bottom:8px;background:rgba(240,180,41,.06);">
-  <div style="display:grid;grid-template-columns:1fr auto;gap:4px;font-size:11px;">
-    <div style="color:var(--amber);">Honorarios Lenoah (+30%)</div>
-    <div style="font-family:var(--font-m);color:var(--amber);text-align:right;">${fmt(hon)}</div>
-  </div>
-  <div style="height:1px;background:rgba(240,180,41,.25);margin:7px 0;"></div>
-  <div style="display:grid;grid-template-columns:1fr auto;">
-    <div style="font-size:15px;font-weight:500;color:var(--text);">TOTAL ESTIMADO</div>
-    <div style="font-family:var(--font-m);font-size:18px;color:var(--jade);text-align:right;">${fmt(tot)}</div>
-  </div>
-</div>` : ''}
+            cotizaciones.push(cotizacion);
+            localStorage.setItem('cotizaciones', JSON.stringify(cotizaciones));
+            
+            alert('Cotización guardada exitosamente');
+            actualizarDashboard();
+            cargarHistorial();
+        }
 
-<!-- NOMs -->
-${ai.noms && ai.noms.length ? `<div style="border:1px solid rgba(240,180,41,.2);padding:8px;margin-bottom:6px;font-size:10px;color:#f0b429;line-height:1.6;">📋 <b>NOMs requeridas:</b> ${ai.noms.join(' · ')}</div>` : ''}
-${ai.restricciones && ai.restricciones.length ? `<div style="border:1px solid rgba(248,113,113,.2);padding:8px;margin-bottom:6px;font-size:10px;color:#f87171;line-height:1.6;">⛔ <b>Restricciones:</b> ${ai.restricciones.join(' · ')}</div>` : ''}
+        function cargarHistorial() {
+            const lista = document.getElementById('listaCotizaciones');
+            lista.innerHTML = '';
 
-<!-- DISCLAIMER -->
-<div style="padding:8px;border:1px solid var(--border);font-size:9px;color:var(--text-3);line-height:1.55;margin-bottom:10px;">
-⚠ Cotización PRELIMINAR orientativa. TC referencial ~$20.50 MXN/USD. El valor estimado es referencial y puede variar según estado, equipamiento y negociación. El agente aduanal de Lenoah validará la clasificación, los valores y emitirá el presupuesto definitivo. Decreto vigente hasta <b>30-Nov-2026</b>.
-</div>
+            cotizaciones.slice().reverse().forEach(cot => {
+                const div = document.createElement('div');
+                div.className = 'bg-orange-50 rounded-xl p-6 border-2 border-orange-200';
+                div.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="font-bold text-lg text-dark">${cot.marca} ${cot.modelo}</h3>
+                            <p class="text-sm text-gray-600">${cot.cliente.nombre} - ${cot.fecha}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-2xl font-bold text-primary">${cot.total}</p>
+                            <p class="text-sm text-gray-600">Honorarios: ${cot.honorarios}</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="imprimirCotizacionIndividual(${cot.id})" class="flex-1 bg-white text-primary py-2 px-4 rounded-lg border-2 border-primary hover:bg-orange-50 transition">
+                            <i class="fas fa-print mr-2"></i>Imprimir
+                        </button>
+                        <button onclick="eliminarCotizacion(${cot.id})" class="flex-1 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition">
+                            <i class="fas fa-trash mr-2"></i>Eliminar
+                        </button>
+                    </div>
+                `;
+                lista.appendChild(div);
+            });
+        }
 
-<button onclick="vhReset()" style="width:100%;padding:10px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font-b);font-size:9px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">← Nueva consulta</button>
-</div>`;
+        function eliminarCotizacion(id) {
+            if (confirm('¿Está seguro de eliminar esta cotización?')) {
+                cotizaciones = cotizaciones.filter(c => c.id !== id);
+                localStorage.setItem('cotizaciones', JSON.stringify(cotizaciones));
+                cargarHistorial();
+                actualizarDashboard();
+            }
+        }
 
-  vhCurrentResult = {ai, invoiceUSD, tot};
-}
+        function actualizarDashboard() {
+            document.getElementById('totalVehiculos').textContent = cotizaciones.length;
+            const totalHonorarios = cotizaciones.reduce((sum, c) => {
+                return sum + parseFloat(c.honorarios.replace(/[^0-9.-]+/g, ''));
+            }, 0);
+            document.getElementById('totalIngresos').textContent = `$${totalHonorarios.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+        }
 
-function vhReset() {
-  const vp = document.getElementById('vh-panel');
-  if(vp) vp.style.display = 'flex';
-  const vr = document.getElementById('vh-result');
-  if(vr) { vr.style.display = 'none'; vr.innerHTML = ''; }
-  ['vhSearch','vinInput','vhKm','vhValue'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
-  const hint = document.getElementById('vin-hint'); if(hint) hint.innerHTML = '';
-  const chip = document.getElementById('vhSelectedChip'); if(chip) chip.style.display = 'none';
-  const res = document.getElementById('vhSearchResults'); if(res) res.style.display = 'none';
-  // Reset selects
-  ['vhMarca','vhModelo','vhAnio'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) { el.value = ''; if(id !== 'vhMarca') el.disabled = true; }
-  });
-  vhCurrentResult = null;
-}
+        function cargarVehiculosTabla() {
+            const tbody = document.getElementById('tablaVehiculos');
+            tbody.innerHTML = '';
 
-function vhToggleMic() {
-  if(vhL) {
-    if(vhRec3) { try{vhRec3.stop();}catch(e){} }
-    vhL = false;
-    const b = document.getElementById('vhMicBtn'); if(b) b.textContent = '🎤';
-    return;
-  }
-  navigator.mediaDevices.getUserMedia({audio:true}).then(stream => {
-    stream.getTracks().forEach(t => t.stop());
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if(!SR) { showToast('Voz no disponible'); return; }
-    vhRec3 = new SR(); vhRec3.lang = 'es-MX'; vhRec3.continuous = false; vhRec3.interimResults = false;
-    vhRec3.onresult = e => {
-      const raw = e.results[0][0].transcript.toUpperCase().replace(/[\s\-]/g,'');
-      const vi = document.getElementById('vinInput');
-      if(vi) { vi.value = raw; vhValidateVin(raw); }
-    };
-    vhRec3.onend = () => { vhL = false; const b = document.getElementById('vhMicBtn'); if(b) b.textContent = '🎤'; };
-    vhRec3.onerror = () => { vhL = false; };
-    vhRec3.start(); vhL = true;
-    const b = document.getElementById('vhMicBtn'); if(b) b.textContent = '🔴';
-  }).catch(() => showToast('⚠ Activa el micrófono en Ajustes'));
-}
+            Object.entries(vehiculosCatalogo).forEach(([fraccion, marcas]) => {
+                Object.entries(marcas).forEach(([marca, modelos]) => {
+                    Object.entries(modelos).forEach(([modelo, precios]) => {
+                        Object.entries(precios).forEach(([anio, precio]) => {
+                            const honorarios = precio * 0.25;
+                            const total = precio + honorarios;
+                            
+                            const row = document.createElement('tr');
+                            row.className = 'hover:bg-orange-50 transition';
+                            row.innerHTML = `
+                                <td class="px-6 py-4 text-sm text-gray-600">${fraccion}</td>
+                                <td class="px-6 py-4 font-medium text-dark">${marca}</td>
+                                <td class="px-6 py-4 text-gray-700">${modelo}</td>
+                                <td class="px-6 py-4 text-gray-600">${anio} ${anio === '10' ? '+' : 'años'}</td>
+                                <td class="px-6 py-4 text-right font-medium text-secondary">$${precio.toLocaleString('en-US')}</td>
+                                <td class="px-6 py-4 text-right font-bold text-primary">$${total.toLocaleString('en-US')}</td>
+                                <td class="px-6 py-4 text-center">
+                                    <button onclick="usarVehiculo('${fraccion}', '${marca}', '${modelo}', '${anio}')" class="gradient-primary text-white px-4 py-2 rounded-lg hover:shadow-lg transition">
+                                        <i class="fas fa-plus mr-2"></i>Cotizar
+                                    </button>
+                                </td>
+                            `;
+                            tbody.appendChild(row);
+                        });
+                    });
+                });
+            });
+        }
 
-function vhInitPanel() {
-  const vi = document.getElementById('vhMarca'); if(!vi) return;
-  if(!vi.getAttribute('data-init')) {
-    vi.setAttribute('data-init','1');
-    vhSetType('auto');
-    // Set default condition
-    const goodBtn = document.querySelectorAll('.vcond')[1];
-    if(goodBtn) vhSetCond('bueno', goodBtn);
-  }
-}
+        function usarVehiculo(fraccion, marca, modelo, anio) {
+            document.getElementById('fraccionArancelaria').value = fraccion;
+            document.getElementById('marca').value = marca;
+            cargarModelosPorMarca();
+            document.getElementById('modelo').value = modelo;
+            document.getElementById('anio').value = anio;
+            calcularPrecio();
+            showSection('cotizacion');
+        }
 
-// ── APP START ─────────────────────────────────────
-function startApp(){
-  GEMINI_KEY = getKey();
-  if(!GEMINI_KEY){ return; }
-  // Load saved visits
-  try{ visits=JSON.parse(localStorage.getItem(todayKey())||'[]'); }catch(e){ visits=[]; }
-  // Init all modules
-  initBG(); initFace(); initCursor(); initCam();
-  tick(); setInterval(tick,15000);
-  fetchWx(); setInterval(fetchWx,600000);
-  startCarousel();
-  renderVisits(); updDash(); updQS();
-  // Init tabs — make sure only chat is visible
-  document.querySelectorAll('.tc').forEach(t=>{ t.style.display='none'; t.classList.remove('on'); });
-  const chat=document.getElementById('tc-chat'); if(chat){ chat.style.display='flex'; chat.classList.add('on'); }
-  // Auto idle timer
-  let act=null;
-  function ra(){ clearTimeout(act); act=setTimeout(()=>{ if(!isIdle) enterIdle(); },120000); }
-  document.addEventListener('click',ra,{passive:true});
-  document.addEventListener('touchstart',ra,{passive:true});
-  // Wake on tap of idle screen
-  document.getElementById('idle')?.addEventListener('click', wakeUp);
-  document.getElementById('idle')?.addEventListener('touchend', e=>{ e.preventDefault(); wakeUp(); });
-  // Mic button touch
-  const micBtn=document.getElementById('micBtn');
-  if(micBtn){
-    micBtn.addEventListener('touchend', e=>{ e.preventDefault(); togMic(); }, {passive:false});
-  }
-  // Quote module init
-  setTimeout(qzReset, 100);
-  // Vehicle module init
-  setTimeout(vhInitPanel, 100);
-}
+        function filtrarVehiculos() {
+            // Implementar filtrado
+        }
 
-// ── BOOT ─────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', ()=>{
-  // Load any previously saved keys into form
-  lhLoadSaved();
-  // Enter key on k1 input → save all
-  const k1 = document.getElementById('k1');
-  if(k1) k1.addEventListener('keydown', e=>{ if(e.key==='Enter') lhSaveAll(); });
-  // Check if keys already saved → start app directly
-  try {
-    const saved = JSON.parse(localStorage.getItem(LS_KEYS) || '[]');
-    const validKeys = saved.filter(v => v && v.startsWith('AIza') && v.length > 20);
-    if(validKeys.length > 0) {
-      rrKeys = validKeys;
-      rrIndex = 0;
-      rrCallCount = new Array(rrKeys.length).fill(0);
-      GEMINI_KEY = rrKeys[0];
-      document.getElementById('setupScreen').style.display = 'none';
-      startApp();
-    }
-  } catch(e) {
-    console.log('Boot error:', e);
-  }
-  // Setup screen visible by default if no keys
-});
+        function exportarCSV() {
+            let csv = 'Fecha,Cliente,Marca,Modelo,Año,Precio Base,Honorarios,Total\n';
+            cotizaciones.forEach(c => {
+                csv += `${c.fecha},${c.cliente.nombre},${c.marca},${c.modelo},${c.anio},${c.precioBase},${c.honorarios},${c.total}\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cotizaciones_lenoah_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+        }
 
-// ── SETTINGS ──────────────────────────────────────
-function lhOpenSettings() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(LS_KEYS) || '[]');
-    for(let i=1;i<=5;i++) {
-      const el = document.getElementById('k'+i);
-      if(el) { el.value = saved[i-1] || ''; lhCheckKey(i, el.value); }
-    }
-  } catch(e) {}
-  document.getElementById('setupScreen').style.display = 'flex';
-}
+        function imprimirCotizacion() {
+            alert('Función de impresión - Se generará PDF con la cotización');
+        }
 
-// ── PWA INSTALL ────────────────────────────────────
-let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault(); deferredPrompt = e;
-  setTimeout(() => {
-    if(!window.matchMedia('(display-mode: standalone)').matches) {
-      const b = document.getElementById('installBanner'); if(b) b.classList.add('show');
-    }
-  }, 3000);
-});
-function lhInstall() {
-  if(deferredPrompt) {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(r => {
-      if(r.outcome === 'accepted') { const b=document.getElementById('installBanner'); if(b) b.classList.remove('show'); }
-      deferredPrompt = null;
-    });
-  } else {
-    showToast('Safari: Compartir ↗ → Agregar a inicio · Chrome: Menú ⋮ → Agregar a pantalla de inicio', 5000);
-  }
-}
-window.addEventListener('load', () => {
-  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-  if(isIos && !isStandalone) {
-    setTimeout(() => { const b=document.getElementById('installBanner'); if(b) b.classList.add('show'); }, 5000);
-  }
-  // Update key indicator
-  function updKeyInd() {
-    const fi=document.getElementById('keyIndicator');
-    if(fi && rrKeys.length) fi.innerHTML = `<div class="fp"></div>Key ${rrIndex+1}/${rrKeys.length} · RR`;
-  }
-  setInterval(updKeyInd, 3000);
-});
+        function imprimirCotizacionIndividual(id) {
+            alert('Imprimiendo cotización #' + id);
+        }
 
-document.addEventListener('touchstart', function(){}, {passive:true});
-document.getElementById('micBtn')?.addEventListener('touchend', e=>{ e.preventDefault(); togMic(); }, {passive:false});
-
-</script>
+        // Cargar datos guardados
+        window.addEventListener('load', () => {
+            const guardadas = localStorage.getItem('cotizaciones');
+            if (guardadas) {
+                cotizaciones = JSON.parse(guardadas);
+                actualizarDashboard();
+                cargarHistorial();
+            }
+        });
+    </script>
 </body>
 </html>
