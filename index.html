@@ -2,72 +2,75 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0">
     <title>Simulador Pedimento - 42 Casos por Régimen - Anexo 22</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background: #b0b0b0; 
             font-family: "Arial Narrow", Arial, sans-serif; 
-            font-size: 8pt;
-            padding: 10px;
+            font-size: 7.5pt;
+            padding: 5px;
+            line-height: 1.2;
         }
-        /* Layout principal con flexbox */
+        /* Layout principal */
         .main-container {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             max-width: 1600px;
             margin: 0 auto;
         }
         /* Panel de controles - sidebar izquierdo */
         .controls-panel {
-            width: 380px;
+            width: 360px;
             flex-shrink: 0;
             background: white;
-            padding: 15px;
+            padding: 10px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             max-height: 95vh;
             overflow-y: auto;
             position: sticky;
-            top: 10px;
+            top: 5px;
         }
         /* Área del pedimento */
         .pedimento-area {
             flex: 1;
             background: white;
-            padding: 15px;
+            padding: 10px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            overflow-x: auto;
         }
         .page {
             width: 100%;
+            min-width: 800px;
             background: white;
         }
         .header-title {
             text-align: center;
             font-weight: bold;
-            font-size: 14pt;
-            margin-bottom: 5px;
+            font-size: 13pt;
+            margin-bottom: 3px;
             text-decoration: underline;
             letter-spacing: 1px;
         }
-        .page-num { text-align: right; font-size: 7pt; margin-bottom: 10px; color: #333; }
-        .pedimento-table { width: 100%; border-collapse: collapse; border: 2px solid #000; }
-        .pedimento-table td { border: 1px solid #000; padding: 2px 4px; vertical-align: top; }
-        .label { font-weight: bold; font-size: 7pt; color: #000; background: #e8e8e8; white-space: nowrap; }
-        .field { font-size: 8pt; min-height: 16px; }
-        .field input, .field select { width: 100%; border: none; font-size: 8pt; font-family: inherit; background: transparent; padding: 1px; }
+        .page-num { text-align: right; font-size: 6.5pt; margin-bottom: 8px; color: #333; }
+        .pedimento-table { width: 100%; border-collapse: collapse; border: 2px solid #000; font-size: 7pt; }
+        .pedimento-table td { border: 1px solid #000; padding: 2px 3px; vertical-align: top; }
+        .label { font-weight: bold; font-size: 6.5pt; color: #000; background: #e8e8e8; white-space: nowrap; }
+        .field { font-size: 7pt; min-height: 14px; }
+        .field input, .field select { width: 100%; border: none; font-size: 7pt; font-family: inherit; background: transparent; padding: 1px; }
         .field input:focus, .field select:focus { background: #ffffcc; outline: 1px solid #0066cc; }
         .field.error input, .field.error select { background: #ffe6e6; border-bottom: 2px solid #cc0000; }
         .field.success input, .field.success select { background: #e6ffe6; }
         .liquidacion-table { width: 100%; border-collapse: collapse; border: 1px solid #000; }
-        .liquidacion-table th, .liquidacion-table td { border: 1px solid #000; padding: 3px; text-align: center; font-size: 7.5pt; }
+        .liquidacion-table th, .liquidacion-table td { border: 1px solid #000; padding: 2px; text-align: center; font-size: 6.5pt; }
         .liquidacion-table th { background: #d8d8d8; font-weight: bold; }
         
-        .controls-panel label { font-weight: bold; font-size: 9pt; display: block; margin-bottom: 5px; }
-        .controls-panel select { width: 100%; padding: 6px; margin-bottom: 10px; font-size: 8.5pt; border: 1px solid #999; border-radius: 3px; }
-        .btn { display: block; width: 100%; padding: 8px; margin: 5px 0; background: #0066cc; color: white; border: none; cursor: pointer; font-size: 9pt; border-radius: 3px; font-weight: 500; }
+        .controls-panel label { font-weight: bold; font-size: 8.5pt; display: block; margin-bottom: 5px; }
+        .controls-panel select { width: 100%; padding: 5px; margin-bottom: 8px; font-size: 8pt; border: 1px solid #999; border-radius: 3px; }
+        .btn { display: block; width: 100%; padding: 7px; margin: 4px 0; background: #0066cc; color: white; border: none; cursor: pointer; font-size: 8.5pt; border-radius: 3px; font-weight: 500; }
         .btn:hover { background: #0055aa; }
         .btn-success { background: #009900; }
         .btn-success:hover { background: #007700; }
@@ -75,11 +78,11 @@
         .btn-secondary { background: #666; }
         
         .case-info {
-            background: #fff3cd; border-left: 4px solid #ff9800; padding: 10px; margin: 10px 0;
-            border-radius: 4px; font-size: 8pt; line-height: 1.5;
+            background: #fff3cd; border-left: 4px solid #ff9800; padding: 8px; margin: 8px 0;
+            border-radius: 4px; font-size: 7.5pt; line-height: 1.4;
         }
-        .case-info h3 { color: #856404; margin-bottom: 8px; font-size: 9pt; border-bottom: 1px solid #ff9800; padding-bottom: 5px; }
-        .regime-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 8pt; font-weight: bold; color: white; }
+        .case-info h3 { color: #856404; margin-bottom: 6px; font-size: 8.5pt; border-bottom: 1px solid #ff9800; padding-bottom: 4px; }
+        .regime-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 7.5pt; font-weight: bold; color: white; }
         .reg-41 { background: #1e88e5; }
         .reg-21 { background: #43a047; }
         .reg-22 { background: #43a047; }
@@ -92,33 +95,67 @@
         .reg-72 { background: #00897b; }
         .reg-73 { background: #00897b; }
         .reg-81 { background: #5e35b1; }
-        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 8px; }
-        .data-item { background: white; padding: 4px; border-radius: 3px; font-size: 7.5pt; }
-        .data-item label { font-weight: bold; display: block; color: #666; font-size: 7pt; }
-        .alert-info { background: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; padding: 8px; border-radius: 4px; margin: 8px 0; font-size: 7.5pt; }
-        .alert-regime { background: #e3f2fd; border: 1px solid #90caf9; color: #1565c0; padding: 8px; border-radius: 4px; margin-bottom: 8px; font-size: 8pt; }
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 6px; }
+        .data-item { background: white; padding: 3px; border-radius: 3px; font-size: 7pt; }
+        .data-item label { font-weight: bold; display: block; color: #666; font-size: 6.5pt; }
+        .alert-info { background: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; padding: 6px; border-radius: 4px; margin: 6px 0; font-size: 7pt; }
+        .alert-regime { background: #e3f2fd; border: 1px solid #90caf9; color: #1565c0; padding: 6px; border-radius: 4px; margin-bottom: 6px; font-size: 7.5pt; }
         
         .validation-report {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: white; border: 3px solid #0066cc; padding: 20px; width: 90%; max-width: 650px;
+            background: white; border: 3px solid #0066cc; padding: 15px; width: 95%; max-width: 600px;
             max-height: 85vh; overflow-y: auto; z-index: 2000; box-shadow: 0 5px 30px rgba(0,0,0,0.5); border-radius: 8px;
         }
-        .validation-report h2 { color: #0066cc; margin-bottom: 15px; border-bottom: 2px solid #0066cc; padding-bottom: 5px; font-size: 14pt; }
-        .error-box { background: #ffe6e6; border-left: 4px solid #cc0000; padding: 10px; margin: 8px 0; border-radius: 0 4px 4px 0; }
-        .success-box { background: #e6ffe6; border-left: 4px solid #00cc00; padding: 10px; margin: 8px 0; border-radius: 0 4px 4px 0; }
+        .validation-report h2 { color: #0066cc; margin-bottom: 12px; border-bottom: 2px solid #0066cc; padding-bottom: 5px; font-size: 13pt; }
+        .error-box { background: #ffe6e6; border-left: 4px solid #cc0000; padding: 8px; margin: 6px 0; border-radius: 0 4px 4px 0; font-size: 7.5pt; }
+        .success-box { background: #e6ffe6; border-left: 4px solid #00cc00; padding: 8px; margin: 6px 0; border-radius: 0 4px 4px 0; font-size: 7.5pt; }
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1500; }
         
-        .barcode { height: 35px; background: repeating-linear-gradient(90deg, #000 0px, #000 2px, #fff 2px, #fff 4px, #000 4px, #000 5px, #fff 5px, #fff 8px); margin: 5px 0; }
+        .barcode { height: 30px; background: repeating-linear-gradient(90deg, #000 0px, #000 2px, #fff 2px, #fff 4px, #000 4px, #000 5px, #fff 5px, #fff 8px); margin: 4px 0; }
         
         @media print { 
             body { background: white; padding: 0; } 
             .main-container { display: block; }
             .controls-panel { display: none; }
             .pedimento-area { box-shadow: none; padding: 0; }
+            .page { min-width: auto; }
         }
-        @media (max-width: 1200px) {
+        
+        /* Responsive para tablet y móvil */
+        @media (max-width: 1024px) {
             .main-container { flex-direction: column; }
             .controls-panel { width: 100%; max-height: none; position: relative; }
+            .pedimento-area { overflow-x: auto; }
+            .page { min-width: 700px; }
+        }
+        
+        @media (max-width: 768px) {
+            body { font-size: 7pt; padding: 3px; }
+            .page { min-width: 650px; }
+            .pedimento-table { font-size: 6.5pt; }
+            .pedimento-table td { padding: 1px 2px; }
+            .label { font-size: 6pt; }
+            .field { font-size: 6.5pt; }
+            .field input, .field select { font-size: 6.5pt; }
+            .liquidacion-table th, .liquidacion-table td { font-size: 6pt; padding: 1px; }
+            .header-title { font-size: 11pt; }
+            .page-num { font-size: 6pt; }
+            .controls-panel select { font-size: 7.5pt; padding: 4px; }
+            .btn { font-size: 8pt; padding: 6px; }
+            .case-info { font-size: 7pt; }
+            .case-info h3 { font-size: 8pt; }
+            .data-grid { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 480px) {
+            body { font-size: 6.5pt; }
+            .page { min-width: 600px; }
+            .pedimento-table { font-size: 6pt; }
+            .label { font-size: 5.5pt; }
+            .field { font-size: 6pt; }
+            .field input, .field select { font-size: 6pt; }
+            .liquidacion-table th, .liquidacion-table td { font-size: 5.5pt; }
+            .header-title { font-size: 10pt; }
         }
     </style>
 </head>
@@ -126,12 +163,11 @@
     <div class="main-container">
         <!-- PANEL DE CONTROLES - SIDEBAR IZQUIERDO -->
         <div class="controls-panel">
-            <h3 style="margin-bottom: 15px; color: #0066cc; text-align: center;">📋 SIMULADOR PEDIMENTO</h3>
+            <h3 style="margin-bottom: 12px; color: #0066cc; text-align: center; font-size: 11pt;">📋 SIMULADOR PEDIMENTO</h3>
             
             <label>📦 Seleccionar Caso Práctico:</label>
             <select id="caseSelector" onchange="loadCase(this.value)">
                 <option value="">-- Seleccionar Caso --</option>
-                <!-- Se llena dinámicamente -->
             </select>
 
             <button class="btn btn-success" onclick="validarPedimento()">✅ VALIDAR PEDIMENTO</button>
@@ -201,18 +237,18 @@
                         <td class="label" colspan="4">TASAS A NIVEL PEDIMENTO:</td>
                     </tr>
                     <tr>
-                        <td colspan="4" rowspan="3" style="height: 55px; vertical-align: top;"><div class="field"><input type="text" id="marcas_bultos" style="width: 100%; height: 50px; border: none; resize: none;" placeholder=""></div></td>
+                        <td colspan="4" rowspan="3" style="height: 50px; vertical-align: top;"><div class="field"><input type="text" id="marcas_bultos" style="width: 100%; height: 45px; border: none; resize: none;" placeholder=""></div></td>
                         <td class="label">CONTRIB.</td><td class="label">CVE. TASA</td><td class="label">TASA</td>
                     </tr>
                     <tr><td>PRV</td><td>2</td><td>330.00000</td></tr>
                     <tr><td>IVA/RV</td><td>1</td><td>16.00000</td></tr>
                     <tr>
                         <td colspan="8" style="padding: 0;">
-                            <div style="font-weight: bold; text-align: center; background: #d8d8d8; padding: 3px; font-size: 8pt;">CUADRO DE LIQUIDACION</div>
+                            <div style="font-weight: bold; text-align: center; background: #d8d8d8; padding: 2px; font-size: 7.5pt;">CUADRO DE LIQUIDACION</div>
                             <table class="liquidacion-table" style="border: none;">
                                 <thead><tr><th width="22%">CONCEPTO</th><th width="8%">P.P.</th><th width="15%">IMPORTE</th><th width="22%">CONCEPTO</th><th width="8%">P.P.</th><th width="15%">IMPORTE</th><th width="10%">TOTALES</th></tr></thead>
                                 <tbody>
-                                    <tr><td>IVA</td><td>0</td><td><div class="field"><input type="number" id="liq_iva" step="0.01" placeholder=""></div></td><td rowspan="3" colspan="2" style="vertical-align: top; font-weight: bold;">EFECTIVO:</td><td rowspan="3" colspan="2" style="vertical-align: top; font-weight: bold; font-size: 9pt; text-align: right; padding-right: 8px;" id="total_efectivo">0.00</td></tr>
+                                    <tr><td>IVA</td><td>0</td><td><div class="field"><input type="number" id="liq_iva" step="0.01" placeholder=""></div></td><td rowspan="3" colspan="2" style="vertical-align: top; font-weight: bold;">EFECTIVO:</td><td rowspan="3" colspan="2" style="vertical-align: top; font-weight: bold; font-size: 8.5pt; text-align: right; padding-right: 6px;" id="total_efectivo">0.00</td></tr>
                                     <tr><td>PRV</td><td>0</td><td><div class="field"><input type="number" id="liq_prv" step="0.01" placeholder=""></div></td></tr>
                                     <tr><td>IVA/PRV</td><td>0</td><td><div class="field"><input type="number" id="liq_iva_prv" step="0.01" placeholder=""></div></td></tr>
                                     <tr><td colspan="5" style="text-align: right; font-weight: bold; border: none;">TOTAL:</td><td colspan="2" style="font-weight: bold; text-align: right;" id="total_final">0.00</td></tr>
@@ -221,11 +257,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="8" style="text-align: center; padding: 8px;">
-                            <div style="font-weight: bold; margin-bottom: 5px; font-size: 8pt;">DEPÓSITO REFERENCIADO - LÍNEA DE CAPTURA</div>
-                            <div class="barcode" style="height: 45px; margin: 8px auto; width: 85%;"></div>
-                            <div style="font-family: monospace; font-size: 9pt; letter-spacing: 2px; margin-bottom: 5px;">0326 0120 PUP1 4907 0292 _____</div>
-                            <div style="font-size: 7pt; text-align: left; display: inline-block; width: 100%;">
+                        <td colspan="8" style="text-align: center; padding: 6px;">
+                            <div style="font-weight: bold; margin-bottom: 4px; font-size: 7.5pt;">DEPÓSITO REFERENCIADO - LÍNEA DE CAPTURA</div>
+                            <div class="barcode" style="height: 40px; margin: 6px auto; width: 85%;"></div>
+                            <div style="font-family: monospace; font-size: 8.5pt; letter-spacing: 2px; margin-bottom: 4px;">0326 0120 PUP1 4907 0292 _____</div>
+                            <div style="font-size: 6.5pt; text-align: left; display: inline-block; width: 100%;">
                                 <div>***PAGO ELECTRÓNICO***</div>
                                 <div>Pedimento: <span id="ref_ped">________</span> &nbsp;&nbsp; Aduana: <span id="ref_adu">____</span></div>
                                 <div>Importe de Pago: $<span id="ref_imp">_______</span> &nbsp;&nbsp; Fecha: __________</div>
@@ -234,20 +270,20 @@
                     </tr>
                     <tr>
                         <td colspan="8" style="padding: 0;">
-                            <div style="font-weight: bold; text-align: center; background: #000; color: white; padding: 3px; font-size: 8pt;">DATOS DEL PROVEEDOR O COMPRADOR</div>
+                            <div style="font-weight: bold; text-align: center; background: #000; color: white; padding: 2px; font-size: 7.5pt;">DATOS DEL PROVEEDOR O COMPRADOR</div>
                             <table style="width: 100%; border: none;">
                                 <tr>
-                                    <td width="50%" style="border-right: 1px solid #000; vertical-align: top; padding: 5px;">
-                                        <div style="font-weight: bold; font-size: 7pt;">AGENTE ADUANAL</div>
-                                        <div style="font-size: 7pt; margin-top: 5px;">
-                                            NOMBRE: <input type="text" id="agente_nombre" placeholder="" style="width: 100%; border: none; font-size: 7pt;"><br>
-                                            RFC: <input type="text" id="agente_rfc" placeholder="" style="width: 100%; border: none; font-size: 7pt;"><br>
-                                            PATENTE: <input type="text" id="agente_patente" placeholder="" style="width: 60px; border: none; font-size: 7pt;">
+                                    <td width="50%" style="border-right: 1px solid #000; vertical-align: top; padding: 4px;">
+                                        <div style="font-weight: bold; font-size: 6.5pt;">AGENTE ADUANAL</div>
+                                        <div style="font-size: 6.5pt; margin-top: 4px;">
+                                            NOMBRE: <input type="text" id="agente_nombre" placeholder="" style="width: 100%; border: none; font-size: 6.5pt;"><br>
+                                            RFC: <input type="text" id="agente_rfc" placeholder="" style="width: 100%; border: none; font-size: 6.5pt;"><br>
+                                            PATENTE: <input type="text" id="agente_patente" placeholder="" style="width: 50px; border: none; font-size: 6.5pt;">
                                         </div>
                                     </td>
-                                    <td width="50%" style="vertical-align: top; padding: 5px;">
-                                        <div style="font-weight: bold; font-size: 7pt;">DECLARACIÓN</div>
-                                        <div style="margin-top: 15px; font-size: 7pt;">AUTORIZACION: <input type="text" id="declaracion_aut" placeholder="" style="width: 100px; border: none; font-size: 7pt;"></div>
+                                    <td width="50%" style="vertical-align: top; padding: 4px;">
+                                        <div style="font-weight: bold; font-size: 6.5pt;">DECLARACIÓN</div>
+                                        <div style="margin-top: 12px; font-size: 6.5pt;">AUTORIZACION: <input type="text" id="declaracion_aut" placeholder="" style="width: 80px; border: none; font-size: 6.5pt;"></div>
                                     </td>
                                 </tr>
                             </table>
@@ -255,7 +291,7 @@
                     </tr>
                 </table>
 
-                <div style="margin-top: 20px;">
+                <div style="margin-top: 15px;">
                     <div class="header-title">ANEXO DEL PEDIMENTO</div>
                     <div class="page-num">Página 2 de 2</div>
                     <table class="pedimento-table">
@@ -295,7 +331,7 @@
     <div id="validationReport" class="validation-report">
         <h2>📊 REPORTE DE VALIDACIÓN</h2>
         <div id="validationContent"></div>
-        <button class="btn" onclick="cerrarReporte()" style="margin-top: 15px; background: #333;">CERRAR</button>
+        <button class="btn" onclick="cerrarReporte()" style="margin-top: 12px; background: #333;">CERRAR</button>
     </div>
 
     <script>
@@ -313,93 +349,67 @@
             '81': { nombre: 'Retorno de Mercancías', tipo: 'IMP', cve: 'R1', desc: 'Retorno de mercancías exportadas temporalmente' }
         };
 
-        // 42 CASOS PRÁCTICOS CON RÉGIMEN PRE-ASIGNADO
+        // 42 CASOS PRÁCTICOS COMPLETOS Y VARIADOS
         const casos = [
-            // REGIMEN 41 - IMPORTACIÓN DEFINITIVA (12 casos)
-            {
-                id: 'c01', regimen: '41', nombre: 'Laptops China → Manzanillo',
-                d: { num: '26 39 1234 5001001', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.4500', peso: '450.000', aduana: '390', medio: '01', entrada: '01', valUSD: '12500.00', valAd: '218125.00', fletes: '850.00', seguros: '0.00', rfc: 'COM850101XX0', nombre: 'COMERCIALIZADORA INTERNACIONAL SA DE CV', dom: 'CALLE INDUSTRIAL #123, COL. PARQUE, CP 22000, TIJUANA, BC', agente: 'AGEN. ADUANAL CERTIFICADA SA DE CV', agenteRfc: 'AAG800101XX0', patente: '1234', aut: '1234', incoterm: 'FOB', origen: 'China', tratado: 'Ninguno', bultos: 'CAJAS CON LOGO / 25 BULTOS', items: [
-                    {desc: 'LAPTOPS MARCA ACER ASPIRE 5, INTEL I5, 8GB, 512GB SSD', cant: '50', umc: '480', umt: '847', pvic: '250.00', nota: 'BUSCAR: Computadoras portátiles automáticas'},
-                    {desc: 'ROUTER WIRELESS DOBLE BANDA 5GHZ, PUERTOS GIGABIT', cant: '25', umc: '480', umt: '851', pvic: '150.00', nota: 'BUSCAR: Aparatos de transmisión/recepción'}
-                ]}
-            },
-            {
-                id: 'c02', regimen: '41', nombre: 'Autopartes USA → Laredo',
-                d: { num: '26 06 5678 4002003', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.1200', peso: '1250.500', aduana: '060', medio: '03', entrada: '03', valUSD: '24800.00', valAd: '424576.00', fletes: '1200.00', seguros: '0.00', rfc: 'AUT920515YY1', nombre: 'DISTRIBUIDORA AUTOMOTRIZ DEL NORTE SA DE CV', dom: 'AV. INDUSTRIA #456, PARQUE LOGISTICO, CP 64000, MONTERREY, NL', agente: 'ADUANAS FRONTERA INTEGRAL SA', agenteRfc: 'AFI880920ZZ3', patente: '5678', aut: '5678', incoterm: 'DAP', origen: 'USA', tratado: 'T-MEC', bultos: 'TARIMAS REFACCIONES / 45 BULTOS', items: [
-                    {desc: 'PASTILLAS DE FRENO DELANTERAS MARCA BREMBO', cant: '200', umc: '480', umt: '870', pvic: '124.00', nota: 'BUSCAR: Guarniciones de frenos para automóviles'},
-                    {desc: 'AMORTIGUADORES TRASEROS GAS PRESION FORD F150', cant: '100', umc: '480', umt: '870', pvic: '124.00', nota: 'BUSCAR: Amortiguadores de suspensión'}
-                ]}
-            },
-            {
-                id: 'c03', regimen: '41', nombre: 'Telas Algodón India → Veracruz',
-                d: { num: '26 20 9012 3003005', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.8900', peso: '3200.000', aduana: '200', medio: '01', entrada: '01', valUSD: '18500.00', valAd: '330965.00', fletes: '2100.00', seguros: '0.00', rfc: 'TEX881122AA4', nombre: 'IMPORTADORA TEXTIL PACIFICO SA DE CV', dom: 'BLVD. COSTERO #789, COL. PUERTO, CP 91700, VERACRUZ', agente: 'SERVICIOS ADUANALES DEL GOLFO', agenteRfc: 'SAG950410BB7', patente: '9012', aut: '9012', incoterm: 'CFR', origen: 'India', tratado: 'Ninguno', bultos: 'ROLLOS DE TELA / 150 BULTOS', items: [
-                    {desc: 'TELA ALGODON CRUDA SIN BLANQUEAR, ANCHO 150CM, 180G/M2', cant: '5000', umc: '480', umt: '520', pvic: '3.70', nota: 'BUSCAR: Tejidos de algodón sin blanquear'},
-                    {desc: 'TELA ALGODON LIGAMENTO SATIN, MERCERIZADO', cant: '3000', umc: '480', umt: '520', pvic: '4.10', nota: 'BUSCAR: Tejidos de algodón con acabado'}
-                ]}
-            },
-            {
-                id: 'c04', regimen: '41', nombre: 'Maquinaria CNC Alemania → Manzanillo',
-                d: { num: '26 39 3456 2004007', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '18.9500', peso: '4500.000', aduana: '390', medio: '01', entrada: '01', valUSD: '85000.00', valAd: '1610750.00', fletes: '5500.00', seguros: '0.00', rfc: 'MAC750308CC8', nombre: 'MAQUINARIA INDUSTRIAL AVANZADA SA DE CV', dom: 'CARRETERA INDUSTRIAL KM 15, COL. TECNOLOGICO, CP 44500, ZAPOPAN', agente: 'ADUANAS Y LOGISTICA PREMIUM', agenteRfc: 'ALP820715DD2', patente: '3456', aut: '3456', incoterm: 'CPT', origen: 'Alemania', tratado: 'TLCUE', bultos: 'CAJAS MADERA MAQUINARIA / 3 BULTOS', items: [
-                    {desc: 'CENTRO MECANIZADO CNC 3 EJES DMG MORI CMX 600V', cant: '1', umc: '480', umt: '845', pvic: '85000.00', nota: 'BUSCAR: Centros de mecanizado por control numérico'},
-                    {desc: 'PORTAHERRAMIENTAS BT40 Y ACCESORIOS SUJECION', cant: '5', umc: '480', umt: '846', pvic: '2000.00', nota: 'BUSCAR: Partes para máquinas herramienta'}
-                ]}
-            },
-            {
-                id: 'c05', regimen: '41', nombre: 'Café Verde Brasil → Veracruz',
-                d: { num: '26 20 7890 1005009', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.6500', peso: '12000.000', aduana: '200', medio: '01', entrada: '01', valUSD: '36000.00', valAd: '635400.00', fletes: '3800.00', seguros: '0.00', rfc: 'CAF901225EE5', nombre: 'EXPORTADORA DE CAFE Y DERIVADOS SA DE CV', dom: 'AV. CAFETOS #234, COL. AGRICOLA, CP 91720, VERACRUZ', agente: 'CORREDURIA ADUANAL DEL PUERTO', agenteRfc: 'CAP910805FF9', patente: '7890', aut: '7890', incoterm: 'FOB', origen: 'Brasil', tratado: 'ACE 53', bultos: 'SACOS YUTE CAFE / 600 BULTOS', items: [
-                    {desc: 'CAFE VERDE SIN TOSTAR, ARABICA, SPECIALTY, COSECHA 2025', cant: '600', umc: '480', umt: '090', pvic: '60.00', nota: 'BUSCAR: Café sin tostar ni descafeinar'},
-                    {desc: 'CAFE TOSTADO SIN DESCAFEINAR, MOLIDO MEDIO, 1KG', cant: '100', umc: '480', umt: '090', pvic: '75.00', nota: 'BUSCAR: Café tostado'}
-                ]}
-            },
-            {
-                id: 'c06', regimen: '41', nombre: 'Muebles Madera Vietnam → Manzanillo',
-                d: { num: '26 39 4567 6006011', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.3000', peso: '8500.000', aduana: '390', medio: '01', entrada: '01', valUSD: '42000.00', valAd: '726600.00', fletes: '4200.00', seguros: '0.00', rfc: 'MUE840610GG6', nombre: 'DISTRIBUIDORA DE MUEBLES Y DECORACION SA DE CV', dom: 'CALLE MADEREROS #567, COL. ARTESANAL, CP 22500, ENSENADA', agente: 'ADUANAS INTEGRALES PACIFICO', agenteRfc: 'AIP860322HH4', patente: '4567', aut: '4567', incoterm: 'CIF', origen: 'Vietnam', tratado: 'Ninguno', bultos: 'CAJAS MUEBLES / 80 BULTOS', items: [
-                    {desc: 'SILLAS TAPIZADAS MADERA ROBLE COMEDOR, PATAS INOX', cant: '200', umc: '480', umt: '940', pvic: '210.00', nota: 'BUSCAR: Asientos con estructura de madera'},
-                    {desc: 'MESAS COMEDOR EXTENSIBLES 8 PERSONAS, LACADO BLANCO', cant: '100', umc: '480', umt: '940', pvic: '350.00', nota: 'BUSCAR: Muebles de madera para comedor'}
-                ]}
-            },
-            {
-                id: 'c07', regimen: '41', nombre: 'Celulares Corea → Manzanillo',
-                d: { num: '26 39 2345 7007013', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.5500', peso: '280.000', aduana: '390', medio: '02', entrada: '02', valUSD: '45000.00', valAd: '789750.00', fletes: '2800.00', seguros: '0.00', rfc: 'TEL930815II3', nombre: 'TELEFONIA MOVIL AVANZADA SA DE CV', dom: 'AV. TECNOLOGIA #890, COL. INNOVACION, CP 01000, CDMX', agente: 'ADUANAS AEROPUERTO INT', agenteRfc: 'AAI890512JJ7', patente: '2345', aut: '2345', incoterm: 'FOB', origen: 'Corea del Sur', tratado: 'Ninguno', bultos: 'CAJAS SMARTPHONES / 300 BULTOS', items: [
-                    {desc: 'SMARTPHONES 5G, PANTALLA 6.5 PULGADAS, 256GB', cant: '300', umc: '480', umt: '851', pvic: '150.00', nota: 'BUSCAR: Teléfonos inteligentes celulares'},
-                    {desc: 'FUNDAS PROTECTORAS CON VIDRIO TEMPLADO', cant: '500', umc: '480', umt: '851', pvic: '15.00', nota: 'BUSCAR: Partes para teléfonos'}
-                ]}
-            },
-            {
-                id: 'c08', regimen: '41', nombre: 'Medicamentos Suiza → CDMX',
-                d: { num: '26 01 6789 8008015', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '18.2000', peso: '150.000', aduana: '010', medio: '02', entrada: '02', valUSD: '125000.00', valAd: '2275000.00', fletes: '8500.00', seguros: '0.00', rfc: 'FAR870420KK1', nombre: 'FARMACEUTICA INTERNACIONAL DE MEXICO SA DE CV', dom: 'AV. INSURGENTES SUR #1234, DEL VALLE, CP 03100, CDMX', agente: 'ADUANAS FARMACOS', agenteRfc: 'AEF920305LL9', patente: '6789', aut: '6789', incoterm: 'DDP', origen: 'Suiza', tratado: 'Ninguno', bultos: 'CARTONES MEDICAMENTOS / 150 BULTOS', items: [
-                    {desc: 'TABLETAS RECUBIERTAS 500MG, CAJA 30 TAB, REG COFEPRIS', cant: '10000', umc: '480', umt: '300', pvic: '12.50', nota: 'BUSCAR: Medicamentos preparados en dosis'},
-                    {desc: 'INYECTABLE SOLUCION 100MG/ML, FRASCO AMPOLLETA 5ML', cant: '5000', umc: '480', umt: '300', pvic: '25.00', nota: 'BUSCAR: Medicamentos inyectables'}
-                ]}
-            },
-            {
-                id: 'c09', regimen: '41', nombre: 'Acero Inoxidable Japón → Manzanillo',
-                d: { num: '26 39 8901 9009017', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.8000', peso: '15000.000', aduana: '390', medio: '01', entrada: '01', valUSD: '68000.00', valAd: '1210400.00', fletes: '6200.00', seguros: '0.00', rfc: 'ACE790612MM5', nombre: 'ACEROS Y METALES INDUSTRIALES SA DE CV', dom: 'CARRETERA NACIONAL KM 25, COL. INDUSTRIAL, CP 67000, SAN NICOLAS', agente: 'ADUANAS SIDERURGICA', agenteRfc: 'ASI850720NN3', patente: '8901', aut: '8901', incoterm: 'CFR', origen: 'Japón', tratado: 'Ninguno', bultos: 'PALETES ACERO / 200 BULTOS', items: [
-                    {desc: 'LAMINA ACERO INOXIDABLE LAMINADA FRIO, 2MM, 1220MM, 304', cant: '5000', umc: '480', umt: '721', pvic: '13.60', nota: 'BUSCAR: Productos laminados planos acero inoxidable'},
-                    {desc: 'BARRAS ACERO INOXIDABLE LAMINADAS CALIENTE, 50MM, 316', cant: '2000', umc: '480', umt: '722', pvic: '13.60', nota: 'BUSCAR: Barras de acero inoxidable'}
-                ]}
-            },
-            {
-                id: 'c10', regimen: '41', nombre: 'Juguetes Plástico China → Manzanillo',
-                d: { num: '26 39 3456 1010019', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.4000', peso: '980.000', aduana: '390', medio: '01', entrada: '01', valUSD: '15800.00', valAd: '274920.00', fletes: '1250.00', seguros: '0.00', rfc: 'JUG910305OO7', nombre: 'JUGUETES Y ENTRETENIMIENTO INFANTIL SA DE CV', dom: 'CALLE DIVERSION #456, COL. RECREATIVA, CP 22600, TIJUANA', agente: 'ADUANAS JUGUETES', agenteRfc: 'AJR880415PP1', patente: '3456', aut: '3456', incoterm: 'FOB', origen: 'China', tratado: 'Ninguno', bultos: 'CAJAS JUGUETES / 500 BULTOS', items: [
-                    {desc: 'FIGURAS ACCION ARTICULADAS PLASTICO, 30CM, CON ACCESORIOS', cant: '1000', umc: '480', umt: '950', pvic: '15.80', nota: 'BUSCAR: Juguetes de plástico'},
-                    {desc: 'JUEGOS CONSTRUCCION BLOQUES INTERCONEXIONABLES, 500 PZ', cant: '500', umc: '480', umt: '950', pvic: '15.80', nota: 'BUSCAR: Juguetes de construcción'}
-                ]}
-            },
-            {
-                id: 'c11', regimen: '41', nombre: 'Vino Tinto Chile → Guadalajara',
-                d: { num: '26 14 4567 2011021', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.2500', peso: '1800.000', aduana: '140', medio: '03', entrada: '03', valUSD: '22000.00', valAd: '379500.00', fletes: '1800.00', seguros: '0.00', rfc: 'VIN860918QQ9', nombre: 'VINICOLA Y BEBIDAS PREMIUM SA DE CV', dom: 'AV. DEL VINO #789, COL. VIÑEDO, CP 45050, ZAPOPAN', agente: 'ADUANAS BEBIDAS', agenteRfc: 'ABA910522RR5', patente: '4567', aut: '4567', incoterm: 'DDP', origen: 'Chile', tratado: 'ACE 35', bultos: 'CAJAS BOTELLAS VINO / 250 BULTOS', items: [
-                    {desc: 'VINO TINTO CABERNET SAUVIGNON 750ML, AÑADA 2022, 13.5%', cant: '2000', umc: '480', umt: '220', pvic: '11.00', nota: 'BUSCAR: Vinos tintos en recipientes ≤ 2L'},
-                    {desc: 'VINO TINTO RESERVA MERLOT 750ML, AÑADA 2020, ROBLE 12M', cant: '500', umc: '480', umt: '220', pvic: '15.00', nota: 'BUSCAR: Vinos tintos reserva'}
-                ]}
-            },
-            {
-                id: 'c12', regimen: '41', nombre: 'Servidores Taiwan → Manzanillo',
-                d: { num: '26 39 5678 3012023', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.6000', peso: '850.000', aduana: '390', medio: '01', entrada: '01', valUSD: '95000.00', valAd: '1672000.00', fletes: '4800.00', seguros: '0.00', rfc: 'SER880725SS3', nombre: 'SERVIDORES Y SOLUCIONES EMPRESARIALES SA DE CV', dom: 'BLVD. TECNOLOGICO #234, COL. PARQUE IT, CP 44100, GUADALAJARA', agente: 'ADUANAS TECNOLOGIA', agenteRfc: 'ATA930810TT7', patente: '5678', aut: '5678', incoterm: 'CIF', origen: 'Taiwan', tratado: 'Ninguno', bultos: 'CAJAS SERVIDORES / 30 BULTOS', items: [
-                    {desc: 'SERVIDORES RACK 2U, DUAL XEON, 128GB RAM, 8 BAYAS', cant: '10', umc: '480', umt: '847', pvic: '9500.00', nota: 'BUSCAR: Máquinas automáticas para tratamiento de datos'},
-                    {desc: 'SWITCH RED GIGABIT 48 PUERTOS, CAPA 3, ADMINISTRABLE', cant: '20', umc: '480', umt: '851', pvic: '1200.00', nota: 'BUSCAR: Aparatos de conmutación para redes'}
-                ]}
-            }
+            // REGIMEN 41 - IMPORTACIÓN DEFINITIVA (15 casos variados)
+            { id: 'c01', regimen: '41', nombre: 'Laptops China → Manzanillo', d: { num: '26 39 1234 5001001', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.4500', peso: '450.000', aduana: '390', medio: '01', entrada: '01', valUSD: '12500.00', valAd: '218125.00', fletes: '850.00', seguros: '0.00', rfc: 'COM850101XX0', nombre: 'COMERCIALIZADORA INTERNACIONAL SA DE CV', dom: 'CALLE INDUSTRIAL #123, COL. PARQUE, CP 22000, TIJUANA, BC', agente: 'AGEN. ADUANAL CERTIFICADA SA DE CV', agenteRfc: 'AAG800101XX0', patente: '1234', aut: '1234', incoterm: 'FOB', origen: 'China', tratado: 'Ninguno', bultos: 'CAJAS CON LOGO / 25 BULTOS', items: [{desc: 'LAPTOPS MARCA ACER ASPIRE 5, INTEL I5, 8GB, 512GB SSD', cant: '50', umc: '480', umt: '847', pvic: '250.00', nota: 'BUSCAR: Computadoras portátiles automáticas'}, {desc: 'ROUTER WIRELESS DOBLE BANDA 5GHZ, PUERTOS GIGABIT', cant: '25', umc: '480', umt: '851', pvic: '150.00', nota: 'BUSCAR: Aparatos de transmisión/recepción'}]}},
+            { id: 'c02', regimen: '41', nombre: 'Autopartes USA → Laredo', d: { num: '26 06 5678 4002003', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.1200', peso: '1250.500', aduana: '060', medio: '03', entrada: '03', valUSD: '24800.00', valAd: '424576.00', fletes: '1200.00', seguros: '0.00', rfc: 'AUT920515YY1', nombre: 'DISTRIBUIDORA AUTOMOTRIZ DEL NORTE SA DE CV', dom: 'AV. INDUSTRIA #456, PARQUE LOGISTICO, CP 64000, MONTERREY, NL', agente: 'ADUANAS FRONTERA INTEGRAL SA', agenteRfc: 'AFI880920ZZ3', patente: '5678', aut: '5678', incoterm: 'DAP', origen: 'USA', tratado: 'T-MEC', bultos: 'TARIMAS REFACCIONES / 45 BULTOS', items: [{desc: 'PASTILLAS DE FRENO DELANTERAS MARCA BREMBO', cant: '200', umc: '480', umt: '870', pvic: '124.00', nota: 'BUSCAR: Guarniciones de frenos'}, {desc: 'AMORTIGUADORES TRASEROS GAS PRESION FORD F150', cant: '100', umc: '480', umt: '870', pvic: '124.00', nota: 'BUSCAR: Amortiguadores de suspensión'}]}},
+            { id: 'c03', regimen: '41', nombre: 'Telas Algodón India → Veracruz', d: { num: '26 20 9012 3003005', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.8900', peso: '3200.000', aduana: '200', medio: '01', entrada: '01', valUSD: '18500.00', valAd: '330965.00', fletes: '2100.00', seguros: '0.00', rfc: 'TEX881122AA4', nombre: 'IMPORTADORA TEXTIL PACIFICO SA DE CV', dom: 'BLVD. COSTERO #789, COL. PUERTO, CP 91700, VERACRUZ', agente: 'SERVICIOS ADUANALES DEL GOLFO', agenteRfc: 'SAG950410BB7', patente: '9012', aut: '9012', incoterm: 'CFR', origen: 'India', tratado: 'Ninguno', bultos: 'ROLLOS DE TELA / 150 BULTOS', items: [{desc: 'TELA ALGODON CRUDA SIN BLANQUEAR, ANCHO 150CM, 180G/M2', cant: '5000', umc: '480', umt: '520', pvic: '3.70', nota: 'BUSCAR: Tejidos de algodón sin blanquear'}, {desc: 'TELA ALGODON LIGAMENTO SATIN, MERCERIZADO', cant: '3000', umc: '480', umt: '520', pvic: '4.10', nota: 'BUSCAR: Tejidos de algodón con acabado'}]}},
+            { id: 'c04', regimen: '41', nombre: 'Maquinaria CNC Alemania → Manzanillo', d: { num: '26 39 3456 2004007', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '18.9500', peso: '4500.000', aduana: '390', medio: '01', entrada: '01', valUSD: '85000.00', valAd: '1610750.00', fletes: '5500.00', seguros: '0.00', rfc: 'MAC750308CC8', nombre: 'MAQUINARIA INDUSTRIAL AVANZADA SA DE CV', dom: 'CARRETERA INDUSTRIAL KM 15, COL. TECNOLOGICO, CP 44500, ZAPOPAN', agente: 'ADUANAS Y LOGISTICA PREMIUM', agenteRfc: 'ALP820715DD2', patente: '3456', aut: '3456', incoterm: 'CPT', origen: 'Alemania', tratado: 'TLCUE', bultos: 'CAJAS MADERA MAQUINARIA / 3 BULTOS', items: [{desc: 'CENTRO MECANIZADO CNC 3 EJES DMG MORI CMX 600V', cant: '1', umc: '480', umt: '845', pvic: '85000.00', nota: 'BUSCAR: Centros de mecanizado por control numérico'}, {desc: 'PORTAHERRAMIENTAS BT40 Y ACCESORIOS SUJECION', cant: '5', umc: '480', umt: '846', pvic: '2000.00', nota: 'BUSCAR: Partes para máquinas herramienta'}]}},
+            { id: 'c05', regimen: '41', nombre: 'Café Verde Brasil → Veracruz', d: { num: '26 20 7890 1005009', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.6500', peso: '12000.000', aduana: '200', medio: '01', entrada: '01', valUSD: '36000.00', valAd: '635400.00', fletes: '3800.00', seguros: '0.00', rfc: 'CAF901225EE5', nombre: 'EXPORTADORA DE CAFE Y DERIVADOS SA DE CV', dom: 'AV. CAFETOS #234, COL. AGRICOLA, CP 91720, VERACRUZ', agente: 'CORREDURIA ADUANAL DEL PUERTO', agenteRfc: 'CAP910805FF9', patente: '7890', aut: '7890', incoterm: 'FOB', origen: 'Brasil', tratado: 'ACE 53', bultos: 'SACOS YUTE CAFE / 600 BULTOS', items: [{desc: 'CAFE VERDE SIN TOSTAR, ARABICA, SPECIALTY, COSECHA 2025', cant: '600', umc: '480', umt: '090', pvic: '60.00', nota: 'BUSCAR: Café sin tostar ni descafeinar'}, {desc: 'CAFE TOSTADO SIN DESCAFEINAR, MOLIDO MEDIO, 1KG', cant: '100', umc: '480', umt: '090', pvic: '75.00', nota: 'BUSCAR: Café tostado'}]}},
+            { id: 'c06', regimen: '41', nombre: 'Muebles Madera Vietnam → Manzanillo', d: { num: '26 39 4567 6006011', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.3000', peso: '8500.000', aduana: '390', medio: '01', entrada: '01', valUSD: '42000.00', valAd: '726600.00', fletes: '4200.00', seguros: '0.00', rfc: 'MUE840610GG6', nombre: 'DISTRIBUIDORA DE MUEBLES Y DECORACION SA DE CV', dom: 'CALLE MADEREROS #567, COL. ARTESANAL, CP 22500, ENSENADA', agente: 'ADUANAS INTEGRALES PACIFICO', agenteRfc: 'AIP860322HH4', patente: '4567', aut: '4567', incoterm: 'CIF', origen: 'Vietnam', tratado: 'Ninguno', bultos: 'CAJAS MUEBLES / 80 BULTOS', items: [{desc: 'SILLAS TAPIZADAS MADERA ROBLE COMEDOR, PATAS INOX', cant: '200', umc: '480', umt: '940', pvic: '210.00', nota: 'BUSCAR: Asientos con estructura de madera'}, {desc: 'MESAS COMEDOR EXTENSIBLES 8 PERSONAS, LACADO BLANCO', cant: '100', umc: '480', umt: '940', pvic: '350.00', nota: 'BUSCAR: Muebles de madera para comedor'}]}},
+            { id: 'c07', regimen: '41', nombre: 'Celulares Corea → Manzanillo', d: { num: '26 39 2345 7007013', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.5500', peso: '280.000', aduana: '390', medio: '02', entrada: '02', valUSD: '45000.00', valAd: '789750.00', fletes: '2800.00', seguros: '0.00', rfc: 'TEL930815II3', nombre: 'TELEFONIA MOVIL AVANZADA SA DE CV', dom: 'AV. TECNOLOGIA #890, COL. INNOVACION, CP 01000, CDMX', agente: 'ADUANAS AEROPUERTO INT', agenteRfc: 'AAI890512JJ7', patente: '2345', aut: '2345', incoterm: 'FOB', origen: 'Corea del Sur', tratado: 'Ninguno', bultos: 'CAJAS SMARTPHONES / 300 BULTOS', items: [{desc: 'SMARTPHONES 5G, PANTALLA 6.5 PULGADAS, 256GB', cant: '300', umc: '480', umt: '851', pvic: '150.00', nota: 'BUSCAR: Teléfonos inteligentes celulares'}, {desc: 'FUNDAS PROTECTORAS CON VIDRIO TEMPLADO', cant: '500', umc: '480', umt: '851', pvic: '15.00', nota: 'BUSCAR: Partes para teléfonos'}]}},
+            { id: 'c08', regimen: '41', nombre: 'Medicamentos Suiza → CDMX', d: { num: '26 01 6789 8008015', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '18.2000', peso: '150.000', aduana: '010', medio: '02', entrada: '02', valUSD: '125000.00', valAd: '2275000.00', fletes: '8500.00', seguros: '0.00', rfc: 'FAR870420KK1', nombre: 'FARMACEUTICA INTERNACIONAL DE MEXICO SA DE CV', dom: 'AV. INSURGENTES SUR #1234, DEL VALLE, CP 03100, CDMX', agente: 'ADUANAS FARMACOS', agenteRfc: 'AEF920305LL9', patente: '6789', aut: '6789', incoterm: 'DDP', origen: 'Suiza', tratado: 'Ninguno', bultos: 'CARTONES MEDICAMENTOS / 150 BULTOS', items: [{desc: 'TABLETAS RECUBIERTAS 500MG, CAJA 30 TAB, REG COFEPRIS', cant: '10000', umc: '480', umt: '300', pvic: '12.50', nota: 'BUSCAR: Medicamentos preparados en dosis'}, {desc: 'INYECTABLE SOLUCION 100MG/ML, FRASCO AMPOLLETA 5ML', cant: '5000', umc: '480', umt: '300', pvic: '25.00', nota: 'BUSCAR: Medicamentos inyectables'}]}},
+            { id: 'c09', regimen: '41', nombre: 'Acero Inoxidable Japón → Manzanillo', d: { num: '26 39 8901 9009017', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.8000', peso: '15000.000', aduana: '390', medio: '01', entrada: '01', valUSD: '68000.00', valAd: '1210400.00', fletes: '6200.00', seguros: '0.00', rfc: 'ACE790612MM5', nombre: 'ACEROS Y METALES INDUSTRIALES SA DE CV', dom: 'CARRETERA NACIONAL KM 25, COL. INDUSTRIAL, CP 67000, SAN NICOLAS', agente: 'ADUANAS SIDERURGICA', agenteRfc: 'ASI850720NN3', patente: '8901', aut: '8901', incoterm: 'CFR', origen: 'Japón', tratado: 'Ninguno', bultos: 'PALETES ACERO / 200 BULTOS', items: [{desc: 'LAMINA ACERO INOXIDABLE LAMINADA FRIO, 2MM, 1220MM, 304', cant: '5000', umc: '480', umt: '721', pvic: '13.60', nota: 'BUSCAR: Productos laminados planos acero inoxidable'}, {desc: 'BARRAS ACERO INOXIDABLE LAMINADAS CALIENTE, 50MM, 316', cant: '2000', umc: '480', umt: '722', pvic: '13.60', nota: 'BUSCAR: Barras de acero inoxidable'}]}},
+            { id: 'c10', regimen: '41', nombre: 'Juguetes Plástico China → Manzanillo', d: { num: '26 39 3456 1010019', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.4000', peso: '980.000', aduana: '390', medio: '01', entrada: '01', valUSD: '15800.00', valAd: '274920.00', fletes: '1250.00', seguros: '0.00', rfc: 'JUG910305OO7', nombre: 'JUGUETES Y ENTRETENIMIENTO INFANTIL SA DE CV', dom: 'CALLE DIVERSION #456, COL. RECREATIVA, CP 22600, TIJUANA', agente: 'ADUANAS JUGUETES', agenteRfc: 'AJR880415PP1', patente: '3456', aut: '3456', incoterm: 'FOB', origen: 'China', tratado: 'Ninguno', bultos: 'CAJAS JUGUETES / 500 BULTOS', items: [{desc: 'FIGURAS ACCION ARTICULADAS PLASTICO, 30CM, CON ACCESORIOS', cant: '1000', umc: '480', umt: '950', pvic: '15.80', nota: 'BUSCAR: Juguetes de plástico'}, {desc: 'JUEGOS CONSTRUCCION BLOQUES INTERCONEXIONABLES, 500 PZ', cant: '500', umc: '480', umt: '950', pvic: '15.80', nota: 'BUSCAR: Juguetes de construcción'}]}},
+            { id: 'c11', regimen: '41', nombre: 'Vino Tinto Chile → Guadalajara', d: { num: '26 14 4567 2011021', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.2500', peso: '1800.000', aduana: '140', medio: '03', entrada: '03', valUSD: '22000.00', valAd: '379500.00', fletes: '1800.00', seguros: '0.00', rfc: 'VIN860918QQ9', nombre: 'VINICOLA Y BEBIDAS PREMIUM SA DE CV', dom: 'AV. DEL VINO #789, COL. VIÑEDO, CP 45050, ZAPOPAN', agente: 'ADUANAS BEBIDAS', agenteRfc: 'ABA910522RR5', patente: '4567', aut: '4567', incoterm: 'DDP', origen: 'Chile', tratado: 'ACE 35', bultos: 'CAJAS BOTELLAS VINO / 250 BULTOS', items: [{desc: 'VINO TINTO CABERNET SAUVIGNON 750ML, AÑADA 2022, 13.5%', cant: '2000', umc: '480', umt: '220', pvic: '11.00', nota: 'BUSCAR: Vinos tintos en recipientes ≤ 2L'}, {desc: 'VINO TINTO RESERVA MERLOT 750ML, AÑADA 2020, ROBLE 12M', cant: '500', umc: '480', umt: '220', pvic: '15.00', nota: 'BUSCAR: Vinos tintos reserva'}]}},
+            { id: 'c12', regimen: '41', nombre: 'Servidores Taiwan → Manzanillo', d: { num: '26 39 5678 3012023', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.6000', peso: '850.000', aduana: '390', medio: '01', entrada: '01', valUSD: '95000.00', valAd: '1672000.00', fletes: '4800.00', seguros: '0.00', rfc: 'SER880725SS3', nombre: 'SERVIDORES Y SOLUCIONES EMPRESARIALES SA DE CV', dom: 'BLVD. TECNOLOGICO #234, COL. PARQUE IT, CP 44100, GUADALAJARA', agente: 'ADUANAS TECNOLOGIA', agenteRfc: 'ATA930810TT7', patente: '5678', aut: '5678', incoterm: 'CIF', origen: 'Taiwan', tratado: 'Ninguno', bultos: 'CAJAS SERVIDORES / 30 BULTOS', items: [{desc: 'SERVIDORES RACK 2U, DUAL XEON, 128GB RAM, 8 BAYAS', cant: '10', umc: '480', umt: '847', pvic: '9500.00', nota: 'BUSCAR: Máquinas automáticas para tratamiento de datos'}, {desc: 'SWITCH RED GIGABIT 48 PUERTOS, CAPA 3, ADMINISTRABLE', cant: '20', umc: '480', umt: '851', pvic: '1200.00', nota: 'BUSCAR: Aparatos de conmutación para redes'}]}},
+            { id: 'c13', regimen: '41', nombre: 'Neumáticos Tailandia → Manzanillo', d: { num: '26 39 7890 2011031', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.4000', peso: '3200.000', aduana: '390', medio: '01', entrada: '01', valUSD: '28000.00', valAd: '487200.00', fletes: '2400.00', seguros: '0.00', rfc: 'NEU870315KK9', nombre: 'NEUMATICOS Y LLANTAS DEL PACIFICO SA DE CV', dom: 'CARRETERA TRANSVERSAL KM 12, COL. LLANTERA, CP 22100, TIJUANA', agente: 'ADUANAS LLANTAS', agenteRfc: 'ALL890710LL5', patente: '7890', aut: '7890', incoterm: 'FOB', origen: 'Tailandia', tratado: 'Ninguno', bultos: 'LLANTAS SIN EMPAQUE / 600 BULTOS', items: [{desc: 'NEUMATICOS RADIALES 205/55R16 91V AUTO', cant: '400', umc: '480', umt: '401', pvic: '70.00', nota: 'BUSCAR: Neumáticos nuevos de caucho'}, {desc: 'NEUMATICOS LT 265/70R17 10 CAPAS TODO TERRENO', cant: '200', umc: '480', umt: '401', pvic: '70.00', nota: 'BUSCAR: Neumáticos para camioneta'}]}},
+            { id: 'c14', regimen: '41', nombre: 'Lámparas LED China → Manzanillo', d: { num: '26 39 6789 1010030', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.4000', peso: '980.000', aduana: '390', medio: '01', entrada: '01', valUSD: '32000.00', valAd: '556800.00', fletes: '2600.00', seguros: '0.00', rfc: 'LAM910620AA5', nombre: 'ILUMINACION LED Y TECNOLOGIA SA DE CV', dom: 'CALLE ILUMINACION #123, COL. LED, CP 22600, TIJUANA', agente: 'ADUANAS ILUMINACION', agenteRfc: 'AIL880915BB3', patente: '6789', aut: '6789', incoterm: 'FOB', origen: 'China', tratado: 'Ninguno', bultos: 'CAJAS LAMPARAS / 300 BULTOS', items: [{desc: 'PANELES LED EMPOTRAR 60X60CM 40W 6500K', cant: '1000', umc: '480', umt: '940', pvic: '32.00', nota: 'BUSCAR: Lámparas LED de techo'}, {desc: 'FOCOS LED E27 12W EQUIVALENTE 100W REGULABLE', cant: '2000', umc: '480', umt: '853', pvic: '32.00', nota: 'BUSCAR: Lámparas LED para alumbrado'}]}},
+            { id: 'c15', regimen: '41', nombre: 'Productos Químicos Bélgica → Veracruz', d: { num: '26 20 6789 4013025', tipo: 'IMP', cve: '', reg: '41', destino: '17', tc: '17.9500', peso: '5500.000', aduana: '200', medio: '01', entrada: '01', valUSD: '38000.00', valAd: '682100.00', fletes: '3200.00', seguros: '0.00', rfc: 'QUI850410UU1', nombre: 'QUIMICOS INDUSTRIALES DEL GOLFO SA DE CV', dom: 'ZONA INDUSTRIAL PUERTO #567, COL. QUIMICA, CP 91750, VERACRUZ', agente: 'ADUANAS QUIMICAS ESPECIALIZADAS', agenteRfc: 'AQE870615VV9', patente: '6789', aut: '6789', incoterm: 'FOB', origen: 'Bélgica', tratado: 'TLCUE', bultos: 'TANQUES QUIMICOS / 80 BULTOS', items: [{desc: 'METANOL GRADO INDUSTRIAL PUREZA 99.85%, TAMBORES 200L', cant: '2000', umc: '480', umt: '290', pvic: '19.00', nota: 'BUSCAR: Metanol'}, {desc: 'HIDROXIDO DE SODIO ESCAMAS PUREZA 99%, SACOS 25KG', cant: '1500', umc: '480', umt: '281', pvic: '19.00', nota: 'BUSCAR: Hidróxido de sodio'}]}},
+
+            // REGIMEN 21 - IMPORTACIÓN TEMPORAL RETORNO (4 casos)
+            { id: 'c16', regimen: '21', nombre: 'Equipo Médico Alemania → Tijuana (Temporal)', d: { num: '26 39 2345 6001002', tipo: 'IMP', cve: '', reg: '21', destino: '17', tc: '17.5000', peso: '280.000', aduana: '390', medio: '02', entrada: '02', valUSD: '85000.00', valAd: '0.00', fletes: '3500.00', seguros: '850.00', rfc: 'HOS880415AA2', nombre: 'HOSPITAL GENERAL PRIVADO SA DE CV', dom: 'AV. SALUD #890, COL. HOSPITALARIA, CP 22200, TIJUANA', agente: 'ADUANAS MEDICAS', agenteRfc: 'AME880415BB1', patente: '2345', aut: '2345', incoterm: 'CIF', origen: 'Alemania', tratado: 'TLCUE', bultos: 'CAJAS EQUIPO MEDICO / 7 BULTOS', garantia: '170000.00', fechaRet: '15/09/2027', items: [{desc: 'EQUIPO RAYOS X PORTATIL DIGITAL', cant: '2', umc: '480', umt: '901', pvic: '42500.00', nota: 'BUSCAR: Aparatos de rayos X - Temporal'}, {desc: 'MONITORES SIGNOS VITALES MULTIPARAMETRICOS', cant: '5', umc: '480', umt: '901', pvic: '8500.00', nota: 'BUSCAR: Monitores fisiológicos - Temporal'}]}},
+            { id: 'c17', regimen: '21', nombre: 'Instrumentos Medición Japón → Monterrey (Temporal)', d: { num: '26 06 7890 5014003', tipo: 'IMP', cve: '', reg: '21', destino: '17', tc: '17.3000', peso: '120.000', aduana: '060', medio: '02', entrada: '02', valUSD: '35000.00', valAd: '0.00', fletes: '1800.00', seguros: '350.00', rfc: 'CAL920520CC4', nombre: 'CALIBRACION Y MEDICION INDUSTRIAL SA DE CV', dom: 'PARQUE INDUSTRIAL #567, COL. METROLOGIA, CP 64000, MONTERREY', agente: 'ADUANAS METROLOGIA', agenteRfc: 'AMT900315DD2', patente: '7890', aut: '7890', incoterm: 'DDP', origen: 'Japón', tratado: 'Ninguno', bultos: 'ESTUCHES INSTRUMENTOS / 12 BULTOS', garantia: '70000.00', fechaRet: '20/11/2026', items: [{desc: 'MICROSCOPIO ELECTRONICO DE BARRIDO SEM', cant: '1', umc: '480', umt: '902', pvic: '25000.00', nota: 'BUSCAR: Microscopios electrónicos - Temporal'}, {desc: 'ESPECTROFOTOMETRO UV-VIS ANALITICO', cant: '3', umc: '480', umt: '902', pvic: '10000.00', nota: 'BUSCAR: Espectrómetros - Temporal'}]}},
+            { id: 'c18', regimen: '21', nombre: 'Maquinaria Exhibición USA → CDMX (Feria)', d: { num: '26 01 3456 7015004', tipo: 'IMP', cve: '', reg: '21', destino: '17', tc: '17.1500', peso: '800.000', aduana: '010', medio: '03', entrada: '03', valUSD: '45000.00', valAd: '0.00', fletes: '2500.00', seguros: '450.00', rfc: 'FER880910EE6', nombre: 'FERIAS Y EXPOSICIONES INTERNACIONALES SA DE CV', dom: 'PASEO REFORMA #500, COL. EXPO, CP 11560, CDMX', agente: 'ADUANAS EXPO', agenteRfc: 'AEX870420FF3', patente: '3456', aut: '3456', incoterm: 'DDP', origen: 'USA', tratado: 'T-MEC', bultos: 'CONTENEDOR MAQUINARIA / 1 BULTO', garantia: '90000.00', fechaRet: '30/12/2026', items: [{desc: 'ROBOT INDUSTRIAL BRAZO ARTICULADO 6 EJES', cant: '2', umc: '480', umt: '847', pvic: '22500.00', nota: 'BUSCAR: Robots industriales - Temporal'}, {desc: 'PANTALLAS INTERACTIVAS TACTILES 75 PULGADAS', cant: '5', umc: '480', umt: '852', pvic: '4500.00', nota: 'BUSCAR: Pantallas interactivas - Temporal'}]}},
+            { id: 'c19', regimen: '21', nombre: 'Equipo Televisión Corea → Guadalajara (Evento)', d: { num: '26 14 5678 8016005', tipo: 'IMP', cve: '', reg: '21', destino: '17', tc: '17.4500', peso: '350.000', aduana: '140', medio: '02', entrada: '02', valUSD: '28000.00', valAd: '0.00', fletes: '1500.00', seguros: '280.00', rfc: 'TEL910625GG7', nombre: 'TELEVISION Y PRODUCCION AUDIOVISUAL SA DE CV', dom: 'AV. MEDIOS #234, COL. PRODUCCION, CP 45030, ZAPOPAN', agente: 'ADUANAS MEDIOS', agenteRfc: 'AMD890510HH4', patente: '5678', aut: '5678', incoterm: 'CIF', origen: 'Corea del Sur', tratado: 'Ninguno', bultos: 'CAJAS EQUIPO TV / 25 BULTOS', garantia: '56000.00', fechaRet: '15/08/2026', items: [{desc: 'CAMARAS BROADCAST 4K CON LENTES ZOOM', cant: '8', umc: '480', umt: '852', pvic: '3500.00', nota: 'BUSCAR: Cámaras de televisión - Temporal'}, {desc: 'CONSOLA MEZCLA VIDEO MULTICANAL', cant: '2', umc: '480', umt: '852', pvic: '7000.00', nota: 'BUSCAR: Equipos de mezcla de video - Temporal'}]}},
+
+            // REGIMEN 22 - IMPORTACIÓN TEMPORAL TRANSFORMACIÓN (4 casos)
+            { id: 'c20', regimen: '22', nombre: 'Componentes Electrónicos Taiwan → Tijuana (Maquila)', d: { num: '26 39 3456 7001006', tipo: 'IMP', cve: '', reg: '22', destino: '17', tc: '17.6000', peso: '180.000', aduana: '390', medio: '02', entrada: '02', valUSD: '45000.00', valAd: '0.00', fletes: '2200.00', seguros: '450.00', rfc: 'MAN870520BB3', nombre: 'MANUFACTURAS ELECTRONICAS DEL NORTE SA DE CV', dom: 'PARQUE INDUSTRIAL #456, COL. MAQUILA, CP 22500, TIJUANA', agente: 'ADUANAS MAQUILA', agenteRfc: 'AMQ870520CC1', patente: '3456', aut: '3456', incoterm: 'FOB', origen: 'Taiwan', tratado: 'Ninguno', bultos: 'CAJAS COMPONENTES / 50 BULTOS', garantia: '90000.00', fechaRet: '20/11/2026', items: [{desc: 'CIRCUITOS INTEGRADOS MICROCONTROLADORES 32BIT', cant: '10000', umc: '480', umt: '854', pvic: '4.50', nota: 'BUSCAR: Circuitos integrados - Temporal transformación'}, {desc: 'CAPACITORES CERAMICOS MULTICAPA SMD', cant: '50000', umc: '480', umt: '853', pvic: '0.90', nota: 'BUSCAR: Condensadores fijos - Temporal'}]}},
+            { id: 'c21', regimen: '22', nombre: 'Telas para Confección India → Monterrey (Maquila)', d: { num: '26 06 4567 8002007', tipo: 'IMP', cve: '', reg: '22', destino: '17', tc: '17.2500', peso: '2500.000', aduana: '060', medio: '01', entrada: '01', valUSD: '22000.00', valAd: '0.00', fletes: '1800.00', seguros: '220.00', rfc: 'CON890315DD5', nombre: 'CONFECCIONES TEXTILES DEL NORTE SA DE CV', dom: 'CARRETERA INDUSTRIAL KM 8, COL. TEXTIL, CP 64000, MONTERREY', agente: 'ADUANAS TEXTIL', agenteRfc: 'ATE890315EE2', patente: '4567', aut: '4567', incoterm: 'CFR', origen: 'India', tratado: 'Ninguno', bultos: 'ROLLOS TELA / 200 BULTOS', garantia: '44000.00', fechaRet: '30/10/2026', items: [{desc: 'TELA DENIM AZUL 14OZ PARA JEANS, ANCHO 160CM', cant: '8000', umc: '480', umt: '520', pvic: '2.75', nota: 'BUSCAR: Tejidos de algodón denim - Temporal'}, {desc: 'TELA POLIESTER ALGODON MEZCLA 65/35', cant: '5000', umc: '480', umt: '551', pvic: '2.75', nota: 'BUSCAR: Tejidos sintéticos mezcla - Temporal'}]}},
+            { id: 'c22', regimen: '22', nombre: 'Piezas Metálicas Alemania → Querétaro (Transformación)', d: { num: '26 25 5678 9003008', tipo: 'IMP', cve: '', reg: '22', destino: '17', tc: '18.7000', peso: '3500.000', aduana: '250', medio: '03', entrada: '03', valUSD: '52000.00', valAd: '0.00', fletes: '4200.00', seguros: '520.00', rfc: 'AUT860410FF7', nombre: 'AUTOMOTRIZ COMPONENTES QUERETARO SA DE CV', dom: 'PARQUE AEROPUERTO #789, COL. AERONAUTICA, CP 76000, QUERETARO', agente: 'ADUANAS AERO', agenteRfc: 'AER860410GG4', patente: '5678', aut: '5678', incoterm: 'CPT', origen: 'Alemania', tratado: 'TLCUE', bultos: 'TARIMAS PIEZAS / 120 BULTOS', garantia: '104000.00', fechaRet: '15/12/2026', items: [{desc: 'PIEZAS FUNDICION ALUMINIO PARA MOTOR V6', cant: '5000', umc: '480', umt: '761', pvic: '10.40', nota: 'BUSCAR: Piezas fundición aluminio - Temporal'}, {desc: 'EJES TRANSMISION ACERO FORJADO', cant: '2000', umc: '480', umt: '732', pvic: '10.40', nota: 'BUSCAR: Ejes de transmisión - Temporal'}]}},
+            { id: 'c23', regimen: '22', nombre: 'Plástico Resina USA → Reynosa (Maquila)', d: { num: '26 06 6789 1004009', tipo: 'IMP', cve: '', reg: '22', destino: '17', tc: '17.1000', peso: '8000.000', aduana: '060', medio: '03', entrada: '03', valUSD: '18000.00', valAd: '0.00', fletes: '1200.00', seguros: '180.00', rfc: 'PLA900815HH8', nombre: 'PLASTICOS Y MOLDEOS REYNOSA SA DE CV', dom: 'ZONA INDUSTRIAL #234, COL. MAQUILADORA, CP 88000, REYNOSA', agente: 'ADUANAS FRONTERA', agenteRfc: 'AFR900815II5', patente: '6789', aut: '6789', incoterm: 'DAP', origen: 'USA', tratado: 'T-MEC', bultos: 'SACOS RESINA / 400 BULTOS', garantia: '36000.00', fechaRet: '30/09/2026', items: [{desc: 'RESINA POLIETILENO HDPE GRADO INYECCION', cant: '5000', umc: '480', umt: '390', pvic: '3.60', nota: 'BUSCAR: Polietileno HDPE - Temporal'}, {desc: 'RESINA POLIPROPILENO PP GRADO SOPLO', cant: '3000', umc: '480', umt: '390', pvic: '3.60', nota: 'BUSCAR: Polipropileno - Temporal'}]}},
+
+            // REGIMEN 10 - EXPORTACIÓN DEFINITIVA (5 casos)
+            { id: 'c24', regimen: '10', nombre: 'Aguacate Fresco Michoacán → USA', d: { num: '26 06 4567 8001010', tipo: 'EXP', cve: '', reg: '10', destino: '17', tc: '17.2000', peso: '18000.000', aduana: '060', medio: '03', entrada: '03', valUSD: '54000.00', valAd: '0.00', fletes: '0.00', seguros: '0.00', rfc: 'AGR850310CC4', nombre: 'AGRICOLA EXPORTADORA DE MICHOACAN SA DE CV', dom: 'CARRETERA URUAPAN KM 15, COL. AGRICOLA, CP 60150, URUAPAN', agente: 'ADUANAS AGRO', agenteRfc: 'AAG850310DD1', patente: '4567', aut: '4567', incoterm: 'FOB', origen: 'Mexico', destinoF: 'USA', tratado: 'T-MEC', bultos: 'CAJAS AGUACATE / 900 BULTOS', items: [{desc: 'AGUACATE FRESCO VARIEDAD HASS, CALIBRE 24-32', cant: '18000', umc: '480', umt: '070', pvic: '3.00', nota: 'BUSCAR: Aguacates frescos exportación'}, {desc: 'CAJAS CARTON EMPAQUE AGUACATE', cant: '900', umc: '480', umt: '481', pvic: '0.00', nota: 'BUSCAR: Envases de cartón - Exportación'}]}},
+            { id: 'c25', regimen: '10', nombre: 'Tequila Jalisco → Europa', d: { num: '26 14 7890 9002011', tipo: 'EXP', cve: '', reg: '10', destino: '17', tc: '17.3500', peso: '2400.000', aduana: '140', medio: '03', entrada: '03', valUSD: '48000.00', valAd: '0.00', fletes: '0.00', seguros: '0.00', rfc: 'TEQ870615EE9', nombre: 'TEQUILERAS JALISCO EXPORTACION SA DE CV', dom: 'CARRETERA TEQUILA KM 5, COL. DESTILERIAS, CP 45300, TEQUILA', agente: 'ADUANAS TEQUILA', agenteRfc: 'ATE870615FF6', patente: '7890', aut: '7890', incoterm: 'EXW', origen: 'Mexico', destinoF: 'Alemania', tratado: 'TLCUE', bultos: 'CARTONES BOTELLAS / 200 BULTOS', items: [{desc: 'TEQUILA BLANCO 100% AGAVE AZUL, BOTELLA 750ML', cant: '4000', umc: '480', umt: '220', pvic: '12.00', nota: 'BUSCAR: Tequila 100% agave - Exportación'}, {desc: 'TEQUILA REPOSADO 100% AGAVE, BOTELLA 750ML', cant: '2000', umc: '480', umt: '220', pvic: '15.00', nota: 'BUSCAR: Tequila reposado - Exportación'}]}},
+            { id: 'c26', regimen: '10', nombre: 'Muebles Madera Chiapas → Canadá', d: { num: '26 28 8901 1003012', tipo: 'EXP', cve: '', reg: '10', destino: '17', tc: '17.4500', peso: '5500.000', aduana: '280', medio: '03', entrada: '03', valUSD: '35000.00', valAd: '0.00', fletes: '0.00', seguros: '0.00', rfc: 'MUE890420GG1', nombre: 'MUEBLES ARTESANALES CHIAPAS SA DE CV', dom: 'CARRETERA PANAMERICANA KM 10, COL. ARTESANOS, CP 29000, TUXTLA', agente: 'ADUANAS SUR', agenteRfc: 'ASU890420HH8', patente: '8901', aut: '8901', incoterm: 'FOB', origen: 'Mexico', destinoF: 'Canadá', tratado: 'T-MEC', bultos: 'CAJAS MUEBLES ARMADOS / 150 BULTOS', items: [{desc: 'SILLAS COMEDOR MADERA PINO TALLADO MANUAL', cant: '500', umc: '480', umt: '940', pvic: '70.00', nota: 'BUSCAR: Sillas de madera - Exportación'}, {desc: 'MESAS CENTRO MADERA RECYCLADA ACABADO NATURAL', cant: '200', umc: '480', umt: '940', pvic: '70.00', nota: 'BUSCAR: Mesas de madera - Exportación'}]}},
+            { id: 'c27', regimen: '10', nombre: 'Café Tostado Veracruz → Japón', d: { num: '26 20 9012 2004013', tipo: 'EXP', cve: '', reg: '10', destino: '17', tc: '17.6000', peso: '3000.000', aduana: '200', medio: '01', entrada: '01', valUSD: '24000.00', valAd: '0.00', fletes: '0.00', seguros: '0.00', rfc: 'CAF880915II3', nombre: 'CAFES DE EXPORTACION VERACRUZ SA DE CV', dom: 'ZONA PORTUARIA #567, COL. CAFICULTORES, CP 91700, VERACRUZ', agente: 'ADUANAS CAFE', agenteRfc: 'ACA880915JJ0', patente: '9012', aut: '9012', incoterm: 'CIF', origen: 'Mexico', destinoF: 'Japón', tratado: 'Ninguno', bultos: 'BOLSAS CAFE VACIO / 300 BULTOS', items: [{desc: 'CAFE TOSTADO Y MOLIDO VARIEDAD ARABICA, BOLSA 1KG', cant: '3000', umc: '480', umt: '090', pvic: '8.00', nota: 'BUSCAR: Café tostado molido - Exportación'}, {desc: 'CAFE EN GRANO TOSTADO BOLSAS 5KG GRANEL', cant: '500', umc: '480', umt: '090', pvic: '8.00', nota: 'BUSCAR: Café en grano - Exportación'}]}},
+            { id: 'c28', regimen: '10', nombre: 'Autopartes Monterrey → Brasil', d: { num: '26 06 1234 3005014', tipo: 'EXP', cve: '', reg: '10', destino: '17', tc: '17.3000', peso: '4200.000', aduana: '060', medio: '03', entrada: '03', valUSD: '42000.00', valAd: '0.00', fletes: '0.00', seguros: '0.00', rfc: 'AUT900520KK5', nombre: 'AUTOMOTRIZ EXPORTACIONES DEL NORTE SA DE CV', dom: 'PARQUE INDUSTRIAL #890, COL. AUTOMOTRIZ, CP 64000, MONTERREY', agente: 'ADUANAS AUTO', agenteRfc: 'AAA900520LL2', patente: '1234', aut: '1234', incoterm: 'FOB', origen: 'Mexico', destinoF: 'Brasil', tratado: 'ACE 53', bultos: 'TARIMAS AUTOPARTES / 210 BULTOS', items: [{desc: 'MOTORES GASOLINA 2.0L 4 CILINDROS COMPLETOS', cant: '100', umc: '480', umt: '840', pvic: '420.00', nota: 'BUSCAR: Motores de pistón - Exportación'}, {desc: 'TRANSMISIONES AUTOMATICAS 6 VELOCIDADES', cant: '80', umc: '480', umt: '870', pvic: '420.00', nota: 'BUSCAR: Transmisiones automáticas - Exportación'}]}},
+
+            // REGIMEN 11 - EXPORTACIÓN TEMPORAL RETORNO (3 casos)
+            { id: 'c29', regimen: '11', nombre: 'Equipo Construcción CDMX → USA (Obra Temporal)', d: { num: '26 01 2345 4006015', tipo: 'EXP', cve: '', reg: '11', destino: '17', tc: '17.1500', peso: '15000.000', aduana: '010', medio: '03', entrada: '03', valUSD: '125000.00', valAd: '0.00', fletes: '0.00', seguros: '0.00', rfc: 'CON870310MM7', nombre: 'CONSTRUCTORA MEXICANA INTERNACIONAL SA DE CV', dom: 'AV. CONSTRUCCION #234, COL. OBRAS, CP 11560, CDMX', agente: 'ADUANAS CONSTRUCCION', agenteRfc: 'ACO870310NN4', patente: '2345', aut: '2345', incoterm: 'DAP', origen: 'Mexico', destinoF: 'USA', tratado: 'T-MEC', bultos: 'TRAILERS EQUIPO / 8 BULTOS', garantia: '250000.00', fechaRet: '30/06/2027', items: [{desc: 'GRUAS TORRE DESMONTABLES 60M ALTURA', cant: '2', umc: '480', umt: '842', pvic: '62500.00', nota: 'BUSCAR: Grúas torre - Exportación temporal'}, {desc: 'EXCAVADORAS HIDRAULICAS 30 TONELADAS', cant: '3', umc: '480', umt: '842', pvic: '41666.00', nota: 'BUSCAR: Excavadoras - Exportación temporal'}]}},
+            { id: 'c30', regimen: '11', nombre: 'Equipo Audiovisual Guadalajara → España (Rodaje)', d: { num: '26 14 3456 5007016', tipo: 'EXP', cve: '', reg: '11', destino: '17', tc: '17.5000', peso: '800.000', aduana: '140', medio: '02', entrada: '02', valUSD: '85000.00', valAd: '0.00', fletes: '0.00', seguros: '0.00', rfc: 'CIN910415OO9', nombre: 'CINEMATOGRAFICA GUADALAJARA PRODUCCIONES SA DE CV', dom: 'BLVD. CINE #567, COL. PRODUCCION, CP 45030, ZAPOPAN', agente: 'ADUANAS CINE', agenteRfc: 'ACI910415PP6', patente: '3456', aut: '3456', incoterm: 'DDP', origen: 'Mexico', destinoF: 'España', tratado: 'TLCUE', bultos: 'CAJAS EQUIPO CINE / 40 BULTOS', garantia: '170000.00', fechaRet: '15/12/2026', items: [{desc: 'CAMARAS CINE DIGITAL 8K CON LENTES PRIME', cant: '5', umc: '480', umt: '852', pvic: '17000.00', nota: 'BUSCAR: Cámaras cinematográficas - Temporal'}, {desc: 'EQUIPO ILUMINACION LED PROFESIONAL CINE', cant: '20', umc: '480', umt: '940', pvic: '4250.00', nota: 'BUSCAR: Equipos de iluminación - Temporal'}]}},
+            { id: 'c31', regimen: '11', nombre: 'Instrumentos Musicales CDMX → USA (Gira)', d: { num: '26 01 4567 6008017', tipo: 'EXP', cve: '', reg: '11', destino: '17', tc: '17.2000', peso: '500.000', aduana: '010', medio: '02', entrada: '02', valUSD: '45000.00', valAd: '0.00', fletes: '0.00', seguros: '0.00', rfc: 'MUS880620QQ1', nombre: 'MUSICOS Y SONIDO PROFESIONAL SA DE CV', dom: 'AV. MELODIA #890, COL. ARMONIA, CP 11560, CDMX', agente: 'ADUANAS MUSICA', agenteRfc: 'AMU880620RR8', patente: '4567', aut: '4567', incoterm: 'DDP', origen: 'Mexico', destinoF: 'USA', tratado: 'T-MEC', bultos: 'ESTUCHES INSTRUMENTOS / 30 BULTOS', garantia: '90000.00', fechaRet: '30/03/2027', items: [{desc: 'PIANOS DE COLA CONCERTO STEINWAY', cant: '2', umc: '480', umt: '920', pvic: '22500.00', nota: 'BUSCAR: Pianos de cola - Exportación temporal'}, {desc: 'GUITARRAS CLASICAS ESPAÑOLAS SPRUCE', cant: '10', umc: '480', umt: '920', pvic: '4500.00', nota: 'BUSCAR: Guitarras clásicas - Exportación temporal'}]}},
+
+            // REGIMEN 51 - TRÁNSITO INTERNO (3 casos)
+            { id: 'c32', regimen: '51', nombre: 'Electrónicos Manzanillo → Guadalajara (Tránsito)', d: { num: '26 39 5678 9009018', tipo: 'IMP', cve: '', reg: '51', destino: '17', tc: '17.4000', peso: '650.000', aduana: '390', aduanaDest: '140', medio: '03', entrada: '03', valUSD: '38000.00', valAd: '663100.00', fletes: '1500.00', seguros: '380.00', rfc: 'ELE890515SS3', nombre: 'ELECTRONICOS Y TECNOLOGIA GUADALAJARA SA DE CV', dom: 'AV. TECNOLOGIA #456, COL. ELECTRONICA, CP 44100, GUADALAJARA', agente: 'ADUANAS ELECTRO', agenteRfc: 'AEL890515TT0', patente: '5678', aut: '5678', incoterm: 'CIF', origen: 'China', tratado: 'Ninguno', bultos: 'CAJAS ELECTRONICOS / 150 BULTOS', garantia: '1326200.00', items: [{desc: 'TELEVISORES LED 55 PULGADAS 4K SMART TV', cant: '200', umc: '480', umt: '852', pvic: '190.00', nota: 'BUSCAR: Receptores de televisión - Tránsito'}, {desc: 'BARRAS DE SONIDO INALAMBRICAS BLUETOOTH', cant: '300', umc: '480', umt: '851', pvic: '190.00', nota: 'BUSCAR: Aparatos de sonido - Tránsito'}]}},
+            { id: 'c33', regimen: '51', nombre: 'Autopartes Lázaro Cárdenas → Monterrey (Tránsito)', d: { num: '26 35 6789 1010019', tipo: 'IMP', cve: '', reg: '51', destino: '17', tc: '17.2500', peso: '3200.000', aduana: '350', aduanaDest: '060', medio: '03', entrada: '03', valUSD: '52000.00', valAd: '897000.00', fletes: '3500.00', seguros: '520.00', rfc: 'AUT900620UU5', nombre: 'AUTOMOTRIZ MONTERREY IMPORTACIONES SA DE CV', dom: 'CARRETERA INDUSTRIAL KM 20, COL. AUTOMOTRIZ, CP 64000, MONTERREY', agente: 'ADUANAS AUTO MTY', agenteRfc: 'AAM900620VV2', patente: '6789', aut: '6789', incoterm: 'CFR', origen: 'Japón', tratado: 'Ninguno', bultos: 'CONTENEDORES AUTOPARTES / 4 BULTOS', garantia: '1794000.00', items: [{desc: 'MOTORES DIESEL 3.0L V6 TURBO COMPLETOS', cant: '50', umc: '480', umt: '840', pvic: '1040.00', nota: 'BUSCAR: Motores diesel - Tránsito'}, {desc: 'CAJAS DE CAMBIO AUTOMATICAS 8 VELOCIDADES', cant: '40', umc: '480', umt: '870', pvic: '1040.00', nota: 'BUSCAR: Cajas de cambio - Tránsito'}]}},
+            { id: 'c34', regimen: '51', nombre: 'Químicos Veracruz → Puebla (Tránsito)', d: { num: '26 20 7890 2011020', tipo: 'IMP', cve: '', reg: '51', destino: '17', tc: '17.5500', peso: '8000.000', aduana: '200', aduanaDest: '260', medio: '03', entrada: '03', valUSD: '28000.00', valAd: '491400.00', fletes: '2200.00', seguros: '280.00', rfc: 'QUI870415WW7', nombre: 'QUIMICOS INDUSTRIALES PUEBLA SA DE CV', dom: 'ZONA INDUSTRIAL #234, COL. QUIMICA, CP 72000, PUEBLA', agente: 'ADUANAS QUIMICA', agenteRfc: 'AQU870415XX4', patente: '7890', aut: '7890', incoterm: 'FOB', origen: 'Brasil', tratado: 'ACE 53', bultos: 'TANQUES QUIMICOS / 20 BULTOS', garantia: '982800.00', items: [{desc: 'ACIDO SULFURICO GRADO INDUSTRIAL 98%, TANQUE 1000L', cant: '20', umc: '480', umt: '281', pvic: '1400.00', nota: 'BUSCAR: Ácido sulfúrico - Tránsito'}, {desc: 'HIDROXIDO DE SODIO ESCAMAS 99%, SACOS 25KG', cant: '500', umc: '480', umt: '281', pvic: '56.00', nota: 'BUSCAR: Hidróxido de sodio - Tránsito'}]}},
+
+            // REGIMEN 61 - DEPÓSITO FISCAL (3 casos)
+            { id: 'c35', regimen: '61', nombre: 'Vinos y Licores Francia → Guadalajara (Depósito)', d: { num: '26 14 6789 1001021', tipo: 'IMP', cve: '', reg: '61', destino: '17', tc: '18.1000', peso: '3200.000', aduana: '140', medio: '01', entrada: '01', valUSD: '42000.00', valAd: '760200.00', fletes: '3200.00', seguros: '420.00', rfc: 'BEB880920EE6', nombre: 'BEBIDAS ALCOHOLICAS PREMIUM SA DE CV', dom: 'AV. VINICOLA #234, COL. BODEGAS, CP 45030, ZAPOPAN', agente: 'ADUANAS BEBIDAS', agenteRfc: 'ABE880920FF3', patente: '6789', aut: '6789', incoterm: 'CIF', origen: 'Francia', tratado: 'TLCUE', recinto: 'RF001 - BODEGAS ADUANALES GUADALAJARA', bultos: 'CAJAS VINOS / 350 BULTOS', items: [{desc: 'VINO TINTO CABERNET SAUVIGNON BORDEAUX 750ML', cant: '3000', umc: '480', umt: '220', pvic: '14.00', nota: 'BUSCAR: Vinos tintos - Depósito fiscal'}, {desc: 'CHAMPAGNE BRUT DOM PERIGNON 750ML', cant: '500', umc: '480', umt: '220', pvic: '14.00', nota: 'BUSCAR: Vinos espumosos - Depósito fiscal'}]}},
+            { id: 'c36', regimen: '61', nombre: 'Electrónicos Manzanillo → Tijuana (Depósito)', d: { num: '26 39 7890 2002022', tipo: 'IMP', cve: '', reg: '61', destino: '17', tc: '17.3500', peso: '1200.000', aduana: '390', medio: '01', entrada: '01', valUSD: '65000.00', valAd: '1127750.00', fletes: '5500.00', seguros: '650.00', rfc: 'ELE900415GG8', nombre: 'ELECTRONICOS DISTRIBUCION NOROESTE SA DE CV', dom: 'ZONA FRANCA #567, COL. COMERCIO, CP 22000, TIJUANA', agente: 'ADUANAS NOROESTE', agenteRfc: 'ANO900415HH5', patente: '7890', aut: '7890', incoterm: 'FOB', origen: 'Corea del Sur', tratado: 'Ninguno', recinto: 'RF002 - ALMACENES ADUANALES TIJUANA', bultos: 'CAJAS ELECTRONICOS / 400 BULTOS', items: [{desc: 'SMARTPHONES GAMING 5G 256GB PANTALLA 120HZ', cant: '1000', umc: '480', umt: '851', pvic: '65.00', nota: 'BUSCAR: Teléfonos inteligentes - Depósito'}, {desc: 'TABLETS 11 PULGADAS 128GB WIFI+CELULAR', cant: '500', umc: '480', umt: '847', pvic: '65.00', nota: 'BUSCAR: Tabletas - Depósito'}]}},
+            { id: 'c37', regimen: '61', nombre: 'Textiles Manzanillo → CDMX (Depósito)', d: { num: '26 39 8901 3003023', tipo: 'IMP', cve: '', reg: '61', destino: '17', tc: '17.5000', peso: '4500.000', aduana: '390', medio: '01', entrada: '01', valUSD: '32000.00', valAd: '560000.00', fletes: '2800.00', seguros: '320.00', rfc: 'TEX890520II0', nombre: 'TEXTILES Y MODA DISTRIBUCION SA DE CV', dom: 'CENTRO DISTRIBUCION #890, COL. TEXTIL, CP 01000, CDMX', agente: 'ADUANAS MODA', agenteRfc: 'AMO890520JJ7', patente: '8901', aut: '8901', incoterm: 'CFR', origen: 'Bangladesh', tratado: 'Ninguno', recinto: 'RF003 - BODEGAS ADUANALES CDMX', bultos: 'FARDO ROPA / 600 BULTOS', items: [{desc: 'CAMISAS ALGODON HOMBRE MANGA LARGA', cant: '5000', umc: '480', umt: '620', pvic: '6.40', nota: 'BUSCAR: Camisas de algodón - Depósito'}, {desc: 'PANTALONES JEANS MUJER TALLA CHICA A GRANDE', cant: '3000', umc: '480', umt: '620', pvic: '6.40', nota: 'BUSCAR: Pantalones de mezclilla - Depósito'}]}},
+
+            // REGIMEN 71 - ELABORACIÓN RECINTO FISCALIZADO (3 casos)
+            { id: 'c38', regimen: '71', nombre: 'Automotriz Tijuana (Maquila RFE)', d: { num: '26 39 9012 4004024', tipo: 'IMP', cve: '', reg: '71', destino: '17', tc: '17.4000', peso: '6500.000', aduana: '390', medio: '03', entrada: '03', valUSD: '85000.00', valAd: '1482500.00', fletes: '4200.00', seguros: '850.00', rfc: 'AUT870615KK2', nombre: 'AUTOMOTRIZ RECINTO FISCALIZADO SA DE CV', dom: 'RECINTO FISCALIZADO #234, COL. MAQUILA, CP 22500, TIJUANA', agente: 'ADUANAS RFE', agenteRfc: 'ARF870615LL9', patente: '9012', aut: '9012', incoterm: 'DAP', origen: 'USA', tratado: 'T-MEC', recinto: 'RFE001 - RECINTO FISCALIZADO TIJUANA', bultos: 'CONTENEDORES AUTOPARTES / 15 BULTOS', items: [{desc: 'ENSAMBLE TABLERO INSTRUMENTOS COMPLETO', cant: '500', umc: '480', umt: '870', pvic: '170.00', nota: 'BUSCAR: Partes de tablero - RFE'}, {desc: 'ENSAMBLE SISTEMA DIRECCION ELECTRONICO', cant: '300', umc: '480', umt: '870', pvic: '170.00', nota: 'BUSCAR: Sistemas de dirección - RFE'}]}},
+            { id: 'c39', regimen: '71', nombre: 'Electrónica Guadalajara (Ensamble RFE)', d: { num: '26 14 1234 5005025', tipo: 'IMP', cve: '', reg: '71', destino: '17', tc: '17.6000', peso: '2200.000', aduana: '140', medio: '02', entrada: '02', valUSD: '55000.00', valAd: '968000.00', fletes: '2800.00', seguros: '550.00', rfc: 'ELE890415MM4', nombre: 'ELECTRONICA ENSAMBLE RECINTO SA DE CV', dom: 'RECINTO FISCALIZADO #567, COL. TECNOLOGIA, CP 45030, ZAPOPAN', agente: 'ADUANAS TECNO RFE', agenteRfc: 'ATR890415NN1', patente: '1234', aut: '1234', incoterm: 'CIF', origen: 'China', tratado: 'Ninguno', recinto: 'RFE002 - RECINTO FISCALIZADO GUADALAJARA', bultos: 'CAJAS COMPONENTES / 200 BULTOS', items: [{desc: 'PANTALLAS LCD 55 PULGADAS 4K SIN ENSAMBLAR', cant: '1000', umc: '480', umt: '852', pvic: '55.00', nota: 'BUSCAR: Paneles LCD - RFE'}, {desc: 'TARJETAS MADRE PARA SMART TV', cant: '2000', umc: '480', umt: '854', pvic: '55.00', nota: 'BUSCAR: Circuitos impresos - RFE'}]}},
+            { id: 'c40', regimen: '71', nombre: 'Textil Reynosa (Confección RFE)', d: { num: '26 06 2345 6006026', tipo: 'IMP', cve: '', reg: '71', destino: '17', tc: '17.2000', peso: '3800.000', aduana: '060', medio: '03', entrada: '03', valUSD: '28000.00', valAd: '481600.00', fletes: '1800.00', seguros: '280.00', rfc: 'TEX900520OO6', nombre: 'TEXTILES CONFECCION RECINTO SA DE CV', dom: 'RECINTO FISCALIZADO #890, COL. CONFECCION, CP 88000, REYNOSA', agente: 'ADUANAS TEXTIL RFE', agenteRfc: 'ATR900520PP3', patente: '2345', aut: '2345', incoterm: 'FOB', origen: 'Vietnam', tratado: 'Ninguno', recinto: 'RFE003 - RECINTO FISCALIZADO REYNOSA', bultos: 'ROLLOS TELA / 300 BULTOS', items: [{desc: 'TELA POLO ALGODON PIMA PERUVIANO 200G/M2', cant: '10000', umc: '480', umt: '520', pvic: '2.80', nota: 'BUSCAR: Tejidos de punto - RFE'}, {desc: 'TELA DENIM ELASTICO STRETCH 12OZ', cant: '8000', umc: '480', umt: '520', pvic: '2.80', nota: 'BUSCAR: Tejidos denim elástico - RFE'}]}},
+
+            // REGIMEN 81 - RETORNO DE MERCANCÍAS (2 casos)
+            { id: 'c41', regimen: '81', nombre: 'Equipo Médico Retorno Alemania → Tijuana', d: { num: '26 39 3456 7007027', tipo: 'IMP', cve: '', reg: '81', destino: '17', tc: '17.5000', peso: '280.000', aduana: '390', medio: '02', entrada: '02', valUSD: '85000.00', valAd: '1487500.00', fletes: '3500.00', seguros: '850.00', rfc: 'HOS880415AA2', nombre: 'HOSPITAL GENERAL PRIVADO SA DE CV', dom: 'AV. SALUD #890, COL. HOSPITALARIA, CP 22200, TIJUANA', agente: 'ADUANAS MEDICAS', agenteRfc: 'AME880415BB1', patente: '3456', aut: '3456', incoterm: 'CIF', origen: 'Alemania', tratado: 'TLCUE', pedOriginal: '25 39 2345 6001002', bultos: 'CAJAS EQUIPO MEDICO / 7 BULTOS', items: [{desc: 'EQUIPO RAYOS X PORTATIL DIGITAL (RETORNO)', cant: '2', umc: '480', umt: '901', pvic: '42500.00', nota: 'BUSCAR: Aparatos de rayos X - Retorno'}, {desc: 'MONITORES SIGNOS VITALES (RETORNO)', cant: '5', umc: '480', umt: '901', pvic: '8500.00', nota: 'BUSCAR: Monitores fisiológicos - Retorno'}]}},
+            { id: 'c42', regimen: '81', nombre: 'Maquinaria Retorno USA → Monterrey', d: { num: '26 06 4567 8008028', tipo: 'IMP', cve: '', reg: '81', destino: '17', tc: '17.1500', peso: '800.000', aduana: '060', medio: '03', entrada: '03', valUSD: '45000.00', valAd: '771750.00', fletes: '2500.00', seguros: '450.00', rfc: 'FER880910EE6', nombre: 'FERIAS Y EXPOSICIONES INTERNACIONALES SA DE CV', dom: 'PASEO REFORMA #500, COL. EXPO, CP 64000, MONTERREY', agente: 'ADUANAS EXPO', agenteRfc: 'AEX870420FF3', patente: '4567', aut: '4567', incoterm: 'DDP', origen: 'USA', tratado: 'T-MEC', pedOriginal: '25 01 3456 7015004', bultos: 'CONTENEDOR MAQUINARIA / 1 BULTO', items: [{desc: 'ROBOT INDUSTRIAL BRAZO ARTICULADO (RETORNO)', cant: '2', umc: '480', umt: '847', pvic: '22500.00', nota: 'BUSCAR: Robots industriales - Retorno'}, {desc: 'PANTALLAS INTERACTIVAS TACTILES (RETORNO)', cant: '5', umc: '480', umt: '852', pvic: '4500.00', nota: 'BUSCAR: Pantallas interactivas - Retorno'}]}}
         ];
 
         // INICIALIZAR SELECTOR DE CASOS
@@ -466,10 +476,10 @@
                 </div>
             `;
 
-            // Llenar campos del formulario con los datos (excepto fracciones y CVE pedimento)
+            // Llenar campos del formulario
             document.getElementById('num_pedimento').value = d.num || '';
             document.getElementById('tipo_oper').value = d.tipo || '';
-            document.getElementById('cve_pedim').value = ''; // VACÍO - estudiante debe llenar
+            document.getElementById('cve_pedim').value = '';
             document.getElementById('regimen').value = d.reg || '';
             document.getElementById('destino').value = d.destino || '';
             document.getElementById('tipo_cambio').value = d.tc || '';
@@ -493,7 +503,7 @@
             document.getElementById('codigo_aceptacion').value = 'FNC001DR';
             document.getElementById('clave_seccion').value = d.aduana || '';
 
-            // Anexo - generar filas vacías para fracciones
+            // Anexo - generar filas vacías
             const tbody = document.getElementById('annexBody');
             tbody.innerHTML = '';
             d.items.forEach((it, i) => {
@@ -522,7 +532,7 @@
 
             document.querySelectorAll('.field').forEach(f => f.classList.remove('error', 'success'));
 
-            // Validar CVE PEDIMENTO (campo clave que el estudiante debe llenar)
+            // Validar CVE PEDIMENTO
             const cveVal = document.getElementById('cve_pedim').value.trim();
             if (!cveVal) {
                 errores.push({campo: 'CVE. PEDIMENTO', msg: 'DEBES INVESTIGAR y capturar la clave de pedimento según el régimen ' + regimen + '. Pista: ' + reg.tipo + ' → ' + (regimen === '41' || regimen === '10' ? 'A1' : regimen === '61' || regimen === '71' ? 'D1' : regimen === '81' ? 'R1' : 'T1')});
