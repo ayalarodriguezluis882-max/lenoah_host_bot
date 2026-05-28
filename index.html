@@ -1,1769 +1,1210 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="h-full bg-slate-950">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Simulador Pedimento v4.0 | Entorno de Práctica Aduanera Avanzada</title>
-    <!-- Tailwind CSS para el Dashboard Educativo -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMUPEDI - Simulador de Pedimento Oficial Anexo 22</title>
+    <!-- Tailwind CSS para la interfaz del sistema de tutoría -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons para mejorar la estética visual -->
+    <!-- Lucide Icons para iconografía intuitiva -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        :root {
-            --primary: #1a237e;
-            --success: #2e7d32;
-            --warning: #ef6c00;
-            --danger: #c62828;
-            --info: #00838f;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: #f1f5f9;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        /* Estilos estrictos para el Pedimento Oficial (Anexo 22) */
-        .pedimento-container {
-            font-family: "Courier New", Courier, monospace, Arial, sans-serif;
-            text-transform: uppercase;
-        }
-
-        .pedimento-table {
-            width: 100%;
-            border-collapse: collapse;
-            border: 2px solid #000000;
-            margin-bottom: 6px;
-            table-layout: fixed;
-        }
-
-        .pedimento-table td {
-            border: 1px solid #000000;
-            padding: 3px 4px;
-            vertical-align: top;
-            overflow: hidden;
-            font-size: 7.5pt;
-            line-height: 1.15;
-        }
-
-        .header-block {
-            font-weight: bold;
-            font-size: 8pt;
-            text-align: center;
-            background-color: #e2e8f0;
-            border-bottom: 2px solid #000000 !important;
-        }
-
-        .field-label {
-            font-weight: bold;
-            font-size: 7.5pt;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: #1e293b;
-            position: relative;
-        }
-
-        /* Tooltip Educativo */
-        .tooltip-indicator {
-            border-bottom: 1px dotted #1a237e;
-            cursor: help;
-        }
-
-        .field input, .field select, .field textarea {
-            width: 100%;
-            border: none;
-            font-size: 8pt;
-            font-family: "Courier New", Courier, monospace;
-            background-color: transparent;
-            padding: 1px 0;
-            font-weight: bold;
+        /* Tipografía y maquetación de Pedimento SAAI M3 Real */
+        .saai-hoja {
+            font-family: 'Courier Prime', 'Courier New', Courier, monospace;
+            font-size: 11px;
             color: #000000;
+            background-color: #ffffff;
+            line-height: 1.25;
+            letter-spacing: -0.02em;
         }
 
-        .field input:focus, .field select:focus, .field textarea:focus {
-            background-color: #fef08a;
+        .saai-tabla {
+            border: 1.5px solid #000000 !important;
+            border-collapse: collapse;
+        }
+
+        .saai-border-r {
+            border-right: 1.5px solid #000000 !important;
+        }
+
+        .saai-border-b {
+            border-bottom: 1.5px solid #000000 !important;
+        }
+
+        .saai-border-l {
+            border-left: 1.5px solid #000000 !important;
+        }
+
+        .saai-border-t {
+            border-top: 1.5px solid #000000 !important;
+        }
+
+        .saai-header {
+            font-size: 9px;
+            font-weight: bold;
+            color: #1e293b;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .saai-input {
+            background-color: #f8fafc;
+            border: 1px dashed #94a3b8;
+            color: #000000;
+            font-family: 'Courier Prime', 'Courier New', Courier, monospace;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 2px 4px;
+            text-transform: uppercase;
+            width: 100%;
+        }
+
+        .saai-input:focus {
+            background-color: #fffbeb;
+            border: 1.5px solid #d97706;
             outline: none;
         }
 
-        /* Modo Examen - Estados de validación visual */
-        .field.corrected-error {
-            background-color: #fee2e2;
-            border-bottom: 2px solid var(--danger);
+        /* Custom scrollbar para simular un ambiente de software aduanero */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
-
-        .field.corrected-success {
-            background-color: #dcfce7;
-            border-bottom: 2px solid var(--success);
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a;
         }
-
-        .barcode {
-            height: 35px;
-            background: repeating-linear-gradient(90deg, #000 0px, #000 2px, #fff 2px, #fff 5px, #000 5px, #000 6px, #fff 6px, #fff 9px);
-            margin: 4px 0;
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
         }
-
-        /* Estilo para impresión limpia */
-        @media print {
-            body { background: white !important; color: black !important; }
-            .no-print { display: none !important; }
-            .print-area { width: 100% !important; max-width: 100% !important; box-shadow: none !important; margin: 0 !important; padding: 0 !important; }
-            .pedimento-container { transform: none !important; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #475569;
         }
     </style>
 </head>
-<body class="h-screen flex flex-col overflow-hidden">
+<body class="h-full overflow-hidden text-slate-100">
 
-    <!-- BARRA DE HERRAMIENTAS PRINCIPAL -->
-    <header class="bg-indigo-900 text-white px-4 py-2.5 flex items-center justify-between shadow-md z-50 no-print">
-        <div class="flex items-center space-x-3">
-            <div class="bg-indigo-700 p-1.5 rounded-lg">
-                <i data-lucide="graduation-cap" class="w-6 h-6 text-yellow-400"></i>
-            </div>
-            <div>
-                <h1 class="text-md font-bold tracking-tight">PEDISIM<sup>v4.0</sup></h1>
-                <p class="text-xs text-indigo-200">Simulador Aduanero Escolar e Inteligente</p>
-            </div>
-        </div>
-
-        <!-- Selector de Casos -->
-        <div class="flex items-center space-x-2">
-            <span class="text-xs text-indigo-200 font-medium hidden sm:inline">Caso de Estudio:</span>
-            <select id="caseSelector" onchange="loadCase(this.value)" class="bg-indigo-800 text-white text-xs rounded border border-indigo-700 px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-yellow-400 max-w-xs">
-                <!-- Se poblará por JS -->
-            </select>
-        </div>
-
-        <!-- Controles de Modo & Validación -->
-        <div class="flex items-center space-x-2">
-            <button onclick="toggleMode()" id="modeBtn" class="flex items-center space-x-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded text-xs font-semibold transition-all shadow">
-                <i data-lucide="book-open" class="w-4 h-4"></i>
-                <span id="modeText">📚 Modo Estudio</span>
-            </button>
-            <button onclick="evaluateExam()" id="btnCalificar" class="hidden flex items-center space-x-1.5 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded text-xs font-semibold transition-all shadow">
-                <i data-lucide="award" class="w-4 h-4"></i>
-                <span>📋 Calificar Examen</span>
-            </button>
-            <div class="h-6 w-px bg-indigo-700"></div>
-            <button onclick="openModal('calcModal')" class="p-1.5 bg-indigo-800 hover:bg-indigo-700 text-white rounded transition" title="Calculadora Integrada">
-                <i data-lucide="calculator" class="w-4 h-4"></i>
-            </button>
-            <button onclick="openModal('theoryModal')" class="p-1.5 bg-teal-700 hover:bg-teal-600 text-white rounded transition" title="Marco Teórico y Fundamentos">
-                <i data-lucide="scale" class="w-4 h-4"></i>
-            </button>
-            <button onclick="openRegimeComparator()" class="p-1.5 bg-cyan-700 hover:bg-cyan-600 text-white rounded transition" title="Comparador de Regímenes">
-                <i data-lucide="git-compare" class="w-4 h-4"></i>
-            </button>
-            <button onclick="openExportModal()" class="p-1.5 bg-purple-700 hover:bg-purple-600 text-white rounded transition" title="Exportar Caso">
-                <i data-lucide="download" class="w-4 h-4"></i>
-            </button>
-            <button onclick="window.print()" class="p-1.5 bg-slate-700 hover:bg-slate-600 text-white rounded transition" title="Imprimir Pedimento">
-                <i data-lucide="printer" class="w-4 h-4"></i>
-            </button>
-        </div>
-    </header>
-
-    <!-- ÁREA DE TRABAJO PRINCIPAL (PANEL SPLIT) -->
-    <div class="flex-1 flex overflow-hidden">
-        
-        <!-- PANEL LATERAL IZQUIERDO: CASO, TEORÍA Y PROGRESO -->
-        <aside class="w-80 bg-slate-100 border-r border-slate-300 flex flex-col no-print">
+    <!-- ================= SPLASH SCREEN / ARRANQUE SAAI (PROPIEDAD DE L.I. AYALA RODRÍGUEZ) ================= -->
+    <div id="splash-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 px-6 transition-all duration-1000">
+        <div class="w-full max-w-xl text-center">
             
-            <!-- Indicador de Progreso General -->
-            <div class="bg-white p-3 border-b border-slate-300 shadow-sm">
-                <div class="flex items-center justify-between mb-1.5">
-                    <span class="text-xs font-semibold text-slate-700">Progreso Académico:</span>
-                    <span id="progressText" class="text-xs font-bold text-indigo-700">0/5 Casos</span>
+            <!-- Conexión de red / Wireless Mockup -->
+            <div class="mb-6 flex justify-center items-center gap-2 text-indigo-400">
+                <i data-lucide="wifi" class="h-5 w-5 animate-pulse"></i>
+                <span class="text-xs font-mono tracking-widest font-bold">ESTABLECIENDO CONEXIÓN CON SAAI M3...</span>
+            </div>
+
+            <h1 class="text-5xl font-black tracking-tight text-white sm:text-6xl">
+                SIMUPEDI
+            </h1>
+            <p class="mt-2 text-indigo-400 font-extrabold tracking-widest uppercase text-xs">
+                Entrenador Nacional del Anexo 22
+            </p>
+
+            <!-- Blindaje Legal y Protección Intelectual del Creador -->
+            <div class="mt-8 rounded-3xl border border-slate-800 bg-slate-900/80 p-6 text-left shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-indigo-500/10 text-indigo-400 px-4 py-1 rounded-bl-xl text-[10px] font-black tracking-wider uppercase border-l border-b border-indigo-500/20">
+                    Soporte Académico
                 </div>
-                <div class="w-full bg-slate-200 rounded-full h-2">
-                    <div id="progressBar" class="bg-indigo-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                <div class="flex items-center gap-2 text-xs font-bold text-amber-500 mb-3">
+                    <i data-lucide="shield" class="h-4 w-4"></i>
+                    <span>SISTEMA DE PROPIEDAD INTELECTUAL REGISTRADA</span>
                 </div>
-                <div class="flex justify-between items-center mt-2 text-[10px] text-slate-500">
-                    <span id="scoreText">Puntaje Total: 0 pts</span>
-                    <button onclick="clearProgress()" class="text-red-600 hover:underline">Reiniciar Historial</button>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Esta herramienta de software, su base lógica y la metodología de adiestramiento de glosa aduanal corresponden a la propiedad intelectual de:
+                </p>
+                <p class="text-xl font-extrabold text-white mt-1.5">
+                    Luis Ignacio Ayala Rodríguez
+                </p>
+                <div class="mt-4 flex items-center justify-between border-t border-slate-800 pt-4 text-xs text-slate-500">
+                    <span class="flex items-center gap-1.5 font-medium">
+                        <i data-lucide="file-key-2" class="h-4 w-4 text-slate-500"></i>
+                        Patente en Trámite (Patent Pending)
+                    </span>
+                    <span class="font-mono text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">v3.5-PRO</span>
                 </div>
             </div>
 
-            <!-- Ficha Descriptiva del Caso de Estudio -->
-            <div class="flex-1 overflow-y-auto p-4 space-y-4">
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-slate-200">
-                    <div class="flex items-center justify-between mb-2">
-                        <span id="caseTag" class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-800 uppercase">A1 - Definitivo</span>
-                        <span id="difficultyStars" class="text-yellow-500 text-xs">⭐⭐⭐</span>
+            <!-- Caja de Estado del Booteo -->
+            <div id="boot-box" class="mt-8 space-y-4">
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs font-semibold text-slate-400">
+                        <span id="boot-status">Validando apéndices y firma electrónica...</span>
+                        <span id="boot-percent">0%</span>
                     </div>
-                    <h3 id="caseTitle" class="text-sm font-bold text-slate-800 leading-tight mb-2">Cargando caso...</h3>
-                    <p id="caseDescription" class="text-xs text-slate-600 leading-relaxed mb-3">Descripción de la operación aduanera...</p>
+                    <div class="h-3 w-full rounded-full bg-slate-900 overflow-hidden border border-slate-800 p-0.5">
+                        <div id="boot-bar" class="h-full w-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full transition-all duration-300"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones de Destino del Sistema -->
+            <div id="action-buttons" class="hidden mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button onclick="startApp('taller')" class="flex items-center justify-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 py-3 px-4 font-bold text-white transition transform hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-500/20 active:translate-y-0">
+                    <i data-lucide="play" class="h-5 w-5"></i>
+                    Taller de Prácticas
+                </button>
+                <button onclick="startApp('info')" class="flex items-center justify-center gap-2 rounded-xl bg-slate-900 hover:bg-slate-800 py-3 px-4 font-bold text-slate-300 transition border border-slate-800">
+                    <i data-lucide="info" class="h-5 w-5"></i>
+                    Información / Repositorio
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= CONTENEDOR DE LA APLICACIÓN PRINCIPAL ================= -->
+    <div id="app-container" class="hidden h-screen flex flex-col bg-slate-950">
+        
+        <!-- Header Superior -->
+        <header class="flex h-16 items-center justify-between border-b border-slate-800 bg-slate-900 px-6 shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-500/30">
+                    <i data-lucide="terminal" class="h-5 w-5"></i>
+                </div>
+                <div>
+                    <span class="font-black text-white text-lg tracking-tight">SIMUPEDI</span>
+                    <span class="ml-2 text-[10px] font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded uppercase tracking-widest">Anexo 22 SAAI M3</span>
+                </div>
+            </div>
+
+            <!-- Progreso General del Curso -->
+            <div class="hidden items-center gap-4 md:flex">
+                <div class="text-right">
+                    <div class="text-xs text-slate-400 font-medium">Ejercicios Concluidos</div>
+                    <div class="text-sm font-bold text-slate-200" id="progress-text">0 / 8 Casos</div>
+                </div>
+                <div class="h-2 w-36 rounded-full bg-slate-800 overflow-hidden border border-slate-700">
+                    <div id="global-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-indigo-600 transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Firma Intelectual de Luis Ignacio Ayala Rodríguez -->
+            <div class="flex items-center gap-3">
+                <div class="text-right text-xs">
+                    <span class="block font-medium text-slate-400">Patente & Diseño de:</span>
+                    <span class="font-bold text-indigo-400">L. I. Ayala Rodríguez</span>
+                </div>
+                <div class="h-9 w-9 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center font-black text-sm text-indigo-400">
+                    LA
+                </div>
+            </div>
+        </header>
+
+        <!-- Área de Trabajo Principal (Split de Pantallas) -->
+        <main class="flex-1 flex overflow-hidden flex-col lg:flex-row">
+            
+            <!-- SECCIÓN IZQUIERDA: Casos de Evaluación y Fichas Técnicas -->
+            <section class="w-full lg:w-[35%] border-r border-slate-800 bg-slate-900 flex flex-col h-[45%] lg:h-full">
+                <!-- Selector de casos prácticos -->
+                <div class="p-4 border-b border-slate-800 flex items-center justify-between gap-2 bg-slate-950/40">
+                    <label for="case-selector" class="text-xs font-bold text-slate-400 whitespace-nowrap">CASO EVALUATIVO:</label>
+                    <select id="case-selector" onchange="loadCase(this.value)" class="flex-1 rounded-lg border border-slate-700 bg-slate-800 py-1.5 px-3 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <!-- Cargado por JS -->
+                    </select>
+                </div>
+
+                <!-- Detalle del Escenario Comercial -->
+                <div class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
+                    <div class="flex items-center gap-2">
+                        <span id="case-badge" class="inline-flex items-center rounded-lg bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 text-xs font-black text-indigo-400">
+                            CASO 1
+                        </span>
+                        <h2 id="case-title" class="text-sm font-bold text-white">Cargando...</h2>
+                    </div>
+
+                    <div class="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-3">
+                        <h3 class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Ficha Descriptiva del Caso</h3>
+                        <p id="case-description" class="text-slate-300 text-xs leading-relaxed font-normal">
+                            Cargando descripción...
+                        </p>
+                    </div>
+
+                    <!-- Datos Guía del caso -->
+                    <div class="space-y-3">
+                        <h3 class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Ficha Técnica e Impuestos de Soporte</h3>
+                        <div class="grid grid-cols-2 gap-2" id="case-data-sheet">
+                            <!-- Inyectado por JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botonera de Acción en el Footer -->
+                <div class="p-4 border-t border-slate-800 bg-slate-950/60 flex gap-2">
+                    <button onclick="revealAnswers()" class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-slate-700 hover:bg-slate-800 py-3 font-bold text-slate-300 text-xs transition">
+                        <i data-lucide="eye" class="h-4 w-4"></i> Rellenar Plantilla
+                    </button>
+                    <button onclick="verifyPedimento()" class="flex-1 flex items-center justify-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 py-3 font-bold text-white text-xs transition shadow-lg shadow-indigo-600/20">
+                        <i data-lucide="check-square" class="h-4 w-4"></i> Glosar Pedimento
+                    </button>
+                </div>
+            </section>
+
+            <!-- SECCIÓN DERECHA: El Lienzo del Pedimento SAAI M3 (Idéntico al Real) -->
+            <section class="flex-1 bg-slate-950 p-4 md:p-6 overflow-y-auto custom-scrollbar h-[55%] lg:h-full">
+                <div class="max-w-4xl mx-auto">
                     
-                    <!-- Ficha Técnica Comercial -->
-                    <div class="bg-slate-50 rounded p-2.5 space-y-1.5 border border-slate-100 text-[11px]">
-                        <div class="flex justify-between"><strong class="text-slate-500">Incoterm:</strong> <span id="specIncoterm" class="font-bold text-slate-700">FOB</span></div>
-                        <div class="flex justify-between"><strong class="text-slate-500">Fracción:</strong> <span id="specFraction" class="font-bold text-slate-700">8517.13.01</span></div>
-                        <div class="flex justify-between"><strong class="text-slate-500">Val. Factura:</strong> <span id="specInvoice" class="font-bold text-slate-700">$0.00 USD</span></div>
-                        <div class="flex justify-between"><strong class="text-slate-500">Seguros:</strong> <span id="specIns" class="font-bold text-slate-700">$0.00 MXN</span></div>
-                        <div class="flex justify-between"><strong class="text-slate-500">Fletes:</strong> <span id="specFreight" class="font-bold text-slate-700">$0.00 MXN</span></div>
-                        <div class="flex justify-between"><strong class="text-slate-500">País Origen:</strong> <span id="specOrigin" class="font-bold text-slate-700">USA</span></div>
-                    </div>
-                </div>
-
-                <!-- Historial de Intentos de este caso -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-slate-200">
-                    <h4 class="text-xs font-bold text-slate-700 mb-2 flex items-center space-x-1">
-                        <i data-lucide="history" class="w-3.5 h-3.5 text-slate-500"></i>
-                        <span>Intentos del Caso</span>
-                    </h4>
-                    <div id="attemptsHistory" class="space-y-1.5 text-xs">
-                        <p class="text-slate-400 text-center italic py-2 text-[11px]">No hay intentos registrados.</p>
-                    </div>
-                </div>
-
-                <!-- Fundamento Rápido -->
-                <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-lg">
-                    <h4 class="text-xs font-bold text-amber-900 mb-1 flex items-center space-x-1">
-                        <i data-lucide="info" class="w-3.5 h-3.5 text-amber-700"></i>
-                        <span>Rúbrica Educativa</span>
-                    </h4>
-                    <p class="text-[10px] text-amber-800 leading-relaxed">
-                        En **Modo Examen** se evalúa la coincidencia del Incoterm, consistencia de incrementables, cálculo de contribuciones y la fracción arancelaria ingresada. ¡Evita dejar campos clave vacíos!
-                    </p>
-                </div>
-            </div>
-
-            <!-- Botonera Zoom inferior -->
-            <div class="p-3 bg-slate-200 border-t border-slate-300 flex items-center justify-between">
-                <span class="text-xs text-slate-600 font-medium">Zoom del Formato:</span>
-                <div class="flex items-center space-x-1">
-                    <button onclick="zoomOut()" class="p-1 bg-white hover:bg-slate-50 rounded shadow-sm text-xs font-bold">-</button>
-                    <span id="zoomLevel" class="text-xs text-slate-800 font-bold px-1.5">85%</span>
-                    <button onclick="zoomIn()" class="p-1 bg-white hover:bg-slate-50 rounded shadow-sm text-xs font-bold">+</button>
-                </div>
-            </div>
-        </aside>
-
-        <!-- PANEL CENTRAL: PEDIMENTO VISUALIZADOR -->
-        <main class="flex-1 overflow-auto bg-slate-400 p-6 flex justify-center items-start">
-            <div id="pedimentoWrapper" class="transform-origin-top transition-transform duration-200 ease-out" style="transform: scale(0.85); transform-origin: top center;">
-                
-                <!-- PEDIMENTO OFICIAL HOJA 1 -->
-                <div class="print-area page w-[210mm] min-h-[297mm] bg-white p-8 shadow-2xl border border-slate-500 mx-auto text-black pedimento-container relative select-none">
-                    
-                    <!-- Sello de Modo Examen / Estudio de Agua -->
-                    <div id="watermark" class="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none select-none z-0">
-                        <span class="text-[90px] font-black tracking-widest border-[12px] border-black p-6 rounded-3xl -rotate-12">ESTUDIO</span>
-                    </div>
-
-                    <div class="relative z-10 space-y-4">
-                        <!-- TÍTULO OFICIAL -->
-                        <div class="text-center font-bold text-lg border-b-2 border-black pb-1.5 tracking-wider">PEDIMENTO</div>
+                    <!-- HOJA DE PEDIMENTO IMPRESO SIMULADA (Estilo Físico de Matriz de Puntos) -->
+                    <div class="saai-hoja p-4 md:p-8 rounded shadow-2xl relative border border-slate-200">
                         
-                        <div class="flex justify-between items-center text-[8px] font-bold">
-                            <div>ORGANISMO NACIONAL DE ESCUELAS DE COMERCIO EXTERIOR</div>
-                            <div>PÁGINA 1 DE 2</div>
+                        <!-- ENCABEZADO SUPERIOR DE CONTROL DE SAAI -->
+                        <div class="flex flex-col md:flex-row justify-between border-b border-black pb-1 mb-3 text-[10px] font-bold">
+                            <div>Cte: NIM19 &nbsp;&nbsp; Usuario: oflenoah0 &nbsp;&nbsp; Fecha: 05-12-2024</div>
+                            <div class="text-right">Referencia: PED_M3_MX &nbsp;&nbsp; Conte: 1</div>
                         </div>
 
-                        <!-- TABLA GENERAL DE IDENTIFICACIÓN -->
-                        <table class="pedimento-table">
-                            <tr>
-                                <td class="header-block" colspan="10">IDENTIFICACIÓN</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Número oficial compuesto de 15 dígitos según Anexo 22: Año (2) + Aduana (2) + Patente (4) + Año corriente (1) + Consecutivo (6).">NUM. PEDIMENTO</div>
-                                    <div class="field"><input type="text" id="num_pedimento" placeholder="26 39 3581 6001578" maxlength="21"></div>
-                                </td>
-                                <td colspan="2">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Tipo de Operación: IMP (Importación) o EXP (Exportación).">T. OPER.</div>
-                                    <div class="field">
-                                        <select id="tipo_oper">
-                                            <option value="">-</option>
-                                            <option value="IMP">IMP</option>
-                                            <option value="EXP">EXP</option>
-                                        </select>
+                        <!-- TITULO Y PÁGINA -->
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="font-bold text-xs">PEDIMENTO</span>
+                            <div class="text-right font-bold text-[10px]">
+                                Página 1 de 1
+                            </div>
+                        </div>
+
+                        <!-- TABLA GENERAL DE DATOS DE LA CÉDULA -->
+                        <div class="saai-tabla mb-3 grid grid-cols-12 font-bold text-[10px]">
+                            <div class="col-span-8 saai-border-r saai-border-b p-1">
+                                <span class="block saai-header">NUM. PEDIMENTO</span>
+                                <div class="flex gap-1 mt-1">
+                                    <input type="text" id="p_num" maxlength="15" placeholder="24 39 3581 4024883" class="w-full saai-input font-mono">
+                                    <button onclick="showHelp('pedimento')" class="text-indigo-600 hover:text-indigo-900 px-1"><i data-lucide="help-circle" class="h-3 w-3"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-span-4 saai-border-b p-1">
+                                <span class="block saai-header">DESTINO</span>
+                                <input type="text" id="p_destino" placeholder="2" class="w-full saai-input mt-1">
+                            </div>
+
+                            <div class="col-span-4 saai-border-r p-1">
+                                <span class="block saai-header">T. OPER</span>
+                                <input type="text" id="p_op" placeholder="IMP" class="w-full saai-input mt-1">
+                            </div>
+                            <div class="col-span-4 saai-border-r p-1">
+                                <span class="block saai-header">CVE. PEDIMENTO</span>
+                                <input type="text" id="p_clave" placeholder="C1" class="w-full saai-input mt-1">
+                            </div>
+                            <div class="col-span-4 p-1">
+                                <span class="block saai-header">REGIMEN</span>
+                                <input type="text" id="p_regimen" placeholder="IMD" class="w-full saai-input mt-1">
+                            </div>
+                        </div>
+
+                        <!-- BLOQUE DE TASA Y ADUANA -->
+                        <div class="saai-tabla mb-3 grid grid-cols-12 font-bold text-[10px]">
+                            <div class="col-span-4 saai-border-r saai-border-b p-1">
+                                <span class="block saai-header">TIPO CAMBIO</span>
+                                <input type="number" step="0.00001" id="p_tc" placeholder="20.32330" class="w-full saai-input mt-1">
+                            </div>
+                            <div class="col-span-4 saai-border-r saai-border-b p-1">
+                                <span class="block saai-header">PESO BRUTO</span>
+                                <input type="number" step="0.001" id="p_peso" placeholder="62.000" class="w-full saai-input mt-1">
+                            </div>
+                            <div class="col-span-4 saai-border-b p-1">
+                                <span class="block saai-header">ADUANA E/S</span>
+                                <input type="text" id="p_adu" placeholder="390" class="w-full saai-input mt-1">
+                            </div>
+
+                            <!-- MEDIOS DE TRANSPORTE Y VALORES -->
+                            <div class="col-span-12 p-0">
+                                <div class="grid grid-cols-12">
+                                    <div class="col-span-4 saai-border-r p-1">
+                                        <span class="block saai-header text-[8px]">MEDIOS TRANSPORTE (ENTRADA/ARRIBO/SALIDA)</span>
+                                        <div class="grid grid-cols-3 gap-1 mt-1">
+                                            <input type="text" id="p_trans_e" maxlength="1" placeholder="7" class="saai-input text-center">
+                                            <input type="text" id="p_trans_a" maxlength="1" placeholder="7" class="saai-input text-center">
+                                            <input type="text" id="p_trans_s" maxlength="1" placeholder="7" class="saai-input text-center">
+                                        </div>
                                     </div>
-                                </td>
-                                <td colspan="2">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Clave de Pedimento: Determina el destino y propósito (Ej. A1 = Importación definitiva). Apéndice 2.">CVE. PEDIMENTO</div>
-                                    <div class="field"><input type="text" id="cve_pedimento" placeholder="A1" maxlength="2"></div>
-                                </td>
-                                <td colspan="3">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Régimen Aduanero al que se sujeta la mercancía. (Ej. IMD = Importación Definitiva). Apéndice 16.">REGIMEN</div>
-                                    <div class="field"><input type="text" id="regimen" placeholder="IMD"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Destino de la mercancía. Clave según Apéndice 15 (Ej. 9 = Interior del País, 1 = Franja Fronteriza).">DESTINO</div>
-                                    <div class="field"><input type="text" id="destino" placeholder="9"></div>
-                                </td>
-                                <td colspan="3">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Tipo de cambio del peso mexicano frente al dólar de EUA publicado en el DOF.">TIPO CAMBIO</div>
-                                    <div class="field"><input type="number" id="tipo_cambio" step="0.0001" placeholder="17.5000"></div>
-                                </td>
-                                <td colspan="3">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Peso bruto de la mercancía expresado en kilogramos totales (báscula).">PESO BRUTO (KG)</div>
-                                    <div class="field"><input type="number" id="peso_bruto" step="0.1" placeholder="850.5"></div>
-                                </td>
-                                <td colspan="2">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Aduana de Despacho (Sección de Entrada/Salida). Ej. 390 = Manzanillo, 470 = AICM. Apéndice 1.">ADUANA E/S</div>
-                                    <div class="field"><input type="text" id="aduana_es" placeholder="390"></div>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <!-- TRANSPORTE -->
-                        <table class="pedimento-table">
-                            <tr>
-                                <td class="header-block" colspan="12">DATOS DE TRANSPORTE</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Medio de transporte en el que entra la mercancía a territorio nacional (Apéndice 3). Ej: 7 = Marítimo.">M. TRANSP. ENTRADA</div>
-                                    <div class="field"><input type="text" id="m_entrada" placeholder="7"></div>
-                                </td>
-                                <td colspan="4">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Medio de transporte al arribar a la aduana de despacho.">M. TRANSP. ARRIBO</div>
-                                    <div class="field"><input type="text" id="m_arribo" placeholder="7"></div>
-                                </td>
-                                <td colspan="4">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Medio de transporte al salir del recinto aduanal tras despacho.">M. TRANSP. SALIDA</div>
-                                    <div class="field"><input type="text" id="m_salida" placeholder="7"></div>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <!-- VALORES COMERCIALES -->
-                        <table class="pedimento-table">
-                            <tr>
-                                <td class="header-block" colspan="12">VALORES ADUANEROS Y COMERCIALES</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Equivalencia en dólares de los Estados Unidos del valor comercial facturado.">VALOR DÓLARES (USD)</div>
-                                    <div class="field"><input type="number" id="valor_dolares" step="0.01" placeholder="12500.00"></div>
-                                </td>
-                                <td colspan="4">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Base gravable de los impuestos al comercio exterior. Valor comercial + Incrementables en MXN.">VALOR ADUANA (MXN)</div>
-                                    <div class="field"><input type="number" id="valor_aduana" step="1" placeholder="218750"></div>
-                                </td>
-                                <td colspan="4">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Precio realmente pagado según la factura comercial o contrato de compraventa internacional (MXN).">PRECIO PAGADO (MXN)</div>
-                                    <div class="field"><input type="number" id="precio_pagado" step="1" placeholder="218750"></div>
-                                </td>
-                            </tr>
-                        </table>
+                                    <div class="col-span-8 p-1">
+                                        <div class="grid grid-cols-2 gap-1">
+                                            <div>
+                                                <span class="block saai-header">VALOR DOLARES</span>
+                                                <input type="number" id="p_vdol" placeholder="3700.00" class="w-full saai-input mt-1">
+                                            </div>
+                                            <div>
+                                                <span class="block saai-header">VALOR ADUANA</span>
+                                                <input type="number" id="p_vadu" placeholder="75196" class="w-full saai-input mt-1">
+                                            </div>
+                                        </div>
+                                        <div class="mt-1">
+                                            <span class="block saai-header">PRECIO PAGADO / VALOR COMERCIAL</span>
+                                            <input type="number" id="p_vcom" placeholder="75196" class="w-full saai-input mt-1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- DATOS DEL IMPORTADOR/EXPORTADOR -->
-                        <table class="pedimento-table">
-                            <tr>
-                                <td class="header-block" colspan="12">DATOS DEL IMPORTADOR / EXPORTADOR</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Registro Federal de Contribuyentes de la empresa activa en el Padrón de Importadores.">RFC</div>
-                                    <div class="field"><input type="text" id="rfc_contribuyente" placeholder="SLA210115NH0"></div>
-                                </td>
-                                <td colspan="8">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Nombre completo, denominación o razón social de la entidad importadora o exportadora.">RAZÓN SOCIAL</div>
-                                    <div class="field"><input type="text" id="nombre_contribuyente" placeholder="SOLUCIONES LOGISTICAS Y ADUANALES S.A. DE C.V."></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="12">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Domicilio fiscal registrado ante el SAT para la empresa contribuyente.">DOMICILIO FISCAL</div>
-                                    <div class="field"><input type="text" id="domicilio_contribuyente" placeholder="AV. FRAY JUNIPERO SERRA 115, COL. DESARROLLO, QUERÉTARO, QRO."></div>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <!-- INCREMENTABLES Y DECREMENTABLES -->
-                        <table class="pedimento-table">
-                            <tr>
-                                <td class="header-block" colspan="10">CONCEPTO DE INCREMENTABLES Y DECREMENTABLES (VALORES EN M.N.)</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Gastos de flete internacional incurridos hasta el puerto o frontera de entrada.">FLETES</div>
-                                    <div class="field"><input type="number" id="fletes" step="1" placeholder="0"></div>
-                                </td>
-                                <td colspan="2">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Costo de las primas de seguro de transporte de la mercancía.">SEGUROS</div>
-                                    <div class="field"><input type="number" id="seguros" step="1" placeholder="0"></div>
-                                </td>
-                                <td colspan="2">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Costo de embalajes y empaques aplicables que no formen parte del valor comercial.">EMBALAJES</div>
-                                    <div class="field"><input type="number" id="embalajes" step="1" placeholder="0"></div>
-                                </td>
-                                <td colspan="2">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Cualquier otro gasto incrementable (Ej. maniobras, almacenajes en origen).">OTROS INCREM.</div>
-                                    <div class="field"><input type="number" id="otros_inc" step="1" placeholder="0"></div>
-                                </td>
-                                <td colspan="2">
-                                    <div class="field-label tooltip-indicator" data-tooltip="Gastos decrementables que se deducen del precio comercial (fletes nacionales post-aduana, etc.).">TOTAL DECREM.</div>
-                                    <div class="field"><input type="number" id="total_dec" step="1" placeholder="0"></div>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <!-- CONTRIBUCIONES - RESUMEN GENERAL -->
-                        <table class="pedimento-table">
-                            <tr>
-                                <td class="header-block" colspan="12">CUADRO DE LIQUIDACIÓN DE CONTRIBUCIONES</td>
-                            </tr>
-                            <tr class="font-bold text-center bg-slate-50 text-[7pt]">
-                                <td colspan="4">CONCEPTO</td>
-                                <td colspan="2">F.P. (Ap. 12)</td>
-                                <td colspan="6">IMPORTE PAGO (MXN)</td>
-                            </tr>
-                            <!-- DTA Row -->
-                            <tr>
-                                <td colspan="4" class="font-bold">DTA (DERECHO DE TRÁMITE ADUANERO)</td>
-                                <td colspan="2" class="field"><input type="number" id="fp_dta" placeholder="0" class="text-center"></td>
-                                <td colspan="6" class="field"><input type="number" id="imp_dta" placeholder="0"></td>
-                            </tr>
-                            <!-- IGI Row -->
-                            <tr>
-                                <td colspan="4" class="font-bold">IGI (IMPUESTO GENERAL DE IMPORTACIÓN / AD VALOREM)</td>
-                                <td colspan="2" class="field"><input type="number" id="fp_igi" placeholder="0" class="text-center"></td>
-                                <td colspan="6" class="field"><input type="number" id="imp_igi" placeholder="0"></td>
-                            </tr>
-                            <!-- PRV Row -->
-                            <tr>
-                                <td colspan="4" class="font-bold">PRV (PREVALIDACIÓN DE PEDIMENTO)</td>
-                                <td colspan="2" class="field"><input type="number" id="fp_prv" placeholder="0" class="text-center"></td>
-                                <td colspan="6" class="field"><input type="number" id="imp_prv" placeholder="310"></td>
-                            </tr>
-                            <!-- IVA Row -->
-                            <tr>
-                                <td colspan="4" class="font-bold">IVA (IMPUESTO AL VALOR AGREGADO)</td>
-                                <td colspan="2" class="field"><input type="number" id="fp_iva" placeholder="0" class="text-center"></td>
-                                <td colspan="6" class="field"><input type="number" id="imp_iva" placeholder="0"></td>
-                            </tr>
-                            <!-- TOTAL Row -->
-                            <tr class="bg-slate-100 font-bold border-t-2 border-black">
-                                <td colspan="6" class="text-right pr-4 header-block">TOTAL EFECTIVO A PAGAR EN CAJA DE BANCO (M.N.):</td>
-                                <td colspan="6" class="field text-lg"><input type="number" id="imp_total" placeholder="0" class="text-slate-900"></td>
-                            </tr>
-                        </table>
-
-                        <!-- PARTIDAS ADUANERAS (LIGIE) -->
-                        <table class="pedimento-table">
-                            <tr>
-                                <td class="header-block" colspan="12">DESGLOSE DE PARTIDAS DE MERCANCÍA</td>
-                            </tr>
-                            <tr class="font-bold text-center bg-slate-100 text-[6.5pt]">
-                                <td colspan="2">FRACCIÓN (Ap. 2)</td>
-                                <td colspan="1">VINC (Ap. 11)</td>
-                                <td colspan="1">MET. VAL (Ap. 11)</td>
-                                <td colspan="1">UMC (Ap. 7)</td>
-                                <td colspan="2">CANT. UMC</td>
-                                <td colspan="1">UMT (Ap. 7)</td>
-                                <td colspan="2">CANT. UMT</td>
-                                <td colspan="2">P. V/C (Ap. 4) / P. O/D</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="field"><input type="text" id="partida_fraccion" placeholder="8528.72.06" class="text-center"></td>
-                                <td colspan="1" class="field"><input type="number" id="partida_vinc" placeholder="0" class="text-center" maxlength="1"></td>
-                                <td colspan="1" class="field"><input type="number" id="partida_metval" placeholder="1" class="text-center" maxlength="1"></td>
-                                <td colspan="1" class="field"><input type="number" id="partida_umc" placeholder="6" class="text-center" maxlength="2"></td>
-                                <td colspan="2" class="field"><input type="number" id="partida_cant_umc" placeholder="100" class="text-center"></td>
-                                <td colspan="1" class="field"><input type="number" id="partida_umt" placeholder="6" class="text-center" maxlength="2"></td>
-                                <td colspan="2" class="field"><input type="number" id="partida_cant_umt" placeholder="100" class="text-center"></td>
-                                <td colspan="2" class="field"><input type="text" id="partida_pais" placeholder="USA / USA" class="text-center"></td>
-                            </tr>
-                            <tr class="font-bold text-center bg-slate-50 text-[6.5pt]">
-                                <td colspan="3">VAL. COMERCIAL (USD)</td>
-                                <td colspan="3">VAL. ADUANA (MXN)</td>
-                                <td colspan="3">TASA IGI (%)</td>
-                                <td colspan="3">PREFERENCIAL TRATADO</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3" class="field"><input type="number" id="partida_val_usd" placeholder="12500" class="text-center"></td>
-                                <td colspan="3" class="field"><input type="number" id="partida_val_mxn" placeholder="218750" class="text-center"></td>
-                                <td colspan="3" class="field"><input type="number" id="partida_igi_tasa" placeholder="0" class="text-center"></td>
-                                <td colspan="3" class="field"><input type="text" id="partida_tratado" placeholder="T-MEC" class="text-center"></td>
-                            </tr>
-                        </table>
-
-                        <!-- CÓDIGO DE BARRAS & FIRMAS -->
-                        <div class="flex justify-between items-center pt-2">
-                            <div class="w-1/2">
-                                <div class="barcode"></div>
-                                <span class="text-[6.5pt] font-mono tracking-wider">39023412591234901235123134</span>
+                        <div class="saai-tabla mb-3 p-2 font-bold text-[10px]">
+                            <span class="block saai-header border-b border-black pb-1 mb-1">DATOS DEL IMPORTADOR / EXPORTADOR</span>
+                            <div class="grid grid-cols-12 gap-2 mb-1">
+                                <div class="col-span-6">
+                                    <span class="block saai-header">R.F.C.</span>
+                                    <input type="text" id="p_rfc" oninput="toggleCurpInput()" placeholder="NIM180606MU5" class="w-full saai-input mt-1">
+                                </div>
+                                <div class="col-span-6">
+                                    <span class="block saai-header">CURP</span>
+                                    <input type="text" id="p_curp" placeholder="DEJAR EN BLANCO" class="w-full saai-input mt-1">
+                                </div>
                             </div>
-                            <div class="w-1/3 text-center border border-black p-2 rounded">
-                                <div class="text-[6.5pt] font-bold">FIRMA DIGITAL AGENTE ADUANAL</div>
-                                <div class="h-6 flex items-center justify-center italic text-xs font-mono text-slate-500">e.firma_VALID_390_2026</div>
+                            <div class="mb-1">
+                                <span class="block saai-header">NOMBRE, DENOMINACION O RAZON SOCIAL</span>
+                                <input type="text" id="p_nombre" placeholder="NINA IMPORTACIONES S. DE R.L. DE C.V." class="w-full saai-input mt-1">
                             </div>
+                            <div>
+                                <span class="block saai-header">DOMICILIO</span>
+                                <input type="text" id="p_domicilio" placeholder="AV. CENTRO COMERCIAL No. 17115..." class="w-full saai-input mt-1">
+                            </div>
+                        </div>
+
+                        <!-- INCREMENTABLES -->
+                        <div class="saai-tabla mb-3 grid grid-cols-12 font-bold text-[10px]">
+                            <div class="col-span-4 saai-border-r p-1">
+                                <span class="block saai-header">FLETES</span>
+                                <input type="number" id="p_fletes" placeholder="0" class="w-full saai-input mt-1">
+                            </div>
+                            <div class="col-span-4 saai-border-r p-1">
+                                <span class="block saai-header">SEGUROS</span>
+                                <input type="number" id="p_seguros" placeholder="0" class="w-full saai-input mt-1">
+                            </div>
+                            <div class="col-span-4 p-1">
+                                <span class="block saai-header">OTROS INCREM.</span>
+                                <input type="number" id="p_otros_inc" placeholder="0" class="w-full saai-input mt-1">
+                            </div>
+                        </div>
+
+                        <!-- FECHAS Y TASAS A NIVEL PEDIMENTO -->
+                        <div class="saai-tabla mb-3 grid grid-cols-12 font-bold text-[10px]">
+                            <div class="col-span-6 saai-border-r p-2">
+                                <span class="block saai-header mb-1 border-b border-black pb-0.5">FECHAS</span>
+                                <div class="space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="saai-header">ENTRADA:</span>
+                                        <input type="text" id="p_fecha_e" placeholder="05/12/2024" class="saai-input w-28 text-center">
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="saai-header">PAGO:</span>
+                                        <input type="text" id="p_fecha_p" placeholder="05/12/2024" class="saai-input w-28 text-center">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-span-6 p-2">
+                                <span class="block saai-header mb-1 border-b border-black pb-0.5">TASAS A NIVEL PEDIMENTO</span>
+                                <div class="grid grid-cols-3 gap-1 text-[8px] text-center font-bold">
+                                    <span>CONTRIB.</span>
+                                    <span>CVE. T. TASA</span>
+                                    <span>TASA</span>
+                                </div>
+                                <div class="grid grid-cols-3 gap-1 mt-1 items-center">
+                                    <span class="text-center font-mono text-[10px]">PRV</span>
+                                    <span class="text-center font-mono text-[10px]">2</span>
+                                    <input type="number" id="p_prv_tasa" placeholder="290" class="saai-input text-center">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CUADRO DE LIQUIDACION -->
+                        <div class="saai-tabla mb-3 font-bold text-[10px]">
+                            <span class="block saai-header bg-slate-50 p-1 border-b border-black">CUADRO DE LIQUIDACION</span>
+                            <div class="grid grid-cols-12 text-[8px] text-center border-b border-black py-0.5">
+                                <div class="col-span-3">CONCEPTO</div>
+                                <div class="col-span-1">F.P.</div>
+                                <div class="col-span-3">IMPORTE</div>
+                                <div class="col-span-5">TOTALES</div>
+                            </div>
+                            
+                            <!-- Concepto 1: IVA -->
+                            <div class="grid grid-cols-12 items-center py-1 border-b border-dashed border-slate-200">
+                                <div class="col-span-3 text-center">IVA</div>
+                                <div class="col-span-1 text-center">0</div>
+                                <div class="col-span-3 px-1">
+                                    <input type="number" id="p_l_iva" placeholder="12031" class="w-full saai-input text-right">
+                                </div>
+                                <div class="col-span-5 px-2 flex justify-between text-[9px]">
+                                    <span>EFECTIVO:</span>
+                                    <input type="number" id="p_l_efec" placeholder="12367" class="w-24 saai-input text-right">
+                                </div>
+                            </div>
+
+                            <!-- Concepto 2: PRV -->
+                            <div class="grid grid-cols-12 items-center py-1 border-b border-dashed border-slate-200">
+                                <div class="col-span-3 text-center">PRV</div>
+                                <div class="col-span-1 text-center">0</div>
+                                <div class="col-span-3 px-1">
+                                    <input type="number" id="p_l_prv" placeholder="290" class="w-full saai-input text-right">
+                                </div>
+                                <div class="col-span-5 px-2 flex justify-between text-[9px]">
+                                    <span>OTROS:</span>
+                                    <span class="font-mono text-[10px]">0</span>
+                                </div>
+                            </div>
+
+                            <!-- Concepto 3: CNT -->
+                            <div class="grid grid-cols-12 items-center py-1">
+                                <div class="col-span-3 text-center">CNT (IVA/PRV)</div>
+                                <div class="col-span-1 text-center">0</div>
+                                <div class="col-span-3 px-1">
+                                    <input type="number" id="p_l_cnt" placeholder="46" class="w-full saai-input text-right">
+                                </div>
+                                <div class="col-span-5 px-2 flex justify-between text-[9px] font-bold">
+                                    <span>TOTAL:</span>
+                                    <input type="number" id="p_l_total" placeholder="12367" class="w-24 saai-input text-right">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PARTIDAS -->
+                        <div class="saai-tabla p-2 font-bold text-[10px] bg-slate-50/50">
+                            <span class="block saai-header border-b border-black pb-1 mb-1">PARTIDAS (CONCEPTO DESGLOSADO)</span>
+                            <div class="grid grid-cols-12 gap-1 text-center text-[8px] border-b border-black pb-0.5 mb-1.5">
+                                <div class="col-span-1">SEC</div>
+                                <div class="col-span-3">FRACCION / NICO</div>
+                                <div class="col-span-1">VINC</div>
+                                <div class="col-span-1">UMC</div>
+                                <div class="col-span-1">UMT</div>
+                                <div class="col-span-2">CANT UMC</div>
+                                <div class="col-span-2">P. ORIG/DEST</div>
+                                <div class="col-span-1">AYUDA</div>
+                            </div>
+                            
+                            <div class="grid grid-cols-12 gap-1 items-center mb-1.5">
+                                <div class="col-span-1 text-center font-mono">1</div>
+                                <div class="col-span-3 flex gap-0.5">
+                                    <input type="text" id="p_part_frac" placeholder="84798999" class="w-2/3 saai-input text-center">
+                                    <input type="text" id="p_part_nico" placeholder="99" class="w-1/3 saai-input text-center">
+                                </div>
+                                <div class="col-span-1">
+                                    <input type="text" id="p_part_vinc" placeholder="0" class="saai-input text-center">
+                                </div>
+                                <div class="col-span-1">
+                                    <input type="text" id="p_part_umc" placeholder="6" class="saai-input text-center">
+                                </div>
+                                <div class="col-span-1">
+                                    <input type="text" id="p_part_umt" placeholder="6" class="saai-input text-center">
+                                </div>
+                                <div class="col-span-2">
+                                    <input type="number" id="p_part_cant" placeholder="2.000" class="saai-input text-center">
+                                </div>
+                                <div class="col-span-2">
+                                    <input type="text" id="p_part_pais" placeholder="USA" class="saai-input text-center uppercase">
+                                </div>
+                                <div class="col-span-1 text-center">
+                                    <button onclick="showHelp('partida')" class="text-indigo-600 hover:text-indigo-900"><i data-lucide="help-circle" class="h-4 w-4"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Descripción de la partida -->
+                            <div class="border-t border-dashed border-slate-300 pt-1 mt-1">
+                                <span class="block saai-header">DESCRIPCIÓN DE LA MERCANCÍA</span>
+                                <input type="text" id="p_part_desc" placeholder="SISTEMA DE ENROLLADOR DE VELA DE PROA CON ACCESORIOS" class="w-full saai-input mt-1">
+                            </div>
+
+                            <!-- Identificadores a nivel partida -->
+                            <div class="border-t border-dashed border-slate-300 pt-1 mt-1">
+                                <span class="block saai-header mb-1">IDENTIFICADORES DE PARTIDA</span>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <input type="text" id="p_part_id1" placeholder="EN" class="saai-input text-center">
+                                    <input type="text" id="p_part_id2" placeholder="TL" class="saai-input text-center">
+                                    <input type="text" id="p_part_id3" placeholder="PO" class="saai-input text-center">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FIN DEL PEDIMENTO Y VALIDACIÓN -->
+                        <div class="mt-4 border-t-2 border-black pt-1 text-center font-mono text-[8px] font-bold">
+                            ******* FIN DE PEDIMENTO ******* NUM. TOTAL DE PARTIDAS: 1 ******* CLAVE PREVALIDADOR: 010
                         </div>
 
                     </div>
                 </div>
-
-            </div>
+            </section>
         </main>
     </div>
 
-    <!-- MODAL 1: CALCULADORA IMPUESTOS -->
-    <div class="modal-overlay hidden fixed inset-0 bg-slate-900/60 z-[2000] flex justify-center items-center p-4" id="calcModal">
-        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-indigo-100 transform transition-all">
-            <div class="bg-indigo-900 text-white p-4 flex justify-between items-center">
-                <h3 class="font-bold flex items-center space-x-2">
-                    <i data-lucide="calculator" class="w-5 h-5 text-yellow-400"></i>
-                    <span>Calculadora de Impuestos Integrada</span>
-                </h3>
-                <button onclick="closeModal('calcModal')" class="text-indigo-200 hover:text-white">
-                    <i data-lucide="x" class="w-5 h-5"></i>
+    <!-- ================= MODAL PEDAGÓGICO DE APÉNDICES ================= -->
+    <div id="modal-help" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm">
+        <div class="w-full max-w-lg rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                <h4 class="text-base font-bold text-white flex items-center gap-2">
+                    <i data-lucide="help-circle" class="h-5 w-5 text-indigo-400"></i>
+                    Glosario del Anexo 22
+                </h4>
+                <button onclick="closeModal('modal-help')" class="rounded-lg p-1 text-slate-400 hover:bg-slate-800 hover:text-slate-200">
+                    <i data-lucide="x" class="h-5 w-5"></i>
                 </button>
             </div>
-            <div class="p-5 space-y-4 max-h-[70vh] overflow-y-auto">
-                <p class="text-xs text-slate-500">Verifica paso a paso el origen aritmético de los cálculos de la base gravable y de las contribuciones fiscales para la importación actual.</p>
-                
-                <div class="space-y-2 border border-slate-100 rounded-lg p-3 bg-slate-50">
-                    <div class="flex justify-between text-xs">
-                        <span class="text-slate-600">Valor Factura (USD)</span>
-                        <strong id="calcValUsd" class="font-mono">$0.00</strong>
-                    </div>
-                    <div class="flex justify-between text-xs">
-                        <span class="text-slate-600">x Tipo de Cambio (DOF)</span>
-                        <strong id="calcExchange" class="font-mono">17.5000</strong>
-                    </div>
-                    <div class="border-t border-dashed my-1"></div>
-                    <div class="flex justify-between text-xs font-semibold text-slate-800">
-                        <span>(=) Valor Comercial (MXN)</span>
-                        <span id="calcValComMxn" class="font-mono">$0.00</span>
-                    </div>
-                </div>
-
-                <div class="space-y-2 border border-slate-100 rounded-lg p-3 bg-slate-50">
-                    <div class="flex justify-between text-xs text-slate-600">
-                        <span>(+) Fletes (MXN)</span>
-                        <span id="calcFreight" class="font-mono">$0.00</span>
-                    </div>
-                    <div class="flex justify-between text-xs text-slate-600">
-                        <span>(+) Seguros (MXN)</span>
-                        <span id="calcIns" class="font-mono">$0.00</span>
-                    </div>
-                    <div class="flex justify-between text-xs text-slate-600">
-                        <span>(+) Otros Incrementables (MXN)</span>
-                        <span id="calcOther" class="font-mono">$0.00</span>
-                    </div>
-                    <div class="flex justify-between text-xs text-red-600">
-                        <span>(-) Decrementables (MXN)</span>
-                        <span id="calcDec" class="font-mono">-$0.00</span>
-                    </div>
-                    <div class="border-t border-dashed my-1"></div>
-                    <div class="flex justify-between text-sm font-bold text-indigo-950">
-                        <span>(=) Valor en Aduana (MXN)</span>
-                        <span id="calcValAduana" class="font-mono">$0.00</span>
-                    </div>
-                </div>
-
-                <div class="space-y-2 border border-indigo-50 rounded-lg p-3 bg-indigo-50/50">
-                    <div class="flex justify-between text-xs">
-                        <span class="text-slate-600 font-semibold flex items-center space-x-1">
-                            <span>1. IGI (Ad Valorem):</span>
-                            <span id="calcIgiTasa" class="bg-indigo-100 text-indigo-800 px-1.5 py-0.2 rounded text-[10px]">0%</span>
-                        </span>
-                        <strong id="calcIgiMxn" class="font-mono">$0.00</strong>
-                    </div>
-                    <div class="flex justify-between text-xs">
-                        <span class="text-slate-600 font-semibold">2. DTA (Artículo 49 LFD):</span>
-                        <strong id="calcDtaMxn" class="font-mono">$0.00</strong>
-                    </div>
-                    <div class="flex justify-between text-xs text-slate-500">
-                        <span>3. Prevalidación (PRV) + IVA:</span>
-                        <span class="font-mono">$310.00 + $49.60</span>
-                    </div>
-                    <div class="flex justify-between text-xs">
-                        <span class="text-slate-600 font-semibold flex items-center space-x-1">
-                            <span>4. IVA (Base IVA x 16%):</span>
-                            <span class="text-[9px] text-slate-400 font-normal">(Base: Aduana+IGI+DTA+PRV)</span>
-                        </span>
-                        <strong id="calcIvaMxn" class="font-mono">$0.00</strong>
-                    </div>
-                    <div class="border-t border-dashed my-1 border-indigo-200"></div>
-                    <div class="flex justify-between text-md font-bold text-green-700">
-                        <span>Total de Impuestos a Liquidar:</span>
-                        <span id="calcTotalMxn" class="font-mono">$0.00</span>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-slate-50 px-4 py-3 border-t border-slate-200 flex justify-end">
-                <button onclick="closeModal('calcModal')" class="px-4 py-2 bg-slate-800 text-white rounded hover:bg-slate-950 text-xs font-semibold">Entendido</button>
+            <div id="modal-help-content" class="text-sm text-slate-300 leading-relaxed space-y-3 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
+                <!-- Inyectado por JS -->
             </div>
         </div>
     </div>
 
-    <!-- MODAL 2: MARCO TEÓRICO CONTEXTUAL -->
-    <div class="modal-overlay hidden fixed inset-0 bg-slate-900/60 z-[2000] flex justify-center items-center p-4" id="theoryModal">
-        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-indigo-100 transform transition-all">
-            <div class="bg-teal-900 text-white p-4 flex justify-between items-center">
-                <h3 class="font-bold flex items-center space-x-2">
-                    <i data-lucide="scale" class="w-5 h-5 text-teal-400"></i>
-                    <span>Soporte Jurídico y Teoría Contextual</span>
-                </h3>
-                <button onclick="closeModal('theoryModal')" class="text-teal-200 hover:text-white">
-                    <i data-lucide="x" class="w-5 h-5"></i>
+    <!-- ================= MODAL DE AUDITORÍA Y RETROALIMENTACIÓN ================= -->
+    <div id="modal-feedback" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
+        <div class="w-full max-w-xl rounded-3xl border border-slate-800 bg-slate-900 p-8 shadow-2xl text-center">
+            <div id="feedback-icon-container" class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
+                <!-- Icono dinámico -->
+            </div>
+            <h3 id="feedback-title" class="text-2xl font-extrabold text-white">Resultado del Dictamen</h3>
+            <p id="feedback-subtitle" class="mt-2 text-slate-400 text-sm font-semibold"></p>
+            
+            <div id="feedback-log" class="mt-6 rounded-2xl border border-slate-800 bg-slate-950 p-4 text-left space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar text-xs">
+                <!-- Inyectado por JS -->
+            </div>
+
+            <div class="mt-8 flex gap-3">
+                <button onclick="closeModal('modal-feedback')" class="flex-1 rounded-xl border border-slate-700 bg-transparent hover:bg-slate-800 py-3 font-semibold text-slate-300 transition">
+                    Regresar a Corregir
+                </button>
+                <button id="feedback-next-btn" onclick="nextCase()" class="flex-1 hidden rounded-xl bg-indigo-600 hover:bg-indigo-500 py-3 font-semibold text-white transition">
+                    Siguiente Caso Práctico
                 </button>
             </div>
-            <div class="p-5 space-y-4 max-h-[75vh] overflow-y-auto">
-                <div class="space-y-3">
-                    <div class="bg-teal-50 border-l-4 border-teal-600 p-3.5 rounded-r">
-                        <h4 class="font-bold text-teal-900 text-xs mb-1 flex items-center space-x-1">
-                            <i data-lucide="file-text" class="w-4 h-4"></i>
-                            <span>Fundamento de Clave de Pedimento (CVE)</span>
-                        </h4>
-                        <p id="theoryCveNote" class="text-xs text-teal-800 leading-relaxed">Nota legal...</p>
-                    </div>
-
-                    <div class="bg-blue-50 border-l-4 border-blue-600 p-3.5 rounded-r">
-                        <h4 class="font-bold text-blue-900 text-xs mb-1 flex items-center space-x-1">
-                            <i data-lucide="globe" class="w-4 h-4"></i>
-                            <span>Tratados y Arancel de Importación (LIGIE)</span>
-                        </h4>
-                        <p id="theoryTreaty" class="text-xs text-blue-800 leading-relaxed">Nota de tratado...</p>
-                    </div>
-
-                    <div class="bg-purple-50 border-l-4 border-purple-600 p-3.5 rounded-r">
-                        <h4 class="font-bold text-purple-900 text-xs mb-1 flex items-center space-x-1">
-                            <i data-lucide="book-open-check" class="w-4 h-4"></i>
-                            <span>Artículos de la Ley Aduanera Claves</span>
-                        </h4>
-                        <p id="theoryLegalBasis" class="text-xs text-purple-800 leading-relaxed">Artículos aplicados...</p>
-                    </div>
-
-                    <div class="bg-slate-100 p-3.5 rounded-lg border border-slate-200">
-                        <h4 class="font-bold text-slate-800 text-xs mb-1">Anotaciones Generales de la Regla:</h4>
-                        <p id="theoryRegime" class="text-xs text-slate-600 leading-relaxed">Explicación del régimen y su temporalidad física.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-slate-50 px-4 py-3 border-t border-slate-200 flex justify-end">
-                <button onclick="closeModal('theoryModal')" class="px-4 py-2 bg-slate-800 text-white rounded hover:bg-slate-950 text-xs font-semibold">Cerrar</button>
-            </div>
         </div>
     </div>
 
-    <!-- MODAL 3: COMPARADOR DE REGÍMENES -->
-    <div class="modal-overlay hidden fixed inset-0 bg-slate-900/60 z-[2000] flex justify-center items-center p-4" id="comparatorModal">
-        <div class="bg-white rounded-xl shadow-2xl max-w-3xl w-full overflow-hidden border border-indigo-100">
-            <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
-                <h3 class="font-bold flex items-center space-x-2">
-                    <i data-lucide="git-compare" class="w-5 h-5 text-cyan-400"></i>
-                    <span>Comparador de Regímenes Aduaneros (Art. 90 Ley Aduanera)</span>
-                </h3>
-                <button onclick="closeModal('comparatorModal')" class="text-slate-200 hover:text-white">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            <div class="p-5 max-h-[75vh] overflow-y-auto space-y-4">
-                <p class="text-xs text-slate-500 leading-relaxed">
-                    Al declarar un pedimento, la correcta elección del régimen define la situación jurídica de la mercancía. A continuación, comparemos la clave declarada frente a regímenes análogos:
-                </p>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-xs text-left border-collapse border border-slate-200">
-                        <thead class="bg-slate-100 text-slate-700">
-                            <tr>
-                                <th class="border border-slate-200 p-2 font-bold">Régimen</th>
-                                <th class="border border-slate-200 p-2 font-bold">Permanencia</th>
-                                <th class="border border-slate-200 p-2 font-bold">¿Paga IGI?</th>
-                                <th class="border border-slate-200 p-2 font-bold">¿Paga IVA?</th>
-                                <th class="border border-slate-200 p-2 font-bold">Finalidad del Régimen</th>
-                            </tr>
-                        </thead>
-                        <tbody id="comparatorBody" class="divide-y divide-slate-200">
-                            <!-- Inyectado por JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="bg-slate-50 px-4 py-3 border-t border-slate-200 flex justify-end">
-                <button onclick="closeModal('comparatorModal')" class="px-4 py-2 bg-slate-800 text-white rounded hover:bg-slate-950 text-xs font-semibold">Cerrar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 4: REPORTES Y EXPORTACIÓN -->
-    <div class="modal-overlay hidden fixed inset-0 bg-slate-900/60 z-[2000] flex justify-center items-center p-4" id="exportModal">
-        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden border border-indigo-100">
-            <div class="bg-purple-900 text-white p-4 flex justify-between items-center">
-                <h3 class="font-bold flex items-center space-x-2">
-                    <i data-lucide="download" class="w-5 h-5 text-purple-300"></i>
-                    <span>Exportación de Caso Resuelto</span>
-                </h3>
-                <button onclick="closeModal('exportModal')" class="text-purple-200 hover:text-white">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            <div class="p-5 space-y-4 text-xs">
-                <p class="text-slate-600 leading-relaxed">Genera un respaldo formal de los datos o descarga un reporte JSON del caso resuelto para que tu profesor pueda revisarlo e importarlo.</p>
-                
-                <div class="space-y-3">
-                    <button onclick="exportJSON()" class="w-full flex items-center justify-between p-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg transition">
-                        <div class="flex items-center space-x-2.5">
-                            <i data-lucide="file-json" class="w-5 h-5 text-purple-600"></i>
-                            <div class="text-left">
-                                <strong class="block text-slate-800">Descargar JSON Académico</strong>
-                                <span class="text-[10px] text-slate-500">Expediente digital listo para entrega.</span>
-                            </div>
-                        </div>
-                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
-                    </button>
-
-                    <div class="border-t border-slate-200 my-2 pt-2"></div>
-                    
-                    <div class="bg-amber-50 p-3 rounded border border-amber-200 space-y-2">
-                        <strong class="text-amber-800 block">Revisar Expediente Alumno:</strong>
-                        <p class="text-[10px] text-amber-700 leading-normal">Si eres docente, puedes cargar el archivo .json enviado por un alumno para evaluar su simulación y puntaje en tu propia pantalla:</p>
-                        <input type="file" id="importFile" onchange="importJSON(event)" class="text-[10px] text-slate-600 w-full file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-amber-600 file:text-white hover:file:bg-amber-700 file:cursor-pointer">
-                    </div>
-                </div>
-            </div>
-            <div class="bg-slate-50 px-4 py-3 border-t border-slate-200 flex justify-end">
-                <button onclick="closeModal('exportModal')" class="px-4 py-2 bg-slate-800 text-white rounded hover:bg-slate-950 text-xs font-semibold">Cerrar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- NOTIFICACIONES Y ALERTA FLOTANTE INTERNA (REEMPLAZO DE ALERT()) -->
-    <div id="toastNotification" class="fixed bottom-6 right-6 z-[3000] hidden bg-slate-900 text-white px-5 py-3 rounded-lg shadow-2xl flex items-center space-x-3 text-xs max-w-sm border-l-4 border-yellow-400">
-        <i id="toastIcon" data-lucide="alert-circle" class="w-5 h-5 text-yellow-400 shrink-0"></i>
-        <div class="flex-1">
-            <h5 id="toastTitle" class="font-bold">Aviso del Sistema</h5>
-            <p id="toastBody" class="text-slate-300">Mensaje descriptivo...</p>
-        </div>
-        <button onclick="hideToast()" class="text-slate-400 hover:text-white shrink-0"><i data-lucide="x" class="w-4 h-4"></i></button>
-    </div>
-
-    <!-- MODAL 5: RESULTADO DE EXAMEN (FEEDBACK RÚBRICA) -->
-    <div class="modal-overlay hidden fixed inset-0 bg-slate-900/60 z-[2500] flex justify-center items-center p-4" id="feedbackModal">
-        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-100">
-            <div class="bg-indigo-950 text-white p-4 flex justify-between items-center">
-                <h3 class="font-bold flex items-center space-x-2">
-                    <i data-lucide="award" class="w-5 h-5 text-yellow-400"></i>
-                    <span>Dictamen y Evaluación de Pedimento</span>
-                </h3>
-                <button onclick="closeModal('feedbackModal')" class="text-slate-300 hover:text-white">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            <div class="p-5 space-y-4 max-h-[70vh] overflow-y-auto">
-                <div class="text-center py-4 bg-slate-50 rounded-lg border border-slate-100">
-                    <div id="feedbackGradeCircle" class="w-20 h-20 rounded-full flex items-center justify-center text-2xl font-black mx-auto bg-green-100 text-green-800">
-                        100
-                    </div>
-                    <h4 id="feedbackTitle" class="font-bold text-sm text-slate-800 mt-3">¡Excelente simulación aduanera!</h4>
-                    <p id="feedbackAttempts" class="text-[10px] text-slate-500 mt-1">Intento evaluado formalmente</p>
-                </div>
-
-                <div class="space-y-2">
-                    <h5 class="text-xs font-bold text-slate-700">Reporte Detallado de Errores:</h5>
-                    <div id="feedbackNotes" class="space-y-1.5 text-xs">
-                        <!-- Llenado dinámico -->
-                    </div>
-                </div>
-            </div>
-            <div class="bg-slate-50 px-4 py-3 border-t border-slate-200 flex justify-end space-x-2">
-                <button onclick="closeModal('feedbackModal')" class="px-4 py-2 bg-indigo-900 text-white text-xs font-bold rounded hover:bg-indigo-950">Aceptar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- GLOSARIO FLOTANTE PERMANENTE / SIDEBAR EXTRA DE CONSULTA -->
-    <div id="glossaryPanel" class="fixed right-0 top-1/2 -translate-y-1/2 bg-white border border-slate-200 rounded-l-xl shadow-xl w-72 z-40 transition-transform duration-300 translate-x-full no-print">
-        <div class="bg-slate-800 text-white p-3 rounded-tl-xl flex items-center justify-between">
-            <span class="text-xs font-bold flex items-center space-x-1">
-                <i data-lucide="bookmark" class="w-3.5 h-3.5 text-yellow-400"></i>
-                <span>Glosario Técnico de Comercio</span>
-            </span>
-            <button onclick="toggleGlossary()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
-        </div>
-        <div class="p-4 space-y-3.5 max-h-[50vh] overflow-y-auto text-xs">
-            <div>
-                <strong class="text-indigo-800 block">UMC (Unidad de Medida de Comercialización):</strong>
-                <p class="text-slate-600 text-[11px] leading-relaxed mt-0.5">La unidad física señalada en la factura del proveedor (ej. 6 = Pieza, 1 = Kilogramo). Fundamento: Anexo 22, Apéndice 7.</p>
-            </div>
-            <div>
-                <strong class="text-indigo-800 block">UMT (Unidad de Medida de Tarifa):</strong>
-                <p class="text-slate-600 text-[11px] leading-relaxed mt-0.5">La unidad especificada según las reglas de la TIGIE para control de aranceles de importación. Apéndice 7.</p>
-            </div>
-            <div>
-                <strong class="text-indigo-800 block">P. V/C (País Vendedor o Comprador):</strong>
-                <p class="text-slate-600 text-[11px] leading-relaxed mt-0.5">Clave de tres dígitos para identificar de dónde proviene la factura comercial internacional. Apéndice 4.</p>
-            </div>
-            <div>
-                <strong class="text-indigo-800 block">P. O/D (País de Origen o Destino):</strong>
-                <p class="text-slate-600 text-[11px] leading-relaxed mt-0.5">El lugar de manufactura u obtención de los bienes que activa las preferencias arancelarias de tratados. Apéndice 4.</p>
-            </div>
-            <div>
-                <strong class="text-indigo-800 block">DTA (Derecho de Trámite Aduanero):</strong>
-                <p class="text-slate-600 text-[11px] leading-relaxed mt-0.5">Cuota federal por usar la infraestructura del puerto o aduana de despacho. Art. 49 Ley Federal de Derechos.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- BOTÓN DISPARADOR DE GLOSARIO FLOTANTE -->
-    <button onclick="toggleGlossary()" class="fixed right-0 top-1/2 -translate-y-1/2 bg-indigo-900 text-white p-2.5 rounded-l-md shadow-xl hover:bg-indigo-950 transition-transform duration-200 z-30 no-print flex flex-col items-center space-y-1.5">
-        <i data-lucide="bookmark" class="w-4 h-4 text-yellow-400"></i>
-        <span class="text-[9px] font-bold uppercase tracking-widest writing-vertical rotate-180" style="writing-mode: vertical-rl;">GLOSARIO</span>
-    </button>
-
-    <!-- MOTOR DE SIMULACIÓN (JAVASCRIPT) -->
+    <!-- ================= CONTROL DE DATOS Y LÓGICA ================= -->
     <script>
-        // BASE DE DATOS DE CASOS ACADÉMICOS (Ricos en datos aduanales, incrementables y tratados)
-        const casesDatabase = [
+        // --- BASE DE DATOS DE 8 CASOS PRÁCTICOS COMPLETAMENTE IMPLEMENTADOS ---
+        const CASOS = [
             {
-                id: "caso_1",
-                title: "Importación Definitiva - Smart TVs (T-MEC)",
-                difficulty: 3,
-                regime: "IMD",
-                cve: "A1",
-                incoterm: "FOB",
-                fraction: "8528.72.06",
-                valDolares: 12500.00,
-                tipoCambio: 17.5000,
-                fletes: 8500, // MXN
-                seguros: 4200, // MXN
-                otrosInc: 1500, // MXN
-                totalDec: 0,
-                pesoBruto: 850.5,
-                aduanaEs: "390", // Manzanillo
-                m_entrada: "7", // Marítimo
-                m_arribo: "7",
-                m_salida: "7",
-                rfc: "SLA210115NH0",
-                razonSocial: "SOLUCIONES LOGISTICAS Y ADUANALES S.A. DE C.V.",
-                domicilio: "AV. FRAY JUNIPERO SERRA 115, COL. DESARROLLO, QUERÉTARO, QRO.",
-                partida: {
-                    vinc: 0,
-                    metval: 1, // Valor de transacción
-                    umc: 6, // Piezas
-                    cant_umc: 100,
-                    umt: 6,
-                    cant_umt: 100,
-                    pais: "USA / USA",
-                    igi_tasa: 0, // Preferencia T-MEC
-                    tratado: "T-MEC"
+                id: 1,
+                titulo: "Nina Importaciones - Pedimento C1",
+                dificultad: "Básica (Cruce Terrestre)",
+                descripcion: "El caso real cargado de Nina Importaciones S. de R.L. de C.V. Se realiza una importación definitiva a región fronteriza de un sistema de enrollador de vela de proa con accesorios, comprado a un proveedor en EE.UU. (Star Import Export LLC). El embarque cruza vía terrestre por la aduana de Tijuana (Otay). Debes asentar con exactitud los impuestos de prevalidación, IVA y el total del pedimento que ves en tu formato guía.",
+                datosSoporte: {
+                    "Patente Aduanal": "3581",
+                    "RFC Importador": "NIM180606MU5",
+                    "Aduana Despacho": "390",
+                    "Tipo de Cambio": "20.32330",
+                    "Precio Factura (USD)": "$3,700.00",
+                    "Valor en Aduana": "$75,196.00 MXN",
+                    "Fracción / NICO": "84798999 - 99",
+                    "Impuestos Totales": "$12,367.00 MXN (Efectivo)",
+                    "Prevalidación (PRV)": "$290.00 MXN",
+                    "IVA Liquidado": "$12,031.00 MXN",
+                    "CNT (IVA/PRV)": "$46.00 MXN"
                 },
-                theory: {
-                    legal_basis: "Art. 36-A, 56 y 64 (Valor Aduana) de la Ley Aduanera.",
-                    treaty: "Tratado Comercial T-MEC - Certificación de origen activa para EUA.",
-                    cve_note: "La clave A1 se utiliza para importar de forma definitiva mercancía que no retorna a su país de origen.",
-                    regime: "Régimen Definitivo de Importación (IMD): Permanencia ilimitada de la mercancía con pago de contribuciones."
+                respuestas: {
+                    p_num: "243935814024883",
+                    p_destino: "2",
+                    p_op: "IMP",
+                    p_clave: "C1",
+                    p_regimen: "IMD",
+                    p_tc: 20.32330,
+                    p_peso: 62.000,
+                    p_adu: "390",
+                    p_trans_e: "7", p_trans_a: "7", p_trans_s: "7",
+                    p_vdol: 3700.00,
+                    p_vadu: 75196,
+                    p_vcom: 75196,
+                    p_rfc: "NIM180606MU5",
+                    p_curp: "",
+                    p_nombre: "NINA IMPORTACIONES S. DE R.L. DE C.V.",
+                    p_domicilio: "AV. CENTRO COMERCIAL No. 17115 Int. A1 OTAY CONSTITUYENTES CP. 22457 TIJUANA Baja California",
+                    p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
+                    p_fecha_e: "05/12/2024", p_fecha_p: "05/12/2024",
+                    p_prv_tasa: 290,
+                    p_l_iva: 12031, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 12367, p_l_total: 12367,
+                    p_part_frac: "84798999", p_part_nico: "99", p_part_vinc: "0",
+                    p_part_umc: "6", p_part_umt: "6", p_part_cant: 2.000, p_part_pais: "USA",
+                    p_part_desc: "SISTEMA DE ENROLLADOR DE VELA DE PROA CON ACCESORIOS",
+                    p_part_id1: "EN", p_part_id2: "TL", p_part_id3: "PO"
                 }
             },
             {
-                id: "caso_2",
-                title: "Importación Temporal IMMEX - Bobinas de Acero",
-                difficulty: 4,
-                regime: "ITE", // Temporal para elaboración
-                cve: "IN", // Clave IMMEX
-                incoterm: "EXW",
-                fraction: "7208.37.01",
-                valDolares: 24500.00,
-                tipoCambio: 17.5000,
-                fletes: 18000, // Alto flete nacionalizado
-                seguros: 6500,
-                otrosInc: 2000,
-                totalDec: 0,
-                pesoBruto: 5400.0,
-                aduanaEs: "240", // Nuevo Laredo
-                m_entrada: "3", // Ferrocarril
-                m_arribo: "3",
-                m_salida: "3",
-                rfc: "MET981112TR1",
-                razonSocial: "METALÚRGICA DEL NORTE S.A. DE C.V.",
-                domicilio: "PARQUE INDUSTRIAL APODACA SECTOR 3, APODACA, N.L.",
-                partida: {
-                    vinc: 0,
-                    metval: 1,
-                    umc: 1, // Kilogramos
-                    cant_umc: 5400,
-                    umt: 1,
-                    cant_umt: 5400,
-                    pais: "USA / USA",
-                    igi_tasa: 0, // Exenta por IMMEX o regla específica
-                    tratado: "PROSEC"
+                id: 2,
+                titulo: "Maquiladora IMMEX - Temporal Circuitos",
+                dificultad: "Intermedia (Temporal)",
+                descripcion: "La empresa certificada 'MAQUILADORA DEL NORTE S.A. DE C.V.' realiza una importación temporal de circuitos integrados procedentes de San Diego para su ensamble en Tijuana. Al ser una importación temporal bajo el programa IMMEX, la clave del pedimento debe corresponder a una operación temporal, y los impuestos de importación (IGI e IVA) quedan diferidos/certificados bajo el esquema de crédito fiscal.",
+                datosSoporte: {
+                    "Patente Aduanal": "3581",
+                    "RFC Importador": "MNO151020TY9",
+                    "Aduana Despacho": "390",
+                    "Tipo de Cambio": "20.10000",
+                    "Precio Factura (USD)": "$15,000.00",
+                    "Valor en Aduana": "$301,500.00 MXN",
+                    "Fracción / NICO": "85423101 - 00",
+                    "Arancel (IGI)": "Exento (IMMEX)",
+                    "Clave de Pedimento": "IN (Temporal IMMEX)",
+                    "Régimen": "ITE (Temporal Maquila)"
                 },
-                theory: {
-                    legal_basis: "Art. 104 y 108 de la Ley Aduanera. Programa de Fomento IMMEX.",
-                    treaty: "Beneficio arancelario PROSEC para la industria siderúrgica.",
-                    cve_note: "La clave IN ampara la introducción temporal de insumos que se transformarán y retornarán al extranjero.",
-                    regime: "Régimen Temporal (ITE): Permanece un plazo de hasta 18 meses prorrogables sin causar IVA directo en aduanas bajo fianza fiscal."
+                respuestas: {
+                    p_num: "243935814024884",
+                    p_destino: "2",
+                    p_op: "IMP",
+                    p_clave: "IN",
+                    p_regimen: "ITE",
+                    p_tc: 20.10000,
+                    p_peso: 120.000,
+                    p_adu: "390",
+                    p_trans_e: "7", p_trans_a: "7", p_trans_s: "7",
+                    p_vdol: 15000.00,
+                    p_vadu: 301500,
+                    p_vcom: 301500,
+                    p_rfc: "MNO151020TY9",
+                    p_curp: "",
+                    p_nombre: "MAQUILADORA DEL NORTE S.A. DE C.V.",
+                    p_domicilio: "CALLE INDUSTRIAL No. 200 OTAY TIJUANA Baja California",
+                    p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
+                    p_fecha_e: "06/12/2024", p_fecha_p: "06/12/2024",
+                    p_prv_tasa: 290,
+                    p_l_iva: 0, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 336, p_l_total: 336,
+                    p_part_frac: "85423101", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 1500.000, p_part_pais: "USA",
+                    p_part_desc: "CIRCUITOS INTEGRADOS MONOLITICOS PARA PROCESAMIENTO",
+                    p_part_id1: "EN", p_part_id2: "TL", p_part_id3: "PO"
                 }
             },
             {
-                id: "caso_3",
-                title: "Importación Definitiva - Calzado de Piel (No Tratado)",
-                difficulty: 5,
-                regime: "IMD",
-                cve: "A1",
-                incoterm: "CIF", // Ya incluye flete y seguro en origen
-                fraction: "6403.91.01",
-                valDolares: 9800.00,
-                tipoCambio: 17.5000,
-                fletes: 0, // FOB no aplica, CIF incluye fletes
-                seguros: 0, // CIF incluye seguros
-                otrosInc: 0,
-                totalDec: 0,
-                pesoBruto: 420.0,
-                aduanaEs: "390", // Manzanillo
-                m_entrada: "7",
-                m_arribo: "7",
-                m_salida: "7",
-                rfc: "CAL110220JH6",
-                razonSocial: "IMPORTADORA REY DEL CALZADO DE MÉXICO",
-                domicilio: "BLVD. ADOLFO LÓPEZ MATEOS 304, LEÓN, GTO.",
-                partida: {
-                    vinc: 0,
-                    metval: 1,
-                    umc: 6, // Pares
-                    cant_umc: 300,
-                    umt: 6,
-                    cant_umt: 300,
-                    pais: "CHN / CHN", // China
-                    igi_tasa: 20, // IGI General aplicable
-                    tratado: "N/A - GENERAL"
+                id: 3,
+                titulo: "Persona Física - Autos Usados Juárez",
+                dificultad: "Intermedia (Persona Física)",
+                descripcion: "El importador individual 'César Omar Ayala Rodríguez' realiza la importación definitiva de un automóvil usado por la aduana de Ciudad Juárez (070). Por tratarse de una Persona Física con actividad empresarial, el pedimento requiere asentar su CURP correspondiente de forma obligatoria, y liquidar los aranceles generales de importación sin preferencias arancelarias.",
+                datosSoporte: {
+                    "Patente Aduanal": "3581",
+                    "RFC Importador": "AARC950528XX1",
+                    "CURP": "AARC950528HBCYRL02",
+                    "Aduana Despacho": "070",
+                    "Tipo de Cambio": "19.80000",
+                    "Precio Factura (USD)": "$8,000.00",
+                    "Valor en Aduana": "$158,400.00 MXN",
+                    "Arancel (IGI)": "10% ($15,840.00 MXN)",
+                    "DTA (8 al millar)": "$1,267.00 MXN"
                 },
-                theory: {
-                    legal_basis: "Art. 56, 64 Ley Aduanera. Clasificación arancelaria LIGIE.",
-                    treaty: "Sin Tratado Comercial. Aplica arancel general LIGIE del 20% más IVA.",
-                    cve_note: "Trámite de importación estándar de consumo. Se debe validar consistencia de Incoterm CIF con incrementables en cero.",
-                    regime: "Régimen IMD: Las mercancías extranjeras se nacionalizan de forma permanente."
+                respuestas: {
+                    p_num: "240735814024885",
+                    p_destino: "2",
+                    p_op: "IMP",
+                    p_clave: "A1",
+                    p_regimen: "IMD",
+                    p_tc: 19.80000,
+                    p_peso: 1500.000,
+                    p_adu: "070",
+                    p_trans_e: "7", p_trans_a: "7", p_trans_s: "7",
+                    p_vdol: 8000.00,
+                    p_vadu: 158400,
+                    p_vcom: 158400,
+                    p_rfc: "AARC950528XX1",
+                    p_curp: "AARC950528HBCYRL02",
+                    p_nombre: "CESAR OMAR AYALA RODRIGUEZ",
+                    p_domicilio: "AV. DE LA REPUBLICA No. 450 CIUDAD JUAREZ Chihuahua",
+                    p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
+                    p_fecha_e: "07/12/2024", p_fecha_p: "07/12/2024",
+                    p_prv_tasa: 290,
+                    p_l_iva: 28081, // Cascada: (Vadu + IGI + DTA) * 0.16 = (158400 + 15840 + 1267) * 0.16
+                    p_l_prv: 290,
+                    p_l_cnt: 46,
+                    p_l_efec: 45524, // IVA + DTA + IGI + PRV + CNT = 28081 + 1267 + 15840 + 290 + 46
+                    p_l_total: 45524,
+                    p_part_frac: "87032301", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 1.000, p_part_pais: "USA",
+                    p_part_desc: "AUTOMOVIL USADO MOTOR 4 CILINDROS CON AIRE ACONDICIONADO",
+                    p_part_id1: "MU", p_part_id2: "EN", p_part_id3: "PO"
                 }
             },
             {
-                id: "caso_4",
-                title: "Exportación Definitiva - Tequila Artesanal a Alemania",
-                difficulty: 4,
-                regime: "EXD",
-                cve: "A1",
-                incoterm: "FOB",
-                fraction: "2208.90.03",
-                valDolares: 32000.00,
-                tipoCambio: 17.5000,
-                fletes: 12000,
-                seguros: 3500,
-                otrosInc: 1000,
-                totalDec: 0,
-                pesoBruto: 1850.0,
-                aduanaEs: "120", // Veracruz
-                m_entrada: "7",
-                m_arribo: "7",
-                m_salida: "7",
-                rfc: "TEQ910808MA2",
-                razonSocial: "TEQUILERA HACIENDA REAL S.A. DE C.V.",
-                domicilio: "KM 4.5 CARRETERA A TEQUILA, JALISCO.",
-                partida: {
-                    vinc: 0,
-                    metval: 1,
-                    umc: 9, // Litros
-                    cant_umc: 2400,
-                    umt: 9,
-                    cant_umt: 2400,
-                    pais: "DEU / MEX",
-                    igi_tasa: 0, // Exportación libre de arancel
-                    tratado: "TLCUEM"
+                id: 4,
+                titulo: "Exportación Definitiva - Mezcal Veracruz",
+                dificultad: "Avanzada (Exportación)",
+                descripcion: "La destilería 'BEBIDAS ANCESTRALES DE MÉXICO S.A. DE C.V.' realiza una exportación definitiva (Clave A1, Régimen EXD) de 500 cajas de Mezcal Mexicano de Oaxaca hacia la Unión Europea. La salida física del país se realiza vía marítima por el Puerto de Veracruz (280). Las exportaciones mexicanas están exentas de IVA y de Arancel (IGI), lo que genera un cuadro de liquidación significativamente simplificado.",
+                datosSoporte: {
+                    "Patente Aduanal": "3581",
+                    "RFC Exportador": "BAM120404TY5",
+                    "Aduana Despacho": "280 (Veracruz)",
+                    "Tipo de Cambio": "20.12000",
+                    "Precio Factura (USD)": "$12,000.00",
+                    "Valor en Aduana": "$241,440.00 MXN",
+                    "Medio de Transporte": "1 (Marítimo)"
                 },
-                theory: {
-                    legal_basis: "Art. 102 de la Ley Aduanera.",
-                    treaty: "Tratado de Libre Comercio México-Unión Europea (TLCUEM).",
-                    cve_note: "La clave A1 en exportaciones documenta la salida definitiva de mercancía nacional.",
-                    regime: "Régimen de Exportación Definitiva (EXD): Salida de mercancías para permanecer de forma ilimitada en el extranjero."
+                respuestas: {
+                    p_num: "242835814024886",
+                    p_destino: "9",
+                    p_op: "EXP",
+                    p_clave: "A1",
+                    p_regimen: "EXD",
+                    p_tc: 20.12000,
+                    p_peso: 2500.000,
+                    p_adu: "280",
+                    p_trans_e: "1", p_trans_a: "1", p_trans_s: "1",
+                    p_vdol: 12000.00,
+                    p_vadu: 241440,
+                    p_vcom: 241440,
+                    p_rfc: "BAM120404TY5",
+                    p_curp: "",
+                    p_nombre: "BEBIDAS ANCESTRALES DE MEXICO S.A. DE C.V.",
+                    p_domicilio: "CARRETERA AL MEZCAL Km 12 OAXACA DE JUAREZ Oaxaca",
+                    p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
+                    p_fecha_e: "08/12/2024", p_fecha_p: "08/12/2024",
+                    p_prv_tasa: 290,
+                    p_l_iva: 0, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 336, p_l_total: 336,
+                    p_part_frac: "22089005", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_umc: "9", p_part_umt: "9", p_part_cant: 3000.000, p_part_pais: "DEU",
+                    p_part_desc: "MEZCAL ARTESANAL 100 POR CIENTO DE AGAVE ESPADIN EN BOTELLAS",
+                    p_part_id1: "EX", p_part_id2: "EN", p_part_id3: "PO"
                 }
             },
             {
-                id: "caso_5",
-                title: "Depósito Fiscal - Automóviles Eléctricos",
-                difficulty: 5,
-                regime: "DFI", // Depósito fiscal almacén general
-                cve: "A4",
-                incoterm: "FOB",
-                fraction: "8703.80.01",
-                valDolares: 45000.00,
-                tipoCambio: 17.5000,
-                fletes: 25000,
-                seguros: 8000,
-                otrosInc: 3000,
-                totalDec: 0,
-                pesoBruto: 1980.0,
-                aduanaEs: "470", // AICM
-                m_entrada: "1", // Aéreo
-                m_arribo: "1",
-                m_salida: "1",
-                rfc: "EVL211115EV3",
-                razonSocial: "ELECTRIC VEHICLES LOGISTICS S.A.",
-                domicilio: "REFORMA CENTRAL 402, CIUDAD DE MÉXICO.",
-                partida: {
-                    vinc: 0,
-                    metval: 1,
-                    umc: 6, // Unidades
-                    cant_umc: 1,
-                    umt: 6,
-                    cant_umt: 1,
-                    pais: "JPN / JPN",
-                    igi_tasa: 15, // Arancel diferido
-                    tratado: "CPTPP"
+                id: 5,
+                titulo: "Calzado de China - Manzanillo",
+                dificultad: "Avanzada (Arancel Alto)",
+                descripcion: "La distribuidora 'CALZADO MODERNO DE MÉXICO' importa de manera definitiva un contenedor de tenis deportivos de marca genérica de origen China, entrando por el puerto de Manzanillo (160). Al no contar con acuerdos comerciales vigentes con China para este sector, se asienta una tasa arancelaria del IGI del 20% sobre el Valor de Aduana, además de requerir fletes e incrementables marítimos.",
+                datosSoporte: {
+                    "Patente Aduanal": "3581",
+                    "RFC Importador": "CMM110909HY1",
+                    "Aduana Despacho": "160 (Manzanillo)",
+                    "Tipo de Cambio": "20.40000",
+                    "Precio Factura (USD)": "$18,000.00",
+                    "Fletes Terrestres (USD)": "$1,200.00",
+                    "Valor en Aduana": "$391,680.00 MXN",
+                    "Arancel (IGI)": "20% ($78,336.00 MXN)",
+                    "DTA (8 al millar)": "$3,133.00 MXN"
                 },
-                theory: {
-                    legal_basis: "Art. 119 al 123 de la Ley Aduanera.",
-                    treaty: "Tratado de Integración Progresista de Asociación Transpacífico (CPTPP).",
-                    cve_note: "La clave A4 se utiliza para destinar mercancías a un Almacén General de Depósito autorizado.",
-                    regime: "Régimen de Depósito Fiscal (DFI): Permite posponer el pago de los impuestos correspondientes hasta que el producto se retire del almacén."
+                respuestas: {
+                    p_num: "241635814024887",
+                    p_destino: "9",
+                    p_op: "IMP",
+                    p_clave: "A1",
+                    p_regimen: "IMD",
+                    p_tc: 20.40000,
+                    p_peso: 8500.000,
+                    p_adu: "160",
+                    p_trans_e: "1", p_trans_a: "1", p_trans_s: "7",
+                    p_vdol: 18000.00,
+                    p_vadu: 391680, // (18,000 + 1,200) * 20.40 = 19,200 * 20.40 = 391,680
+                    p_vcom: 367200, // 18,000 * 20.40 = 367,200
+                    p_rfc: "CMM110909HY1",
+                    p_curp: "",
+                    p_nombre: "CALZADO MODERNO DE MEXICO S.A. DE C.V.",
+                    p_domicilio: "AV. DE LOS PINOS No. 120 LEON Guanajuato",
+                    p_fletes: 24480, // 1,200 * 20.40
+                    p_seguros: 0, p_otros_inc: 0,
+                    p_fecha_e: "09/12/2024", p_fecha_p: "09/12/2024",
+                    p_prv_tasa: 290,
+                    p_l_iva: 75704, // Cascada: (Vadu + IGI + DTA) * 0.16 = (391680 + 78336 + 3133) * 0.16 = 473149 * 0.16
+                    p_l_prv: 290,
+                    p_l_cnt: 46,
+                    p_l_efec: 157509, // IVA + DTA + IGI + PRV + CNT = 75704 + 3133 + 78336 + 290 + 46
+                    p_l_total: 157509,
+                    p_part_frac: "64041101", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 1200.000, p_part_pais: "CHN",
+                    p_part_desc: "CALZADO DEPORTE TENIS CON SUELA DE CAUCHO SINTETICO",
+                    p_part_id1: "EN", p_part_id2: "UM", p_part_id3: "PO"
+                }
+            },
+            {
+                id: 6,
+                titulo: "Torno CNC Alemán - Veracruz Marítimo",
+                dificultad: "Avanzada (Industrial)",
+                descripcion: "La siderúrgica 'INGENIERÍA MECÁNICA DEL GOLFO' realiza la importación definitiva de un centro de maquinado (Torno CNC) nuevo de procedencia alemana por el Puerto de Veracruz (280). La mercancía viaja vía marítima, requiriendo asentar de forma rigurosa los fletes marítimos facturados y aplicar un arancel general del 5% al no presentarse certificado de la UE.",
+                datosSoporte: {
+                    "Patente Aduanal": "3581",
+                    "RFC Importador": "IMG081112TR1",
+                    "Aduana Despacho": "280 (Veracruz)",
+                    "Tipo de Cambio": "19.95000",
+                    "Precio Factura (USD)": "$40,000.00",
+                    "Fletes (USD)": "$2,500.00",
+                    "Valor en Aduana": "$847,875.00 MXN",
+                    "Arancel (IGI)": "5% ($42,394.00 MXN)",
+                    "DTA (8 al millar)": "$6,783.00 MXN"
+                },
+                respuestas: {
+                    p_num: "242835814024888",
+                    p_destino: "9",
+                    p_op: "IMP",
+                    p_clave: "A1",
+                    p_regimen: "IMD",
+                    p_tc: 19.95000,
+                    p_peso: 4500.000,
+                    p_adu: "280",
+                    p_trans_e: "1", p_trans_a: "1", p_trans_s: "7",
+                    p_vdol: 40000.00,
+                    p_vadu: 847875, // (40,000 + 2,500) * 19.95 = 847,875
+                    p_vcom: 798000, // 40,000 * 19.95 = 798,000
+                    p_rfc: "IMG081112TR1",
+                    p_curp: "",
+                    p_nombre: "INGENIERIA MECANICA DEL GOLFO S.A. DE C.V.",
+                    p_domicilio: "AV. COSTA VERDE No. 100 VERACRUZ Veracruz",
+                    p_fletes: 49875, // 2,500 * 19.95
+                    p_seguros: 0, p_otros_inc: 0,
+                    p_fecha_e: "10/12/2024", p_fecha_p: "10/12/2024",
+                    p_prv_tasa: 290,
+                    p_l_iva: 143528, // Cascada: (Vadu + IGI + DTA) * 0.16 = (847875 + 42394 + 6783) * 0.16 = 897052 * 0.16
+                    p_l_prv: 290,
+                    p_l_cnt: 46,
+                    p_l_efec: 193041, // IVA + DTA + IGI + PRV + CNT = 143528 + 6783 + 42394 + 290 + 46
+                    p_l_total: 193041,
+                    p_part_frac: "84581102", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 1.000, p_part_pais: "DEU",
+                    p_part_desc: "TORNO DE CONTROL NUMERICO COMPUTARIZADO INDUSTRIAL CNC NUEVO",
+                    p_part_id1: "EN", p_part_id2: "PO", p_part_id3: "UM"
+                }
+            },
+            {
+                id: 7,
+                titulo: "Dispositivos Médicos - Laredo T-MEC",
+                dificultad: "Avanzada (Tratado)",
+                descripcion: "La distribuidora hospitalaria 'SISTEMAS MÉDICOS DE MÉXICO' importa de forma definitiva un lote de catéteres de infusión procedentes de Dallas, Texas, cruzando por la aduana líder de Nuevo Laredo (240). Se presenta certificado de origen bajo el acuerdo T-MEC, lo que exime totalmente la tasa del IGI (Arancel 0%). Se liquida de forma regular el Derecho de Trámite Aduanero y el IVA en cascada correspondiente.",
+                datosSoporte: {
+                    "Patente Aduanal": "3581",
+                    "RFC Importador": "SMM131212UY3",
+                    "Aduana Despacho": "240 (Nuevo Laredo)",
+                    "Tipo de Cambio": "20.15000",
+                    "Precio Factura (USD)": "$30,000.00",
+                    "Valor en Aduana": "$604,500.00 MXN",
+                    "Arancel (IGI)": "0% (T-MEC)",
+                    "DTA (8 al millar)": "$4,836.00 MXN"
+                },
+                respuestas: {
+                    p_num: "242435814024889",
+                    p_destino: "9",
+                    p_op: "IMP",
+                    p_clave: "A1",
+                    p_regimen: "IMD",
+                    p_tc: 20.15000,
+                    p_peso: 350.000,
+                    p_adu: "240",
+                    p_trans_e: "7", p_trans_a: "7", p_trans_s: "7",
+                    p_vdol: 30000.00,
+                    p_vadu: 604500,
+                    p_vcom: 604500,
+                    p_rfc: "SMM131212UY3",
+                    p_curp: "",
+                    p_nombre: "SISTEMAS MEDICOS DE MEXICO S.A. DE C.V.",
+                    p_domicilio: "REFORMA No. 800 NUEVO LAREDO Tamaulipas",
+                    p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
+                    p_fecha_e: "11/12/2024", p_fecha_p: "11/12/2024",
+                    p_prv_tasa: 290,
+                    p_l_iva: 97494, // Cascada: (Vadu + IGI + DTA) * 0.16 = (604500 + 0 + 4836) * 0.16 = 609336 * 0.16
+                    p_l_prv: 290,
+                    p_l_cnt: 46,
+                    p_l_efec: 102666, // IVA + DTA + PRV + CNT = 97494 + 4836 + 290 + 46
+                    p_l_total: 102666,
+                    p_part_frac: "90183902", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 5000.000, p_part_pais: "USA",
+                    p_part_desc: "CATETERES DE INFUSION PARA USO HOSPITALARIO NUEVOS",
+                    p_part_id1: "TL", p_part_id2: "EN", p_part_id3: "PO"
+                }
+            },
+            {
+                id: 8,
+                titulo: "Activo Fijo IMMEX - Maquinaria Tijuana",
+                dificultad: "Avanzada (IMMEX)",
+                descripcion: "La maquiladora de autopartes 'AUTOMOTRIZ DE TIJUANA S. DE R.L.' realiza la importación temporal de una celda robotizada de soldadura como activo fijo bajo su programa IMMEX (Clave AF, Régimen ITE) por la aduana de Tijuana (390). Por disposición de la Ley Aduanera, las importaciones temporales de activo fijo para maquila pagan una cuota de DTA fija que se estipula en lugar del 8 al millar.",
+                datosSoporte: {
+                    "Patente Aduanal": "3581",
+                    "RFC Importador": "ATI140505TY1",
+                    "Aduana Despacho": "390",
+                    "Tipo de Cambio": "20.25000",
+                    "Precio Factura (USD)": "$90,000.00",
+                    "Valor en Aduana": "$1,822,500.00 MXN",
+                    "DTA Fijo Ley": "$410.00 MXN",
+                    "Arancel (IGI)": "0% (Bajo Certificación)"
+                },
+                respuestas: {
+                    p_num: "243935814024890",
+                    p_destino: "2",
+                    p_op: "IMP",
+                    p_clave: "AF",
+                    p_regimen: "ITE",
+                    p_tc: 20.25000,
+                    p_peso: 3400.000,
+                    p_adu: "390",
+                    p_trans_e: "7", p_trans_a: "7", p_trans_s: "7",
+                    p_vdol: 90000.00,
+                    p_vadu: 1822500,
+                    p_vcom: 1822500,
+                    p_rfc: "ATI140505TY1",
+                    p_curp: "",
+                    p_nombre: "AUTOMOTRIZ DE TIJUANA S. DE R.L. DE C.V.",
+                    p_domicilio: "AV. EXPORTADORES No. 440 PARQUE INDUSTRIAL OTAY TIJUANA Baja California",
+                    p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
+                    p_fecha_e: "12/12/2024", p_fecha_p: "12/12/2024",
+                    p_prv_tasa: 290,
+                    p_l_iva: 0, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 746, p_l_total: 746, // IVA diferido, se paga DTA fijo ($410) + PRV ($290) + CNT ($46) = $746
+                    p_part_frac: "85153101", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 1.000, p_part_pais: "USA",
+                    p_part_desc: "CELDA ROBOTIZADA DE SOLDADURA ELECTRICA DE ALTA PRECISION",
+                    p_part_id1: "EN", p_part_id2: "TL", p_part_id3: "PO"
                 }
             }
         ];
 
-        // Estado global de la aplicación
-        let currentActiveCase = null;
-        let isExamMode = false;
-        let currentZoom = 0.85;
-        let studentAttempts = {}; // Persistirá resultados
+        // --- APÉNDICES DE AYUDA ACADÉMICA ---
+        const APENDICES = {
+            pedimento: `
+                <p class="font-bold text-white text-base">Clave de Pedimento & Patentes</p>
+                <p class="text-xs text-slate-300 mt-1">El número de pedimento consta de 15 dígitos que amparan la legalidad de la operación:</p>
+                <ul class="list-disc pl-5 mt-2 space-y-1 text-xs text-slate-300">
+                    <li><strong>Dígito 1-2:</strong> Año de validación (Ej: '24').</li>
+                    <li><strong>Dígito 3-4:</strong> Código de la aduana de despacho (Ej: '39' o '40' Tijuana, '28' Veracruz).</li>
+                    <li><strong>Dígito 5-8:</strong> Número de patente del agente aduanal (Ej: '3581').</li>
+                    <li><strong>Dígito 9:</strong> Último dígito del año de validación ('4').</li>
+                    <li><strong>Dígitos 10-15:</strong> Consecutivo de la agencia.</li>
+                </ul>
+            `,
+            partida: `
+                <p class="font-bold text-white text-base">Fracción y Datos del Producto</p>
+                <p class="text-xs text-slate-300 mt-1">Ingresa el código arancelario de 8 dígitos de la LIGIE, el NICO de 2 dígitos y la unidad de medida según los catálogos del Apéndice 7 del Anexo 22.</p>
+            `
+        };
 
-        // INICIALIZACIÓN
-        document.addEventListener('DOMContentLoaded', () => {
+        // --- SISTEMA DE ARRANQUE SEGURO SAAI (Patente de Luis Ignacio Ayala Rodríguez) ---
+        window.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
-            loadProgress();
-            populateCaseSelector();
-            
-            // Cargar por defecto el primer caso
-            loadCase(casesDatabase[0].id);
+            populateSelector();
+
+            let progress = 0;
+            const bootStatus = document.getElementById('boot-status');
+            const bootPercent = document.getElementById('boot-percent');
+            const bootBar = document.getElementById('boot-bar');
+            const actionButtons = document.getElementById('action-buttons');
+
+            const steps = [
+                "Estableciendo conexión encriptada con SAAI M3...",
+                "Leyendo firmas digitales del Agente Aduanal (Fiel)...",
+                "Verificando patentes de Luis Ignacio Ayala Rodríguez...",
+                "Configurando simulaciones del Anexo 22 de las RGCE...",
+                "Sincronizando 8 casos evaluativos didácticos..."
+            ];
+
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 8) + 4;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    bootStatus.innerText = "Conexión SAAI Exitosa. Licencia Activa.";
+                    bootPercent.innerText = "100%";
+                    bootBar.style.width = "100%";
+                    setTimeout(() => {
+                        actionButtons.classList.remove('hidden');
+                        document.querySelector('#boot-box').classList.add('hidden');
+                    }, 400);
+                } else {
+                    bootPercent.innerText = `${progress}%`;
+                    bootBar.style.width = `${progress}%`;
+                    const idx = Math.floor((progress / 100) * steps.length);
+                    bootStatus.innerText = steps[idx] || "Procesando...";
+                }
+            }, 80);
         });
 
-        // POBLAR EL SELECTOR DE CASOS
-        function populateCaseSelector() {
-            const selector = document.getElementById('caseSelector');
+        function populateSelector() {
+            const selector = document.getElementById('case-selector');
             selector.innerHTML = '';
-            casesDatabase.forEach(c => {
+            CASOS.forEach(caso => {
                 const opt = document.createElement('option');
-                opt.value = c.id;
-                opt.textContent = `${c.cve} - ${c.title}`;
+                opt.value = caso.id;
+                opt.innerText = `Caso ${caso.id}: ${caso.titulo}`;
                 selector.appendChild(opt);
             });
         }
 
-        // CARGAR CASO DE ESTUDIO ACTIVO
-        function loadCase(caseId) {
-            const selected = casesDatabase.find(c => c.id === caseId);
-            if (!selected) return;
+        function startApp(mode) {
+            if (mode === 'info') {
+                window.open("https://github.com/", "_blank");
+                return;
+            }
+            document.getElementById('splash-screen').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+            loadCase(1);
+        }
 
-            currentActiveCase = selected;
+        let activeCaseIdx = 0;
+        let casesCompleted = [];
 
-            // Actualizar panel izquierdo (Ficha Técnica del Caso)
-            document.getElementById('caseTitle').textContent = selected.title;
-            document.getElementById('caseDescription').textContent = selected.description;
-            document.getElementById('caseTag').className = `text-[10px] font-bold px-2 py-0.5 rounded uppercase ${selected.regime === 'IMD' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`;
-            document.getElementById('caseTag').textContent = `${selected.cve} - ${selected.regime}`;
-            
-            // Estrellas de dificultad
-            document.getElementById('difficultyStars').textContent = '⭐'.repeat(selected.difficulty);
+        function loadCase(id) {
+            const idx = CASOS.findIndex(c => c.id === parseInt(id));
+            if (idx === -1) return;
+            activeCaseIdx = idx;
+            const caso = CASOS[idx];
 
-            // Ficha técnica inferior
-            document.getElementById('specIncoterm').textContent = selected.incoterm;
-            document.getElementById('specFraction').textContent = selected.fraction;
-            document.getElementById('specInvoice').textContent = `$${selected.valDolares.toLocaleString('es-MX', {minimumFractionDigits: 2})} USD`;
-            document.getElementById('specIns').textContent = `$${selected.seguros.toLocaleString('es-MX')} MXN`;
-            document.getElementById('specFreight').textContent = `$${selected.fletes.toLocaleString('es-MX')} MXN`;
-            document.getElementById('specOrigin').textContent = selected.partida.pais;
+            document.getElementById('case-badge').innerText = `CASO ${caso.id}`;
+            document.getElementById('case-title').innerText = caso.titulo;
+            document.getElementById('case-description').innerText = caso.descripcion;
 
-            // Cargar teorías asociadas
-            document.getElementById('theoryCveNote').textContent = selected.theory.cve_note;
-            document.getElementById('theoryTreaty').textContent = selected.theory.treaty;
-            document.getElementById('theoryLegalBasis').textContent = selected.theory.legal_basis;
-            document.getElementById('theoryRegime').textContent = selected.theory.regime;
-
-            // Si estamos en Modo Estudio: Llenar el pedimento automáticamente con las referencias
-            // Si estamos en Modo Examen: Dejar en blanco para que el alumno complete
-            if (isExamMode) {
-                clearPedimentoFields();
-            } else {
-                fillPedimentoWithReference(selected);
+            // Ficha técnica lateral
+            const sheet = document.getElementById('case-data-sheet');
+            sheet.innerHTML = '';
+            for (const [key, value] of Object.entries(caso.datosSoporte)) {
+                const item = `
+                    <div class="bg-slate-950 p-2 rounded-lg border border-slate-850">
+                        <span class="block text-[9px] font-bold text-slate-500 tracking-wider uppercase">${key}</span>
+                        <span class="text-xs font-bold text-indigo-400 font-mono">${value}</span>
+                    </div>
+                `;
+                sheet.insertAdjacentHTML('beforeend', item);
             }
 
-            // Actualizar Historial del Caso en el UI
-            updateCaseAttemptsUI();
-            
-            // Recalcular para la calculadora interactiva
-            calculateDirectTaxes();
+            clearInputs();
+            document.getElementById('case-selector').value = id;
         }
 
-        // LLENAR PEDIMENTO CON DATOS DE REFERENCIA (MODO ESTUDIO)
-        function fillPedimentoWithReference(c) {
-            resetValidationStyles();
-            
-            document.getElementById('num_pedimento').value = `26 ${c.aduanaEs} 3581 6001578`;
-            document.getElementById('tipo_oper').value = c.regime === 'EXD' ? 'EXP' : 'IMP';
-            document.getElementById('cve_pedimento').value = c.cve;
-            document.getElementById('regimen').value = c.regime;
-            document.getElementById('destino').value = "9";
-            document.getElementById('tipo_cambio').value = c.tipoCambio.toFixed(4);
-            document.getElementById('peso_bruto').value = c.pesoBruto;
-            document.getElementById('aduana_es').value = c.aduanaEs;
-            
-            document.getElementById('m_entrada').value = c.m_entrada;
-            document.getElementById('m_arribo').value = c.m_arribo;
-            document.getElementById('m_salida').value = c.m_salida;
-
-            document.getElementById('valor_dolares').value = c.valDolares;
-            document.getElementById('rfc_contribuyente').value = c.rfc;
-            document.getElementById('nombre_contribuyente').value = c.razonSocial;
-            document.getElementById('domicilio_contribuyente').value = c.domicilio;
-
-            // Incrementables
-            document.getElementById('fletes').value = c.fletes;
-            document.getElementById('seguros').value = c.seguros;
-            document.getElementById('embalajes').value = 0;
-            document.getElementById('otros_inc').value = c.otrosInc;
-            document.getElementById('total_dec').value = c.totalDec;
-
-            // Partida
-            document.getElementById('partida_fraccion').value = c.fraction;
-            document.getElementById('partida_vinc').value = c.partida.vinc;
-            document.getElementById('partida_metval').value = c.partida.metval;
-            document.getElementById('partida_umc').value = c.partida.umc;
-            document.getElementById('partida_cant_umc').value = c.partida.cant_umc;
-            document.getElementById('partida_umt').value = c.partida.umt;
-            document.getElementById('partida_cant_umt').value = c.partida.cant_umt;
-            document.getElementById('partida_pais').value = c.partida.pais;
-            document.getElementById('partida_val_usd').value = c.valDolares;
-            document.getElementById('partida_igi_tasa').value = c.partida.igi_tasa;
-            document.getElementById('partida_tratado').value = c.partida.tratado;
-
-            // Calcular Matemáticas de Pedimento automáticamente
-            const math = solveTaxesForCase(c);
-            
-            document.getElementById('valor_aduana').value = math.valAduanaMxn;
-            document.getElementById('precio_pagado').value = math.valComercialMxn;
-
-            // Desglose de contribuciones
-            document.getElementById('fp_dta').value = 0; // Efectivo
-            document.getElementById('imp_dta').value = math.dta;
-            
-            document.getElementById('fp_igi').value = 0;
-            document.getElementById('imp_igi').value = math.igi;
-
-            document.getElementById('fp_prv').value = 0;
-            document.getElementById('imp_prv').value = 310;
-
-            document.getElementById('fp_iva').value = 0;
-            document.getElementById('imp_iva').value = math.iva;
-
-            document.getElementById('imp_total').value = math.total;
-            
-            // Partida valor aduana
-            document.getElementById('partida_val_mxn').value = math.valAduanaMxn;
-        }
-
-        // LIMPIAR CAMPOS DEL PEDIMENTO (MODO EXAMEN)
-        function clearPedimentoFields() {
-            resetValidationStyles();
-            
-            // Conservar campos informativos mínimos o dejar vacío
-            document.getElementById('num_pedimento').value = "";
-            document.getElementById('tipo_oper').value = "";
-            document.getElementById('cve_pedimento').value = "";
-            document.getElementById('regimen').value = "";
-            document.getElementById('destino').value = "";
-            document.getElementById('tipo_cambio').value = "";
-            document.getElementById('peso_bruto').value = "";
-            document.getElementById('aduana_es').value = "";
-            
-            document.getElementById('m_entrada').value = "";
-            document.getElementById('m_arribo').value = "";
-            document.getElementById('m_salida').value = "";
-
-            document.getElementById('valor_dolares').value = "";
-            document.getElementById('valor_aduana').value = "";
-            document.getElementById('precio_pagado').value = "";
-            
-            document.getElementById('rfc_contribuyente').value = "";
-            document.getElementById('nombre_contribuyente').value = "";
-            document.getElementById('domicilio_contribuyente').value = "";
-
-            document.getElementById('fletes').value = "";
-            document.getElementById('seguros').value = "";
-            document.getElementById('embalajes').value = "";
-            document.getElementById('otros_inc').value = "";
-            document.getElementById('total_dec').value = "";
-
-            // Contribuciones vacías
-            document.getElementById('fp_dta').value = "";
-            document.getElementById('imp_dta').value = "";
-            document.getElementById('fp_igi').value = "";
-            document.getElementById('imp_igi').value = "";
-            document.getElementById('fp_prv').value = "";
-            document.getElementById('imp_prv').value = "";
-            document.getElementById('fp_iva').value = "";
-            document.getElementById('imp_iva').value = "";
-            document.getElementById('imp_total').value = "";
-
-            // Partida vacía
-            document.getElementById('partida_fraccion').value = "";
-            document.getElementById('partida_vinc').value = "";
-            document.getElementById('partida_metval').value = "";
-            document.getElementById('partida_umc').value = "";
-            document.getElementById('partida_cant_umc').value = "";
-            document.getElementById('partida_umt').value = "";
-            document.getElementById('partida_cant_umt').value = "";
-            document.getElementById('partida_pais').value = "";
-            document.getElementById('partida_val_usd').value = "";
-            document.getElementById('partida_val_mxn').value = "";
-            document.getElementById('partida_igi_tasa').value = "";
-            document.getElementById('partida_tratado').value = "";
-        }
-
-        // LIMPIAR BORDES Y DECORACIONES DE VALIDACIÓN
-        function resetValidationStyles() {
-            const fields = document.querySelectorAll('.field');
-            fields.forEach(f => {
-                f.className = 'field';
+        function clearInputs() {
+            const inputs = document.querySelectorAll('.saai-hoja input');
+            inputs.forEach(input => {
+                input.value = '';
+                input.classList.remove('bg-green-100', 'bg-red-100', 'border-green-500', 'border-red-500');
             });
+            document.getElementById('p_curp').disabled = false;
         }
 
-        // ALTERNAR ENTRE MODO ESTUDIO Y EXAMEN
-        function toggleMode() {
-            isExamMode = !isExamMode;
-            const modeBtn = document.getElementById('modeBtn');
-            const btnCalificar = document.getElementById('btnCalificar');
-            const watermark = document.getElementById('watermark');
-            const modeText = document.getElementById('modeText');
-
-            if (isExamMode) {
-                modeBtn.className = "flex items-center space-x-1.5 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded text-xs font-semibold transition-all shadow";
-                modeText.textContent = "📝 Modo Examen";
-                btnCalificar.classList.remove('hidden');
-                watermark.innerHTML = '<span class="text-[90px] font-black tracking-widest border-[12px] border-black p-6 rounded-3xl -rotate-12">EXAMEN</span>';
-                showToast("¡Modo Examen Activado!", "Se han borrado los campos de referencia. Rellena el pedimento completo y presiona 'Calificar Examen'.", "award");
-                clearPedimentoFields();
+        function toggleCurpInput() {
+            const rfcVal = document.getElementById('p_rfc').value.trim();
+            const curpInput = document.getElementById('p_curp');
+            if (rfcVal.length === 12) {
+                curpInput.value = '';
+                curpInput.disabled = true;
+                curpInput.placeholder = "P. MORAL";
             } else {
-                modeBtn.className = "flex items-center space-x-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded text-xs font-semibold transition-all shadow";
-                modeText.textContent = "📚 Modo Estudio";
-                btnCalificar.classList.add('hidden');
-                watermark.innerHTML = '<span class="text-[90px] font-black tracking-widest border-[12px] border-black p-6 rounded-3xl -rotate-12">ESTUDIO</span>';
-                showToast("Modo Estudio Activado", "Los datos de referencia se han restaurado para que puedas analizarlos junto con los fundamentos jurídicos.", "book-open");
-                loadCase(currentActiveCase.id);
+                curpInput.disabled = false;
+                curpInput.placeholder = "P. FÍSICA";
             }
         }
 
-        // MOTOR CENTRAL DE CÁLCULO DE CONTRIBUCIONES (ALGEBRA ADUANAL)
-        function solveTaxesForCase(c) {
-            const valComercialMxn = Math.round(c.valDolares * c.tipoCambio);
-            const incrementables = c.fletes + c.seguros + c.otrosInc;
-            const valAduanaMxn = Math.round(valComercialMxn + incrementables - c.totalDec);
-            
-            // IGI
-            const igi = Math.round(valAduanaMxn * (c.partida.igi_tasa / 100));
-            
-            // DTA (Cuota fija para T-MEC, o 8 al millar para general, con tope mínimo general si aplica)
-            let dta = 0;
-            if (c.partida.tratado === "T-MEC") {
-                dta = 432; // Cuota fija simplificada para tratados comerciales norteamericanos
-            } else {
-                dta = Math.round(valAduanaMxn * 0.008);
-                if (dta < 432) dta = 432;
+        // --- REVELAR PLANTILLA ---
+        function revealAnswers() {
+            const resp = CASOS[activeCaseIdx].respuestas;
+            for (const [key, value] of Object.entries(resp)) {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.value = value;
+                }
             }
-
-            // Prevalidación estándar mexicana (310 MXN + IVA)
-            const prv = 310;
-            const prvIva = 50; // simplificado
-
-            // Base de IVA: Valor Aduana + IGI + DTA + PRV
-            const baseIva = valAduanaMxn + igi + dta + prv;
-            const iva = Math.round(baseIva * 0.16);
-
-            // Total general a pagar en caja bancaria
-            const total = igi + dta + prv + prvIva + iva;
-
-            return {
-                valComercialMxn,
-                valAduanaMxn,
-                igi,
-                dta,
-                iva,
-                total
-            };
+            toggleCurpInput();
         }
 
-        // ACTUALIZAR CALCULADORA INTERACTIVA DINÁMICAMENTE CON LOS VALORES INGRESADOS
-        function calculateDirectTaxes() {
-            // Obtener tasas y valores de los inputs para realizar el análisis paso a paso en tiempo real
-            const valUsd = parseFloat(document.getElementById('valor_dolares').value) || 0;
-            const exchange = parseFloat(document.getElementById('tipo_cambio').value) || 17.5000;
-            const fletes = parseFloat(document.getElementById('fletes').value) || 0;
-            const seguros = parseFloat(document.getElementById('seguros').value) || 0;
-            const otrosInc = parseFloat(document.getElementById('otros_inc').value) || 0;
-            const totalDec = parseFloat(document.getElementById('total_dec').value) || 0;
-            const igiTasa = parseFloat(document.getElementById('partida_igi_tasa').value) || 0;
+        // --- VERIFICACIÓN DE PEDIMENTO (VERIFICACIÓN EN CASCADA) ---
+        function verifyPedimento() {
+            const resp = CASOS[activeCaseIdx].respuestas;
+            const log = [];
+            let errors = 0;
 
-            const valComMxn = Math.round(valUsd * exchange);
-            const totalInc = fletes + seguros + otrosInc;
-            const valAduanaCalculado = valComMxn + totalInc - totalDec;
-
-            // IGI
-            const igiCalculado = Math.round(valAduanaCalculado * (igiTasa / 100));
-
-            // DTA (Detección de tratado para definir cuota o 8 al millar)
-            const tratado = document.getElementById('partida_tratado').value || "";
-            let dtaCalculado = 0;
-            if (tratado.toUpperCase() === "T-MEC") {
-                dtaCalculado = 432;
-            } else {
-                dtaCalculado = Math.round(valAduanaCalculado * 0.008);
-                if (dtaCalculado < 432 && valAduanaCalculado > 0) dtaCalculado = 432;
-            }
-
-            const prv = 310;
-            const prvIva = 50;
-
-            // Base IVA
-            const baseIva = valAduanaCalculado + igiCalculado + dtaCalculado + prv;
-            const ivaCalculado = Math.round(baseIva * 0.16);
-            const totalCompleto = igiCalculado + dtaCalculado + prv + prvIva + ivaCalculado;
-
-            // Rellenar elementos de la interfaz de la calculadora
-            document.getElementById('calcValUsd').textContent = `$${valUsd.toLocaleString('es-MX', {minimumFractionDigits: 2})} USD`;
-            document.getElementById('calcExchange').textContent = exchange.toFixed(4);
-            document.getElementById('calcValComMxn').textContent = `$${valComMxn.toLocaleString('es-MX')} MXN`;
-            
-            document.getElementById('calcFreight').textContent = `$${fletes.toLocaleString('es-MX')} MXN`;
-            document.getElementById('calcIns').textContent = `$${seguros.toLocaleString('es-MX')} MXN`;
-            document.getElementById('calcOther').textContent = `$${otrosInc.toLocaleString('es-MX')} MXN`;
-            document.getElementById('calcDec').textContent = `-$${totalDec.toLocaleString('es-MX')} MXN`;
-            
-            document.getElementById('calcValAduana').textContent = `$${valAduanaCalculado.toLocaleString('es-MX')} MXN`;
-            document.getElementById('calcIgiTasa').textContent = `${igiTasa}%`;
-            document.getElementById('calcIgiMxn').textContent = `$${igiCalculado.toLocaleString('es-MX')} MXN`;
-            document.getElementById('calcDtaMxn').textContent = `$${dtaCalculado.toLocaleString('es-MX')} MXN`;
-            document.getElementById('calcIvaMxn').textContent = `$${ivaCalculado.toLocaleString('es-MX')} MXN`;
-            document.getElementById('calcTotalMxn').textContent = `$${totalCompleto.toLocaleString('es-MX')} MXN`;
-        }
-
-        // Agregar listeners para cálculos dinámicos de impuestos al escribir en los inputs de valores
-        const inputListForCalculations = [
-            'valor_dolares', 'tipo_cambio', 'fletes', 'seguros', 'otros_inc', 'total_dec', 'partida_igi_tasa', 'partida_tratado'
-        ];
-        inputListForCalculations.forEach(id => {
-            document.getElementById(id).addEventListener('input', calculateDirectTaxes);
-        });
-
-        // EVALUACIÓN INTELIGENTE Y RÚBRICA (MODO EXAMEN)
-        function evaluateExam() {
-            if (!isExamMode) return;
-
-            let score = 100;
-            const errors = [];
-            const reference = currentActiveCase;
-            const mathRef = solveTaxesForCase(reference);
-
-            resetValidationStyles();
-
-            // Helper para validar campos individuales
-            function checkField(inputId, expectedValue, points, errorMessage, isNumeric = false) {
-                const element = document.getElementById(inputId);
-                let val = element.value.trim();
+            function check(id, expected, errorMsg) {
+                const el = document.getElementById(id);
+                if (!el) return;
                 
+                let val = el.value.trim().toUpperCase();
                 let isCorrect = false;
-                if (isNumeric) {
-                    const numVal = parseFloat(val) || 0;
-                    const numExp = parseFloat(expectedValue) || 0;
-                    isCorrect = Math.abs(numVal - numExp) < 1.0; // Tolerancia de redondeo de 1 peso
+
+                if (typeof expected === 'number') {
+                    isCorrect = Math.abs(parseFloat(val) - expected) < 2; // Margen de redondeo de 2 pesos
                 } else {
-                    isCorrect = val.toUpperCase().replace(/\s/g, '') === expectedValue.toString().toUpperCase().replace(/\s/g, '');
+                    isCorrect = val.replace(/\s/g, "") === expected.toString().toUpperCase().replace(/\s/g, "");
                 }
 
                 if (isCorrect) {
-                    element.parentElement.classList.add('corrected-success');
+                    el.classList.add('bg-green-100', 'border-green-500');
+                    el.classList.remove('bg-red-100', 'border-red-500');
                 } else {
-                    element.parentElement.classList.add('corrected-error');
-                    score -= points;
-                    errors.push({
-                        campo: inputId.replace('_', ' ').toUpperCase(),
-                        esperado: expectedValue,
-                        recibido: val || "[Vacío]",
-                        deduccion: points,
-                        feedback: errorMessage
-                    });
+                    el.classList.add('bg-red-100', 'border-red-500');
+                    el.classList.remove('bg-green-100', 'border-green-500');
+                    log.push(errorMsg);
+                    errors++;
                 }
             }
 
-            // 1. Identificación y Régimen
-            checkField('tipo_oper', reference.regime === 'EXD' ? 'EXP' : 'IMP', 10, "El tipo de operación debe ser adecuado al flujo físico de la aduana.");
-            checkField('cve_pedimento', reference.cve, 15, "Clave del pedimento según el Apéndice 2 para la finalidad de la operación.");
-            checkField('regimen', reference.regime, 10, "El código del régimen aduanero (Apéndice 16) debe coincidir.");
-            checkField('aduana_es', reference.aduanaEs, 5, "La aduana declarada no corresponde al puerto indicado en el caso.");
+            // Validar Campos SAAI M3
+            check('p_num', resp.p_num, "<strong>Número de Pedimento:</strong> El formato de 15 dígitos o su composición aduanera es incorrecto.");
+            check('p_destino', resp.p_destino, "<strong>Destino:</strong> Debe ser '2' para región fronteriza o '9' para el resto del país.");
+            check('p_op', resp.p_op, "<strong>T. Operación:</strong> Código incorrecto (IMP / EXP).");
+            check('p_clave', resp.p_clave, "<strong>Clave Pedimento:</strong> Clave del Anexo 22 incorrecta.");
+            check('p_regimen', resp.p_regimen, "<strong>Régimen:</strong> Incompatibilidad del régimen declarado.");
+            check('p_tc', resp.p_tc, "<strong>Tipo de Cambio:</strong> No coincide con el valor oficial del DOF.");
+            check('p_adu', resp.p_adu, "<strong>Aduana E/S:</strong> Sección aduanera del despacho errónea.");
+            check('p_rfc', resp.p_rfc, "<strong>R.F.C:</strong> RFC de la empresa importadora incorrecto.");
+            check('p_curp', resp.p_curp, "<strong>CURP:</strong> Debe permanecer vacío si es Persona Moral.");
+            check('p_vadu', resp.p_vadu, "<strong>Valor en Aduana:</strong> Base gravable (Precio Comercial + Gastos Incrementables en Pesos) errónea.");
+            check('p_vcom', resp.p_vcom, "<strong>Valor Comercial:</strong> Total de factura en pesos incorrecto.");
+            check('p_trans_e', resp.p_trans_e, "<strong>Transporte Entrada:</strong> Código de transporte de entrada incorrecto.");
+            check('p_l_iva', resp.p_l_iva, "<strong>IVA Liquidación:</strong> Mal cálculo del IVA acumulado en cascada.");
+            check('p_l_efec', resp.p_l_efec, "<strong>Efectivo Liquidación:</strong> El total en efectivo a pagar al banco es incorrecto.");
+            check('p_part_frac', resp.p_part_frac, "<strong>Fracción Arancelaria:</strong> Fracción de la partida incorrecta.");
+            check('p_part_nico', resp.p_part_nico, "<strong>NICO:</strong> Número identificador comercial incorrecto.");
+            check('p_part_umc', resp.p_part_umc, "<strong>U.M.C:</strong> Unidad de medida comercial incorrecta.");
 
-            // 2. Validación Inteligente de Incoterm y Valores
-            const userFletes = parseFloat(document.getElementById('fletes').value) || 0;
-            const userSeguros = parseFloat(document.getElementById('seguros').value) || 0;
-
-            if (reference.incoterm === "CIF" || reference.incoterm === "CIP") {
-                // CIF ya incluye flete y seguro en el precio. Incrementables deben ser cero.
-                if (userFletes > 0 || userSeguros > 0) {
-                    score -= 10;
-                    errors.push({
-                        campo: "INCREMENTABLES / INCOTERM",
-                        esperado: "Fletes/Seguros = 0",
-                        recibido: `Flete: ${userFletes}, Seguro: ${userSeguros}`,
-                        deduccion: 10,
-                        feedback: `El incoterm acordado es ${reference.incoterm} (los costos de transporte internacional ya forman parte del valor comercial de las mercancías, por lo tanto, no deben declararse incrementables dobles).`
-                    });
-                    document.getElementById('fletes').parentElement.classList.add('corrected-error');
-                    document.getElementById('seguros').parentElement.classList.add('corrected-error');
-                }
-            } else if (reference.incoterm === "FOB" || reference.incoterm === "EXW" || reference.incoterm === "FCA") {
-                // FOB/EXW requieren incrementables de flete y seguro obligatoriamente para calcular base gravable.
-                if (userFletes === 0 || userSeguros === 0) {
-                    score -= 10;
-                    errors.push({
-                        campo: "INCREMENTABLES / INCOTERM",
-                        esperado: "Fletes y Seguros > 0",
-                        recibido: "Cero declarados",
-                        deduccion: 10,
-                        feedback: `El incoterm acordado es ${reference.incoterm}. Requiere obligatoriamente que declares costos de flete y seguro como incrementables para calcular la base gravable del Valor Aduana.`
-                    });
-                    document.getElementById('fletes').parentElement.classList.add('corrected-error');
-                    document.getElementById('seguros').parentElement.classList.add('corrected-error');
-                }
-            }
-
-            // 3. Validación de Fracción Arancelaria y Tratados
-            checkField('partida_fraccion', reference.fraction, 10, "La clasificación arancelaria LIGIE determina los impuestos aduaneros.");
-            checkField('partida_tratado', reference.partida.tratado, 5, "Identifica si goza de preferencias con tratados.");
-
-            // 4. Validación de Cálculos Matemáticos de Liquidación
-            checkField('valor_aduana', mathRef.valAduanaMxn, 15, "Base gravable incorrecta. Recuerda: (Val. Comercial USD * T.C.) + Fletes + Seguros + Otros.", true);
-            checkField('imp_igi', mathRef.igi, 10, "Cálculo del Impuesto General de Importación erróneo según la tasa aplicable.", true);
-            checkField('imp_dta', mathRef.dta, 10, "Cálculo del Derecho de Trámite Aduanero erróneo (Cuota fija T-MEC vs 8 al millar).", true);
-            checkField('imp_iva', mathRef.iva, 10, "Cálculo del IVA incorrecto. Recuerda sumarle a la base de aduana las contribuciones (IGI+DTA+PRV) antes de calcular el 16%.", true);
-            checkField('imp_total', mathRef.total, 10, "La liquidación total a pagar en banco es incorrecta.", true);
-
-            // Evitar puntajes negativos
-            if (score < 0) score = 0;
-
-            // Guardar Intento en el Historial Académico local
-            saveAttempt(reference.id, score);
-
-            // Mostrar el Reporte Card de Dictamen
-            displayGradeReport(score, errors);
+            showFeedback(errors, log);
         }
 
-        // MOSTRAR EL INFORME DE EVALUACIÓN
-        function displayGradeReport(score, errors) {
-            const gradeCircle = document.getElementById('feedbackGradeCircle');
-            const title = document.getElementById('feedbackTitle');
-            const list = document.getElementById('feedbackNotes');
-            
-            gradeCircle.textContent = score;
-            
-            // Colores por rendimiento
-            if (score >= 90) {
-                gradeCircle.className = "w-20 h-20 rounded-full flex items-center justify-center text-2xl font-black mx-auto bg-green-100 text-green-800 border-4 border-green-300";
-                title.textContent = "¡Agente Aduanal de Alto Nivel! Excelente simulación.";
-            } else if (score >= 70) {
-                gradeCircle.className = "w-20 h-20 rounded-full flex items-center justify-center text-2xl font-black mx-auto bg-yellow-100 text-yellow-800 border-4 border-yellow-300";
-                title.textContent = "Simulación Aprobada. Aún hay detalles por mejorar.";
-            } else {
-                gradeCircle.className = "w-20 h-20 rounded-full flex items-center justify-center text-2xl font-black mx-auto bg-red-100 text-red-800 border-4 border-red-300";
-                title.textContent = "Expediente con Incidencias Graves. Inténtalo nuevamente.";
-            }
+        function showFeedback(errors, log) {
+            const modal = document.getElementById('modal-feedback');
+            const icon = document.getElementById('feedback-icon-container');
+            const title = document.getElementById('feedback-title');
+            const subtitle = document.getElementById('feedback-subtitle');
+            const logElement = document.getElementById('feedback-log');
+            const nextBtn = document.getElementById('feedback-next-btn');
 
-            // Construir retroalimentación detallada
-            list.innerHTML = "";
-            if (errors.length === 0) {
-                list.innerHTML = `
-                    <div class="p-3 bg-green-50 text-green-800 text-xs rounded-lg flex items-center space-x-2">
-                        <i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i>
-                        <span>¡Felicidades! Declaración de pedimento perfecta, libre de discrepancias u omisiones fiscales.</span>
+            logElement.innerHTML = '';
+            modal.classList.remove('hidden');
+
+            if (errors === 0) {
+                icon.className = "mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-green-500/10 text-green-400 border border-green-500/20";
+                icon.innerHTML = '<i data-lucide="check-circle-2" class="h-10 w-10"></i>';
+                title.innerText = "¡Pedimento Aprobado!";
+                subtitle.innerText = "La auditoría electrónica no arrojó incidencias.";
+                logElement.innerHTML = `
+                    <div class="text-center py-4 text-green-400">
+                        <p class="font-bold text-sm">Glosador Estrella Autorizado</p>
+                        <p class="text-[11px] mt-1 text-slate-400">Todos los campos y cálculos de impuestos están correctos.</p>
                     </div>
                 `;
+
+                if (!casesCompleted.includes(CASOS[activeCaseIdx].id)) {
+                    casesCompleted.push(CASOS[activeCaseIdx].id);
+                    updateProgress();
+                }
+
+                if (activeCaseIdx < CASOS.length - 1) {
+                    nextBtn.classList.remove('hidden');
+                } else {
+                    nextBtn.classList.add('hidden');
+                }
             } else {
-                errors.forEach(err => {
-                    const row = document.createElement('div');
-                    row.className = "p-2.5 bg-slate-50 border-l-4 border-red-500 rounded text-[11px] space-y-1";
-                    row.innerHTML = `
-                        <div class="flex justify-between font-bold text-slate-800">
-                            <span>📌 Campo: ${err.campo}</span>
-                            <span class="text-red-600">-${err.deduccion} pts</span>
-                        </div>
-                        <div class="text-slate-600 leading-normal">
-                            <strong>Dato correcto esperado:</strong> <span class="font-mono text-indigo-700 font-bold">${err.esperado}</span> | 
-                            <strong>Declarado:</strong> <span class="font-mono text-red-600">${err.recibido}</span>
-                        </div>
-                        <p class="text-[10px] text-slate-500 italic mt-0.5">${err.feedback}</p>
-                    `;
-                    list.appendChild(row);
+                icon.className = "mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-red-500/10 text-red-400 border border-red-500/20";
+                icon.innerHTML = '<i data-lucide="alert-triangle" class="h-10 w-10"></i>';
+                title.innerText = "Pedimento Rechazado";
+                subtitle.innerText = `Se encontraron ${errors} campos inconsistentes en la glosa aduanal.`;
+
+                log.forEach(err => {
+                    const item = `<p class="text-[11px] text-red-300 border-l-2 border-red-500 pl-2 py-0.5 leading-relaxed">${err}</p>`;
+                    logElement.insertAdjacentHTML('beforeend', item);
                 });
-            }
 
-            openModal('feedbackModal');
+                nextBtn.classList.add('hidden');
+            }
             lucide.createIcons();
-            
-            // Actualizar interfaz lateral
-            loadProgress();
         }
 
-        // PERSISTENCIA DE PROGRESO Y INTENTOS EN MEMORIA LOCAL (LOCAL STORAGE)
-        function saveAttempt(caseId, score) {
-            if (!studentAttempts[caseId]) {
-                studentAttempts[caseId] = [];
-            }
-            studentAttempts[caseId].push({
-                date: new Date().toLocaleString(),
-                score: score
-            });
-            localStorage.setItem('pedisim_attempts', JSON.stringify(studentAttempts));
-            updateCaseAttemptsUI();
+        function updateProgress() {
+            const count = casesCompleted.length;
+            document.getElementById('progress-text').innerText = `${count} / 8 Casos`;
+            const pct = (count / 8) * 100;
+            document.getElementById('global-progress-bar').style.width = `${pct}%`;
         }
 
-        function loadProgress() {
-            const saved = localStorage.getItem('pedisim_attempts');
-            if (saved) {
-                studentAttempts = JSON.parse(saved);
-            }
-
-            // Calcular completados
-            const completedCases = Object.keys(studentAttempts).length;
-            const totalCases = casesDatabase.length;
-            const pct = (completedCases / totalCases) * 100;
-
-            document.getElementById('progressText').textContent = `${completedCases}/${totalCases} Casos Completados`;
-            document.getElementById('progressBar').style.width = `${pct}%`;
-
-            // Calcular score promedio acumulado
-            let grandTotal = 0;
-            let totalRecords = 0;
-            Object.keys(studentAttempts).forEach(cId => {
-                const arr = studentAttempts[cId];
-                if (arr.length > 0) {
-                    const maxScore = Math.max(...arr.map(a => a.score));
-                    grandTotal += maxScore;
-                    totalRecords++;
-                }
-            });
-
-            document.getElementById('scoreText').textContent = `Puntaje Acumulado: ${grandTotal} pts`;
+        function nextCase() {
+            closeModal('modal-feedback');
+            const nextId = CASOS[activeCaseIdx].id + 1;
+            loadCase(nextId);
         }
 
-        function clearProgress() {
-            if (confirm("¿Estás seguro de que deseas eliminar todo tu historial de prácticas y puntajes acumulados?")) {
-                localStorage.removeItem('pedisim_attempts');
-                studentAttempts = {};
-                loadProgress();
-                loadCase(currentActiveCase.id);
-                showToast("Historial Reiniciado", "Tu progreso se ha limpiado por completo.", "rotate-ccw");
-            }
-        }
-
-        function updateCaseAttemptsUI() {
-            const container = document.getElementById('attemptsHistory');
-            container.innerHTML = "";
-
-            if (!currentActiveCase) return;
-            const attempts = studentAttempts[currentActiveCase.id] || [];
-
-            if (attempts.length === 0) {
-                container.innerHTML = `<p class="text-slate-400 text-center italic py-2 text-[11px]">No hay intentos registrados para este caso.</p>`;
-                return;
-            }
-
-            // Listar últimos 3 intentos
-            const list = attempts.slice(-3).reverse();
-            list.forEach((att, idx) => {
-                const item = document.createElement('div');
-                item.className = "flex justify-between items-center bg-slate-50 p-1.5 rounded border border-slate-100 text-[10px]";
-                
-                const scoreColor = att.score >= 90 ? "text-green-700" : att.score >= 70 ? "text-yellow-700" : "text-red-700";
-                
-                item.innerHTML = `
-                    <span class="text-slate-500 font-mono">${att.date.split(',')[0]}</span>
-                    <strong class="${scoreColor} font-bold">${att.score} / 100 pts</strong>
-                `;
-                container.appendChild(item);
-            });
-        }
-
-        // COMPARADOR DE REGÍMENES DINÁMICO
-        function openRegimeComparator() {
-            const body = document.getElementById('comparatorBody');
-            body.innerHTML = "";
-
-            // Generar tabla comparativa dinámica dependiendo del caso actual
-            const currentReg = currentActiveCase.regime;
-            
-            // Base comparativa de regímenes mexicanos comunes
-            const comparatives = [
-                {
-                    key: "IMD (Régimen Definitivo de Importación)",
-                    perm: "Tiempo ilimitado.",
-                    igi: "Sí, tasa ad-valorem según LIGIE (salvo Tratados).",
-                    iva: "Sí, 16% tasa general en aduana.",
-                    finality: "Destinar bienes importados del extranjero para consumo local permanente."
-                },
-                {
-                    key: "ITE (Régimen Temporal para Retorno en el mismo estado)",
-                    perm: "Hasta 2 años.",
-                    igi: "No (se garantiza mediante cuentas o fianza si no hay IMMEX).",
-                    iva: "Garantizado en cuenta de IVA/IEPS.",
-                    finality: "Servicios, exhibiciones, pruebas de ingeniería."
-                },
-                {
-                    key: "ITE (Régimen IMMEX temporal de insumos)",
-                    perm: "Hasta 18 meses (prorrogables).",
-                    igi: "Exento bajo programas específicos (PROSEC).",
-                    iva: "Esquema de certificación fiscal de IVA.",
-                    finality: "Materias primas para maquiladoras y procesos industriales de exportación."
-                },
-                {
-                    key: "DFI (Depósito Fiscal Almacenes Generales)",
-                    perm: "Mientras se pague el almacenaje.",
-                    igi: "Diferido hasta que se extraiga para importación definitiva.",
-                    iva: "Diferido.",
-                    finality: "Almacenaje comercial estratégico, permitiendo retirar mercancías de forma fraccionada."
-                }
-            ];
-
-            comparatives.forEach(row => {
-                const tr = document.createElement('tr');
-                const isCurrent = row.key.includes(currentReg);
-                tr.className = isCurrent ? "bg-amber-50 font-semibold border-l-4 border-amber-500" : "";
-                tr.innerHTML = `
-                    <td class="border border-slate-200 p-2.5 text-slate-800">${row.key} ${isCurrent ? '⭐ (Caso Actual)' : ''}</td>
-                    <td class="border border-slate-200 p-2.5 text-slate-600">${row.perm}</td>
-                    <td class="border border-slate-200 p-2.5 text-slate-600">${row.igi}</td>
-                    <td class="border border-slate-200 p-2.5 text-slate-600">${row.iva}</td>
-                    <td class="border border-slate-200 p-2.5 text-slate-500 italic">${row.finality}</td>
-                `;
-                body.appendChild(tr);
-            });
-
-            openModal('comparatorModal');
-        }
-
-        // CONTROL DE MODALES
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.remove('hidden');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-        }
-
-        // EXPORTACIÓN JSON ACADÉMICA
-        function openExportModal() {
-            openModal('exportModal');
-        }
-
-        function exportJSON() {
-            const studentAnswers = {
-                alumno_evaluacion: {
-                    fecha: new Date().toLocaleString(),
-                    caso_id: currentActiveCase.id,
-                    caso_titulo: currentActiveCase.title,
-                    campos_llenados: {
-                        num_pedimento: document.getElementById('num_pedimento').value,
-                        tipo_oper: document.getElementById('tipo_oper').value,
-                        cve_pedimento: document.getElementById('cve_pedimento').value,
-                        regimen: document.getElementById('regimen').value,
-                        valor_aduana: document.getElementById('valor_aduana').value,
-                        imp_igi: document.getElementById('imp_igi').value,
-                        imp_iva: document.getElementById('imp_iva').value,
-                        imp_dta: document.getElementById('imp_dta').value,
-                        imp_total: document.getElementById('imp_total').value,
-                        partida_fraccion: document.getElementById('partida_fraccion').value
-                    },
-                    historial_alumno: studentAttempts
-                }
-            };
-
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(studentAnswers, null, 2));
-            const dlAnchorElem = document.createElement('a');
-            dlAnchorElem.setAttribute("href", dataStr);
-            dlAnchorElem.setAttribute("download", `pedimento_resuelto_${currentActiveCase.id}.json`);
-            dlAnchorElem.click();
-            showToast("Expediente JSON Descargado", "Entrega este archivo a tu profesor para tu portafolio de evidencias.", "file-json");
-        }
-
-        // IMPORTAR UN JSON ACADÉMICO PARA DOCENTES
-        function importJSON(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const parsed = JSON.parse(e.target.result);
-                    if (parsed.alumno_evaluacion) {
-                        const targetCase = parsed.alumno_evaluacion.caso_id;
-                        loadCase(targetCase);
-                        
-                        // Poblar campos importados
-                        const fields = parsed.alumno_evaluacion.campos_llenados;
-                        Object.keys(fields).forEach(key => {
-                            const el = document.getElementById(key);
-                            if (el) el.value = fields[key];
-                        });
-
-                        // Forzar Modo Examen para permitir la evaluación inmediata por el profesor
-                        isExamMode = false;
-                        toggleMode(); // Cambia a examen para que se active el botón calificar con los valores cargados
-
-                        closeModal('exportModal');
-                        showToast("Expediente Cargado", "Se han importado las respuestas del alumno con éxito. Revisa el pedimento y presiona 'Calificar Examen' para dictaminar.", "user-check");
-                    } else {
-                        showToast("Formato Incorrecto", "El archivo cargado no cumple con el esquema oficial de evaluación aduanera.", "alert-triangle");
-                    }
-                } catch (err) {
-                    showToast("Error de Archivo", "No se pudo interpretar el archivo JSON.", "x-circle");
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        // NOTIFICACIONES TOAST MEJORADAS (REEMPLAZAN ALERT())
-        function showToast(title, body, iconName = "bell") {
-            const toast = document.getElementById('toastNotification');
-            const toastTitle = document.getElementById('toastTitle');
-            const toastBody = document.getElementById('toastBody');
-            const toastIcon = document.getElementById('toastIcon');
-
-            toastTitle.textContent = title;
-            toastBody.textContent = body;
-            toastIcon.setAttribute('data-lucide', iconName);
-            
+        function showHelp(field) {
+            const modal = document.getElementById('modal-help');
+            const content = document.getElementById('modal-help-content');
+            content.innerHTML = APENDICES[field] || "<p class='text-xs'>Catálogo temporalmente fuera de línea.</p>";
+            modal.classList.remove('hidden');
             lucide.createIcons();
-            
-            toast.classList.remove('hidden');
-            setTimeout(() => {
-                hideToast();
-            }, 6000);
         }
 
-        function hideToast() {
-            document.getElementById('toastNotification').classList.add('hidden');
-        }
-
-        // CONTROLES DE ZOOM DEL LIENZO
-        function zoomIn() {
-            if (currentZoom < 1.3) {
-                currentZoom += 0.05;
-                applyZoom();
-            }
-        }
-
-        function zoomOut() {
-            if (currentZoom > 0.5) {
-                currentZoom -= 0.05;
-                applyZoom();
-            }
-        }
-
-        function applyZoom() {
-            document.getElementById('pedimentoWrapper').style.transform = `scale(${currentZoom})`;
-            document.getElementById('zoomLevel').textContent = `${Math.round(currentZoom * 100)}%`;
-        }
-
-        // GLOSARIO INTERACTIVO PANEL CONTROL
-        function toggleGlossary() {
-            const panel = document.getElementById('glossaryPanel');
-            panel.classList.toggle('translate-x-full');
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
         }
     </script>
 </body>
