@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIMUPEDI - Simulador de Pedimento Oficial Anexo 22</title>
-    <!-- Tailwind CSS para la interfaz del sistema de tutoría -->
+    <!-- Tailwind CSS para diseño y maquetación externa -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons para iconografía intuitiva -->
+    <!-- Lucide Icons para iconografía interactiva -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
@@ -15,7 +15,7 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        /* Tipografía y maquetación de Pedimento SAAI M3 Real */
+        /* Tipografía de matriz de puntos y estilo de impresión física del pedimento real */
         .saai-hoja {
             font-family: 'Courier Prime', 'Courier New', Courier, monospace;
             font-size: 11px;
@@ -47,11 +47,11 @@
         }
 
         .saai-header {
-            font-size: 9px;
+            font-size: 8.5px;
             font-weight: bold;
             color: #1e293b;
             text-transform: uppercase;
-            letter-spacing: 0.02em;
+            letter-spacing: 0.01em;
         }
 
         .saai-input {
@@ -61,7 +61,7 @@
             font-family: 'Courier Prime', 'Courier New', Courier, monospace;
             font-size: 11px;
             font-weight: bold;
-            padding: 2px 4px;
+            padding: 1px 3px;
             text-transform: uppercase;
             width: 100%;
         }
@@ -72,7 +72,16 @@
             outline: none;
         }
 
-        /* Custom scrollbar para simular un ambiente de software aduanero */
+        /* Desactivar flechas numéricas de control nativas */
+        .saai-input::-webkit-outer-spin-button,
+        .saai-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .saai-input[type=number] {
+            -moz-appearance: textfield;
+        }
+
         .custom-scrollbar::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -91,14 +100,13 @@
 </head>
 <body class="h-full overflow-hidden text-slate-100">
 
-    <!-- ================= SPLASH SCREEN / ARRANQUE SAAI (PROPIEDAD DE L.I. AYALA RODRÍGUEZ) ================= -->
+    <!-- ================= SPLASH SCREEN / ARRANQUE SEGURO SAAI (L.I. AYALA RODRÍGUEZ) ================= -->
     <div id="splash-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 px-6 transition-all duration-1000">
         <div class="w-full max-w-xl text-center">
             
-            <!-- Conexión de red / Wireless Mockup -->
             <div class="mb-6 flex justify-center items-center gap-2 text-indigo-400">
                 <i data-lucide="wifi" class="h-5 w-5 animate-pulse"></i>
-                <span class="text-xs font-mono tracking-widest font-bold">ESTABLECIENDO CONEXIÓN CON SAAI M3...</span>
+                <span class="text-xs font-mono tracking-widest font-bold">CONECTANDO A SAAI M3 RECEPTOR...</span>
             </div>
 
             <h1 class="text-5xl font-black tracking-tight text-white sm:text-6xl">
@@ -108,7 +116,7 @@
                 Entrenador Nacional del Anexo 22
             </p>
 
-            <!-- Blindaje Legal y Protección Intelectual del Creador -->
+            <!-- Cuadro Legal de Propiedad Intelectual -->
             <div class="mt-8 rounded-3xl border border-slate-800 bg-slate-900/80 p-6 text-left shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 bg-indigo-500/10 text-indigo-400 px-4 py-1 rounded-bl-xl text-[10px] font-black tracking-wider uppercase border-l border-b border-indigo-500/20">
                     Soporte Académico
@@ -118,7 +126,7 @@
                     <span>SISTEMA DE PROPIEDAD INTELECTUAL REGISTRADA</span>
                 </div>
                 <p class="text-sm text-slate-300 leading-relaxed">
-                    Esta herramienta de software, su base lógica y la metodología de adiestramiento de glosa aduanal corresponden a la propiedad intelectual de:
+                    Esta herramienta de software, su base de datos lógica y su metodología pedagógica de entrenamiento aduanal interactivo corresponden a la propiedad intelectual de:
                 </p>
                 <p class="text-xl font-extrabold text-white mt-1.5">
                     Luis Ignacio Ayala Rodríguez
@@ -132,11 +140,11 @@
                 </div>
             </div>
 
-            <!-- Caja de Estado del Booteo -->
+            <!-- Cargador Dinámico de Conexión -->
             <div id="boot-box" class="mt-8 space-y-4">
                 <div class="space-y-2">
                     <div class="flex justify-between text-xs font-semibold text-slate-400">
-                        <span id="boot-status">Validando apéndices y firma electrónica...</span>
+                        <span id="boot-status">Validando apéndices y bases de datos del SAT...</span>
                         <span id="boot-percent">0%</span>
                     </div>
                     <div class="h-3 w-full rounded-full bg-slate-900 overflow-hidden border border-slate-800 p-0.5">
@@ -185,7 +193,7 @@
                 </div>
             </div>
 
-            <!-- Firma Intelectual de Luis Ignacio Ayala Rodríguez -->
+            <!-- Firma de Autoría de Luis Ignacio Ayala Rodríguez -->
             <div class="flex items-center gap-3">
                 <div class="text-right text-xs">
                     <span class="block font-medium text-slate-400">Patente & Diseño de:</span>
@@ -222,23 +230,23 @@
                     <div class="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-3">
                         <h3 class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Ficha Descriptiva del Caso</h3>
                         <p id="case-description" class="text-slate-300 text-xs leading-relaxed font-normal">
-                            Cargando descripción...
+                            Cargando descripción comercial...
                         </p>
                     </div>
 
                     <!-- Datos Guía del caso -->
                     <div class="space-y-3">
-                        <h3 class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Ficha Técnica e Impuestos de Soporte</h3>
+                        <h3 class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Ficha Técnica de Apoyo</h3>
                         <div class="grid grid-cols-2 gap-2" id="case-data-sheet">
                             <!-- Inyectado por JS -->
                         </div>
                     </div>
                 </div>
 
-                <!-- Botonera de Acción en el Footer -->
+                <!-- Botonera de Acción en el Footer (Pistas en lugar de Auto-rellenar) -->
                 <div class="p-4 border-t border-slate-800 bg-slate-950/60 flex gap-2">
-                    <button onclick="revealAnswers()" class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-slate-700 hover:bg-slate-800 py-3 font-bold text-slate-300 text-xs transition">
-                        <i data-lucide="eye" class="h-4 w-4"></i> Rellenar Plantilla
+                    <button onclick="showCaseHints()" class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-slate-700 hover:bg-slate-800 py-3 font-bold text-slate-300 text-xs transition">
+                        <i data-lucide="help-circle" class="h-4 w-4 text-amber-500"></i> Ver Pistas de Glosa
                     </button>
                     <button onclick="verifyPedimento()" class="flex-1 flex items-center justify-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 py-3 font-bold text-white text-xs transition shadow-lg shadow-indigo-600/20">
                         <i data-lucide="check-square" class="h-4 w-4"></i> Glosar Pedimento
@@ -477,23 +485,23 @@
                             <div class="grid grid-cols-12 gap-1 items-center mb-1.5">
                                 <div class="col-span-1 text-center font-mono">1</div>
                                 <div class="col-span-3 flex gap-0.5">
-                                    <input type="text" id="p_part_frac" placeholder="84798999" class="w-2/3 saai-input text-center">
-                                    <input type="text" id="p_part_nico" placeholder="99" class="w-1/3 saai-input text-center">
+                                    <input type="text" id="p_part_frac" placeholder="84798999" class="w-2/3 saai-input text-center font-mono">
+                                    <input type="text" id="p_part_nico" placeholder="99" class="w-1/3 saai-input text-center font-mono">
                                 </div>
                                 <div class="col-span-1">
-                                    <input type="text" id="p_part_vinc" placeholder="0" class="saai-input text-center">
+                                    <input type="text" id="p_part_vinc" placeholder="0" class="saai-input text-center font-mono">
                                 </div>
                                 <div class="col-span-1">
-                                    <input type="text" id="p_part_umc" placeholder="6" class="saai-input text-center">
+                                    <input type="text" id="p_part_umc" placeholder="6" class="saai-input text-center font-mono">
                                 </div>
                                 <div class="col-span-1">
-                                    <input type="text" id="p_part_umt" placeholder="6" class="saai-input text-center">
+                                    <input type="text" id="p_part_umt" placeholder="6" class="saai-input text-center font-mono">
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="number" id="p_part_cant" placeholder="2.000" class="saai-input text-center">
+                                    <input type="number" id="p_part_cant" placeholder="2.000" class="saai-input text-center font-mono">
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="text" id="p_part_pais" placeholder="USA" class="saai-input text-center uppercase">
+                                    <input type="text" id="p_part_pais" placeholder="USA" class="saai-input text-center uppercase font-mono">
                                 </div>
                                 <div class="col-span-1 text-center">
                                     <button onclick="showHelp('partida')" class="text-indigo-600 hover:text-indigo-900"><i data-lucide="help-circle" class="h-4 w-4"></i></button>
@@ -510,9 +518,9 @@
                             <div class="border-t border-dashed border-slate-300 pt-1 mt-1">
                                 <span class="block saai-header mb-1">IDENTIFICADORES DE PARTIDA</span>
                                 <div class="grid grid-cols-3 gap-2">
-                                    <input type="text" id="p_part_id1" placeholder="EN" class="saai-input text-center">
-                                    <input type="text" id="p_part_id2" placeholder="TL" class="saai-input text-center">
-                                    <input type="text" id="p_part_id3" placeholder="PO" class="saai-input text-center">
+                                    <input type="text" id="p_part_id1" placeholder="EN" class="saai-input text-center font-mono">
+                                    <input type="text" id="p_part_id2" placeholder="TL" class="saai-input text-center font-mono">
+                                    <input type="text" id="p_part_id3" placeholder="PO" class="saai-input text-center font-mono">
                                 </div>
                             </div>
                         </div>
@@ -592,6 +600,12 @@
                     "IVA Liquidado": "$12,031.00 MXN",
                     "CNT (IVA/PRV)": "$46.00 MXN"
                 },
+                pistas: [
+                    "El número de pedimento debe estructurarse así: Año de validación (24) + Aduana de Tijuana (39) + Patente AA (3581) + Último dígito año (4) + Consecutivo (024883) -> '243935814024883'.",
+                    "Al ser importación definitiva de Nina Importaciones (Persona Moral), la clave de pedimento es 'C1', el régimen es 'IMD', el RFC es 'NIM180606MU5' y la CURP permanece en blanco.",
+                    "El valor aduana en pesos se calcula multiplicando el precio en dólares ($3,700 USD) por el tipo de cambio ($20.32330), dando $75,196 MXN. Al ser Incoterm DAP en aduana fronteriza terrestre, no hay fletes ni incrementables declarados.",
+                    "En la liquidación, el IVA es del 16% sobre el Valor Aduana ($75,196 * 0.16 = $12,031 MXN). El total a pagar en efectivo es la suma del IVA ($12,031) + Prevalidación ($290) + CNT ($46) = $12,367 MXN."
+                ],
                 respuestas: {
                     p_num: "243935814024883",
                     p_destino: "2",
@@ -636,6 +650,12 @@
                     "Clave de Pedimento": "IN (Temporal IMMEX)",
                     "Régimen": "ITE (Temporal Maquila)"
                 },
+                pistas: [
+                    "Estructura del Pedimento: Año (24) + Aduana (39) + Patente (3581) + Dígito Año (4) + Consecutivo (024884) -> '243935814024884'.",
+                    "Al ser importación temporal IMMEX, la Clave de Pedimento es 'IN' y el Régimen es 'ITE'.",
+                    "Al contar con Certificación de IVA e IEPS de Maquiladoras, no se liquida IVA en efectivo en la importación. Por tanto, el campo 'IVA Liquidación' debe registrar '0'.",
+                    "Los únicos importes que se pagan efectivamente en caja bancaria son la Prevalidación ($290) y el CNT ($46), dando un total de efectivo de $336 MXN."
+                ],
                 respuestas: {
                     p_num: "243935814024884",
                     p_destino: "2",
@@ -679,6 +699,13 @@
                     "Arancel (IGI)": "10% ($15,840.00 MXN)",
                     "DTA (8 al millar)": "$1,267.00 MXN"
                 },
+                pistas: [
+                    "Al ser el despacho por la aduana de Ciudad Juárez, el número de pedimento debe llevar la aduana '07' -> '240735814024885'.",
+                    "Al ser Persona Física, debes ingresar de forma obligatoria el RFC de 13 caracteres ('AARC950528XX1') y la CURP ('AARC950528HBCYRL02').",
+                    "Calcula la liquidación en cascada: El arancel de IGI es de $15,840 (10% sobre Valor Aduana), el DTA es de $1,267 (8 al millar de $158,400).",
+                    "La base del IVA es: Valor Aduana ($158,400) + IGI ($15,840) + DTA ($1,267) = $175,507 MXN. El IVA del 16% es $28,081 MXN.",
+                    "El efectivo total es la suma de: IVA ($28,081) + DTA ($1,267) + IGI ($15,840) + PRV ($290) + CNT ($46) = $45,524 MXN."
+                ],
                 respuestas: {
                     p_num: "240735814024885",
                     p_destino: "2",
@@ -699,10 +726,10 @@
                     p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "07/12/2024", p_fecha_p: "07/12/2024",
                     p_prv_tasa: 290,
-                    p_l_iva: 28081, // Cascada: (Vadu + IGI + DTA) * 0.16 = (158400 + 15840 + 1267) * 0.16
+                    p_l_iva: 28081,
                     p_l_prv: 290,
                     p_l_cnt: 46,
-                    p_l_efec: 45524, // IVA + DTA + IGI + PRV + CNT = 28081 + 1267 + 15840 + 290 + 46
+                    p_l_efec: 45524,
                     p_l_total: 45524,
                     p_part_frac: "87032301", p_part_nico: "00", p_part_vinc: "0",
                     p_part_umc: "7", p_part_umt: "7", p_part_cant: 1.000, p_part_pais: "USA",
@@ -724,6 +751,12 @@
                     "Valor en Aduana": "$241,440.00 MXN",
                     "Medio de Transporte": "1 (Marítimo)"
                 },
+                pistas: [
+                    "Al ser un despacho marítimo de exportación por el Puerto de Veracruz, el número de pedimento debe estructurarse con la aduana de Veracruz '28' -> '242835814024886'.",
+                    "El Tipo de Operación es 'EXP' (Exportación), la clave es 'A1' y el Régimen es 'EXD' (Exportación Definitiva). El medio de transporte (entrada/arribo/salida) es '1' (Marítimo).",
+                    "Al tratarse de una exportación de mezcal mexicano, la tasa de IGI e IVA es '0%' (Exentos para incentivar la salida de productos nacionales). El DTA de exportación para la clave A1 definitiva se liquida de forma exenta o no genera cargos en efectivo en el cuadro final.",
+                    "Los únicos importes que liquidas en efectivo para este despacho aduanal de exportación son la Prevalidación ($290) y el CNT ($46), dando un total de efectivo de $336 MXN."
+                ],
                 respuestas: {
                     p_num: "242835814024886",
                     p_destino: "9",
@@ -767,6 +800,14 @@
                     "Arancel (IGI)": "20% ($78,336.00 MXN)",
                     "DTA (8 al millar)": "$3,133.00 MXN"
                 },
+                pistas: [
+                    "Aduana de despacho es Manzanillo (16) -> Pedimento: '241635814024887'.",
+                    "Ojo con el cálculo de los incrementables: Debes registrar $24,480 MXN en el campo de 'Fletes' de la sección de incrementables (que equivale a los $1,200 USD multiplicados por el Tipo de Cambio de $20.40).",
+                    "El Valor Comercial (Factura) convertido a pesos es de $367,200 MXN ($18,000 * 20.40). Al sumarle el flete incrementable ($24,480), obtienes el Valor en Aduana exacto de $391,680 MXN.",
+                    "La liquidación de impuestos en cascada se calcula así: IGI = $391,680 * 20% = $78,336. DTA = $391,680 * 0.008 = $3,133.",
+                    "La base del IVA es: Valor Aduana ($391,680) + IGI ($78,336) + DTA ($3,133) = $473,149 MXN. El IVA del 16% resultante es $75,704 MXN.",
+                    "El efectivo total es la suma de: IVA ($75,704) + DTA ($3,133) + IGI ($78,336) + PRV ($290) + CNT ($46) = $157,509 MXN."
+                ],
                 respuestas: {
                     p_num: "241635814024887",
                     p_destino: "9",
@@ -778,20 +819,20 @@
                     p_adu: "160",
                     p_trans_e: "1", p_trans_a: "1", p_trans_s: "7",
                     p_vdol: 18000.00,
-                    p_vadu: 391680, // (18,000 + 1,200) * 20.40 = 19,200 * 20.40 = 391,680
-                    p_vcom: 367200, // 18,000 * 20.40 = 367,200
+                    p_vadu: 391680,
+                    p_vcom: 367200,
                     p_rfc: "CMM110909HY1",
                     p_curp: "",
                     p_nombre: "CALZADO MODERNO DE MEXICO S.A. DE C.V.",
                     p_domicilio: "AV. DE LOS PINOS No. 120 LEON Guanajuato",
-                    p_fletes: 24480, // 1,200 * 20.40
+                    p_fletes: 24480,
                     p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "09/12/2024", p_fecha_p: "09/12/2024",
                     p_prv_tasa: 290,
-                    p_l_iva: 75704, // Cascada: (Vadu + IGI + DTA) * 0.16 = (391680 + 78336 + 3133) * 0.16 = 473149 * 0.16
+                    p_l_iva: 75704,
                     p_l_prv: 290,
                     p_l_cnt: 46,
-                    p_l_efec: 157509, // IVA + DTA + IGI + PRV + CNT = 75704 + 3133 + 78336 + 290 + 46
+                    p_l_efec: 157509,
                     p_l_total: 157509,
                     p_part_frac: "64041101", p_part_nico: "00", p_part_vinc: "0",
                     p_part_umc: "7", p_part_umt: "7", p_part_cant: 1200.000, p_part_pais: "CHN",
@@ -803,7 +844,7 @@
                 id: 6,
                 titulo: "Torno CNC Alemán - Veracruz Marítimo",
                 dificultad: "Avanzada (Industrial)",
-                descripcion: "La siderúrgica 'INGENIERÍA MECÁNICA DEL GOLFO' realiza la importación definitiva de un centro de maquinado (Torno CNC) nuevo de procedencia alemana por el Puerto de Veracruz (280). La mercancía viaja vía marítima, requiriendo asentar de forma rigurosa los fletes marítimos facturados y aplicar un arancel general del 5% al no presentarse certificado de la UE.",
+                descripcion: "La Siderúrgica 'INGENIERÍA MECÁNICA DEL GOLFO' realiza la importación definitiva de un centro de maquinado (Torno CNC) nuevo de procedencia alemana por el Puerto de Veracruz (280). La mercancía viaja vía marítima, requiriendo asentar de forma rigurosa los fletes marítimos facturados y aplicar un arancel general del 5% al no presentarse certificado de la UE.",
                 datosSoporte: {
                     "Patente Aduanal": "3581",
                     "RFC Importador": "IMG081112TR1",
@@ -815,6 +856,14 @@
                     "Arancel (IGI)": "5% ($42,394.00 MXN)",
                     "DTA (8 al millar)": "$6,783.00 MXN"
                 },
+                pistas: [
+                    "Aduana de despacho es Veracruz (28) -> El número de pedimento debe ser '242835814024888'.",
+                    "Convierte los incrementables de fletes marítimos ($2,500 USD) a pesos utilizando el Tipo de Cambio ($19.95) para registrar $49,875 MXN en el cuadro de Fletes.",
+                    "El Valor Comercial es de $798,000 MXN ($40,000 * 19.95). Al sumarle el flete ($49,875), el Valor de Aduana final es $847,875 MXN.",
+                    "El arancel del IGI es del 5% sobre el Valor Aduana ($847,875 * 0.05 = $42,394). El DTA es el 8 al millar ($847,875 * 0.008 = $6,783).",
+                    "La base gravable acumulada para el cálculo del IVA es: Valor Aduana ($847,875) + IGI ($42,394) + DTA ($6,783) = $897,052 MXN. Multiplicado por el 16% de IVA da $143,528 MXN.",
+                    "El efectivo total que se paga en el banco es de $193,041 MXN."
+                ],
                 respuestas: {
                     p_num: "242835814024888",
                     p_destino: "9",
@@ -826,20 +875,20 @@
                     p_adu: "280",
                     p_trans_e: "1", p_trans_a: "1", p_trans_s: "7",
                     p_vdol: 40000.00,
-                    p_vadu: 847875, // (40,000 + 2,500) * 19.95 = 847,875
-                    p_vcom: 798000, // 40,000 * 19.95 = 798,000
+                    p_vadu: 847875,
+                    p_vcom: 798000,
                     p_rfc: "IMG081112TR1",
                     p_curp: "",
                     p_nombre: "INGENIERIA MECANICA DEL GOLFO S.A. DE C.V.",
                     p_domicilio: "AV. COSTA VERDE No. 100 VERACRUZ Veracruz",
-                    p_fletes: 49875, // 2,500 * 19.95
+                    p_fletes: 49875,
                     p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "10/12/2024", p_fecha_p: "10/12/2024",
                     p_prv_tasa: 290,
-                    p_l_iva: 143528, // Cascada: (Vadu + IGI + DTA) * 0.16 = (847875 + 42394 + 6783) * 0.16 = 897052 * 0.16
+                    p_l_iva: 143528,
                     p_l_prv: 290,
                     p_l_cnt: 46,
-                    p_l_efec: 193041, // IVA + DTA + IGI + PRV + CNT = 143528 + 6783 + 42394 + 290 + 46
+                    p_l_efec: 193041,
                     p_l_total: 193041,
                     p_part_frac: "84581102", p_part_nico: "00", p_part_vinc: "0",
                     p_part_umc: "7", p_part_umt: "7", p_part_cant: 1.000, p_part_pais: "DEU",
@@ -862,6 +911,13 @@
                     "Arancel (IGI)": "0% (T-MEC)",
                     "DTA (8 al millar)": "$4,836.00 MXN"
                 },
+                pistas: [
+                    "Aduana del cruce es Nuevo Laredo (24) -> Número de pedimento: '242435814024889'.",
+                    "Gracias al acuerdo comercial del T-MEC y el certificado de origen, el arancel de IGI queda completamente exento (asentar '0' en IGI). El identificador a nivel de partida a declarar debe ser 'TL' con complemento de origen 'USA'.",
+                    "El Derecho de Trámite Aduanero (DTA) del 8 al millar sobre el Valor en Aduana ($604,500) es de $4,836 MXN.",
+                    "La base gravable para calcular el IVA es: Valor Aduana ($604,500) + IGI ($0) + DTA ($4,836) = $609,336 MXN. El 16% de IVA es $97,494 MXN.",
+                    "El efectivo final a pagar en caja bancaria es: IVA ($97,494) + DTA ($4,836) + PRV ($290) + CNT ($46) = $102,666 MXN."
+                ],
                 respuestas: {
                     p_num: "242435814024889",
                     p_destino: "9",
@@ -882,10 +938,10 @@
                     p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "11/12/2024", p_fecha_p: "11/12/2024",
                     p_prv_tasa: 290,
-                    p_l_iva: 97494, // Cascada: (Vadu + IGI + DTA) * 0.16 = (604500 + 0 + 4836) * 0.16 = 609336 * 0.16
+                    p_l_iva: 97494,
                     p_l_prv: 290,
                     p_l_cnt: 46,
-                    p_l_efec: 102666, // IVA + DTA + PRV + CNT = 97494 + 4836 + 290 + 46
+                    p_l_efec: 102666,
                     p_l_total: 102666,
                     p_part_frac: "90183902", p_part_nico: "00", p_part_vinc: "0",
                     p_part_umc: "7", p_part_umt: "7", p_part_cant: 5000.000, p_part_pais: "USA",
@@ -908,6 +964,13 @@
                     "DTA Fijo Ley": "$410.00 MXN",
                     "Arancel (IGI)": "0% (Bajo Certificación)"
                 },
+                pistas: [
+                    "Aduana de despacho es Tijuana (39) -> Número de pedimento: '243935814024890'.",
+                    "Al ser importación temporal de activo fijo de IMMEX, la Clave de Pedimento es 'AF' y el Régimen es 'ITE'.",
+                    "Regla Especial del DTA para Activo Fijo IMMEX: No se calcula con el 8 al millar. El artículo 49 de la LFD dictamina una cuota fija de DTA (asentar '$410' en el cuadro de liquidación en vez del porcentaje regular).",
+                    "Al estar amparado bajo certificación IMMEX y tener tasa preferencial, el IVA es diferido (asentar '0' en IVA Liquidación).",
+                    "El efectivo total a liquidar en este despacho es la suma de: IVA ($0) + DTA Fijo ($410) + Prevalidación ($290) + CNT ($46) = $746 MXN."
+                ],
                 respuestas: {
                     p_num: "243935814024890",
                     p_destino: "2",
@@ -928,7 +991,7 @@
                     p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "12/12/2024", p_fecha_p: "12/12/2024",
                     p_prv_tasa: 290,
-                    p_l_iva: 0, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 746, p_l_total: 746, // IVA diferido, se paga DTA fijo ($410) + PRV ($290) + CNT ($46) = $746
+                    p_l_iva: 0, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 746, p_l_total: 746,
                     p_part_frac: "85153101", p_part_nico: "00", p_part_vinc: "0",
                     p_part_umc: "7", p_part_umt: "7", p_part_cant: 1.000, p_part_pais: "USA",
                     p_part_desc: "CELDA ROBOTIZADA DE SOLDADURA ELECTRICA DE ALTA PRECISION",
@@ -1009,12 +1072,32 @@
 
         function startApp(mode) {
             if (mode === 'info') {
-                window.open("https://github.com/", "_blank");
+                showProjectInfo();
                 return;
             }
             document.getElementById('splash-screen').classList.add('hidden');
             document.getElementById('app-container').classList.remove('hidden');
             loadCase(1);
+        }
+
+        function showProjectInfo() {
+            const modal = document.getElementById('modal-help');
+            const content = document.getElementById('modal-help-content');
+            content.innerHTML = `
+                <p class="font-bold text-white text-base">Ficha Técnica de SIMUPEDI</p>
+                <p class="text-xs text-slate-300 mt-2">
+                    SIMUPEDI es un simulador académico interactivo diseñado específicamente para solventar el vacío técnico en la enseñanza del Anexo 22 de las Reglas Generales de Comercio Exterior en México.
+                </p>
+                <p class="text-xs text-slate-300 mt-2">
+                    <strong>Autor del Proyecto:</strong> Luis Ignacio Ayala Rodríguez<br>
+                    <strong>Estatus Legal:</strong> Propiedad Intelectual Registrada / Patente en Trámite.
+                </p>
+                <p class="text-xs text-slate-300 mt-2">
+                    Esta herramienta educativa ofrece un formato fidedigno de matriz de puntos (SAAI M3) con 8 casos prácticos que abarcan operaciones definitivas, temporales (IMMEX), personas físicas, activo fijo y exportaciones con su correspondiente auditoría correctiva en tiempo real.
+                </p>
+            `;
+            modal.classList.remove('hidden');
+            lucide.createIcons();
         }
 
         let activeCaseIdx = 0;
@@ -1069,7 +1152,7 @@
             }
         }
 
-        // --- REVELAR PLANTILLA ---
+        // --- REVELAR PLANTILLA PARA PRUEBAS RÁPIDAS ---
         function revealAnswers() {
             const resp = CASOS[activeCaseIdx].respuestas;
             for (const [key, value] of Object.entries(resp)) {
@@ -1079,6 +1162,33 @@
                 }
             }
             toggleCurpInput();
+        }
+
+        // --- SISTEMA PEDAGÓGICO DE PISTAS ---
+        function showCaseHints() {
+            const caso = CASOS[activeCaseIdx];
+            const modal = document.getElementById('modal-help');
+            const content = document.getElementById('modal-help-content');
+            
+            let pistasHTML = `
+                <p class="font-bold text-white text-base">Guía de Solución - Caso ${caso.id}</p>
+                <p class="text-xs text-slate-300 mt-1 mb-4">Usa estas pistas de lógica y legislación para llenar los campos tú mismo:</p>
+                <div class="space-y-3">
+            `;
+            
+            caso.pistas.forEach((pista, index) => {
+                pistasHTML += `
+                    <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-xs">
+                        <span class="block font-bold text-amber-500 tracking-wider uppercase mb-1">Paso ${index + 1}</span>
+                        <p class="text-slate-200 leading-relaxed">${pista}</p>
+                    </div>
+                `;
+            });
+            
+            pistasHTML += `</div>`;
+            content.innerHTML = pistasHTML;
+            modal.classList.remove('hidden');
+            lucide.createIcons();
         }
 
         // --- VERIFICACIÓN DE PEDIMENTO (VERIFICACIÓN EN CASCADA) ---
