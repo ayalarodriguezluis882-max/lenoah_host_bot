@@ -96,11 +96,62 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #475569;
         }
+
+        /* Estilos de Impresión (Candado de Seguridad y Maquetación) */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body, html {
+                background: #ffffff !important;
+                color: #000000 !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+            /* Ocultar toda la interfaz externa del simulador al imprimir */
+            #app-container {
+                display: block !important;
+                height: auto !important;
+                overflow: visible !important;
+                background: #ffffff !important;
+            }
+            header, section:first-of-type {
+                display: none !important;
+            }
+            section:last-of-type {
+                padding: 0 !important;
+                background: #ffffff !important;
+                overflow: visible !important;
+                height: auto !important;
+            }
+            .saai-hoja {
+                border: none !important;
+                box-shadow: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            /* Mostrar el disclaimer rojo didáctico solo en la hoja impresa */
+            .print-disclaimer {
+                display: block !important;
+            }
+            /* Asegurar que los inputs se impriman limpios con su texto */
+            .saai-input {
+                background-color: transparent !important;
+                border: none !important;
+                border-bottom: 1px solid #000000 !important;
+                padding: 0 !important;
+            }
+        }
+        .print-disclaimer {
+            display: none;
+        }
     </style>
 </head>
 <body class="h-full overflow-hidden text-slate-100">
 
-    <!-- ================= SPLASH SCREEN / ARRANQUE SEGURO SAAI (L.I. AYALA RODRÍGUEZ) ================= -->
+    <!-- ================= SPLASH SCREEN / ARRANQUE SEGURO SAAI ================= -->
     <div id="splash-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 px-6 transition-all duration-1000">
         <div class="w-full max-w-xl text-center">
             
@@ -116,27 +167,30 @@
                 Entrenador Nacional del Anexo 22
             </p>
 
-            <!-- Cuadro Legal de Propiedad Intelectual -->
+            <!-- Cuadro Informativo / Leyenda de Apoyo Académico Libre -->
             <div class="mt-8 rounded-3xl border border-slate-800 bg-slate-900/80 p-6 text-left shadow-2xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 bg-indigo-500/10 text-indigo-400 px-4 py-1 rounded-bl-xl text-[10px] font-black tracking-wider uppercase border-l border-b border-indigo-500/20">
+                <div class="absolute top-0 right-0 bg-indigo-500/10 text-indigo-400 px-4 py-1 rounded-bl-xl text-[10px] font-bold tracking-wider uppercase border-l border-b border-indigo-500/20">
                     Soporte Académico
                 </div>
-                <div class="flex items-center gap-2 text-xs font-bold text-amber-500 mb-3">
-                    <i data-lucide="shield" class="h-4 w-4"></i>
-                    <span>SISTEMA DE PROPIEDAD INTELECTUAL REGISTRADA</span>
+                <div class="flex items-center gap-2 text-xs font-bold text-indigo-400 mb-3">
+                    <i data-lucide="info" class="h-4 w-4"></i>
+                    <span>PROYECTO EDUCATIVO LIBRE</span>
                 </div>
-                <p class="text-sm text-slate-300 leading-relaxed">
-                    Esta herramienta de software, su base de datos lógica y su metodología pedagógica de entrenamiento aduanal interactivo corresponden a la propiedad intelectual de:
+                <p class="text-sm text-slate-300 leading-relaxed font-medium">
+                    Esta herramienta de software, su base de datos lógica y su metodología de entrenamiento aduanal interactivo han sido:
                 </p>
-                <p class="text-xl font-extrabold text-white mt-1.5">
-                    Luis Ignacio Ayala Rodríguez
+                <p class="text-lg font-bold text-white mt-1.5">
+                    Diseñadas por Luis Ignacio Ayala Rodríguez
                 </p>
-                <div class="mt-4 flex items-center justify-between border-t border-slate-800 pt-4 text-xs text-slate-500">
-                    <span class="flex items-center gap-1.5 font-medium">
-                        <i data-lucide="file-key-2" class="h-4 w-4 text-slate-500"></i>
-                        Patente en Trámite (Patent Pending)
+                <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                    Con el fin único de proporcionar apoyo didáctico a los estudiantes de comercio exterior y aduanas. Su distribución, uso y aprovechamiento son completamente libres y gratuitos para las nuevas generaciones.
+                </p>
+                <div class="mt-4 flex items-center justify-between border-t border-slate-850 pt-3 text-xs text-slate-500">
+                    <span class="flex items-center gap-1.5">
+                        <i data-lucide="heart" class="h-4 w-4 text-rose-500"></i>
+                        Comunidad Académica de México
                     </span>
-                    <span class="font-mono text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">v3.5-PRO</span>
+                    <span class="font-mono text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">v3.6-FREE</span>
                 </div>
             </div>
 
@@ -193,14 +247,14 @@
                 </div>
             </div>
 
-            <!-- Firma de Autoría de Luis Ignacio Ayala Rodríguez -->
+            <!-- Firma de Autoría Discreta de Luis Ignacio Ayala Rodríguez -->
             <div class="flex items-center gap-3">
                 <div class="text-right text-xs">
-                    <span class="block font-medium text-slate-400">Patente & Diseño de:</span>
-                    <span class="font-bold text-indigo-400">L. I. Ayala Rodríguez</span>
+                    <span class="block font-medium text-slate-500">Apoyo académico por:</span>
+                    <span class="font-bold text-indigo-400">Luis Ignacio Ayala R.</span>
                 </div>
                 <div class="h-9 w-9 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center font-black text-sm text-indigo-400">
-                    LA
+                    AR
                 </div>
             </div>
         </header>
@@ -255,12 +309,29 @@
             </section>
 
             <!-- SECCIÓN DERECHA: El Lienzo del Pedimento SAAI M3 (Idéntico al Real) -->
-            <section class="flex-1 bg-slate-950 p-4 md:p-6 overflow-y-auto custom-scrollbar h-[55%] lg:h-full">
-                <div class="max-w-4xl mx-auto">
+            <section class="flex-1 bg-slate-950 p-4 md:p-6 overflow-y-auto custom-scrollbar h-[55%] lg:h-full relative">
+                
+                <!-- Botón Flotante para Imprimir (Oculto al Imprimir) -->
+                <div class="absolute top-4 right-6 z-10 no-print flex gap-2">
+                    <button onclick="revealAnswers()" class="flex items-center gap-1.5 rounded-lg bg-slate-800 border border-slate-700 hover:bg-slate-700 px-3 py-1.5 text-xs font-bold text-slate-300 transition">
+                        <i data-lucide="eye" class="h-3.5 w-3.5"></i> Respuestas
+                    </button>
+                    <button onclick="window.print()" class="flex items-center gap-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 text-xs font-bold text-white transition shadow-lg shadow-indigo-600/25">
+                        <i data-lucide="printer" class="h-3.5 w-3.5"></i> Imprimir / PDF
+                    </button>
+                </div>
+
+                <div class="max-w-4xl mx-auto pt-8">
                     
                     <!-- HOJA DE PEDIMENTO IMPRESO SIMULADA (Estilo Físico de Matriz de Puntos) -->
                     <div class="saai-hoja p-4 md:p-8 rounded shadow-2xl relative border border-slate-200">
                         
+                        <!-- CANDADO DE SEGURIDAD ACADÉMICO PARA EVITAR MAL USO (Solo visible en la Impresión) -->
+                        <div class="print-disclaimer border-4 border-red-600 bg-red-50 p-4 mb-4 rounded text-center text-red-800 font-mono no-print">
+                            <h2 class="text-base font-extrabold tracking-wider leading-none mb-1">*** DOCUMENTO NO OFICIAL / FINES DIDÁCTICOS ***</h2>
+                            <p class="text-[10px] leading-tight font-bold">ESTE FORMULARIO ES UN SIMULADOR ACADÉMICO. CARECE DE VALIDEZ LEGAL ANTE EL SAT Y LAS ADUANAS DE MÉXICO.</p>
+                        </div>
+
                         <!-- ENCABEZADO SUPERIOR DE CONTROL DE SAAI -->
                         <div class="flex flex-col md:flex-row justify-between border-b border-black pb-1 mb-3 text-[10px] font-bold">
                             <div>Cte: NIM19 &nbsp;&nbsp; Usuario: oflenoah0 &nbsp;&nbsp; Fecha: 05-12-2024</div>
@@ -281,7 +352,7 @@
                                 <span class="block saai-header">NUM. PEDIMENTO</span>
                                 <div class="flex gap-1 mt-1">
                                     <input type="text" id="p_num" maxlength="15" placeholder="24 39 3581 4024883" class="w-full saai-input font-mono">
-                                    <button onclick="showHelp('pedimento')" class="text-indigo-600 hover:text-indigo-900 px-1"><i data-lucide="help-circle" class="h-3 w-3"></i></button>
+                                    <button onclick="showHelp('pedimento')" class="text-indigo-600 hover:text-indigo-900 px-1 no-print"><i data-lucide="help-circle" class="h-3 w-3"></i></button>
                                 </div>
                             </div>
                             <div class="col-span-4 saai-border-b p-1">
@@ -504,7 +575,7 @@
                                     <input type="text" id="p_part_pais" placeholder="USA" class="saai-input text-center uppercase font-mono">
                                 </div>
                                 <div class="col-span-1 text-center">
-                                    <button onclick="showHelp('partida')" class="text-indigo-600 hover:text-indigo-900"><i data-lucide="help-circle" class="h-4 w-4"></i></button>
+                                    <button onclick="showHelp('partida')" class="text-indigo-600 hover:text-indigo-900 no-print"><i data-lucide="help-circle" class="h-4 w-4"></i></button>
                                 </div>
                             </div>
 
@@ -537,7 +608,7 @@
     </div>
 
     <!-- ================= MODAL PEDAGÓGICO DE APÉNDICES ================= -->
-    <div id="modal-help" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm">
+    <div id="modal-help" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm no-print">
         <div class="w-full max-w-lg rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-2xl">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
                 <h4 class="text-base font-bold text-white flex items-center gap-2">
@@ -555,7 +626,7 @@
     </div>
 
     <!-- ================= MODAL DE AUDITORÍA Y RETROALIMENTACIÓN ================= -->
-    <div id="modal-feedback" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
+    <div id="modal-feedback" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm no-print">
         <div class="w-full max-w-xl rounded-3xl border border-slate-800 bg-slate-900 p-8 shadow-2xl text-center">
             <div id="feedback-icon-container" class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
                 <!-- Icono dinámico -->
@@ -1019,7 +1090,7 @@
             `
         };
 
-        // --- SISTEMA DE ARRANQUE SEGURO SAAI (Patente de Luis Ignacio Ayala Rodríguez) ---
+        // --- SISTEMA DE ARRANQUE SEGURO SAAI (Apoyo Académico de Luis Ignacio Ayala Rodríguez) ---
         window.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             populateSelector();
@@ -1031,19 +1102,18 @@
             const actionButtons = document.getElementById('action-buttons');
 
             const steps = [
-                "Estableciendo conexión encriptada con SAAI M3...",
-                "Leyendo firmas digitales del Agente Aduanal (Fiel)...",
-                "Verificando patentes de Luis Ignacio Ayala Rodríguez...",
-                "Configurando simulaciones del Anexo 22 de las RGCE...",
-                "Sincronizando 8 casos evaluativos didácticos..."
+                "Estableciendo conexión con SAAI M3...",
+                "Sincronizando claves del Anexo 22 de las RGCE...",
+                "Configurando entorno interactivo libre...",
+                "Inicializando 8 casos didácticos..."
             ];
 
             const interval = setInterval(() => {
-                progress += Math.floor(Math.random() * 8) + 4;
+                progress += Math.floor(Math.random() * 12) + 5;
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(interval);
-                    bootStatus.innerText = "Conexión SAAI Exitosa. Licencia Activa.";
+                    bootStatus.innerText = "Sistema SAAI Listo. Distribución Gratuita.";
                     bootPercent.innerText = "100%";
                     bootBar.style.width = "100%";
                     setTimeout(() => {
@@ -1056,7 +1126,7 @@
                     const idx = Math.floor((progress / 100) * steps.length);
                     bootStatus.innerText = steps[idx] || "Procesando...";
                 }
-            }, 80);
+            }, 60);
         });
 
         function populateSelector() {
@@ -1084,16 +1154,16 @@
             const modal = document.getElementById('modal-help');
             const content = document.getElementById('modal-help-content');
             content.innerHTML = `
-                <p class="font-bold text-white text-base">Ficha Técnica de SIMUPEDI</p>
+                <p class="font-bold text-white text-base">Información del Proyecto</p>
                 <p class="text-xs text-slate-300 mt-2">
-                    SIMUPEDI es un simulador académico interactivo diseñado específicamente para solventar el vacío técnico en la enseñanza del Anexo 22 de las Reglas Generales de Comercio Exterior en México.
+                    <strong>SIMUPEDI</strong> es un simulador académico interactivo diseñado específicamente para apoyar a los estudiantes de comercio exterior en el aprendizaje del Anexo 22.
                 </p>
                 <p class="text-xs text-slate-300 mt-2">
-                    <strong>Autor del Proyecto:</strong> Luis Ignacio Ayala Rodríguez<br>
-                    <strong>Estatus Legal:</strong> Propiedad Intelectual Registrada / Patente en Trámite.
+                    <strong>Diseño y Desarrollo:</strong> Luis Ignacio Ayala Rodríguez<br>
+                    <strong>Estatus de Licencia:</strong> Distribución libre, gratuita y con fines meramente didácticos.
                 </p>
                 <p class="text-xs text-slate-300 mt-2">
-                    Esta herramienta educativa ofrece un formato fidedigno de matriz de puntos (SAAI M3) con 8 casos prácticos que abarcan operaciones definitivas, temporales (IMMEX), personas físicas, activo fijo y exportaciones con su correspondiente auditoría correctiva en tiempo real.
+                    Esta herramienta fomenta el autoaprendizaje mediante pistas guiadas, simulando de manera fidedigna una hoja impresa SAAI M3. Permite imprimir o exportar a PDF agregando de forma automática leyendas que advierten sobre su naturaleza de simulador escolar.
                 </p>
             `;
             modal.classList.remove('hidden');
@@ -1152,7 +1222,7 @@
             }
         }
 
-        // --- REVELAR PLANTILLA PARA PRUEBAS RÁPIDAS ---
+        // --- REVELAR PLANTILLA ---
         function revealAnswers() {
             const resp = CASOS[activeCaseIdx].respuestas;
             for (const [key, value] of Object.entries(resp)) {
