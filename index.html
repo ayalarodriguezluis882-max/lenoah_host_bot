@@ -2,8 +2,18 @@
 <html lang="es" class="h-full bg-slate-950">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Pedimento - Simulador de Pedimento Oficial Anexo 22</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f172a">
+    <title>Simulador de Pedimento - Formato Oficial Anexo 22</title>
+    
+    <!-- Meta etiquetas para iOS (PWA nativo en Apple) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Simulador">
+    
+    <!-- Vinculación del Manifiesto de la PWA -->
+    <link rel="manifest" href="manifest.json">
+    
     <!-- Tailwind CSS para diseño y maquetación externa -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons para iconografía interactiva -->
@@ -192,7 +202,7 @@
                         <i data-lucide="heart" class="h-4 w-4 text-rose-500"></i>
                         Comunidad Académica de México
                     </span>
-                    <span class="font-mono text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">v4.5-OPEN</span>
+                    <span class="font-mono text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">v4.6-OPEN</span>
                 </div>
             </div>
 
@@ -236,6 +246,14 @@
                     <span class="font-black text-white text-lg tracking-tight">Simulador de Pedimento</span>
                     <span class="ml-2 text-[10px] font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded uppercase tracking-widest">Anexo 22 SAAI M3</span>
                 </div>
+            </div>
+
+            <!-- Banner PWA Flotante para escritorio / móvil -->
+            <div id="pwa-install-banner" class="hidden md:flex items-center gap-2 bg-indigo-950/80 border border-indigo-500/30 px-3 py-1.5 rounded-lg no-print">
+                <span class="text-xs text-indigo-200 font-medium">¿Usar como App móvil?</span>
+                <button onclick="installPWA()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-2.5 py-1 rounded transition flex items-center gap-1">
+                    <i data-lucide="download" class="h-3 w-3"></i> Instalar
+                </button>
             </div>
 
             <!-- Progreso General del Curso -->
@@ -315,10 +333,10 @@
                 
                 <!-- Botón Flotante para Imprimir (Oculto al Imprimir) -->
                 <div class="absolute top-4 right-6 z-10 no-print flex gap-2">
-                    <button onclick="revealAnswers()" class="flex items-center gap-1.5 rounded-lg bg-slate-800 border border-slate-700 hover:bg-slate-700 px-3 py-1.5 text-xs font-bold text-slate-300 transition">
+                    <button onclick="revealAnswers()" class="flex items-center gap-1.5 rounded-lg bg-slate-800 border border-slate-700 hover:bg-slate-700 px-3 py-1.5 text-xs font-bold text-slate-300 transition" title="Rellenar campos con respuestas correctas">
                         <i data-lucide="eye" class="h-3.5 w-3.5"></i> Respuestas
                     </button>
-                    <button onclick="window.print()" class="flex items-center gap-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 text-xs font-bold text-white transition shadow-lg shadow-indigo-600/25">
+                    <button onclick="window.print()" class="flex items-center gap-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 text-xs font-bold text-white transition shadow-lg shadow-indigo-600/25" title="Guardar pedimento en PDF o enviar a impresora">
                         <i data-lucide="printer" class="h-3.5 w-3.5"></i> Imprimir / PDF
                     </button>
                 </div>
@@ -1308,7 +1326,7 @@
             `,
             nombre: `
                 <div class="space-y-3">
-                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">NOMBRE, DENOMINACIÓN O RAZÓN SOCIAL</p>
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">NOMBRE, DENOMINACIÓN O RAZON SOCIAL</p>
                     <p class="text-xs"><strong>¿Qué significa?</strong> Nombre comercial o denominación social legal del importador tal como está registrada ante el SAT.</p>
                 </div>
             `,
