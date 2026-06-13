@@ -3029,9 +3029,7 @@
         }
 
         // --- MODAL DE AYUDA COMPLETA (helpData) ---
-        // Reemplaza/extiende showHelp para usar helpData cuando esté disponible
-        const _originalShowHelp = window.showHelp;
-
+        // showFieldHelp usa helpData independientemente de showHelp
         function showFieldHelp(fieldId) {
             const data = helpData[fieldId];
             const modal = document.getElementById('modal-fieldhelp');
@@ -3757,9 +3755,9 @@
         }
 
         /* Ampliar clearInputs para limpiar los nuevos campos al cambiar de caso */
-        const _origClearInputs = window.clearInputs || clearInputs;
-        clearInputs = function() {
-            if (typeof _origClearInputs === 'function') _origClearInputs();
+        /* Se usa document.addEventListener para ejecutarse DESPUÉS de que
+           clearInputs original ya esté definida, evitando ReferenceError */
+        function clearNuevosCampos() {
             ['p_prov_nombre','p_prov_pais','p_prov_domicilio',
              'p_factura','p_bl','p_patente',
              'p_marcas','p_num_bultos','p_tipo_bulto',
@@ -3768,14 +3766,29 @@
              'p2_frac','p2_nico','p2_pais','p2_cant','p2_desc','p2_vdol',
              'p2_id1','p2_id2','p2_id3',
              'p_oea_num','p_cert_origen','p_observaciones'
-            ].forEach(id => { const e = document.getElementById(id); if(e) e.value=''; });
+            ].forEach(function(id) {
+                var e = document.getElementById(id);
+                if (e) e.value = '';
+            });
             ['p_permiso_tipo1','p_permiso_tipo2','p_oea_tipo','p_tratado'
-            ].forEach(id => { const e = document.getElementById(id); if(e) e.value=''; });
-            const sp = document.getElementById('segunda-partida-fields');
-            const spBtn = document.getElementById('btn-segunda-partida');
+            ].forEach(function(id) {
+                var e = document.getElementById(id);
+                if (e) e.value = '';
+            });
+            var sp = document.getElementById('segunda-partida-fields');
+            var spBtn = document.getElementById('btn-segunda-partida');
             if (sp) sp.classList.add('hidden');
             if (spBtn) spBtn.textContent = '+ Agregar Partida 2';
-        };
+        }
+
+        /* Parchear clearInputs de forma segura después del DOMContentLoaded */
+        document.addEventListener('DOMContentLoaded', function() {
+            var _orig = window.clearInputs;
+            window.clearInputs = function() {
+                if (typeof _orig === 'function') _orig();
+                clearNuevosCampos();
+            };
+        });
 
         /* FIN CAMPOS FALTANTES - Lógica JS */
     </script>
