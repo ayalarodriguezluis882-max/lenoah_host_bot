@@ -16,8 +16,8 @@
     
     <!-- Tailwind CSS para diseño y maquetación externa -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons para iconografía interactiva (Versión fija para evitar errores por renombrado) -->
-    <script src="https://unpkg.com/lucide@0.344.0"></script>
+    <!-- Lucide Icons para iconografía interactiva -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
@@ -40,10 +40,21 @@
             border-collapse: collapse;
         }
 
-        .saai-border-r { border-right: 1.5px solid #000000 !important; }
-        .saai-border-b { border-bottom: 1.5px solid #000000 !important; }
-        .saai-border-l { border-left: 1.5px solid #000000 !important; }
-        .saai-border-t { border-top: 1.5px solid #000000 !important; }
+        .saai-border-r {
+            border-right: 1.5px solid #000000 !important;
+        }
+
+        .saai-border-b {
+            border-bottom: 1.5px solid #000000 !important;
+        }
+
+        .saai-border-l {
+            border-left: 1.5px solid #000000 !important;
+        }
+
+        .saai-border-t {
+            border-top: 1.5px solid #000000 !important;
+        }
 
         .saai-header {
             font-size: 8.5px;
@@ -133,9 +144,11 @@
                 margin: 0 !important;
                 padding: 0 !important;
             }
+            /* Mostrar el disclaimer de seguridad rojo didáctico solo en la hoja impresa */
             .print-disclaimer {
                 display: block !important;
             }
+            /* Asegurar que los inputs se impriman limpios con su texto */
             .saai-input {
                 background-color: transparent !important;
                 border: none !important;
@@ -217,6 +230,7 @@
             0%,100% { opacity: 1; }
             50%      { opacity: 0.65; }
         }
+        /* Modal ayuda de campo */
         #modal-fieldhelp {
             z-index: 10000;
         }
@@ -225,11 +239,12 @@
             overflow-y: auto;
         }
 
-        /* Scrollbar personalizado */
+        /* INICIO MODULO BIBLIOTECA - Scrollbar personalizado */
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.4); border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.7); }
+        /* FIN MODULO BIBLIOTECA - Scrollbar */
 </style>
 </head>
 <body class="h-full overflow-hidden text-slate-100">
@@ -275,9 +290,9 @@
                     </span>
                     <span class="font-mono text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">v4.6-OPEN</span>
                 </div>
-            </div> <!-- DIV CERRADO AQUÍ CORRECTAMENTE -->
 
             <!-- INICIO MODULO SPLASH EDUCATIVO -->
+            <!-- Panel de bienvenida e instrucciones de uso -->
             <div class="mt-6 rounded-2xl border border-slate-700 bg-slate-900/60 p-5 text-left">
                 <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2">
                     <i data-lucide="book-open" class="h-3.5 w-3.5 text-indigo-400"></i>
@@ -305,6 +320,7 @@
                     <li class="flex gap-2"><span class="text-indigo-400 font-bold w-4 flex-shrink-0">6.</span> Ejecuta la glosa y aprende de los resultados.</li>
                 </ol>
             </div>
+            <!-- FIN MODULO SPLASH EDUCATIVO -->
 
             <!-- Cargador Dinámico de Conexión -->
             <div id="boot-box" class="mt-8 space-y-4">
@@ -336,6 +352,7 @@
     <!-- ================= CONTENEDOR DE LA APLICACIÓN PRINCIPAL ================= -->
     <div id="app-container" class="hidden h-screen flex flex-col bg-slate-950">
         
+        <!-- Header Superior -->
         <header class="flex h-16 items-center justify-between border-b border-slate-800 bg-slate-900 px-6 shrink-0">
             <div class="flex items-center gap-3">
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-500/30">
@@ -347,6 +364,7 @@
                 </div>
             </div>
 
+            <!-- Banner PWA Flotante para escritorio / móvil -->
             <div id="pwa-install-banner" class="hidden md:flex items-center gap-2 bg-indigo-950/80 border border-indigo-500/30 px-3 py-1.5 rounded-lg no-print">
                 <span class="text-xs text-indigo-200 font-medium">¿Usar como App móvil?</span>
                 <button onclick="installPWA()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-2.5 py-1 rounded transition flex items-center gap-1">
@@ -354,6 +372,7 @@
                 </button>
             </div>
 
+            <!-- Progreso General del Curso -->
             <div class="hidden items-center gap-4 md:flex">
                 <div class="text-right">
                     <div class="text-xs text-slate-400 font-medium">Ejercicios Concluidos</div>
@@ -364,6 +383,7 @@
                 </div>
             </div>
 
+            <!-- Firma de Autoría Discreta de Luis Ignacio Ayala Rodríguez -->
             <div class="flex items-center gap-3">
                 <div class="text-right text-xs">
                     <span class="block font-medium text-slate-500">Apoyo académico por:</span>
@@ -374,6 +394,7 @@
                 </div>
             </div>
 
+            <!-- Botón Modo Aprendizaje (nueva capa educativa) -->
             <button id="btn-learning-mode"
                 onclick="toggleLearningMode()"
                 class="no-print hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-600 bg-gray-700 text-gray-300 text-xs font-semibold transition hover:bg-gray-600"
@@ -382,26 +403,37 @@
                 Modo Aprendizaje
             </button>
 
+            <!-- INICIO MODULO BIBLIOTECA - Botón de acceso -->
             <button onclick="abrirBiblioteca()"
-                class="no-print hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-indigo-500/40 bg-indigo-600/10 text-indigo-300 text-xs font-semibold transition hover:bg-indigo-600/25 hover:text-indigo-200">
+                class="no-print hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-indigo-500/40 bg-indigo-600/10 text-indigo-300 text-xs font-semibold transition hover:bg-indigo-600/25 hover:text-indigo-200"
+                title="Biblioteca Aduanera — Consulta offline de conceptos del Anexo 22">
                 📚 Biblioteca
             </button>
+            <!-- FIN MODULO BIBLIOTECA - Botón -->
 
+            <!-- INICIO MODULO DIAGNOSTICOS - Botón de acceso -->
             <button onclick="mostrarDiagnosticoAnexo22()" id="btn-diagnostico"
-                class="no-print hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-600 bg-slate-700/50 text-slate-300 text-xs font-semibold transition hover:bg-slate-700 hover:text-white">
+                class="no-print hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-600 bg-slate-700/50 text-slate-300 text-xs font-semibold transition hover:bg-slate-700 hover:text-white"
+                title="Diagnóstico Anexo 22 y Evaluación Académica del Simulador">
                 📊 Diagnóstico
             </button>
+            <!-- FIN MODULO DIAGNOSTICOS - Botón -->
         </header>
 
+        <!-- Área de Trabajo Principal (Split de Pantallas) -->
         <main class="flex-1 flex overflow-hidden flex-col lg:flex-row">
             
+            <!-- SECCIÓN IZQUIERDA: Casos de Evaluación y Fichas Técnicas -->
             <section class="w-full lg:w-[35%] border-r border-slate-800 bg-slate-900 flex flex-col h-[45%] lg:h-full no-print">
+                <!-- Selector de casos prácticos -->
                 <div class="p-4 border-b border-slate-800 flex items-center justify-between gap-2 bg-slate-950/40">
                     <label for="case-selector" class="text-xs font-bold text-slate-400 whitespace-nowrap">CASO EVALUATIVO:</label>
                     <select id="case-selector" onchange="loadCase(this.value)" class="flex-1 rounded-lg border border-slate-700 bg-slate-800 py-1.5 px-3 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <!-- Cargado por JS -->
                     </select>
                 </div>
 
+                <!-- Detalle del Escenario Comercial -->
                 <div class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
                     <div class="flex items-center gap-2">
                         <span id="case-badge" class="inline-flex items-center rounded-lg bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 text-xs font-black text-indigo-400">
@@ -417,25 +449,30 @@
                         </p>
                     </div>
 
+                    <!-- Datos Guía del caso -->
                     <div class="space-y-3">
                         <h3 class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Ficha Técnica de Apoyo</h3>
                         <div class="grid grid-cols-2 gap-2" id="case-data-sheet">
+                            <!-- Inyectado por JS -->
                         </div>
                     </div>
                 </div>
 
+                <!-- Botonera de Acción en el Footer (Pistas en lugar de Auto-rellenar) -->
                 <div class="p-4 border-t border-slate-800 bg-slate-950/60 flex gap-2">
                     <button onclick="showCaseHints()" class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-slate-700 hover:bg-slate-800 py-3 font-bold text-slate-300 text-xs transition">
-                        <i data-lucide="circle-help" class="h-4 w-4 text-amber-500"></i> Ver Pistas de Glosa
+                        <i data-lucide="help-circle" class="h-4 w-4 text-amber-500"></i> Ver Pistas de Glosa
                     </button>
                     <button onclick="verifyPedimento()" class="flex-1 flex items-center justify-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 py-3 font-bold text-white text-xs transition shadow-lg shadow-indigo-600/20">
-                        <i data-lucide="square-check" class="h-4 w-4"></i> Glosar Pedimento
+                        <i data-lucide="check-square" class="h-4 w-4"></i> Glosar Pedimento
                     </button>
                 </div>
             </section>
 
+            <!-- SECCIÓN DERECHA: El Lienzo del Pedimento SAAI M3 (Idéntico al Real) -->
             <section class="flex-1 bg-slate-950 p-4 md:p-6 overflow-y-auto custom-scrollbar h-[55%] lg:h-full relative">
                 
+                <!-- Botón Flotante para Imprimir (Oculto al Imprimir) -->
                 <div class="absolute top-4 right-6 z-10 no-print flex gap-2">
                     <button onclick="revealAnswers()" class="flex items-center gap-1.5 rounded-lg bg-slate-800 border border-slate-700 hover:bg-slate-700 px-3 py-1.5 text-xs font-bold text-slate-300 transition" title="Rellenar campos con respuestas correctas">
                         <i data-lucide="eye" class="h-3.5 w-3.5"></i> Respuestas
@@ -447,18 +484,22 @@
 
                 <div class="max-w-4xl mx-auto pt-8">
                     
+                    <!-- HOJA DE PEDIMENTO IMPRESO SIMULADA (Estilo Físico de Matriz de Puntos) -->
                     <div class="saai-hoja p-4 md:p-8 rounded shadow-2xl relative border border-slate-200">
                         
+                        <!-- CANDADO DE SEGURIDAD ACADÉMICO PARA EVITAR MAL USO (Solo visible en la Impresión) -->
                         <div class="print-disclaimer border-4 border-red-600 bg-red-50 p-4 mb-4 rounded text-center text-red-800 font-mono">
                             <h2 class="text-base font-extrabold tracking-wider leading-none mb-1">*** DOCUMENTO NO OFICIAL / FINES DIDÁCTICOS ***</h2>
                             <p class="text-[10px] leading-tight font-bold">ESTE FORMULARIO ES UN SIMULADOR ACADÉMICO. CARECE DE VALIDEZ LEGAL ANTE EL SAT Y LAS ADUANAS DE MÉXICO.</p>
                         </div>
 
+                        <!-- ENCABEZADO SUPERIOR DE CONTROL DE SAAI -->
                         <div class="flex flex-col md:flex-row justify-between border-b border-black pb-1 mb-3 text-[10px] font-bold">
                             <div>Cte: NIM19 &nbsp;&nbsp; Usuario: oflenoah0 &nbsp;&nbsp; Fecha: 05-12-2024</div>
                             <div class="text-right">Referencia: PED_M3_MX &nbsp;&nbsp; Conte: 1</div>
                         </div>
 
+                        <!-- TITULO Y PÁGINA -->
                         <div class="flex justify-between items-center mb-3">
                             <span class="font-bold text-xs">PEDIMENTO</span>
                             <div class="text-right font-bold text-[10px]">
@@ -466,59 +507,62 @@
                             </div>
                         </div>
 
+                        <!-- TABLA GENERAL DE DATOS DE LA CÉDULA -->
                         <div class="saai-tabla mb-3 grid grid-cols-12 font-bold text-[10px]">
                             <div class="col-span-8 saai-border-r saai-border-b p-1">
                                 <span class="saai-header">NUM. PEDIMENTO</span>
-                                <button onclick="showHelp('pedimento')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-3 w-3 inline"></i></button>
+                                <button onclick="showHelp('pedimento')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-3 w-3 inline"></i></button>
                                 <div class="flex gap-1 mt-1">
                                     <input type="text" id="p_num" maxlength="15" placeholder="24 39 3581 4024883" class="w-full saai-input font-mono"><button type="button" onclick="showFieldHelp('p_num')" class="field-help-btn no-print" title="Ver ayuda completa: p_num">❓</button>
                                 </div>
                             </div>
                             <div class="col-span-4 saai-border-b p-1">
                                 <span class="saai-header">DESTINO</span>
-                                <button onclick="showHelp('destino')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                <button onclick="showHelp('destino')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                 <input type="text" id="p_destino" placeholder="2" class="w-full saai-input mt-1"><button type="button" onclick="showFieldHelp('p_destino')" class="field-help-btn no-print" title="Ver ayuda completa: p_destino">❓</button>
                             </div>
 
                             <div class="col-span-4 saai-border-r p-1">
                                 <span class="saai-header">T. OPER</span>
-                                <button onclick="showHelp('op')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                <button onclick="showHelp('op')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                 <input type="text" id="p_op" placeholder="IMP" class="w-full saai-input mt-1"><button type="button" onclick="showFieldHelp('p_op')" class="field-help-btn no-print" title="Ver ayuda completa: p_op">❓</button>
                             </div>
                             <div class="col-span-4 saai-border-r p-1">
                                 <span class="saai-header">CVE. PEDIMENTO</span>
-                                <button onclick="showHelp('clave')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                <button onclick="showHelp('clave')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                 <input type="text" id="p_clave" placeholder="C1" class="w-full saai-input mt-1"><button type="button" onclick="showFieldHelp('p_clave')" class="field-help-btn no-print" title="Ver ayuda completa: p_clave">❓</button>
                             </div>
                             <div class="col-span-4 p-1">
                                 <span class="saai-header">REGIMEN</span>
-                                <button onclick="showHelp('regimen')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                <button onclick="showHelp('regimen')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                 <input type="text" id="p_regimen" placeholder="IMD" class="w-full saai-input mt-1"><button type="button" onclick="showFieldHelp('p_regimen')" class="field-help-btn no-print" title="Ver ayuda completa: p_regimen">❓</button>
                             </div>
                         </div>
 
+                        <!-- BLOQUE DE TASA Y ADUANA -->
                         <div class="saai-tabla mb-3 grid grid-cols-12 font-bold text-[10px]">
                             <div class="col-span-4 saai-border-r saai-border-b p-1">
                                 <span class="saai-header">TIPO CAMBIO</span>
-                                <button onclick="showHelp('tipocambio')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                <button onclick="showHelp('tipocambio')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                 <input type="number" step="0.00001" id="p_tc" placeholder="20.32330" class="w-full saai-input mt-1"><button type="button" onclick="showFieldHelp('p_tc')" class="field-help-btn no-print" title="Ver ayuda completa: p_tc">❓</button>
                             </div>
                             <div class="col-span-4 saai-border-r saai-border-b p-1">
                                 <span class="saai-header">PESO BRUTO</span>
-                                <button onclick="showHelp('peso')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                <button onclick="showHelp('peso')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                 <input type="number" step="0.001" id="p_peso" placeholder="62.000" class="w-full saai-input mt-1"><button type="button" onclick="showFieldHelp('p_peso')" class="field-help-btn no-print" title="Ver ayuda completa: p_peso">❓</button>
                             </div>
                             <div class="col-span-4 saai-border-b p-1">
                                 <span class="saai-header">ADUANA E/S</span>
-                                <button onclick="showHelp('adu')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                <button onclick="showHelp('adu')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                 <input type="text" id="p_adu" placeholder="040" class="w-full saai-input mt-1"><button type="button" onclick="showFieldHelp('p_adu')" class="field-help-btn no-print" title="Ver ayuda completa: p_adu">❓</button>
                             </div>
 
+                            <!-- MEDIOS DE TRANSPORTE Y VALORES -->
                             <div class="col-span-12 p-0">
                                 <div class="grid grid-cols-12">
                                     <div class="col-span-4 saai-border-r p-1">
                                         <span class="saai-header text-[8px]">MEDIOS TRANSPORTE (ENTRADA/ARRIBO/SALIDA)</span>
-                                        <button onclick="showHelp('transporte')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                        <button onclick="showHelp('transporte')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                         <div class="grid grid-cols-3 gap-1 mt-1">
                                             <input type="text" id="p_trans_e" maxlength="1" placeholder="7" class="saai-input text-center"><button type="button" onclick="showFieldHelp('p_trans_e')" class="field-help-btn no-print" title="Ver ayuda completa: p_trans_e">❓</button>
                                             <input type="text" id="p_trans_a" maxlength="1" placeholder="7" class="saai-input text-center">
@@ -529,18 +573,18 @@
                                         <div class="grid grid-cols-2 gap-1">
                                             <div>
                                                 <span class="saai-header">VALOR DOLARES</span>
-                                                <button onclick="showHelp('vdol')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                                <button onclick="showHelp('vdol')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                                 <input type="number" id="p_vdol" placeholder="3700.00" class="w-full saai-input mt-1"><button type="button" onclick="showFieldHelp('p_vdol')" class="field-help-btn no-print" title="Ver ayuda completa: p_vdol">❓</button>
                                             </div>
                                             <div>
                                                 <span class="saai-header">VALOR ADUANA</span>
-                                                <button onclick="showHelp('val_adu')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                                <button onclick="showHelp('val_adu')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                                 <input type="number" id="p_vadu" placeholder="75196" class="w-full saai-input mt-1"><button type="button" onclick="showFieldHelp('p_vadu')" class="field-help-btn no-print" title="Ver ayuda completa: p_vadu">❓</button>
                                             </div>
                                         </div>
                                         <div class="mt-1">
                                             <span class="saai-header">PRECIO PAGADO / VALOR COMERCIAL</span>
-                                            <button onclick="showHelp('val_com')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                            <button onclick="showHelp('val_com')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                             <input type="number" id="p_vcom" placeholder="75196" class="w-full saai-input mt-1"><button type="button" onclick="showFieldHelp('p_vcom')" class="field-help-btn no-print" title="Ver ayuda completa: p_vcom">❓</button>
                                         </div>
                                     </div>
@@ -548,110 +592,56 @@
                             </div>
                         </div>
 
+                        <!-- DATOS DEL IMPORTADOR/EXPORTADOR -->
                         <div class="saai-tabla mb-3 p-2 font-bold text-[10px]">
                             <span class="saai-header border-b border-black pb-1 mb-1 block">DATOS DEL IMPORTADOR / EXPORTADOR</span>
                             <div class="grid grid-cols-12 gap-2 mb-1">
                                 <div class="col-span-6">
                                     <span class="saai-header">R.F.C.</span>
-                                    <button onclick="showHelp('rfc')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                    <button onclick="showHelp('rfc')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                     <input type="text" id="p_rfc" oninput="toggleCurpInput()" placeholder="NIM180606MU5" class="w-full saai-input mt-1"><button type="button" onclick="showFieldHelp('p_rfc')" class="field-help-btn no-print" title="Ver ayuda completa: p_rfc">❓</button>
                                 </div>
                                 <div class="col-span-6">
                                     <span class="saai-header">CURP</span>
-                                    <button onclick="showHelp('curp')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                    <button onclick="showHelp('curp')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                     <input type="text" id="p_curp" placeholder="DEJAR EN BLANCO" class="w-full saai-input mt-1">
                                 </div>
                             </div>
                             <div class="mb-1">
                                 <span class="saai-header">NOMBRE, DENOMINACION O RAZON SOCIAL</span>
-                                <button onclick="showHelp('nombre')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                <button onclick="showHelp('nombre')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                 <input type="text" id="p_nombre" placeholder="NINA IMPORTACIONES S. DE R.L. DE C.V." class="w-full saai-input mt-1"><button type="button" onclick="showFieldHelp('p_nombre')" class="field-help-btn no-print" title="Ver ayuda completa: p_nombre">❓</button>
                             </div>
                             <div>
                                 <span class="saai-header">DOMICILIO</span>
-                                <button onclick="showHelp('domicilio')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                <button onclick="showHelp('domicilio')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                 <input type="text" id="p_domicilio" placeholder="AV. CENTRO COMERCIAL No. 17115..." class="w-full saai-input mt-1"><button type="button" onclick="showFieldHelp('p_domicilio')" class="field-help-btn no-print" title="Ver ayuda completa: p_domicilio">❓</button>
                             </div>
                         </div>
 
-                        <div class="saai-tabla mb-3 p-2 font-bold text-[10px]">
-                            <span class="saai-header border-b border-black pb-1 mb-2 block">DATOS DEL PROVEEDOR / COMPRADOR EXTRANJERO
-                                <button onclick="showHelp('proveedor')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
-                                <button type="button" onclick="showFieldHelp('p_prov_nombre')" class="field-help-btn no-print" title="Ver ayuda completa">❓</button>
-                            </span>
-                            <div class="grid grid-cols-12 gap-2 mb-1">
-                                <div class="col-span-7">
-                                    <span class="saai-header">NOMBRE O RAZÓN SOCIAL</span>
-                                    <input type="text" id="p_prov_nombre" placeholder="STAR IMPORT EXPORT LLC" class="w-full saai-input mt-1">
-                                </div>
-                                <div class="col-span-5">
-                                    <span class="saai-header">PAÍS</span>
-                                    <input type="text" id="p_prov_pais" placeholder="ESTADOS UNIDOS DE AMERICA" class="w-full saai-input mt-1">
-                                </div>
-                            </div>
-                            <div>
-                                <span class="saai-header">DOMICILIO DEL PROVEEDOR</span>
-                                <input type="text" id="p_prov_domicilio" placeholder="1234 COMMERCE BLVD, SAN DIEGO, CA 92154, USA" class="w-full saai-input mt-1">
-                            </div>
-                        </div>
-
-                        <div class="saai-tabla mb-3 p-2 font-bold text-[10px]">
-                            <span class="saai-header border-b border-black pb-1 mb-2 block">DATOS DEL DOCUMENTO DE TRANSPORTE Y COMERCIO</span>
-                            <div class="grid grid-cols-12 gap-2 mb-1">
-                                <div class="col-span-4 saai-border-r pr-2">
-                                    <span class="saai-header">No. FACTURA COMERCIAL</span>
-                                    <button onclick="showFieldHelp('p_factura')" class="field-help-btn no-print" title="Ayuda: Número de factura">❓</button>
-                                    <input type="text" id="p_factura" placeholder="INV-2024-001" class="w-full saai-input mt-1 font-mono">
-                                </div>
-                                <div class="col-span-4 saai-border-r pr-2">
-                                    <span class="saai-header">No. CONOCIMIENTO DE EMBARQUE (BL/AWB)</span>
-                                    <button onclick="showFieldHelp('p_bl')" class="field-help-btn no-print" title="Ayuda: BL o AWB">❓</button>
-                                    <input type="text" id="p_bl" placeholder="COSU1234567890" class="w-full saai-input mt-1 font-mono">
-                                </div>
-                                <div class="col-span-4">
-                                    <span class="saai-header">PATENTE DEL AGENTE ADUANAL</span>
-                                    <button onclick="showFieldHelp('p_patente')" class="field-help-btn no-print" title="Ayuda: Patente aduanal">❓</button>
-                                    <input type="text" id="p_patente" placeholder="3581" class="w-full saai-input mt-1 font-mono text-center">
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-12 gap-2">
-                                <div class="col-span-6">
-                                    <span class="saai-header">MARCAS Y NÚMEROS DE BULTOS</span>
-                                    <button onclick="showFieldHelp('p_marcas')" class="field-help-btn no-print" title="Ayuda: Marcas y bultos">❓</button>
-                                    <input type="text" id="p_marcas" placeholder="S/M — 5 CAJAS DE CARTÓN" class="w-full saai-input mt-1">
-                                </div>
-                                <div class="col-span-3">
-                                    <span class="saai-header">No. DE BULTOS</span>
-                                    <input type="number" id="p_num_bultos" placeholder="5" class="w-full saai-input mt-1 text-center font-mono">
-                                </div>
-                                <div class="col-span-3">
-                                    <span class="saai-header">TIPO DE BULTO</span>
-                                    <input type="text" id="p_tipo_bulto" placeholder="CAJAS" class="w-full saai-input mt-1 text-center">
-                                </div>
-                            </div>
-                        </div>
-
+                        <!-- INCREMENTABLES -->
                         <div class="saai-tabla mb-3 grid grid-cols-12 font-bold text-[10px]">
                             <div class="col-span-4 saai-border-r p-1">
                                 <span class="saai-header">FLETES</span>
-                                <button onclick="showHelp('fletes')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                <button onclick="showHelp('fletes')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                 <input type="number" id="p_fletes" placeholder="0" class="w-full saai-input mt-1"><button type="button" onclick="showFieldHelp('p_fletes')" class="field-help-btn no-print" title="Ver ayuda completa: p_fletes">❓</button>
                             </div>
                             <div class="col-span-4 saai-border-r p-1">
                                 <span class="saai-header">SEGUROS</span>
-                                <button onclick="showHelp('seguros')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                <button onclick="showHelp('seguros')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                 <input type="number" id="p_seguros" placeholder="0" class="w-full saai-input mt-1"><button type="button" onclick="showFieldHelp('p_seguros')" class="field-help-btn no-print" title="Ver ayuda completa: p_seguros">❓</button>
                             </div>
                             <div class="col-span-4 p-1">
                                 <span class="saai-header">OTROS INCREM.</span>
-                                <button onclick="showHelp('otros_inc')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                <button onclick="showHelp('otros_inc')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                 <input type="number" id="p_otros_inc" placeholder="0" class="w-full saai-input mt-1">
                             </div>
                         </div>
 
+                        <!-- FECHAS Y TASAS A NIVEL PEDIMENTO -->
                         <div class="saai-tabla mb-3 grid grid-cols-12 font-bold text-[10px]">
                             <div class="col-span-6 saai-border-r p-2">
-                                <span class="saai-header mb-1 border-b border-black pb-0.5 block">FECHAS <button onclick="showHelp('fecha')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button></span>
+                                <span class="saai-header mb-1 border-b border-black pb-0.5 block">FECHAS <button onclick="showHelp('fecha')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button></span>
                                 <div class="space-y-1">
                                     <div class="flex justify-between items-center">
                                         <span class="saai-header">ENTRADA:</span>
@@ -664,7 +654,7 @@
                                 </div>
                             </div>
                             <div class="col-span-6 p-2">
-                                <span class="saai-header mb-1 border-b border-black pb-0.5 block">TASAS A NIVEL PEDIMENTO <button onclick="showHelp('prv')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button></span>
+                                <span class="saai-header mb-1 border-b border-black pb-0.5 block">TASAS A NIVEL PEDIMENTO <button onclick="showHelp('prv')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button></span>
                                 <div class="grid grid-cols-3 gap-1 text-[8px] text-center font-bold">
                                     <span>CONTRIB.</span>
                                     <span>CVE. T. TASA</span>
@@ -678,30 +668,7 @@
                             </div>
                         </div>
 
-                        <div class="saai-tabla mb-3 p-2 font-bold text-[10px]">
-                            <span class="saai-header border-b border-black pb-1 mb-2 block">VALOR DECREMENTABLE — Costos posteriores a la entrada
-                                <button onclick="showFieldHelp('p_decr_transp')" class="field-help-btn no-print" title="Costos a deducir del valor en aduana (DAP/DDP)">❓</button>
-                            </span>
-                            <div class="grid grid-cols-12 gap-2">
-                                <div class="col-span-3 saai-border-r pr-2">
-                                    <span class="saai-header">TRANSPORTE DEST.</span>
-                                    <input type="number" id="p_decr_transp" placeholder="0.00" class="w-full saai-input mt-1 text-right font-mono">
-                                </div>
-                                <div class="col-span-3 saai-border-r pr-2">
-                                    <span class="saai-header">SEGURO DEST.</span>
-                                    <input type="number" id="p_decr_seguro" placeholder="0.00" class="w-full saai-input mt-1 text-right font-mono">
-                                </div>
-                                <div class="col-span-3 saai-border-r pr-2">
-                                    <span class="saai-header">CARGA / DESCARGA</span>
-                                    <input type="number" id="p_decr_carga" placeholder="0.00" class="w-full saai-input mt-1 text-right font-mono">
-                                </div>
-                                <div class="col-span-3">
-                                    <span class="saai-header">OTROS DECR.</span>
-                                    <input type="number" id="p_decr_otros" placeholder="0.00" class="w-full saai-input mt-1 text-right font-mono">
-                                </div>
-                            </div>
-                        </div>
-
+                        <!-- CUADRO DE LIQUIDACION -->
                         <div class="saai-tabla mb-3 font-bold text-[10px]">
                             <span class="block saai-header bg-slate-50 p-1 border-b border-black">CUADRO DE LIQUIDACION</span>
                             <div class="grid grid-cols-12 text-[8px] text-center border-b border-black py-0.5">
@@ -711,25 +678,27 @@
                                 <div class="col-span-5">TOTALES</div>
                             </div>
                             
+                            <!-- Concepto 1: IVA -->
                             <div class="grid grid-cols-12 items-center py-1 border-b border-dashed border-slate-200">
                                 <div class="col-span-3 text-center">
                                     IVA
-                                    <button onclick="showHelp('iva')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                    <button onclick="showHelp('iva')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                 </div>
                                 <div class="col-span-1 text-center">0</div>
                                 <div class="col-span-3 px-1">
                                     <input type="number" id="p_l_iva" placeholder="12031" class="w-full saai-input text-right"><button type="button" onclick="showFieldHelp('p_l_iva')" class="field-help-btn no-print" title="Ver ayuda completa: p_l_iva">❓</button>
                                 </div>
                                 <div class="col-span-5 px-2 flex justify-between text-[9px]">
-                                    <span>EFECTIVO: <button onclick="showHelp('efectivo')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2 w-2 inline"></i></button></span>
+                                    <span>EFECTIVO: <button onclick="showHelp('efectivo')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2 w-2 inline"></i></button></span>
                                     <input type="number" id="p_l_efec" placeholder="12367" class="w-24 saai-input text-right">
                                 </div>
                             </div>
 
+                            <!-- Concepto 2: PRV -->
                             <div class="grid grid-cols-12 items-center py-1 border-b border-dashed border-slate-200">
                                 <div class="col-span-3 text-center">
                                     PRV
-                                    <button onclick="showHelp('prv')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                    <button onclick="showHelp('prv')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                 </div>
                                 <div class="col-span-1 text-center">0</div>
                                 <div class="col-span-3 px-1">
@@ -741,10 +710,11 @@
                                 </div>
                             </div>
 
+                            <!-- Concepto 3: CNT -->
                             <div class="grid grid-cols-12 items-center py-1">
                                 <div class="col-span-3 text-center">
                                     CNT (IVA/PRV)
-                                    <button onclick="showHelp('cnt')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button>
+                                    <button onclick="showHelp('cnt')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                 </div>
                                 <div class="col-span-1 text-center">0</div>
                                 <div class="col-span-3 px-1">
@@ -757,16 +727,17 @@
                             </div>
                         </div>
 
+                        <!-- PARTIDAS -->
                         <div class="saai-tabla p-2 font-bold text-[10px] bg-slate-50/50">
                             <span class="block saai-header border-b border-black pb-1 mb-1">PARTIDAS (CONCEPTO DESGLOSADO)</span>
                             <div class="grid grid-cols-12 gap-1 text-center text-[8px] border-b border-black pb-0.5 mb-1.5">
                                 <div class="col-span-1">SEC</div>
-                                <div class="col-span-3">FRACCION / NICO <button onclick="showHelp('fraccion')" class="text-blue-600 hover:text-blue-800 no-print ml-0.5 inline-flex"><i data-lucide="circle-help" class="h-2.5 w-2.5"></i></button></div>
-                                <div class="col-span-1">VINC <button onclick="showHelp('vinc')" class="text-blue-600 hover:text-blue-800 no-print ml-0.5 inline-flex"><i data-lucide="circle-help" class="h-2.5 w-2.5"></i></button></div>
-                                <div class="col-span-1">UMC <button onclick="showHelp('umc')" class="text-blue-600 hover:text-blue-800 no-print ml-0.5 inline-flex"><i data-lucide="circle-help" class="h-2.5 w-2.5"></i></button></div>
-                                <div class="col-span-1">UMT <button onclick="showHelp('umt')" class="text-blue-600 hover:text-blue-800 no-print ml-0.5 inline-flex"><i data-lucide="circle-help" class="h-2.5 w-2.5"></i></button></div>
-                                <div class="col-span-2">CANT UMC <button onclick="showHelp('cant')" class="text-blue-600 hover:text-blue-800 no-print ml-0.5 inline-flex"><i data-lucide="circle-help" class="h-2.5 w-2.5"></i></button></div>
-                                <div class="col-span-2">P. ORIG/DEST <button onclick="showHelp('pais')" class="text-blue-600 hover:text-blue-800 no-print ml-0.5 inline-flex"><i data-lucide="circle-help" class="h-2.5 w-2.5"></i></button></div>
+                                <div class="col-span-3">FRACCION / NICO <button onclick="showHelp('fraccion')" class="text-blue-600 hover:text-blue-800 no-print ml-0.5 inline-flex"><i data-lucide="help-circle" class="h-2.5 w-2.5"></i></button></div>
+                                <div class="col-span-1">VINC <button onclick="showHelp('vinc')" class="text-blue-600 hover:text-blue-800 no-print ml-0.5 inline-flex"><i data-lucide="help-circle" class="h-2.5 w-2.5"></i></button></div>
+                                <div class="col-span-1">UMC <button onclick="showHelp('umc')" class="text-blue-600 hover:text-blue-800 no-print ml-0.5 inline-flex"><i data-lucide="help-circle" class="h-2.5 w-2.5"></i></button></div>
+                                <div class="col-span-1">UMT <button onclick="showHelp('umt')" class="text-blue-600 hover:text-blue-800 no-print ml-0.5 inline-flex"><i data-lucide="help-circle" class="h-2.5 w-2.5"></i></button></div>
+                                <div class="col-span-2">CANT UMC <button onclick="showHelp('cant')" class="text-blue-600 hover:text-blue-800 no-print ml-0.5 inline-flex"><i data-lucide="help-circle" class="h-2.5 w-2.5"></i></button></div>
+                                <div class="col-span-2">P. ORIG/DEST <button onclick="showHelp('pais')" class="text-blue-600 hover:text-blue-800 no-print ml-0.5 inline-flex"><i data-lucide="help-circle" class="h-2.5 w-2.5"></i></button></div>
                                 <div class="col-span-1">AYUDA</div>
                             </div>
                             
@@ -792,17 +763,19 @@
                                     <input type="text" id="p_part_pais" placeholder="USA" class="saai-input text-center uppercase font-mono"><button type="button" onclick="showFieldHelp('p_part_pais')" class="field-help-btn no-print" title="Ver ayuda completa: p_part_pais">❓</button>
                                 </div>
                                 <div class="col-span-1 text-center">
-                                    <button onclick="showHelp('partida')" class="text-indigo-600 hover:text-indigo-900 no-print"><i data-lucide="circle-help" class="h-4 w-4"></i></button>
+                                    <button onclick="showHelp('partida')" class="text-indigo-600 hover:text-indigo-900 no-print"><i data-lucide="help-circle" class="h-4 w-4"></i></button>
                                 </div>
                             </div>
 
+                            <!-- Descripción de la partida -->
                             <div class="border-t border-dashed border-slate-300 pt-1 mt-1">
-                                <span class="block saai-header">DESCRIPCIÓN DE LA MERCANCÍA <button onclick="showHelp('desc')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button></span>
+                                <span class="block saai-header">DESCRIPCIÓN DE LA MERCANCÍA <button onclick="showHelp('desc')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button></span>
                                 <input type="text" id="p_part_desc" placeholder="SISTEMA DE ENROLLADOR DE VELA DE PROA CON ACCESORIOS" class="w-full saai-input mt-1"><button type="button" onclick="showFieldHelp('p_part_desc')" class="field-help-btn no-print" title="Ver ayuda completa: p_part_desc">❓</button>
                             </div>
 
+                            <!-- Identificadores a nivel partida -->
                             <div class="border-t border-dashed border-slate-300 pt-1 mt-1">
-                                <span class="block saai-header mb-1">IDENTIFICADORES DE PARTIDA <button onclick="showHelp('identificador')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="circle-help" class="h-2.5 w-2.5 inline"></i></button></span>
+                                <span class="block saai-header mb-1">IDENTIFICADORES DE PARTIDA <button onclick="showHelp('identificador')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button></span>
                                 <div class="grid grid-cols-3 gap-2">
                                     <input type="text" id="p_part_id1" placeholder="EN" class="saai-input text-center font-mono">
                                     <input type="text" id="p_part_id2" placeholder="TL" class="saai-input text-center font-mono">
@@ -811,166 +784,7 @@
                             </div>
                         </div>
 
-                        <div class="saai-tabla mb-3 p-2 font-bold text-[10px] border-t border-dashed border-slate-300 pt-2 mt-2">
-                            <span class="saai-header border-b border-black pb-1 mb-2 block">
-                                PERMISOS PREVIOS Y REGULACIONES NO ARANCELARIAS
-                                <button onclick="showFieldHelp('p_permiso1')" class="field-help-btn no-print" title="Permisos requeridos según fracción arancelaria">❓</button>
-                            </span>
-                            <div class="grid grid-cols-12 gap-2 mb-1">
-                                <div class="col-span-4 saai-border-r pr-2">
-                                    <span class="saai-header">AUTORIDAD EMISORA</span>
-                                    <select id="p_permiso_tipo1" class="w-full saai-input mt-1">
-                                        <option value="">-- Seleccionar --</option>
-                                        <option value="COFEPRIS">COFEPRIS</option>
-                                        <option value="SAGARPA">SAGARPA / SENASICA</option>
-                                        <option value="SEDENA">SEDENA</option>
-                                        <option value="SE">Secretaría de Economía</option>
-                                        <option value="SEMARNAT">SEMARNAT</option>
-                                        <option value="SCT">SCT</option>
-                                        <option value="SEP">SEP</option>
-                                        <option value="SRE">SRE</option>
-                                        <option value="NA">No Aplica</option>
-                                    </select>
-                                </div>
-                                <div class="col-span-5 saai-border-r pr-2">
-                                    <span class="saai-header">NÚMERO DE PERMISO / FOLIO</span>
-                                    <input type="text" id="p_permiso1" placeholder="COF-2024-XXXX" class="w-full saai-input mt-1 font-mono">
-                                </div>
-                                <div class="col-span-3">
-                                    <span class="saai-header">VIGENCIA</span>
-                                    <input type="text" id="p_permiso_vig1" placeholder="31/12/2025" class="w-full saai-input mt-1 font-mono text-center">
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-12 gap-2">
-                                <div class="col-span-4 saai-border-r pr-2">
-                                    <span class="saai-header">AUTORIDAD EMISORA 2</span>
-                                    <select id="p_permiso_tipo2" class="w-full saai-input mt-1">
-                                        <option value="">-- Seleccionar --</option>
-                                        <option value="COFEPRIS">COFEPRIS</option>
-                                        <option value="SAGARPA">SAGARPA / SENASICA</option>
-                                        <option value="SEDENA">SEDENA</option>
-                                        <option value="SE">Secretaría de Economía</option>
-                                        <option value="SEMARNAT">SEMARNAT</option>
-                                        <option value="NA">No Aplica</option>
-                                    </select>
-                                </div>
-                                <div class="col-span-5 saai-border-r pr-2">
-                                    <span class="saai-header">NÚMERO DE PERMISO / FOLIO 2</span>
-                                    <input type="text" id="p_permiso2" placeholder="SENASICA-2024-XXXX" class="w-full saai-input mt-1 font-mono">
-                                </div>
-                                <div class="col-span-3">
-                                    <span class="saai-header">VIGENCIA 2</span>
-                                    <input type="text" id="p_permiso_vig2" placeholder="31/12/2025" class="w-full saai-input mt-1 font-mono text-center">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="saai-tabla mb-3 p-2 font-bold text-[10px] border-t border-dashed border-slate-300 pt-2 mt-2">
-                            <div class="flex items-center justify-between mb-2 border-b border-black pb-1">
-                                <span class="saai-header">PARTIDA 2 (Opcional — Mercancía adicional en el mismo pedimento)</span>
-                                <button onclick="toggleSegundaPartida()" id="btn-segunda-partida"
-                                    class="no-print text-[9px] px-2 py-0.5 rounded bg-indigo-600/20 border border-indigo-500/40 text-indigo-400 hover:bg-indigo-600/40 transition font-bold">
-                                    + Agregar Partida 2
-                                </button>
-                            </div>
-                            <div id="segunda-partida-fields" class="hidden">
-                                <div class="grid grid-cols-12 gap-2 mb-1">
-                                    <div class="col-span-2 saai-border-r pr-2">
-                                        <span class="saai-header">SEC.</span>
-                                        <input type="text" id="p2_sec" value="2" class="w-full saai-input mt-1 text-center font-mono" readonly>
-                                    </div>
-                                    <div class="col-span-3 saai-border-r pr-2">
-                                        <span class="saai-header">FRACCIÓN ARANCELARIA</span>
-                                        <input type="text" id="p2_frac" placeholder="00000000" maxlength="8" class="w-full saai-input mt-1 text-center font-mono">
-                                    </div>
-                                    <div class="col-span-2 saai-border-r pr-2">
-                                        <span class="saai-header">NICO</span>
-                                        <input type="text" id="p2_nico" placeholder="00" maxlength="2" class="w-full saai-input mt-1 text-center font-mono">
-                                    </div>
-                                    <div class="col-span-2 saai-border-r pr-2">
-                                        <span class="saai-header">PAÍS ORI.</span>
-                                        <input type="text" id="p2_pais" placeholder="USA" maxlength="3" class="w-full saai-input mt-1 text-center font-mono">
-                                    </div>
-                                    <div class="col-span-3">
-                                        <span class="saai-header">CANT. UMC</span>
-                                        <input type="number" id="p2_cant" placeholder="0.000" class="w-full saai-input mt-1 text-right font-mono">
-                                    </div>
-                                </div>
-                                <div class="grid grid-cols-12 gap-2 mb-1">
-                                    <div class="col-span-9 saai-border-r pr-2">
-                                        <span class="saai-header">DESCRIPCIÓN DE MERCANCÍA — PARTIDA 2</span>
-                                        <input type="text" id="p2_desc" placeholder="Descripción técnica de la segunda mercancía..." class="w-full saai-input mt-1">
-                                    </div>
-                                    <div class="col-span-3">
-                                        <span class="saai-header">VALOR USD</span>
-                                        <input type="number" id="p2_vdol" placeholder="0.00" class="w-full saai-input mt-1 text-right font-mono">
-                                    </div>
-                                </div>
-                                <div class="grid grid-cols-12 gap-2">
-                                    <div class="col-span-4 saai-border-r pr-2">
-                                        <span class="saai-header">IDENTIFICADOR 1</span>
-                                        <input type="text" id="p2_id1" placeholder="EN" class="w-full saai-input mt-1 text-center font-mono">
-                                    </div>
-                                    <div class="col-span-4 saai-border-r pr-2">
-                                        <span class="saai-header">IDENTIFICADOR 2</span>
-                                        <input type="text" id="p2_id2" placeholder="TL" class="w-full saai-input mt-1 text-center font-mono">
-                                    </div>
-                                    <div class="col-span-4">
-                                        <span class="saai-header">IDENTIFICADOR 3</span>
-                                        <input type="text" id="p2_id3" placeholder="PO" class="w-full saai-input mt-1 text-center font-mono">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="saai-tabla mb-3 p-2 font-bold text-[10px] border-t border-dashed border-slate-300 pt-2 mt-2">
-                            <span class="saai-header border-b border-black pb-1 mb-2 block">DATOS COMPLEMENTARIOS DEL PEDIMENTO</span>
-                            <div class="grid grid-cols-12 gap-2 mb-2">
-                                <div class="col-span-5 saai-border-r pr-2">
-                                    <span class="saai-header">
-                                        CERTIFICACIÓN OEA (Operador Económico Autorizado)
-                                        <button onclick="showFieldHelp('p_oea')" class="field-help-btn no-print" title="Ayuda: OEA">❓</button>
-                                    </span>
-                                    <div class="flex gap-2 mt-1">
-                                        <select id="p_oea_tipo" class="saai-input flex-1">
-                                            <option value="">-- No Aplica --</option>
-                                            <option value="OEA-C">OEA-C (Comercial)</option>
-                                            <option value="OEA-F">OEA-F (Fiscal)</option>
-                                            <option value="OEA-CF">OEA-CF (Comercial y Fiscal)</option>
-                                        </select>
-                                        <input type="text" id="p_oea_num" placeholder="No. Certificado OEA" class="saai-input flex-1 font-mono">
-                                    </div>
-                                </div>
-                                <div class="col-span-3 saai-border-r pr-2">
-                                    <span class="saai-header">No. CERTIFICADO DE ORIGEN
-                                        <button onclick="showFieldHelp('p_cert_origen')" class="field-help-btn no-print" title="T-MEC / TLCUE / Otro tratado">❓</button>
-                                    </span>
-                                    <input type="text" id="p_cert_origen" placeholder="MX-USA-2024-XXXX" class="w-full saai-input mt-1 font-mono">
-                                </div>
-                                <div class="col-span-4">
-                                    <span class="saai-header">TRATADO APLICABLE</span>
-                                    <select id="p_tratado" class="w-full saai-input mt-1">
-                                        <option value="">-- No Aplica --</option>
-                                        <option value="TMEC">T-MEC (USA / Canadá)</option>
-                                        <option value="TLCUE">TLCUE (Unión Europea)</option>
-                                        <option value="COL">TLC Colombia</option>
-                                        <option value="CHL">TLC Chile</option>
-                                        <option value="ISR">TLC Israel</option>
-                                        <option value="JPN">AAE Japón</option>
-                                        <option value="CRI">TLC Costa Rica</option>
-                                        <option value="OTRO">Otro tratado</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div>
-                                <span class="saai-header">OBSERVACIONES Y LEYENDAS DEL PEDIMENTO
-                                    <button onclick="showFieldHelp('p_observaciones')" class="field-help-btn no-print" title="Ayuda: Observaciones">❓</button>
-                                </span>
-                                <textarea id="p_observaciones" rows="3" placeholder="Ej: MERCANCÍA SUJETA A PERMISO COFEPRIS No. XXXX. OPERACIÓN BAJO PROGRAMA IMMEX No. 123456. TIPO DE CAMBIO DOF 19.80000 DEL 02/12/2024..."
-                                    class="w-full saai-input mt-1 font-mono text-[9px] leading-relaxed resize-none"></textarea>
-                            </div>
-                        </div>
-
+                        <!-- FIN DEL PEDIMENTO Y VALIDACIÓN -->
                         <div class="mt-4 border-t-2 border-black pt-1 text-center font-mono text-[8px] font-bold">
                             ******* FIN DE PEDIMENTO ******* NUM. TOTAL DE PARTIDAS: 1 ******* CLAVE PREVALIDADOR: 010
                         </div>
@@ -986,7 +800,7 @@
         <div class="w-full max-w-lg rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-2xl">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
                 <h4 class="text-base font-bold text-white flex items-center gap-2">
-                    <i data-lucide="circle-help" class="h-5 w-5 text-blue-400 animate-pulse"></i>
+                    <i data-lucide="help-circle" class="h-5 w-5 text-blue-400 animate-pulse"></i>
                     Glosario y Análisis del Anexo 22
                 </h4>
                 <button onclick="closeModal('modal-help')" class="rounded-lg p-1 text-slate-400 hover:bg-slate-800 hover:text-slate-200">
@@ -994,6 +808,7 @@
                 </button>
             </div>
             <div id="modal-help-content" class="text-sm text-slate-300 leading-relaxed space-y-3 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
+                <!-- Inyectado por JS -->
             </div>
         </div>
     </div>
@@ -1002,11 +817,13 @@
     <div id="modal-feedback" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm no-print">
         <div class="w-full max-w-xl rounded-3xl border border-slate-800 bg-slate-900 p-8 shadow-2xl text-center">
             <div id="feedback-icon-container" class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
+                <!-- Icono dinámico -->
             </div>
             <h3 id="feedback-title" class="text-2xl font-extrabold text-white">Resultado del Dictamen</h3>
             <p id="feedback-subtitle" class="mt-2 text-slate-400 text-sm font-semibold"></p>
             
             <div id="feedback-log" class="mt-6 rounded-2xl border border-slate-800 bg-slate-950 p-4 text-left space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar text-xs">
+                <!-- Inyectado por JS -->
             </div>
 
             <div class="mt-8 flex gap-3">
@@ -1443,6 +1260,7 @@
         ];
 
         // --- 12 CASOS PRÁCTICOS ADICIONALES (casos 9-20) ---
+        // Todos con datos reales, cálculos verificados y aduanas correctas
         const casosAdicionales = [
             {
                 id: 9,
@@ -2033,46 +1851,275 @@
             }
         ];
 
+        // Agregar los 12 casos adicionales al array CASOS
         casosAdicionales.forEach(caso => CASOS.push(caso));
 
+        // --- APÉNDICES DETALLADOS DE ANÁLISIS ACADÉMICO (ANEXO 22) ---
         const APENDICES = {
-            pedimento: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">NÚMERO DE PEDIMENTO - IDENTIDAD DE OPERACIÓN</p><p class="text-xs"><strong>¿Qué significa?</strong> Es la clave fiscal única que identifica de manera irrepetible cada operación aduanera en la República Mexicana.</p></div>`,
-            destino: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">DESTINO DE LA MERCANCÍA - APÉNDICE 15</p><p class="text-xs"><strong>¿Qué significa?</strong> Indica la demarcación geográfica donde la mercancía se internará para su consumo, uso o transformación final.</p></div>`,
-            op: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">TIPO DE OPERACIÓN (T. OPER)</p><p class="text-xs"><strong>¿Qué significa?</strong> Declara el flujo físico y legal de las mercancías cruzando el recinto aduanero (IMP o EXP).</p></div>`,
-            clave: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">CLAVE DE PEDIMENTO - APÉNDICE 2</p><p class="text-xs"><strong>¿Qué significa?</strong> Describe de forma simplificada el régimen jurídico y el propósito del despacho comercial de las mercancías.</p></div>`,
-            regimen: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">RÉGIMEN ADUANERO - APÉNDICE 16</p><p class="text-xs"><strong>¿Qué significa?</strong> Es el destino legal que el importador o exportador le da a la mercancía ingresada o retirada del territorio nacional.</p></div>`,
-            tipocambio: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">TIPO DE CAMBIO OFICIAL</p><p class="text-xs"><strong>¿Qué significa?</strong> La cotización oficial del peso frente al dólar (USD) publicada en el DOF.</p></div>`,
-            peso: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">PESO BRUTO GLOBAL (KILOGRAMOS)</p><p class="text-xs"><strong>¿Qué significa?</strong> Peso total físico de las mercancías, sumándole el peso de embalajes y transporte.</p></div>`,
-            adu: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">ADUANA DE ENTRADA O SALIDA (CLAVE SECCIÓN)</p><p class="text-xs"><strong>¿Qué significa?</strong> Clave de 3 dígitos de la aduana y sección por donde la mercancía ingresa o sale físicamente.</p></div>`,
-            transporte: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">MEDIOS DE TRANSPORTE - APÉNDICE 3</p><p class="text-xs"><strong>¿Qué significa?</strong> Declara los medios logísticos utilizados para mover la mercancía.</p></div>`,
-            vdol: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">VALOR EN DÓLARES (USD)</p><p class="text-xs"><strong>¿Qué significa?</strong> El valor comercial total facturado de las mercancías en dólares.</p></div>`,
-            val_adu: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">VALOR EN ADUANA (BASE GRAVABLE - PESOS)</p><p class="text-xs"><strong>¿Qué significa?</strong> Es el valor comercial total expresado en moneda nacional más todos los gastos incrementables obligatorios.</p></div>`,
-            val_com: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">PRECIO PAGADO / VALOR COMERCIAL</p><p class="text-xs"><strong>¿Qué significa?</strong> Equivale al precio neto de las mercancías facturadas convertido a pesos mexicanos.</p></div>`,
-            rfc: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">REGISTRO FEDERAL DE CONTRIBUYENTES (R.F.C.)</p><p class="text-xs"><strong>¿Qué significa?</strong> La clave tributaria asignada por el SAT al importador o exportador.</p></div>`,
-            curp: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">CLAVE ÚNICA DE REGISTRO DE POBLACIÓN (CURP)</p><p class="text-xs"><strong>¿Qué significa?</strong> Clave de identidad nacional requerida únicamente para personas físicas.</p></div>`,
-            nombre: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">NOMBRE, DENOMINACIÓN O RAZON SOCIAL</p><p class="text-xs"><strong>¿Qué significa?</strong> Nombre comercial o denominación social legal del importador tal como está registrada ante el SAT.</p></div>`,
-            domicilio: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">DOMICILIO FISCAL DEL IMPORTADOR</p><p class="text-xs"><strong>¿Qué significa?</strong> Dirección física de las oficinas o planta productiva registradas ante el SAT.</p></div>`,
-            fletes: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">FLETES (INCREMENTABLES DE TRANSPORTE)</p><p class="text-xs"><strong>¿Qué significa?</strong> Es el costo pagado al transportista para trasladar las mercancías (incrementable según el INCOTERM).</p></div>`,
-            seguros: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">SEGUROS (INCREMENTABLES DE COBERTURA)</p><p class="text-xs"><strong>¿Qué significa?</strong> Costo de la póliza de seguros contratada para resguardar las mercancías (incrementable según el INCOTERM).</p></div>`,
-            otros_inc: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">OTROS GASTOS INCREMENTABLES</p><p class="text-xs"><strong>¿Qué significa?</strong> Gastos por conceptos de embalajes, maniobras de carga, etc.</p></div>`,
-            fecha: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">FECHAS GENERALES DEL PEDIMENTO</p><p class="text-xs"><strong>¿Qué significa?</strong> Determinan los tipos de cambio e impuestos a aplicar.</p></div>`,
-            iva: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">IMPUESTO AL VALOR AGREGADO (IVA EN CASCADA)</p><p class="text-xs"><strong>¿Qué significa?</strong> Se calcula sobre: (Valor en Aduana + IGI + DTA) * 16%.</p></div>`,
-            prv: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">TASA DE PREVALIDACIÓN (PRV)</p><p class="text-xs"><strong>¿Qué significa?</strong> Tarifa fija establecida por el SAT que se paga a las empresas autorizadas ($290).</p></div>`,
-            cnt: `<p class="font-bold text-white text-base">Aportación de Contraprestación (CNT)</p><p class="text-xs text-slate-300 mt-1">Cuota que se cobra conjuntamente con la prevalidación ($46).</p>`,
-            efectivo: `<p class="font-bold text-white text-base">Efectivo Total a Liquidar</p><p class="text-xs text-slate-300 mt-1">Suma total líquida a pagar en la sucursal bancaria autorizada.</p>`,
-            fraccion: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">FRACCIÓN ARANCELARIA Y NICO (10 DÍGITOS)</p><p class="text-xs"><strong>¿Qué significa?</strong> El código universal de clasificación de la mercancía basado en la LIGIE.</p></div>`,
-            vinc: `<div class="space-y-3"><p class="font-extrabold text-blue-400 text-sm tracking-wide">CLAVE DE VINCULACIÓN COMERCIAL</p><p class="text-xs"><strong>¿Qué significa?</strong> Declara si existe relación comercial de parentesco o control financiero entre comprador y vendedor.</p></div>`,
-            umc: `<p class="font-bold text-white text-base">Unidad de Medida Comercial (UMC)</p><p class="text-xs text-slate-300 mt-1">Clave que identifica la forma física en la que se compró la mercancía.</p>`,
-            umt: `<p class="font-bold text-white text-base">Unidad de Medida de la Tarifa (UMT)</p><p class="text-xs text-slate-300 mt-1">Clave de unidad de medida física obligatoria que exige el SAT.</p>`,
-            cant: `<p class="font-bold text-white text-base">Cantidad Declarada</p><p class="text-xs text-slate-300 mt-1">El número físico de bienes declarados en el embarque.</p>`,
-            pais: `<p class="font-bold text-white text-base">País de Origen o Destino (Apéndice 4)</p><p class="text-xs text-slate-300 mt-1">Código ISO de tres letras.</p>`,
-            desc: `<p class="font-bold text-white text-base">Descripción Detallada de Mercancía</p><p class="text-xs text-slate-300 mt-1">Texto explicativo detallado y exacto.</p>`,
-            identificador: `<p class="font-bold text-white text-base">Identificadores de Partida (Apéndice 8)</p><p class="text-xs text-slate-300 mt-1">Claves de dos letras con complementos que avisan supuestos legales.</p>`,
-            partida: `<p class="font-bold text-white text-base">Datos de la Partida Arancelaria</p><p class="text-xs text-slate-300 mt-1">Fracción Arancelaria oficial, NICO y unidades de medida.</p>`
+            pedimento: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">NÚMERO DE PEDIMENTO - IDENTIDAD DE OPERACIÓN</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Es la clave fiscal única que identifica de manera irrepetible cada operación aduanera en la República Mexicana.</p>
+                    <p class="text-xs"><strong>Fundamento Legal:</strong> Artículo 36 de la Ley Aduanera y Regla 3.1.8 de las RGCE.</p>
+                    <p class="text-xs"><strong>Estructura para el llenado (15 dígitos):</strong></p>
+                    <ul class="list-disc pl-5 text-[11px] space-y-1">
+                        <li><strong>Dígitos 1-2:</strong> Año de validación (Ej: '24' para 2024).</li>
+                        <li><strong>Dígitos 3-4:</strong> Aduana de despacho (Apéndice 1. Ej: '04' Tijuana Otay).</li>
+                        <li><strong>Dígitos 5-8:</strong> Número de patente del Agente Aduanal (Ej: '3581').</li>
+                        <li><strong>Dígito 9:</strong> Último dígito del año de validación (Ej: '4' para 2024).</li>
+                        <li><strong>Dígitos 10-15:</strong> Consecutivo de la patente en el año de despacho.</li>
+                    </ul>
+                    <p class="text-xs"><strong>¿Por qué importa?</strong> Un error en este campo imposibilita la validación electrónica ante el SAT y puede ocasionar sanciones por asentar datos falsos o inexactos.</p>
+                </div>
+            `,
+            destino: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">DESTINO DE LA MERCANCÍA - APÉNDICE 15</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Indica la demarcación geográfica donde la mercancía se internará para su consumo, uso o transformación final.</p>
+                    <p class="text-xs"><strong>Claves comunes:</strong></p>
+                    <ul class="list-disc pl-5 text-[11px] space-y-1">
+                        <li><strong>2:</strong> Región Fronteriza (aplica para zonas con estímulos fiscales y tasas impositivas fronterizas).</li>
+                        <li><strong>9:</strong> Interior del País (tasa impositiva general).</li>
+                    </ul>
+                    <p class="text-xs"><strong>¿Por qué importa?</strong> Determina la aplicación de aranceles preferenciales de franja fronteriza y el cálculo correcto del IVA bajo decretos de estímulo fiscal regional.</p>
+                </div>
+            `,
+            op: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">TIPO DE OPERACIÓN (T. OPER)</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Declara el flujo físico y legal de las mercancías cruzando el recinto aduanero.</p>
+                    <p class="text-xs"><strong>Opciones de llenado:</strong></p>
+                    <ul class="list-disc pl-5 text-[11px] space-y-1">
+                        <li><strong>IMP:</strong> Importación (Ingreso de mercancías a territorio nacional).</li>
+                        <li><strong>EXP:</strong> Exportación (Salida de mercancías al extranjero).</li>
+                        <li><strong>TRA:</strong> Tránsito (Paso de mercancías entre aduanas nacionales).</li>
+                    </ul>
+                    <p class="text-xs"><strong>¿Por qué importa?</strong> Altera por completo el cálculo impositivo, el sentido aduanero y la aplicación de las regulaciones y restricciones no arancelarias (RRNAs).</p>
+                </div>
+            `,
+            clave: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">CLAVE DE PEDIMENTO - APÉNDICE 2</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Describe de forma simplificada el régimen jurídico y el propósito del despacho comercial de las mercancías.</p>
+                    <p class="text-xs"><strong>Ejemplos Clave:</strong></p>
+                    <ul class="list-disc pl-5 text-[11px] space-y-1">
+                        <li><strong>A1:</strong> Importación o exportación definitiva (La mercancía se queda de forma indefinida en el país).</li>
+                        <li><strong>C1:</strong> Importación definitiva a franja o región fronteriza.</li>
+                        <li><strong>IN:</strong> Importación temporal para elaboración o transformación en programas IMMEX.</li>
+                        <li><strong>AF:</strong> Importación temporal de activo fijo de IMMEX.</li>
+                    </ul>
+                    <p class="text-xs"><strong>¿Por qué importa?</strong> Es la columna vertebral de la glosa. Si se asienta una clave errónea, se invalida el régimen legal y se incurre en una infracción grave sancionada con el embargo preventivo de las mercancías.</p>
+                </div>
+            `,
+            regimen: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">RÉGIMEN ADUANERO - APÉNDICE 16</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Es el destino legal que el importador o exportador le da a la mercancía ingresada o retirada del territorio nacional.</p>
+                    <p class="text-xs"><strong>Fundamento Legal:</strong> Artículo 90 de la Ley Aduanera.</p>
+                    <p class="text-xs"><strong>Regímenes comunes:</strong></p>
+                    <ul class="list-disc pl-5 text-[11px] space-y-1">
+                        <li><strong>IMD:</strong> Definitivo de Importación.</li>
+                        <li><strong>EXD:</strong> Definitivo de Exportación.</li>
+                        <li><strong>ITE:</strong> Temporal para Elaboración, Transformación o Reparación en programas IMMEX.</li>
+                    </ul>
+                    <p class="text-xs"><strong>¿Por qué importa?</strong> Define los plazos de permanencia de la mercancía en el país, las exenciones tributarias y las obligaciones administrativas a cumplir ante el SAT.</p>
+                </div>
+            `,
+            tipocambio: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">TIPO DE CAMBIO OFICIAL</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> La cotización oficial del peso frente al dólar (USD) utilizada para traducir los valores comerciales.</p>
+                    <p class="text-xs"><strong>Fundamento Legal:</strong> Artículo 56 de la Ley Aduanera y Artículo 20 del Código Fiscal de la Federación (CFF).</p>
+                    <p class="text-xs"><strong>¿Cómo se llena?</strong> Con el tipo de cambio publicado por el Banco de México en el Diario Oficial de la Federación (DOF) el día hábil inmediato anterior a la fecha de entrada de las mercancías.</p>
+                    <p class="text-xs"><strong>¿Por qué importa?</strong> Toda la base impositiva del pedimento se calcula en moneda nacional (pesos), pero los valores de factura e internacionales se desglosan en dólares. Un error de redondeo o fecha alterará de forma incorrecta el pago de impuestos.</p>
+                </div>
+            `,
+            peso: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">PESO BRUTO GLOBAL (KILOGRAMOS)</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Peso total físico de las mercancías, sumándole el peso de sus cajas, tarimas, embalajes primarios y secundarios de transporte.</p>
+                    <p class="text-xs"><strong>¿Cómo se llena?</strong> Con la suma de kilogramos que se desglosan en la Lista de Empaque (Packing List) o Guía de Embarque.</p>
+                    <p class="text-xs"><strong>¿Por qué importa?</strong> Es utilizado por las aduanas para la logística, pesaje de camiones y contenedores en las básculas oficiales. Discrepancias notables de peso activan de inmediato alertas de contrabando o mercancía excedente (PAMA).</p>
+                </div>
+            `,
+            adu: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">ADUANA DE ENTRADA O SALIDA (CLAVE SECCIÓN)</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Clave de 3 dígitos de la aduana y sección por donde la mercancía ingresa o sale físicamente del país.</p>
+                    <p class="text-xs"><strong>Ejemplos comunes (Apéndice 1):</strong></p>
+                    <ul class="list-disc pl-5 text-[11px] space-y-1">
+                        <li><strong>040:</strong> Tijuana, Mesa de Otay (Aduana fronteriza de alto volumen).</li>
+                        <li><strong>400:</strong> Nogales, Sonora.</li>
+                        <li><strong>240:</strong> Nuevo Laredo, Tamaulipas.</li>
+                    </ul>
+                    <p class="text-xs"><strong>¿Por qué importa?</strong> Delimita la competencia territorial y jurisdicción de las autoridades aduaneras que fiscalizarán la operación.</p>
+                </div>
+            `,
+            transporte: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">MEDIOS DE TRANSPORTE - APÉNDICE 3</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Declara los medios logísticos utilizados para mover la mercancía en tres fases: Entrada, Arribo a la sección de despacho, y Salida de la aduana.</p>
+                    <p class="text-xs"><strong>Claves de Transporte comunes:</strong></p>
+                    <ul class="list-disc pl-5 text-[11px] space-y-1">
+                        <li><strong>1:</strong> Marítimo (Buques portacontenedores).</li>
+                        <li><strong>4:</strong> Aéreo (Aviones de carga).</li>
+                        <li><strong>7:</strong> Carretero (Camiones, tráilers y cajas terrestres).</li>
+                    </ul>
+                    <p class="text-xs"><strong>¿Por qué importa?</strong> Es crucial para comprobar la congruencia logística de la operación (ej: no se puede declarar aduana fronteriza terrestre con transporte marítimo de arribo).</p>
+                </div>
+            `,
+            vdol: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">VALOR EN DÓLARES (USD)</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> El valor comercial total facturado de las mercancías, homologado internacionalmente a dólares estadounidenses.</p>
+                    <p class="text-xs"><strong>¿Cómo se llena?</strong> Convirtiendo el valor de factura (si está en otra moneda extranjera como Euros o Yenes) a su equivalente en USD utilizando los factores de equivalencia publicados por el SAT.</p>
+                </div>
+            `,
+            val_adu: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">VALOR EN ADUANA (BASE GRAVABLE - PESOS)</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Es el valor comercial total expresado en moneda nacional más todos los gastos incrementables obligatorios ocurridos antes de cruzar la frontera.</p>
+                    <p class="text-xs"><strong>Fórmula de Glosa:</strong></p>
+                    <div class="bg-slate-900 p-2 rounded text-blue-300 font-mono text-[10px]">
+                        Valor en Aduana = (Precio Pagado Factura + Fletes + Seguros + Otros Incrementables) * Tipo de Cambio
+                    </div>
+                    <p class="text-xs"><strong>¿Por qué importa?</strong> Es la base gravable fundamental. Un cálculo equivocado del Valor en Aduana arrastrará de forma incorrecta el cálculo en cascada de todos los impuestos (DTA, IGI, IVA).</p>
+                </div>
+            `,
+            val_com: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">PRECIO PAGADO / VALOR COMERCIAL</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Equivale al precio neto de las mercancías facturadas convertido a pesos mexicanos al tipo de cambio correspondiente.</p>
+                    <p class="text-xs"><strong>Fundamento Legal:</strong> Artículo 64 de la Ley Aduanera (Valor de transacción).</p>
+                </div>
+            `,
+            rfc: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">REGISTRO FEDERAL DE CONTRIBUYENTES (R.F.C.)</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> La clave tributaria asignada por el SAT al importador o exportador.</p>
+                    <p class="text-xs"><strong>¿Por qué importa?</strong> Vincula directamente la operación física de comercio exterior con el perfil contable e impositivo de la empresa. RFCs suspendidos del Padrón no pueden despachar mercancías.</p>
+                </div>
+            `,
+            curp: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">CLAVE ÚNICA DE REGISTRO DE POBLACIÓN (CURP)</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Clave de identidad nacional requerida únicamente para personas físicas.</p>
+                    <p class="text-xs"><strong>Regla del SAAI M3:</strong> Si el RFC tiene 12 dígitos (Persona Moral / Empresa), este campo debe permanecer vacío obligatoriamente. Si el RFC tiene 13 dígitos (Persona Física), es requerido.</p>
+                </div>
+            `,
+            nombre: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">NOMBRE, DENOMINACIÓN O RAZON SOCIAL</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Nombre comercial o denominación social legal del importador tal como está registrada ante el SAT.</p>
+                </div>
+            `,
+            domicilio: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">DOMICILIO FISCAL DEL IMPORTADOR</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Dirección física de las oficinas o planta productiva registradas ante el SAT. Un domicilio no localizado en una auditoría aduanera da lugar al inicio de un PAMA y embargo inmediato de bienes.</p>
+                </div>
+            `,
+            fletes: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">FLETES (INCREMENTABLES DE TRANSPORTE)</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Es el costo pagado al transportista para trasladar las mercancías desde el punto de embarque original hasta la frontera aduanera nacional.</p>
+                    <p class="text-xs"><strong>¿Por qué importa?</strong> Conforme al Artículo 65 de la Ley Aduanera, debe sumarse como incrementable obligatoriamente para determinar el Valor en Aduana si no estaba incluido en la factura original (ej: Incoterms EXW o FOB).</p>
+                </div>
+            `,
+            seguros: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">SEGUROS (INCREMENTABLES DE COBERTURA)</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Costo de la póliza de seguros contratada para resguardar las mercancías en tránsito internacional. Debe sumarse al Valor en Aduana si no está incluido en factura.</p>
+                </div>
+            `,
+            otros_inc: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">OTROS GASTOS INCREMENTABLES</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Gastos pagados antes de cruzar la frontera por conceptos de embalajes, maniobras de carga, envases o regalías no contemplados en factura original.</p>
+                </div>
+            `,
+            fecha: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">FECHAS GENERALES DEL PEDIMENTO</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Dos momentos clave en el proceso aduanero:</p>
+                    <ul class="list-disc pl-5 text-[11px] space-y-1">
+                        <li><strong>Fecha de Entrada:</strong> Día en que la mercancía arriba oficialmente al recinto aduanero. Determina las leyes e impuestos vigentes.</li>
+                        <li><strong>Fecha de Pago:</strong> Día en que el pedimento es liquidado en ventanilla o banca electrónica autorizada por el SAT.</li>
+                    </ul>
+                </div>
+            `,
+            iva: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">IMPUESTO AL VALOR AGREGADO (IVA EN CASCADA)</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> El impuesto indirecto que grava el ingreso físico de bienes al consumo nacional.</p>
+                    <p class="text-xs"><strong>Cálculo Acumulativo de Ley (Esquema en Cascada):</strong></p>
+                    <div class="bg-slate-900 p-2 rounded text-blue-300 font-mono text-[10px]">
+                        IVA = (Valor en Aduana + IGI + DTA) * 16%
+                    </div>
+                    <p class="text-xs"><strong>¿Por qué importa?</strong> El IVA en aduanas no se saca directo del valor comercial; obliga a acumular los impuestos anteriores para desincentivar la subvaluación aduanera.</p>
+                </div>
+            `,
+            prv: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">TASA DE PREVALIDACIÓN (PRV)</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Tarifa fija establecida por el SAT que se paga a las empresas autorizadas para validar electrónicamente los datos contenidos en el pedimento antes de presentarlo a despacho.</p>
+                </div>
+            `,
+            cnt: `
+                <p class="font-bold text-white text-base">Aportación de Contraprestación (CNT)</p>
+                <p class="text-xs text-slate-300 mt-1">Cuota que se cobra conjuntamente con la prevalidación destinada al fideicomiso público de mejora tecnológica y soporte de los sistemas del SAT en aduanas.</p>
+            `,
+            efectivo: `
+                <p class="font-bold text-white text-base">Efectivo Total a Liquidar</p>
+                <p class="text-xs text-slate-300 mt-1">Es la suma total líquida que el importador debe transferir a la sucursal bancaria autorizada para poder liberar la mercancía. Se compone sumando todas las contribuciones a pagar (IVA + PRV + CNT + DTA + IGI).</p>
+            `,
+            fraccion: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">FRACCIÓN ARANCELARIA Y NICO (10 DÍGITOS)</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> El código universal de clasificación de la mercancía basado en la LIGIE. Consta de 8 dígitos de fracción arancelaria más 2 dígitos del Número de Identificación Comercial (NICO).</p>
+                    <p class="text-xs"><strong>¿Por qué importa?</strong> De esta clasificación depende todo: el porcentaje de arancel a pagar, el cumplimiento de NOMs, permisos no arancelarios y regulaciones sanitarias de importación.</p>
+                </div>
+            `,
+            vinc: `
+                <div class="space-y-3">
+                    <p class="font-extrabold text-blue-400 text-sm tracking-wide">CLAVE DE VINCULACIÓN COMERCIAL</p>
+                    <p class="text-xs"><strong>¿Qué significa?</strong> Declara si existe relación comercial de parentesco, sociedad corporativa o control financiero entre el comprador nacional y el proveedor extranjero.</p>
+                    <p class="text-xs"><strong>Claves:</strong> '0' indica que No existe vinculación. '1' Sí existe vinculación (esto dispara auditorías por sospecha de precios de transferencia alterados para evadir aranceles).</p>
+                </div>
+            `,
+            umc: `
+                <p class="font-bold text-white text-base">Unidad de Medida Comercial (UMC)</p>
+                <p class="text-xs text-slate-300 mt-1">Clave que identifica la forma física en la que se compró o facturó la mercancía conforme al Apéndice 7 (Piezas, kilos, metros cuadrados, litros, etc.).</p>
+            `,
+            umt: `
+                <p class="font-bold text-white text-base">Unidad de Medida de la Tarifa (UMT)</p>
+                <p class="text-xs text-slate-300 mt-1">Clave de unidad de medida física obligatoria que exige el SAT según la fracción arancelaria declarada para homologación de estadísticas oficiales aduaneras (Apéndice 7).</p>
+            `,
+            cant: `
+                <p class="font-bold text-white text-base">Cantidad Declarada</p>
+                <p class="text-xs text-slate-300 mt-1">El número físico de bienes declarados en el embarque. Discrepancias físicas en reconocimiento aduanero superiores al 10% causan PAMAs y sanciones fiscales de gran magnitud.</p>
+            `,
+            pais: `
+                <p class="font-bold text-white text-base">País de Origen o Destino (Apéndice 4)</p>
+                <p class="text-xs text-slate-300 mt-1">Código de tres letras que identifica el país donde se fabricó o manufacturó originalmente el bien comercial (Ej: USA, CHN, DEU, FRA). Determina la procedencia de aranceles preferenciales de tratados de libre comercio.</p>
+            `,
+            desc: `
+                <p class="font-bold text-white text-base">Descripción Detallada de Mercancía</p>
+                <p class="text-xs text-slate-300 mt-1">Texto explicativo detallado que describe plenamente las características, marca, modelo o números de serie de los bienes. El dictaminador la utiliza para corroborar físicamente la validez de la clasificación declarada.</p>
+            `,
+            identificador: `
+                <p class="font-bold text-white text-base">Identificadores de Partida (Apéndice 8)</p>
+                <p class="text-xs text-slate-300 mt-1">Claves de dos letras con complementos que avisan supuestos legales en la partida (Ej: EN certifica cumplimiento de NOMs oficiales, TL declara aplicación de tratado de libre comercio para exención de arancel, MU declara mercancía usada).</p>
+            `,
+            partida: `
+                <p class="font-bold text-white text-base">Datos de la Partida Arancelaria</p>
+                <p class="text-xs text-slate-300 mt-1">En el desglose de partidas debes asentar con precisión la Fracción Arancelaria oficial de la LIGIE, seguido del código identificador NICO (2 dígitos) y las unidades de medida correspondientes al Apéndice 7.</p>
+            `
         };
 
+        // --- SISTEMA DE INICIALIZACIÓN MOCKUP (DISEÑADO POR LUIS IGNACIO AYALA RODRÍGUEZ) ---
         window.addEventListener('DOMContentLoaded', () => {
-            if (typeof lucide !== 'undefined') lucide.createIcons();
+            lucide.createIcons();
             populateSelector();
 
             let progress = 0;
@@ -2093,26 +2140,24 @@
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(interval);
-                    if(bootStatus) bootStatus.innerText = "Sistema SAAI Listo. Distribución Gratuita.";
-                    if(bootPercent) bootPercent.innerText = "100%";
-                    if(bootBar) bootBar.style.width = "100%";
+                    bootStatus.innerText = "Sistema SAAI Listo. Distribución Gratuita.";
+                    bootPercent.innerText = "100%";
+                    bootBar.style.width = "100%";
                     setTimeout(() => {
-                        if(actionButtons) actionButtons.classList.remove('hidden');
-                        const bb = document.querySelector('#boot-box');
-                        if (bb) bb.classList.add('hidden');
+                        actionButtons.classList.remove('hidden');
+                        document.querySelector('#boot-box').classList.add('hidden');
                     }, 400);
                 } else {
-                    if(bootPercent) bootPercent.innerText = `${progress}%`;
-                    if(bootBar) bootBar.style.width = `${progress}%`;
+                    bootPercent.innerText = `${progress}%`;
+                    bootBar.style.width = `${progress}%`;
                     const idx = Math.floor((progress / 100) * steps.length);
-                    if(bootStatus) bootStatus.innerText = steps[idx] || "Procesando...";
+                    bootStatus.innerText = steps[idx] || "Procesando...";
                 }
             }, 60);
         });
 
         function populateSelector() {
             const selector = document.getElementById('case-selector');
-            if (!selector) return;
             selector.innerHTML = '';
             CASOS.forEach(caso => {
                 const opt = document.createElement('option');
@@ -2144,9 +2189,12 @@
                     <strong>Diseño y Desarrollo:</strong> Luis Ignacio Ayala Rodríguez<br>
                     <strong>Estatus de Licencia:</strong> Distribución libre, gratuita y con fines meramente didácticos.
                 </p>
+                <p class="text-xs text-slate-300 mt-2">
+                    Esta herramienta fomenta el autoaprendizaje mediante pistas guiadas, simulando de manera fidedigna una hoja impresa SAAI M3. Permite imprimir o exportar a PDF agregando de forma automática leyendas que advierten sobre su naturaleza de simulador escolar.
+                </p>
             `;
             modal.classList.remove('hidden');
-            if (typeof lucide !== 'undefined') lucide.createIcons();
+            lucide.createIcons();
         }
 
         let activeCaseIdx = 0;
@@ -2162,6 +2210,7 @@
             document.getElementById('case-title').innerText = caso.titulo;
             document.getElementById('case-description').innerText = caso.descripcion;
 
+            // Ficha técnica lateral
             const sheet = document.getElementById('case-data-sheet');
             sheet.innerHTML = '';
             for (const [key, value] of Object.entries(caso.datosSoporte)) {
@@ -2178,7 +2227,9 @@
             document.getElementById('case-selector').value = id;
         }
 
+        /* INICIO LIMPIEZA AUTOMATICA */
         function clearInputs() {
+            // Limpiar todos los inputs del pedimento
             const inputs = document.querySelectorAll('.saai-hoja input');
             inputs.forEach(input => {
                 input.value = '';
@@ -2188,29 +2239,19 @@
                     'ring-green-400', 'ring-red-400'
                 );
             });
+            // Limpiar también selects dentro del pedimento
             const selects = document.querySelectorAll('.saai-hoja select');
             selects.forEach(sel => {
                 sel.value = '';
                 sel.classList.remove('bg-green-100','bg-red-100','border-green-500','border-red-500');
             });
-            const curp = document.getElementById('p_curp');
-            if (curp) curp.disabled = false;
+            // Resetear estado del CURP
+            document.getElementById('p_curp').disabled = false;
+            // Cerrar cualquier modal de feedback abierto
             const fbModal = document.getElementById('modal-feedback');
             if (fbModal) fbModal.classList.add('hidden');
-
-            ['p_prov_nombre','p_prov_pais','p_prov_domicilio','p_factura','p_bl','p_patente','p_marcas','p_num_bultos','p_tipo_bulto','p_decr_transp','p_decr_seguro','p_decr_carga','p_decr_otros','p_permiso1','p_permiso_vig1','p_permiso2','p_permiso_vig2','p2_frac','p2_nico','p2_pais','p2_cant','p2_desc','p2_vdol','p2_id1','p2_id2','p2_id3','p_oea_num','p_cert_origen','p_observaciones'].forEach(function(id) {
-                var e = document.getElementById(id);
-                if (e) e.value = '';
-            });
-            ['p_permiso_tipo1','p_permiso_tipo2','p_oea_tipo','p_tratado'].forEach(function(id) {
-                var e = document.getElementById(id);
-                if (e) e.value = '';
-            });
-            var sp = document.getElementById('segunda-partida-fields');
-            var spBtn = document.getElementById('btn-segunda-partida');
-            if (sp) sp.classList.add('hidden');
-            if (spBtn) spBtn.textContent = '+ Agregar Partida 2';
         }
+        /* FIN LIMPIEZA AUTOMATICA */
 
         function toggleCurpInput() {
             const rfcVal = document.getElementById('p_rfc').value.trim();
@@ -2225,6 +2266,7 @@
             }
         }
 
+        // --- REVELAR PLANTILLA PARA PRUEBAS RÁPIDAS ---
         function revealAnswers() {
             const resp = CASOS[activeCaseIdx].respuestas;
             for (const [key, value] of Object.entries(resp)) {
@@ -2236,6 +2278,7 @@
             toggleCurpInput();
         }
 
+        // --- SISTEMA PEDAGÓGICO DE PISTAS ---
         function showCaseHints() {
             const caso = CASOS[activeCaseIdx];
             const modal = document.getElementById('modal-help');
@@ -2259,9 +2302,10 @@
             pistasHTML += `</div>`;
             content.innerHTML = pistasHTML;
             modal.classList.remove('hidden');
-            if (typeof lucide !== 'undefined') lucide.createIcons();
+            lucide.createIcons();
         }
 
+        // --- VERIFICACIÓN DE PEDIMENTO (VERIFICACIÓN EN CASCADA) ---
         function verifyPedimento() {
             const resp = CASOS[activeCaseIdx].respuestas;
             const log = [];
@@ -2275,7 +2319,7 @@
                 let isCorrect = false;
 
                 if (typeof expected === 'number') {
-                    isCorrect = Math.abs(parseFloat(val) - expected) < 2;
+                    isCorrect = Math.abs(parseFloat(val) - expected) < 2; // Margen de redondeo de 2 pesos
                 } else {
                     isCorrect = val.replace(/\s/g, "") === expected.toString().toUpperCase().replace(/\s/g, "");
                 }
@@ -2291,6 +2335,7 @@
                 }
             }
 
+            // Validar Campos SAAI M3
             check('p_num', resp.p_num, "<strong>Número de Pedimento:</strong> El formato de 15 dígitos o su composición aduanera es incorrecto.");
             check('p_destino', resp.p_destino, "<strong>Destino:</strong> Debe ser '2' para región fronteriza o '9' para el resto del país.");
             check('p_op', resp.p_op, "<strong>T. Operación:</strong> Código incorrecto (IMP / EXP).");
@@ -2358,7 +2403,7 @@
 
                 nextBtn.classList.add('hidden');
             }
-            if (typeof lucide !== 'undefined') lucide.createIcons();
+            lucide.createIcons();
         }
 
         function updateProgress() {
@@ -2374,22 +2419,267 @@
             loadCase(nextId);
         }
 
+
+        // ================================================================
+        // ANEXO 22 INTERACTIVO - CAPA EDUCATIVA
+        // Se agrega sobre el sistema existente sin modificar nada
+        // ================================================================
+
+        // --- CATÁLOGO CENTRAL DE AYUDA POR CAMPO ---
         const helpData = {
-            p_num: {titulo: "Número de Pedimento", descripcion: "Identificador único y oficial de la operación aduanera.", como_llenar: "Se construye con 15 dígitos.", formato: "AA AA AAAA NAAAAAA", ejemplo: "240435814024883", error_frecuente: "Usar el código de aduana incorrecto.", referencia: "Anexo 22, Apartado A.", tip: "Los dígitos 3 y 4 identifican la aduana."},
-            p_destino: {titulo: "Clave de Destino", descripcion: "Indica el destino geográfico.", como_llenar: "Consultar Apéndice 15.", formato: "1 dígito", ejemplo: "9", error_frecuente: "Dejar vacío.", referencia: "Apéndice 15", tip: "Casi siempre es 9."},
-            p_op: {titulo: "Tipo de Operación", descripcion: "Flujo de mercancías.", como_llenar: "IMP o EXP.", formato: "3 letras", ejemplo: "IMP", error_frecuente: "Confundir retorno con EXP.", referencia: "Anexo 22", tip: "¿Entra? IMP. ¿Sale? EXP."},
-            p_clave: {titulo: "Clave del Pedimento", descripcion: "Régimen jurídico del despacho.", como_llenar: "Consultar Apéndice 2.", formato: "2 caracteres", ejemplo: "A1", error_frecuente: "Usar A1 para todo.", referencia: "Apéndice 2", tip: "Clave y régimen van de la mano."},
-            p_regimen: {titulo: "Régimen Aduanero", descripcion: "Tratamiento legal de mercancías.", como_llenar: "Apéndice 16.", formato: "3 caracteres", ejemplo: "IMD", error_frecuente: "Confundir IMD con ITE.", referencia: "Art. 90 LA.", tip: "IMMEX ITE es elaboración."},
-            p_tc: {titulo: "Tipo de Cambio", descripcion: "Paridad cambiaria DOF.", como_llenar: "Usar el DOF semanal.", formato: "XX.XXXXX", ejemplo: "19.80000", error_frecuente: "Usar tipo bancario.", referencia: "Art. 56 LA.", tip: "Dato del DOF de Banxico."},
-            p_peso: {titulo: "Peso Bruto", descripcion: "Peso con embalaje.", como_llenar: "En KG con 3 decimales.", formato: "XXXX.XXX", ejemplo: "1050.000", error_frecuente: "Poner peso neto.", referencia: "Reglas CE.", tip: "Agregar 5-10% a peso neto si no se sabe."},
-            p_adu: {titulo: "Aduana", descripcion: "Aduana de despacho.", como_llenar: "Apéndice 1.", formato: "3 dígitos", ejemplo: "040", error_frecuente: "Poner 390.", referencia: "Apéndice 1.", tip: "Tijuana es 040."},
-            p_vdol: {titulo: "Valor en USD", descripcion: "Valor factura.", como_llenar: "Valor en dólares.", formato: "XXX.XX", ejemplo: "25000.00", error_frecuente: "Sumar flete en FOB.", referencia: "Valoración aduanera.", tip: "No incluye incrementables en FOB."},
-            p_vadu: {titulo: "Valor Aduana", descripcion: "Base gravable IGI.", como_llenar: "Valor comercial + incrementables.", formato: "XXXXX", ejemplo: "22300", error_frecuente: "No sumar flete en EXW/FOB.", referencia: "Art 64 LA.", tip: "En CIF el valor aduana = valor factura."},
-            p_vcom: {titulo: "Valor Comercial", descripcion: "Valor factura en MXN.", como_llenar: "USD x TC.", formato: "XXXXX", ejemplo: "495000", error_frecuente: "Confundir con valor aduana.", referencia: "Art 64 LA.", tip: "Sin incrementables."},
-            p_rfc: {titulo: "RFC", descripcion: "RFC del importador.", como_llenar: "12 o 13 caracteres.", formato: "Alfanumérico", ejemplo: "DHM100505BX2", error_frecuente: "Poner RFC del agente aduanal.", referencia: "CFF Art 27.", tip: "RFC de la empresa importadora."},
-            p_l_iva: {titulo: "IVA Liquidación", descripcion: "Impuesto al valor agregado.", como_llenar: "(V.Aduana+IGI+DTA)*16%.", formato: "MXN", ejemplo: "97217", error_frecuente: "No sumar IGI/DTA a la base.", referencia: "Ley IVA.", tip: "Base de IVA en aduanas es más alta."}
+            p_num: {
+                titulo: "Número de Pedimento",
+                descripcion: "Identificador único y oficial de la operación aduanera. Es asignado por el Sistema Aduanero Automatizado Integral (SAAI) al momento de validar el pedimento.",
+                como_llenar: "Se construye con 15 dígitos: Año (2) + Aduana (2) + Patente (4) + Último dígito del año (1) + Número consecutivo (6). Ejemplo: 24-04-3581-4024883.",
+                formato: "AA AA AAAA NAAAAAA (15 dígitos, sin guiones al capturar)",
+                ejemplo: "240435814024883 → Año 2024, Aduana 040 (Tijuana Otay), Patente 3581, consecutivo 4024883",
+                error_frecuente: "Usar el código de aduana incorrecto. Tijuana Otay es 040, NO 390. Manzanillo es 160, Veracruz es 280.",
+                referencia: "Anexo 22, Apartado A, sección 'Número de Pedimento'. Apéndice 1 (claves de aduanas).",
+                tip: "Los dígitos 3 y 4 identifican la aduana. Memorizar las principales: 010 CDMX, 040 Tijuana, 160 Manzanillo, 240 Nuevo Laredo, 280 Veracruz."
+            },
+            p_destino: {
+                titulo: "Clave de Destino",
+                descripcion: "Indica el destino geográfico o régimen territorial de las mercancías importadas o exportadas.",
+                como_llenar: "Consultar el Apéndice 2 del Anexo 22. Para importaciones al territorio nacional se usa '9'. Para zonas de libre comercio se usan claves específicas.",
+                formato: "1 dígito numérico",
+                ejemplo: "'9' = Territorio Nacional (la gran mayoría de operaciones)",
+                error_frecuente: "Dejar este campo vacío o usar '0'. El valor más común es '9' para importaciones estándar.",
+                referencia: "Anexo 22, Apéndice 2 - Claves de Destino.",
+                tip: "En el examen, si no especifica zona franca o régimen especial, la clave de destino es siempre '9'."
+            },
+            p_op: {
+                titulo: "Tipo de Operación",
+                descripcion: "Define la dirección del flujo de mercancías: si entran al país (importación) o salen del país (exportación).",
+                como_llenar: "Solo dos valores posibles: IMP para importación, EXP para exportación. Se elige según el sentido del movimiento de las mercancías.",
+                formato: "3 letras: 'IMP' o 'EXP'",
+                ejemplo: "IMP = mercancías que entran a México. EXP = mercancías que salen de México hacia el extranjero.",
+                error_frecuente: "Confundir el tipo de operación cuando el régimen es de retorno. Un retorno de exportación temporal es una importación (IMP) porque la mercancía regresa a México.",
+                referencia: "Ley Aduanera Art. 35 y 36. Anexo 22 Apartado A.",
+                tip: "La pregunta clave: ¿La mercancía ENTRA a México? → IMP. ¿La mercancía SALE de México? → EXP."
+            },
+            p_clave: {
+                titulo: "Clave del Pedimento",
+                descripcion: "Identifica el tipo específico de operación aduanera dentro de la clasificación del Anexo 22. Es uno de los campos más importantes del pedimento.",
+                como_llenar: "Consultar el Apéndice 2 del Anexo 22. Las claves más comunes: A1=Importación/Exportación Definitiva, IN=Importación Temporal (IMMEX), DF=Depósito Fiscal, T1=Tránsito Interno, RT=Retorno de Exportación Temporal.",
+                formato: "2 caracteres alfanuméricos",
+                ejemplo: "A1 = Definitiva | IN = Temporal IMMEX | DF = Depósito Fiscal | T1 = Tránsito | RT = Retorno | ET = Exportación Temporal",
+                error_frecuente: "Usar 'A1' para todos los casos. Cada régimen especial tiene su propia clave. Un depósito fiscal con clave A1 es incorrecto.",
+                referencia: "Anexo 22, Apéndice 2 - Claves de Pedimento. Este apéndice es de memorización obligatoria.",
+                tip: "La clave del pedimento + el régimen deben ser coherentes entre sí. Si la clave es IN (temporal IMMEX), el régimen debe ser ITE o ITD."
+            },
+            p_regimen: {
+                titulo: "Régimen Aduanero",
+                descripcion: "Define el tratamiento legal y fiscal que se aplica a las mercancías durante su permanencia en territorio nacional o en el extranjero.",
+                como_llenar: "Usar las claves oficiales del Apéndice 2: IMD=Importación Definitiva, ITE=Importación Temporal para Elaboración, ETD=Exportación Temporal Definitiva, DFI=Depósito Fiscal, TIN=Tránsito Interno.",
+                formato: "3 caracteres alfanuméricos",
+                ejemplo: "IMD (Import. Definitiva) | ITE (Temporal Elaboración) | ETD (Export. Temporal) | DFI (Depósito Fiscal) | TIN (Tránsito Interno)",
+                error_frecuente: "Confundir IMD con ITE. IMD paga todos los impuestos. ITE es IMMEX y solo paga PRV+CNT mientras la mercancía se transforma.",
+                referencia: "Ley Aduanera Arts. 90-131. Anexo 22 Apéndice 2.",
+                tip: "Para IMMEX: ITE = Elaboración, ITD = Depósito, ITA = Activo Fijo. Son tres tipos distintos de importación temporal maquiladora."
+            },
+            p_tc: {
+                titulo: "Tipo de Cambio",
+                descripcion: "Paridad cambiaria oficial publicada por el Banco de México (DOF) que se utiliza para convertir el valor de la factura de dólares a pesos mexicanos para calcular el valor en aduana.",
+                como_llenar: "Usar el tipo de cambio del DOF publicado el lunes de la semana en que se presenta el pedimento (o el viernes anterior si no hay publicación). Se captura con 5 decimales.",
+                formato: "Número decimal con hasta 5 posiciones: XX.XXXXX",
+                ejemplo: "19.80000 = $19.80 pesos por dólar americano. Valor factura $1,000 USD × 19.80000 = $19,800.00 MXN",
+                error_frecuente: "Usar el tipo de cambio del día de la factura o del pago, en lugar del tipo de cambio oficial del DOF de la semana de presentación.",
+                referencia: "Ley Aduanera Art. 56. El tipo de cambio aplicable es el del DOF de la semana de la operación.",
+                tip: "Siempre es el tipo de cambio FIX del Banco de México publicado en el DOF. No usar tipos de cambio bancarios ni de casas de cambio."
+            },
+            p_peso: {
+                titulo: "Peso Bruto Total",
+                descripcion: "Peso total de la mercancía expresado en kilogramos, incluyendo embalaje, tarimas, cajas y todo material de empaque. Es un dato de control físico del pedimento.",
+                como_llenar: "Sumar el peso neto de la mercancía más el peso de todos los embalajes (cajas, tarimas, flejes, plástico). Se captura en kilogramos con 3 decimales.",
+                formato: "Número con 3 decimales en kilogramos: XXXXX.XXX",
+                ejemplo: "Mercancía: 1,000 kg + Embalaje: 50 kg = Peso Bruto: 1,050.000 kg",
+                error_frecuente: "Capturar solo el peso neto de la mercancía sin incluir el embalaje. El campo pide peso BRUTO, no neto.",
+                referencia: "Anexo 22 Apartado A. Reglas de Comercio Exterior Regla 3.1.5.",
+                tip: "Si la factura del proveedor indica solo el peso neto, agregar aproximadamente un 5-10% por concepto de embalaje para estimar el peso bruto."
+            },
+            p_adu: {
+                titulo: "Clave de Aduana de Despacho",
+                descripcion: "Código de 3 dígitos que identifica la aduana donde se realiza físicamente el despacho aduanero de las mercancías. Debe corresponder a la aduana real de entrada o salida.",
+                como_llenar: "Consultar el Apéndice 1 del Anexo 22. Usar siempre el código oficial de 3 dígitos de la aduana que despacha la mercancía.",
+                formato: "3 dígitos numéricos: 'XXX'",
+                ejemplo: "010 = CDMX Aeropuerto | 040 = Tijuana (Mesa de Otay) | 044 = Tecate | 070 = Cd. Juárez | 083 = Nogales | 160 = Manzanillo | 210 = Guadalajara | 240 = Nuevo Laredo | 250 = Querétaro | 280 = Veracruz",
+                error_frecuente: "Usar '390' para Tijuana. La clave oficial de Tijuana Mesa de Otay es '040'. El error '390' es muy frecuente en exámenes.",
+                referencia: "Anexo 22, Apéndice 1 - Catálogo de Aduanas. Memorización obligatoria.",
+                tip: "TIJUANA = 040 (no 390). Las primeras 2 aduanas en memorizar: 040 Tijuana y 160 Manzanillo por ser las de mayor volumen en México."
+            },
+            p_trans_e: {
+                titulo: "Medio de Transporte de Entrada",
+                descripcion: "Código que identifica el medio de transporte utilizado para introducir la mercancía al territorio nacional o sacarla de él en el punto de entrada.",
+                como_llenar: "Usar los códigos del Apéndice 3: 1=Marítimo, 2=Aéreo, 3=Ferroviario, 4=Carretero/Terrestre, 7=Otro (incluye ductos y correo).",
+                formato: "1 dígito numérico",
+                ejemplo: "Contenedor por barco = '1'. Carga aérea = '2'. Camión de carga = '4' o '7' según el sistema. Tren = '3'.",
+                error_frecuente: "Confundir el código '4' (carretero) con '7' (otro). Revisar el apéndice del sistema específico que se use.",
+                referencia: "Anexo 22, Apéndice 3 - Medios de Transporte.",
+                tip: "Los más comunes en México: '1' (marítimo por Manzanillo/Veracruz), '2' (aéreo por CDMX/GDL), '7' (terrestre fronterizo)."
+            },
+            p_vdol: {
+                titulo: "Valor en Dólares (Precio Comercial)",
+                descripcion: "Importe total de la factura comercial expresado en dólares americanos (USD). Representa el precio acordado entre comprador y vendedor según el INCOTERM pactado.",
+                como_llenar: "Tomar directamente el valor total de la factura comercial del proveedor en USD. Si la factura está en otra moneda, convertir a USD usando el tipo de cambio entre esas monedas.",
+                formato: "Número decimal con 2 posiciones: XXXXXX.XX",
+                ejemplo: "Factura por 500 piezas a $50 USD c/u = $25,000.00 USD. Se captura: 25000.00",
+                error_frecuente: "Incluir en este campo los fletes o seguros cuando el INCOTERM es FOB. El valor FOB ya incluye gastos hasta el punto de embarque, pero NO incluye el flete internacional.",
+                referencia: "Ley Aduanera Art. 64-78 (Valoración Aduanera). Acuerdo de Valoración de la OMC.",
+                tip: "Este campo refleja el precio pagado o por pagar según el INCOTERM. Es la base del Método de Valoración No. 1 (precio pagado), el más utilizado."
+            },
+            p_vadu: {
+                titulo: "Valor en Aduana",
+                descripcion: "Base gravable oficial para calcular el IGI (arancel). Se obtiene sumando al precio comercial todos los incrementables que correspondan según el INCOTERM utilizado.",
+                como_llenar: "Fórmula: Valor Aduana = Precio Comercial MXN + Fletes + Seguros + Otros Incrementables. El resultado debe expresarse en pesos mexicanos.",
+                formato: "Número entero en pesos mexicanos: XXXXXXXXX",
+                ejemplo: "V.Comercial $19,800 MXN + Flete $2,000 MXN + Seguro $500 MXN = V. Aduana $22,300 MXN",
+                error_frecuente: "No agregar el flete cuando el INCOTERM es FOB o EXW. Con FOB, el flete internacional siempre es un incrementable al valor en aduana.",
+                referencia: "Ley Aduanera Arts. 64-68. Regla General: el valor en aduana incluye CIF (Costo+Seguro+Flete) hasta el punto de entrada a México.",
+                tip: "INCOTERM y valor en aduana: EXW y FOB → agregar flete+seguro. CFR → agregar seguro. CIF → ya incluye todo, no se agrega nada. DAP/DDP → deducir gastos post-entrada."
+            },
+            p_vcom: {
+                titulo: "Precio Pagado / Valor Comercial",
+                descripcion: "Importe de la factura comercial convertido a pesos mexicanos. Es el precio efectivamente pagado o por pagar al proveedor extranjero, antes de agregar incrementables.",
+                como_llenar: "Multiplicar el valor en dólares (USD) por el tipo de cambio oficial del DOF. Fórmula: Precio Comercial MXN = USD × TC DOF.",
+                formato: "Número entero en pesos mexicanos",
+                ejemplo: "$25,000 USD × $19.80 TC = $495,000.00 MXN precio comercial",
+                error_frecuente: "Confundir el precio comercial con el valor en aduana. Son distintos cuando hay fletes o seguros que agregar.",
+                referencia: "Ley Aduanera Art. 64 - Primer método de valoración: precio pagado.",
+                tip: "Precio Comercial = USD × TC. Valor en Aduana = Precio Comercial + Incrementables. Si el INCOTERM es CIF, precio comercial = valor en aduana."
+            },
+            p_rfc: {
+                titulo: "RFC del Importador / Exportador",
+                descripcion: "Registro Federal de Contribuyentes de la empresa o persona física que realiza la operación de comercio exterior como importador o exportador.",
+                como_llenar: "Capturar el RFC completo y correcto del importador/exportador. Para personas morales: 12 caracteres. Para personas físicas: 13 caracteres.",
+                formato: "Personas Morales: XXXXNNNNNNNA (12 caracteres). Personas Físicas: XXXXNNNNNNNAAA (13 caracteres)",
+                ejemplo: "DHM100505BX2 = Persona Moral constituida el 05/05/2010, siglas DHM. RAML800115KR5 = Persona Física.",
+                error_frecuente: "Capturar el RFC del agente aduanal en lugar del RFC del importador/exportador. Son personas distintas.",
+                referencia: "CFF Art. 27. La validación del RFC se hace contra el padrón del SAT.",
+                tip: "El RFC que va en el pedimento es siempre el del IMPORTADOR O EXPORTADOR (dueño de la mercancía), nunca el del agente aduanal."
+            },
+            p_nombre: {
+                titulo: "Nombre o Razón Social",
+                descripcion: "Nombre completo o denominación social del importador o exportador tal como aparece en el acta constitutiva o en la FIEL/firma electrónica del SAT.",
+                como_llenar: "Capturar el nombre completo sin abreviaturas cuando sea posible. Para personas morales incluir el tipo societario (S.A. DE C.V., S. DE R.L., etc.).",
+                formato: "Texto libre, mayúsculas, máximo 250 caracteres",
+                ejemplo: "DISTRIBUIDORA HOGAR MODERNO S.A. DE C.V. (persona moral) / JUAN CARLOS RAMIREZ LOPEZ (persona física)",
+                error_frecuente: "Abreviar en exceso o capturar el nombre del agente aduanal en lugar del importador/exportador.",
+                referencia: "Anexo 22, instrucciones de llenado del campo 'Importador/Exportador'.",
+                tip: "El nombre debe coincidir exactamente con el RFC. Si hay discrepancia, el pedimento puede ser rechazado en la validación."
+            },
+            p_domicilio: {
+                titulo: "Domicilio Fiscal",
+                descripcion: "Dirección fiscal registrada ante el SAT del importador o exportador. Debe corresponder al domicilio que tiene registrado en el RFC.",
+                como_llenar: "Capturar: Calle, Número exterior, Número interior (si aplica), Colonia, Ciudad, Estado. Debe coincidir con el domicilio del RFC en el SAT.",
+                formato: "Texto libre: Calle No. Colonia Ciudad Estado",
+                ejemplo: "AV. BOULEVARD COSTERO No. 890 MANZANILLO Colima",
+                error_frecuente: "Capturar el domicilio de la bodega o del punto de entrega en lugar del domicilio fiscal registrado ante el SAT.",
+                referencia: "CFF Art. 10. El domicilio fiscal debe estar actualizado ante el SAT.",
+                tip: "En un examen, si el domicilio no coincide con el del RFC, es motivo de error en la validación del pedimento."
+            },
+            p_fletes: {
+                titulo: "Fletes (Incrementables al Valor)",
+                descripcion: "Gastos de transporte de la mercancía desde el lugar de origen hasta el punto de entrada al territorio nacional. Son incrementables al valor en aduana cuando el INCOTERM no los incluye.",
+                como_llenar: "Capturar el monto en pesos mexicanos. Convertir el flete en USD al tipo de cambio del pedimento. Solo incluir el flete hasta el punto de entrada a México, no el flete interno.",
+                formato: "Número entero en pesos mexicanos",
+                ejemplo: "Flete marítimo $1,500 USD × $19.80 TC = $29,700 MXN. Se captura: 29700",
+                error_frecuente: "Incluir el flete interno (dentro de México) como incrementable. Solo el flete hasta la aduana de entrada es incrementable al valor en aduana.",
+                referencia: "Ley Aduanera Art. 65 - Elementos que integran el valor en aduana.",
+                tip: "Regla de oro: El flete es incrementable cuando el INCOTERM es EXW, FOB o FCA. Con CFR, CIF, CPT, CIP el flete ya está incluido en el precio."
+            },
+            p_seguros: {
+                titulo: "Seguros (Incrementables al Valor)",
+                descripcion: "Prima del seguro de transporte internacional de la mercancía. Es un incrementable al valor en aduana cuando el INCOTERM no lo incluye en el precio.",
+                como_llenar: "Capturar el monto del seguro en pesos mexicanos. Si el seguro está en USD, convertir al tipo de cambio del pedimento.",
+                formato: "Número entero en pesos mexicanos",
+                ejemplo: "Seguro aéreo $250 USD × $20.18 TC = $5,045 MXN. Se captura: 5045",
+                error_frecuente: "Omitir el seguro cuando el INCOTERM es FOB o EXW. Con estos INCOTERMs, el seguro es responsabilidad del comprador y debe declararse como incrementable.",
+                referencia: "Ley Aduanera Art. 65 fracción II - El seguro forma parte del valor en aduana.",
+                tip: "Con INCOTERM CIF y CIP, el seguro ya está incluido en el precio de factura. Con FOB y EXW, el seguro debe agregarse como incrementable."
+            },
+            p_fecha_e: {
+                titulo: "Fecha de Entrada / Pago",
+                descripcion: "Fecha en que la mercancía entra físicamente a territorio nacional (o sale en exportaciones) y fecha en que se realizan los pagos de contribuciones al SAT.",
+                como_llenar: "Capturar en formato DD/MM/AAAA. La fecha de entrada es cuando el transporte cruza el punto de entrada. La fecha de pago es cuando se liquidan las contribuciones.",
+                formato: "DD/MM/AAAA",
+                ejemplo: "13/12/2024 = 13 de diciembre de 2024",
+                error_frecuente: "Usar el formato americano MM/DD/AAAA en lugar del formato mexicano DD/MM/AAAA.",
+                referencia: "Ley Aduanera Art. 56 - La fecha determina el tipo de cambio y las tasas arancelarias aplicables.",
+                tip: "La fecha de entrada determina el tipo de cambio y el arancel aplicable. Si cambia la tarifa arancelaria entre la fecha de factura y la fecha de entrada, aplica la de la fecha de entrada."
+            },
+            p_l_iva: {
+                titulo: "IVA en el Cuadro de Liquidación",
+                descripcion: "Impuesto al Valor Agregado aplicado a la importación. Se calcula sobre la base gravable que incluye el valor en aduana más el IGI más el DTA.",
+                como_llenar: "Fórmula: Base IVA = Valor en Aduana + IGI + DTA. IVA = Base IVA × 16%. El resultado se captura en pesos enteros.",
+                formato: "Número entero en pesos mexicanos",
+                ejemplo: "V.Aduana $524,700 + IGI $78,705 + DTA $4,198 = Base IVA $607,603. IVA = $607,603 × 16% = $97,217 MXN",
+                error_frecuente: "Calcular el IVA solo sobre el valor en aduana, olvidando incluir el IGI y el DTA en la base gravable.",
+                referencia: "Ley del IVA Art. 27 - La base del IVA en importaciones incluye el valor en aduana + todas las demás contribuciones pagadas.",
+                tip: "IVA en importaciones ≠ IVA en ventas domésticas. En importaciones la BASE GRAVABLE es mayor porque incluye el arancel (IGI) y el DTA."
+            },
+            p_l_prv: {
+                titulo: "PRV - Derecho de Prevalidación",
+                descripcion: "Derecho federal que se paga por el servicio de prevalidación electrónica del pedimento ante la empresa autorizada (CAAAREM, AMCP, etc.). Es de cuota fija.",
+                como_llenar: "Capturar el monto fijo vigente. Para pedimentos con patente aduanal la cuota es fija: actualmente $290 pesos por pedimento.",
+                formato: "Número entero: 290",
+                ejemplo: "$290 por cada pedimento presentado, independientemente del valor de la mercancía.",
+                error_frecuente: "Confundir el PRV con el DTA. Son derechos distintos: PRV es fijo ($290) y DTA es proporcional (8 al millar del valor en aduana).",
+                referencia: "Ley Federal de Derechos. Reglas de Comercio Exterior vigentes.",
+                tip: "PRV = $290 FIJO siempre. DTA = Variable (8 al millar). Ambos son derechos (no impuestos) y se incluyen en el cuadro de liquidación."
+            },
+            p_l_cnt: {
+                titulo: "CNT - Contribución de Actualización",
+                descripcion: "Cuota adicional al derecho de prevalidación. Es también de monto fijo y se aplica por cada pedimento tramitado.",
+                como_llenar: "Capturar el monto fijo vigente. Actualmente es $46 pesos por pedimento.",
+                formato: "Número entero: 46",
+                ejemplo: "$46 por cada pedimento, además de los $290 del PRV. Total de derechos fijos: $336 por pedimento.",
+                error_frecuente: "Omitir este campo o incluirlo dentro del PRV. Son dos conceptos separados que deben declararse por separado.",
+                referencia: "Reglas de Comercio Exterior. Lista de Derechos de Trámite Aduanero vigentes.",
+                tip: "PRV ($290) + CNT ($46) = $336 MXN de derechos fijos por pedimento. En operaciones con 0% de IGI y 0% de IVA (como exportaciones), estos $336 son el único pago."
+            },
+            p_part_frac: {
+                titulo: "Fracción Arancelaria",
+                descripcion: "Código de 8 dígitos del Sistema Armonizado de Designación y Codificación de Mercancías (SA) que clasifica la mercancía específica. Determina la tasa arancelaria y las regulaciones no arancelarias aplicables.",
+                como_llenar: "Consultar la LIGIE (Ley de los Impuestos Generales de Importación y Exportación) vigente. Los 6 primeros dígitos son del SA internacional; los últimos 2 son la subdivisión mexicana.",
+                formato: "8 dígitos numéricos: XXXXXXXX",
+                ejemplo: "84713001 = Computadoras portátiles (8471=máquinas automáticas de tratamiento de datos, 30=portátiles, 01=subdivisión MX)",
+                error_frecuente: "Usar 6 dígitos del SA en lugar de 8. México siempre requiere 8 dígitos en la LIGIE.",
+                referencia: "LIGIE vigente. Regla 1 a 6 de Interpretación del SA. Criterios de Clasificación Arancelaria del SAT.",
+                tip: "La fracción arancelaria es el campo más crítico del pedimento. Define la tasa de IGI, las NOM aplicables y los permisos necesarios. Un error aquí puede implicar multas."
+            },
+            p_part_vinc: {
+                titulo: "Vinculación Comprador-Vendedor",
+                descripcion: "Indica si existe alguna relación comercial, familiar, corporativa o de control entre el importador (comprador) y el exportador (vendedor) que pueda influir en el precio de la mercancía.",
+                como_llenar: "Capturar '0' si NO existe vinculación. Capturar '1' si SÍ existe vinculación (empresas del mismo grupo, filiales, matrices, socios, etc.).",
+                formato: "1 dígito: '0' = No vinculados | '1' = Sí vinculados",
+                ejemplo: "'0' = empresa mexicana compra a proveedor independiente en China. '1' = maquiladora importa de su empresa matriz en EE.UU.",
+                error_frecuente: "Siempre capturar '0' sin verificar. Las maquiladoras IMMEX casi siempre tienen vinculación '1' porque importan de su empresa relacionada.",
+                referencia: "Ley Aduanera Art. 68 - Definición de vinculación y su efecto en la valoración aduanera.",
+                tip: "Vinculation '1' NO invalida la operación. Solo obliga a demostrar que la relación no influyó en el precio. Se usa el método de valoración 1 si el precio es representativo de mercado."
+            },
+            p_part_pais: {
+                titulo: "País de Origen / Destino",
+                descripcion: "Código ISO de 3 letras del país donde fue producida o fabricada la mercancía (importación) o hacia donde se envía definitivamente (exportación). Determina el trato arancelario aplicable.",
+                como_llenar: "Usar el código ISO 3166-1 alpha-3. Ejemplos: MEX=México, USA=Estados Unidos, CHN=China, DEU=Alemania, JPN=Japón, KOR=Corea del Sur, FRA=Francia.",
+                formato: "3 letras mayúsculas ISO: XXX",
+                ejemplo: "KOR = Corea del Sur. Si la mercancía es electrónica fabricada en Corea, el país de origen es KOR aunque el vendedor sea estadounidense.",
+                error_frecuente: "Usar el código del país del vendedor en lugar del país de fabricación. Una empresa en EE.UU. puede vender mercancía fabricada en China (origen CHN, no USA).",
+                referencia: "Reglas de Origen del Anexo 22. Criterios de origen del T-MEC y otros tratados.",
+                tip: "El país de origen determina si aplica un tratado comercial. Si la mercancía es de origen USA o CAN y tiene certificado T-MEC, el IGI puede ser 0%."
+            },
+            p_part_desc: {
+                titulo: "Descripción de la Mercancía",
+                descripcion: "Descripción técnica y específica de las mercancías que permita identificarlas claramente para efectos de clasificación arancelaria y verificación física.",
+                como_llenar: "Describir en español con términos técnicos precisos: nombre comercial, composición, uso, características técnicas relevantes (capacidad, voltaje, dimensiones). Evitar descripciones genéricas.",
+                formato: "Texto en mayúsculas, mínimo 20 caracteres, específico y técnico",
+                ejemplo: "REFRIGERADORES DOMESTICOS COMPRESOR INVERTER 520 LITROS (correcto). APARATOS ELECTRONICOS (incorrecto - muy genérico)",
+                error_frecuente: "Usar descripciones genéricas como 'partes', 'componentes', 'artículos varios'. El SAT puede rechazar el pedimento por descripción insuficiente.",
+                referencia: "Reglas de Comercio Exterior 3.1.5. La descripción debe permitir identificar la fracción arancelaria.",
+                tip: "Una buena descripción debe responder: ¿Qué es? ¿De qué está hecho? ¿Para qué sirve? ¿Cuáles son sus características técnicas principales?"
+            }
         };
 
+        // --- MODO APRENDIZAJE ---
         let learningModeActive = false;
         let activeFieldTooltip = null;
 
@@ -2397,6 +2687,7 @@
             learningModeActive = !learningModeActive;
             const btn = document.getElementById('btn-learning-mode');
             const badge = document.getElementById('learning-mode-badge');
+            const form = document.getElementById('pedimento-form');
 
             if (learningModeActive) {
                 btn.classList.remove('bg-gray-700','text-gray-300','border-gray-600');
@@ -2411,7 +2702,7 @@
                 if (badge) { badge.classList.add('hidden'); }
                 deactivateLearningFields();
             }
-            if (typeof lucide !== 'undefined') lucide.createIcons();
+            lucide.createIcons();
         }
 
         function activateLearningFields() {
@@ -2465,11 +2756,13 @@
             document.body.appendChild(tip);
             activeFieldTooltip = tip;
 
+            // Posicionar debajo del campo
             const rect = el.getBoundingClientRect();
             const scrollY = window.scrollY || window.pageYOffset;
             const scrollX = window.scrollX || window.pageXOffset;
             let top = rect.bottom + scrollY + 6;
             let left = rect.left + scrollX;
+            // Ajustar si se sale de la pantalla
             if (left + 280 > window.innerWidth) left = window.innerWidth - 290;
             if (left < 8) left = 8;
             tip.style.top = top + 'px';
@@ -2482,13 +2775,15 @@
             activeFieldTooltip = null;
         }
 
+        // --- MODAL DE AYUDA COMPLETA (helpData) ---
+        // Reemplaza/extiende showHelp para usar helpData cuando esté disponible
+        const _originalShowHelp = window.showHelp;
+
         function showFieldHelp(fieldId) {
-            const data = helpData[fieldId] || {
-                titulo: "Ayuda Rápida", descripcion: "Consulta el Apéndice 22 de la Ley Aduanera para más detalles.", como_llenar: "-", formato: "-", ejemplo: "-", error_frecuente: "-", referencia: "-", tip: "-"
-            };
+            const data = helpData[fieldId];
             const modal = document.getElementById('modal-fieldhelp');
             const body = document.getElementById('modal-fieldhelp-body');
-            if (!modal || !body) return;
+            if (!data || !modal || !body) return;
 
             body.innerHTML = `
                 <div class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-700">
@@ -2562,7 +2857,7 @@
                 </div>`;
 
             modal.classList.remove('hidden');
-            if (typeof lucide !== 'undefined') lucide.createIcons();
+            lucide.createIcons();
         }
 
         function closeFHModal() {
@@ -2570,22 +2865,281 @@
             if (modal) modal.classList.add('hidden');
         }
 
+
+        /* ================================================
+           INICIO MODULO BIBLIOTECA ADUANERA
+           100% offline — Sin APIs ni bases de datos externas
+           ================================================ */
+
         const BIBLIOTECA = [
-            { titulo: "Número de Pedimento", categoria: "Pedimento", descripcion: "Identificador único de 15 dígitos asignado por el SAAI.", ejemplo: "240435814024883", errorFrecuente: "Usar '390' como clave de Tijuana.", datoImportante: "Dígitos 3-4 identifican la aduana." },
-            { titulo: "Clave del Pedimento", categoria: "Pedimento", descripcion: "Código de 2 caracteres del Apéndice 2 del Anexo 22.", ejemplo: "A1 = Definitiva | IN = Temporal IMMEX", errorFrecuente: "Usar 'A1' para todas las operaciones.", datoImportante: "La clave del pedimento y el régimen deben ser coherentes." },
-            { titulo: "Tipo de Operación", categoria: "Pedimento", descripcion: "Define si las mercancías entran (IMP) o salen (EXP).", ejemplo: "IMP = entran. EXP = salen.", errorFrecuente: "En retornos la operación es IMP, no EXP.", datoImportante: "¿ENTRA a México? → IMP. ¿SALE? → EXP." },
-            { titulo: "Valor en Aduana", categoria: "Pedimento", descripcion: "Base gravable para el cálculo del IGI.", ejemplo: "V. Comercial + Incrementables = V. Aduana", errorFrecuente: "No agregar flete en FOB.", datoImportante: "INCOTERM EXW/FOB → agregar flete+seguro." },
-            { titulo: "Precio Pagado", categoria: "Pedimento", descripcion: "Importe de factura convertido a pesos mexicanos.", ejemplo: "USD × Tipo de Cambio DOF", errorFrecuente: "Confundir con valor en aduana.", datoImportante: "Con CIF, precio comercial = valor en aduana." },
-            { titulo: "Tipo de Cambio", categoria: "Pedimento", descripcion: "Paridad oficial publicada por Banxico.", ejemplo: "19.80000", errorFrecuente: "Usar tipo bancario.", datoImportante: "TC del lunes o viernes anterior." },
-            { titulo: "DTA", categoria: "Pedimento", descripcion: "Derecho de Trámite Aduanero.", ejemplo: "Valor aduana × 0.008", errorFrecuente: "Confundir con IGI.", datoImportante: "Con T-MEC es cuota fija $291." },
-            { titulo: "PRV", categoria: "Pedimento", descripcion: "Derecho fijo de prevalidación.", ejemplo: "$290 fijos.", errorFrecuente: "Confundir con DTA.", datoImportante: "PRV + CNT = $336 fijos." },
-            { titulo: "Régimen A1", categoria: "Régimen", descripcion: "Importación Definitiva.", ejemplo: "Pago total de IGI + IVA + DTA.", errorFrecuente: "Usar A1 para IMMEX.", datoImportante: "Régimen más común." },
-            { titulo: "Régimen IMMEX", categoria: "Régimen", descripcion: "Importación Temporal.", ejemplo: "Clave IN, Régimen ITE.", errorFrecuente: "No exportar el producto.", datoImportante: "ITE=Elaboración, ITD=Depósito, ITA=Activo Fijo." },
-            { titulo: "Aduana 040 Tijuana", categoria: "Aduanas", descripcion: "Principal aduana terrestre en BC.", ejemplo: "040", errorFrecuente: "Usar 390.", datoImportante: "Mayor volumen IMMEX." },
-            { titulo: "Aduana 160 Manzanillo", categoria: "Aduanas", descripcion: "Principal aduana marítima del Pacífico.", ejemplo: "160", errorFrecuente: "Confundir con código de puerto.", datoImportante: "Maneja 50% marítimo." }
+            // ---- CATEGORÍA: PEDIMENTO ----
+            {
+                titulo: "Número de Pedimento",
+                categoria: "Pedimento",
+                descripcion: "Identificador único de 15 dígitos asignado por el SAAI al validar la operación. Estructura: AA (año) + AA (aduana) + AAAA (patente) + N (dígito año) + NNNNNN (consecutivo).",
+                ejemplo: "240435814024883 → Año 2024 · Aduana 040 Tijuana · Patente 3581 · Consecutivo 4024883",
+                errorFrecuente: "Usar '390' como clave de Tijuana. La clave oficial de Tijuana Mesa de Otay es '040'.",
+                datoImportante: "Los dígitos 3-4 identifican la aduana. Apéndice 1 del Anexo 22 tiene el catálogo completo de aduanas."
+            },
+            {
+                titulo: "Clave del Pedimento",
+                categoria: "Pedimento",
+                descripcion: "Código de 2 caracteres del Apéndice 2 del Anexo 22 que identifica el tipo específico de operación aduanera.",
+                ejemplo: "A1 = Definitiva | IN = Temporal IMMEX | DF = Depósito Fiscal | T1 = Tránsito | RT = Retorno | ET = Export. Temporal",
+                errorFrecuente: "Usar 'A1' para todas las operaciones. Cada régimen especial tiene su propia clave obligatoria.",
+                datoImportante: "La clave del pedimento y el régimen deben ser coherentes. Error en la clave es motivo de rechazo en el SAAI."
+            },
+            {
+                titulo: "Tipo de Operación",
+                categoria: "Pedimento",
+                descripcion: "Define si las mercancías entran (IMP) o salen (EXP) del territorio nacional.",
+                ejemplo: "IMP = mercancías que entran a México. EXP = mercancías que salen de México hacia el extranjero.",
+                errorFrecuente: "En retornos de exportación temporal la operación es IMP (la mercancía regresa a México), no EXP.",
+                datoImportante: "Pregunta clave: ¿La mercancía ENTRA a México? → IMP. ¿SALE de México? → EXP."
+            },
+            {
+                titulo: "Valor en Aduana",
+                categoria: "Pedimento",
+                descripcion: "Base gravable para el cálculo del IGI (arancel). Se obtiene sumando el precio comercial más todos los incrementables que correspondan según el INCOTERM.",
+                ejemplo: "V. Comercial $19,800 MXN + Flete $2,000 + Seguro $500 = V. Aduana $22,300 MXN",
+                errorFrecuente: "No agregar el flete cuando el INCOTERM es FOB o EXW. Con FOB, el flete internacional siempre es incrementable.",
+                datoImportante: "INCOTERM y valor en aduana: EXW/FOB → agregar flete+seguro. CFR → agregar seguro. CIF → ya incluye todo."
+            },
+            {
+                titulo: "Precio Pagado / Valor Comercial",
+                categoria: "Pedimento",
+                descripcion: "Importe de la factura convertido a pesos mexicanos. Fórmula: USD × Tipo de Cambio DOF.",
+                ejemplo: "$25,000 USD × $19.80 TC = $495,000.00 MXN precio comercial",
+                errorFrecuente: "Confundir el precio comercial con el valor en aduana. Son distintos cuando hay incrementables.",
+                datoImportante: "Si el INCOTERM es CIF, el precio comercial puede ser igual al valor en aduana porque ya incluye flete y seguro."
+            },
+            {
+                titulo: "Tipo de Cambio",
+                categoria: "Pedimento",
+                descripcion: "Paridad cambiaria oficial (FIX) publicada por Banxico en el DOF, aplicable a la semana de presentación del pedimento.",
+                ejemplo: "19.80000 = $19.80 pesos por dólar. Se captura con 5 decimales.",
+                errorFrecuente: "Usar el tipo de cambio bancario o del día del pago en lugar del tipo de cambio FIX del DOF.",
+                datoImportante: "Siempre es el tipo de cambio del lunes de la semana de operación o el viernes anterior si no hay publicación."
+            },
+            {
+                titulo: "DTA — Derecho de Trámite Aduanero",
+                categoria: "Pedimento",
+                descripcion: "Derecho federal que se paga por el despacho aduanero. Se calcula como el 8 al millar (0.8%) del valor en aduana.",
+                ejemplo: "Valor en aduana $500,000 × 0.008 = DTA $4,000 MXN",
+                errorFrecuente: "Confundir DTA con IGI (arancel). El DTA es el costo del servicio de trámite, el IGI es el impuesto sobre la importación.",
+                datoImportante: "Con tratados T-MEC o TLCUE el DTA tiene cuota fija preferencial de $291 en lugar del 8 al millar."
+            },
+            {
+                titulo: "PRV — Prevalidación",
+                categoria: "Pedimento",
+                descripcion: "Derecho fijo de $290 pesos que se paga por pedimento a la empresa prevalidadora autorizada (CAAAREM, AMCP, etc.).",
+                ejemplo: "$290 por cada pedimento presentado, independientemente del valor de la mercancía.",
+                errorFrecuente: "Confundir PRV con DTA. PRV = $290 FIJO. DTA = variable (8 al millar del valor en aduana).",
+                datoImportante: "PRV ($290) + CNT ($46) = $336 MXN de derechos fijos por pedimento. En exportaciones con 0% IGI y IVA, estos $336 son el único pago."
+            },
+            // ---- CATEGORÍA: REGÍMENES ----
+            {
+                titulo: "Régimen A1 — Importación Definitiva",
+                categoria: "Régimen",
+                descripcion: "Permite introducir mercancías extranjeras al país para permanecer indefinidamente pagando todos los impuestos: IGI, IVA, DTA y PRV.",
+                ejemplo: "Empresa importa maquinaria de Alemania pagando IGI + IVA + DTA. Clave pedimento: A1. Régimen: IMD.",
+                errorFrecuente: "Usar A1 para operaciones temporales IMMEX. Para IMMEX la clave es 'IN' y el régimen es ITE.",
+                datoImportante: "El régimen A1 es el más común en México. Genera el mayor ingreso de contribuciones al SAT."
+            },
+            {
+                titulo: "Régimen IMMEX — Importación Temporal",
+                categoria: "Régimen",
+                descripcion: "Permite a empresas maquiladoras importar temporalmente insumos sin pagar IGI ni IVA, con la obligación de exportar el producto transformado.",
+                ejemplo: "Maquiladora importa circuitos en Tijuana bajo IMMEX. Clave: IN. Régimen: ITE. No paga IGI ni IVA, solo PRV+CNT.",
+                errorFrecuente: "Olvidar que bajo IMMEX la mercancía DEBE exportarse. Si se queda en México, se genera deuda tributaria con recargos.",
+                datoImportante: "Tipos IMMEX: ITE = Elaboración, ITD = Depósito, ITA = Activo Fijo. Cada uno tiene plazos distintos de permanencia."
+            },
+            {
+                titulo: "Régimen DFI — Depósito Fiscal",
+                categoria: "Régimen",
+                descripcion: "Permite almacenar mercancías en un almacén general de depósito autorizado sin pagar contribuciones hasta que la mercancía salga del almacén.",
+                ejemplo: "Distribuidor introduce electrónicos a bodega autorizada CDMX. Clave: DF. Régimen: DFI. Paga solo PRV+CNT.",
+                errorFrecuente: "Pensar que las contribuciones se condonan. Solo se difieren — se pagan cuando la mercancía sale del depósito.",
+                datoImportante: "El almacén autorizado garantiza las contribuciones ante el SAT durante el tiempo que la mercancía permanezca depositada."
+            },
+            {
+                titulo: "Régimen ETD — Exportación Temporal",
+                categoria: "Régimen",
+                descripcion: "Permite sacar temporalmente mercancías nacionales al extranjero para su uso, reparación o transformación, con obligación de retornar.",
+                ejemplo: "Constructor exporta maquinaria a EE.UU. para obra. Clave: ET. Régimen: ETD. No paga IGI ni IVA.",
+                errorFrecuente: "No presentar el pedimento de retorno al regresar la mercancía. Es obligatorio y tiene plazo definido.",
+                datoImportante: "Si la mercancía regresa transformada, se paga IGI únicamente sobre el valor agregado en el extranjero."
+            },
+            {
+                titulo: "Régimen TIN — Tránsito Interno",
+                categoria: "Régimen",
+                descripcion: "Permite trasladar mercancías extranjeras entre aduanas del territorio nacional bajo custodia aduanal, sin pagar contribuciones en la aduana de entrada.",
+                ejemplo: "Mercancía entra por Veracruz (280) y se despacha definitivamente en CDMX (010). Clave: T1. Régimen: TIN.",
+                errorFrecuente: "Presentar pedimento definitivo en la aduana de entrada cuando la mercancía se destinará a otra aduana.",
+                datoImportante: "Las contribuciones se pagan en la aduana de destino, no en la de entrada. El pedimento de tránsito es la garantía."
+            },
+            // ---- CATEGORÍA: ADUANAS ----
+            {
+                titulo: "Aduana 040 — Tijuana (Mesa de Otay)",
+                categoria: "Aduanas",
+                descripcion: "Aduana terrestre de mayor volumen en México, ubicada en Mesa de Otay, Tijuana, Baja California. Principal punto de despacho para operaciones IMMEX y maquila.",
+                ejemplo: "Pedimento: 240435814024883 → dígitos '04' = Aduana 040 Tijuana. CLAVE CORRECTA: 040 (NO 390).",
+                errorFrecuente: "Usar '390' como clave de Tijuana. Ese número no corresponde a ninguna aduana real. La clave oficial es 040.",
+                datoImportante: "El error '390' para Tijuana es el más frecuente en exámenes de comercio exterior en México. Memorizar: TIJUANA = 040."
+            },
+            {
+                titulo: "Aduana 160 — Manzanillo",
+                categoria: "Aduanas",
+                descripcion: "Principal aduana marítima del Pacífico mexicano. Recibe la mayor parte de contenedores provenientes de Asia (China, Corea, Japón).",
+                ejemplo: "Contenedor de electrónicos de Corea → Puerto de Manzanillo → Aduana 160. Pedimento: 241635814XXXXXX.",
+                errorFrecuente: "Confundir el código de aduana con el código del puerto. La aduana y el puerto son entidades distintas.",
+                datoImportante: "Manzanillo maneja aproximadamente el 50% del comercio marítimo del Pacífico mexicano."
+            },
+            {
+                titulo: "Aduana 280 — Veracruz",
+                categoria: "Aduanas",
+                descripcion: "Principal aduana marítima del Golfo de México. Recibe mercancías de Europa y la costa este de América.",
+                ejemplo: "Maquinaria industrial de Alemania → Puerto de Veracruz → Aduana 280. Pedimento: 242835814XXXXXX.",
+                errorFrecuente: "Asignar el código de Veracruz (280) a mercancías que entran por Manzanillo.",
+                datoImportante: "Veracruz es la aduana marítima más antigua de México y puerta principal del comercio con Europa."
+            },
+            {
+                titulo: "Aduana 240 — Nuevo Laredo",
+                categoria: "Aduanas",
+                descripcion: "Aduana terrestre más importante para el comercio entre México y EE.UU. Punto estratégico del corredor industrial del norte.",
+                ejemplo: "Autopartes de EE.UU. → Aduana Nuevo Laredo (240) → Planta automotriz en Monterrey.",
+                errorFrecuente: "Usar código de CDMX o Monterrey para mercancías que físicamente cruzan por Nuevo Laredo.",
+                datoImportante: "Nuevo Laredo procesa más del 40% del valor total del comercio exterior terrestre México-EE.UU."
+            },
+            {
+                titulo: "Aduana 010 — Ciudad de México (Aeropuerto)",
+                categoria: "Aduanas",
+                descripcion: "Principal aduana aérea de México, ubicada en el AICM. Maneja mercancías de alto valor, courier, muestras y carga aérea.",
+                ejemplo: "Medicamentos de Alemania llegan al AICM → Aduana 010. Pedimento: 240135814XXXXXX.",
+                errorFrecuente: "Asignar el código 010 a mercancías terrestres que entran por la Ciudad de México.",
+                datoImportante: "La aduana 010 tiene procedimientos especiales para mercancías perecederas, courier y mercancías peligrosas."
+            },
+            // ---- CATEGORÍA: INCOTERMS ----
+            {
+                titulo: "FOB — Free On Board",
+                categoria: "Incoterms",
+                descripcion: "El vendedor entrega la mercancía a bordo del buque en el puerto de origen. El comprador asume riesgo y costos desde ese momento (flete y seguro internacionales).",
+                ejemplo: "Importador mexicano compra partes en China FOB Shanghái. El flete marítimo hasta Manzanillo es un INCREMENTABLE al valor en aduana.",
+                errorFrecuente: "Creer que con FOB no hay incrementables. El flete y seguro internacionales SIEMPRE se agregan al valor en aduana con FOB.",
+                datoImportante: "FOB es el INCOTERM más usado en México para importaciones marítimas desde Asia. El flete siempre es incrementable."
+            },
+            {
+                titulo: "CIF — Cost, Insurance and Freight",
+                categoria: "Incoterms",
+                descripcion: "El vendedor entrega la mercancía en el puerto de destino incluyendo costo, seguro y flete. El precio de factura ya incluye todo hasta la aduana destino.",
+                ejemplo: "Importador compra acero de Japón CIF Manzanillo. El precio incluye flete+seguro. Valor en aduana = precio de factura.",
+                errorFrecuente: "Agregar flete o seguro como incrementables cuando el INCOTERM ya es CIF. Se duplicarían los valores.",
+                datoImportante: "Con CIF, el valor comercial = valor en aduana (no hay incrementables). Es el INCOTERM más sencillo para calcular contribuciones."
+            },
+            {
+                titulo: "EXW — Ex Works",
+                categoria: "Incoterms",
+                descripcion: "El vendedor pone la mercancía a disposición en su fábrica. El comprador asume TODOS los costos y riesgos desde la fábrica del vendedor.",
+                ejemplo: "Comprador mexicano recoge maquinaria en fábrica alemana EXW Stuttgart. Paga flete terrestre Alemania + marítimo + seguro = todos incrementables.",
+                errorFrecuente: "Con EXW olvidar declarar el flete terrestre en origen como incrementable al valor en aduana.",
+                datoImportante: "EXW genera el mayor número de incrementables. Tanto el flete en origen, el internacional y el seguro se suman al valor en aduana."
+            },
+            {
+                titulo: "DAP — Delivered At Place",
+                categoria: "Incoterms",
+                descripcion: "El vendedor entrega en el lugar de destino acordado, sin pagar derechos de importación. El comprador gestiona el despacho aduanero.",
+                ejemplo: "Proveedor estadounidense entrega autopartes DAP Monterrey. El flete ya está incluido en el precio. Sin incrementables de flete.",
+                errorFrecuente: "Confundir DAP con DDP. Con DAP el importador paga los impuestos; con DDP los paga el vendedor.",
+                datoImportante: "Con DAP puede haber decrementables si el precio incluye costos post-aduana que deben deducirse del valor en aduana."
+            },
+            {
+                titulo: "DDP — Delivered Duty Paid",
+                categoria: "Incoterms",
+                descripcion: "El vendedor entrega con todos los costos pagados incluyendo impuestos de importación. Es el INCOTERM de máxima responsabilidad del vendedor.",
+                ejemplo: "Proveedor suizo vende medicamentos DDP CDMX. El precio incluye flete, seguro e impuestos. El importador no paga contribuciones adicionales.",
+                errorFrecuente: "Registrar el precio DDP como valor en aduana sin deducir los impuestos que ya van incluidos.",
+                datoImportante: "DDP es el único INCOTERM donde el vendedor paga los impuestos de importación del país comprador."
+            },
+            // ---- CATEGORÍA: CONTRIBUCIONES ----
+            {
+                titulo: "IGI — Impuesto General de Importación",
+                categoria: "Contribuciones",
+                descripcion: "Arancel aplicado a las mercancías importadas. Se calcula sobre el valor en aduana según la tasa de la fracción arancelaria en la LIGIE.",
+                ejemplo: "V. Aduana $500,000 × 15% IGI = $75,000 MXN. La tasa varía por fracción arancelaria: 0%, 5%, 7%, 10%, 15%, 20%, 25%.",
+                errorFrecuente: "Calcular el IGI sobre el precio comercial en lugar del valor en aduana. Siempre sobre VALOR EN ADUANA.",
+                datoImportante: "Con T-MEC (USA/Canadá) y TLCUE (Europa) el IGI puede ser 0% si la mercancía cumple las reglas de origen."
+            },
+            {
+                titulo: "IVA en Importaciones",
+                categoria: "Contribuciones",
+                descripcion: "El IVA de importación se calcula al 16% sobre una base que incluye: Valor en Aduana + IGI + DTA. Es mayor que el IVA doméstico.",
+                ejemplo: "V.Aduana $500,000 + IGI $75,000 + DTA $4,000 = Base IVA $579,000 × 16% = IVA $92,640 MXN",
+                errorFrecuente: "Calcular IVA solo sobre el valor en aduana, olvidando sumar el IGI y el DTA a la base gravable.",
+                datoImportante: "La base del IVA en importaciones SIEMPRE incluye el IGI y el DTA. Por eso es mayor que el IVA en ventas nacionales."
+            },
+            // ---- CATEGORÍA: IMMEX ----
+            {
+                titulo: "Programa IMMEX",
+                categoria: "IMMEX",
+                descripcion: "Decreto para el Fomento de la Industria Manufacturera, Maquiladora y de Servicios de Exportación. Permite importar temporalmente sin pagar IGI ni IVA.",
+                ejemplo: "Maquiladora en Tijuana importa 10,000 circuitos de Taiwan bajo IMMEX, los ensambla en tarjetas electrónicas y exporta a EE.UU.",
+                errorFrecuente: "Usar programa IMMEX para importar bienes de consumo final. Solo aplica para insumos que se transforman y exportan.",
+                datoImportante: "Las empresas IMMEX deben exportar al menos el 10% de su facturación anual para mantener la vigencia del programa."
+            },
+            {
+                titulo: "Activo Fijo IMMEX — Clave AF",
+                categoria: "IMMEX",
+                descripcion: "Modalidad IMMEX que permite importar temporalmente maquinaria y equipo como activo fijo con DTA de cuota fija en lugar del 8 al millar.",
+                ejemplo: "Maquiladora importa celda robótica bajo IMMEX-AF. Clave: IN. Régimen: ITA. DTA = cuota fija especial.",
+                errorFrecuente: "Calcular DTA al 8 al millar para activos fijos IMMEX. Estos tienen cuota fija estipulada en la LFD.",
+                datoImportante: "El plazo de permanencia de activos fijos bajo IMMEX es de hasta el tiempo de vigencia del programa (renovable)."
+            },
+            // ---- CATEGORÍA: IDENTIFICADORES ----
+            {
+                titulo: "Identificador TL — Tratado de Libre Comercio",
+                categoria: "Identificadores",
+                descripcion: "Se usa para acreditar la preferencia arancelaria bajo un tratado comercial. El complemento indica el tratado aplicable.",
+                ejemplo: "TL con complemento 'USA' = mercancía con certificado de origen T-MEC. Permite IGI 0% en productos elegibles.",
+                errorFrecuente: "Omitir el identificador TL cuando hay tratado aplicable. Sin él, el sistema aplica la tasa general aunque exista el certificado.",
+                datoImportante: "Tratados disponibles: T-MEC (USA/CAN), TLCUE (Europa), TLC Colombia, TLC Chile, TLC Israel, entre otros."
+            },
+            {
+                titulo: "Identificador EN — NOM Cumplida",
+                categoria: "Identificadores",
+                descripcion: "Declara que la mercancía cumple con la Norma Oficial Mexicana aplicable. Es obligatorio para mercancías sujetas a regulaciones no arancelarias.",
+                ejemplo: "Electrodomésticos de Corea: identificador EN con complemento 'NOM-016-ENER-2016' para declarar cumplimiento de eficiencia energética.",
+                errorFrecuente: "Omitir el identificador EN en mercancías reguladas por NOM. Puede provocar embargo precautorio en la aduana.",
+                datoImportante: "El SAT tiene publicada la lista de fracciones arancelarias sujetas a NOM. Verificar siempre antes de presentar el pedimento."
+            },
+            {
+                titulo: "Identificador EO — Exento de Origen",
+                categoria: "Identificadores",
+                descripcion: "Indica que la mercancía está exenta de cumplir regulaciones de origen o tiene tratamiento especial por su naturaleza.",
+                ejemplo: "Muestras sin valor comercial o materiales de embalaje pueden usar EO para indicar exención de requisitos específicos.",
+                errorFrecuente: "Usar EO para evitar presentar certificado de origen cuando la mercancía sí requiere acreditar origen para preferencia arancelaria.",
+                datoImportante: "El uso incorrecto del identificador EO puede generar diferencias de contribuciones y multas por parte del SAT."
+            },
+            // ---- CATEGORÍA: FRACCIÓN ARANCELARIA ----
+            {
+                titulo: "Fracción Arancelaria (LIGIE)",
+                categoria: "Anexo 22",
+                descripcion: "Código de 8 dígitos del Sistema Armonizado que clasifica la mercancía. Determina tasa IGI, regulaciones no arancelarias y NOM aplicables.",
+                ejemplo: "84713001 = Laptops (8471=máquinas datos, 30=portátil, 01=subdivisión MX). Primeros 6 dígitos = SA internacional. Últimos 2 = MX.",
+                errorFrecuente: "Usar 6 dígitos del SA internacional en lugar de los 8 dígitos requeridos por la LIGIE mexicana.",
+                datoImportante: "La fracción arancelaria incorrecta es el error más grave en un pedimento. Puede implicar multas del 70-100% del valor en aduana."
+            },
+            {
+                titulo: "Reglas de Valoración Aduanera",
+                categoria: "Anexo 22",
+                descripcion: "La Ley Aduanera establece 6 métodos para determinar el valor en aduana, aplicados en orden jerárquico.",
+                ejemplo: "Método 1 (precio pagado) → Método 2 (mercancías idénticas) → Método 3 (similares) → 4,5,6 si los anteriores no aplican.",
+                errorFrecuente: "Saltar al método 6 (último recurso) sin demostrar que los métodos 1-5 no son aplicables.",
+                datoImportante: "El 99% de las operaciones usa el Método 1 (precio pagado). Los otros métodos son excepcionales y requieren justificación."
+            }
         ];
 
         let bibCategoriaActiva = 'Todos';
+        let bibItemSeleccionado = null;
 
         function abrirBiblioteca() {
             const modal = document.getElementById('modal-biblioteca');
@@ -2672,6 +3226,7 @@
         function mostrarDetalleBib(idx) {
             const item = BIBLIOTECA[idx];
             if (!item) return;
+            bibItemSeleccionado = idx;
             const det = document.getElementById('bib-detalle');
             if (!det) return;
             det.innerHTML = `
@@ -2685,18 +3240,22 @@
                             <span class="text-[10px] font-semibold text-indigo-400 uppercase tracking-wider">${item.categoria}</span>
                         </div>
                     </div>
+
                     <div class="bg-slate-800 rounded-xl p-3">
                         <p class="text-[10px] font-bold text-blue-400 uppercase tracking-wider mb-1.5">¿Qué es?</p>
                         <p class="text-xs text-slate-200 leading-relaxed">${item.descripcion}</p>
                     </div>
+
                     <div class="bg-emerald-900/30 rounded-xl p-3 border border-emerald-700/40">
                         <p class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-1.5">Ejemplo práctico</p>
                         <p class="text-xs text-emerald-100 leading-relaxed">${item.ejemplo}</p>
                     </div>
+
                     <div class="bg-red-900/30 rounded-xl p-3 border border-red-700/40">
                         <p class="text-[10px] font-bold text-red-400 uppercase tracking-wider mb-1.5">Error frecuente</p>
                         <p class="text-xs text-red-100 leading-relaxed">${item.errorFrecuente}</p>
                     </div>
+
                     <div class="bg-amber-900/30 rounded-xl p-3 border border-amber-700/40">
                         <p class="text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1.5">💡 Dato importante</p>
                         <p class="text-xs text-amber-100 leading-relaxed">${item.datoImportante}</p>
@@ -2704,105 +3263,173 @@
                 </div>`;
         }
 
+        /* FIN MODULO BIBLIOTECA ADUANERA */
+
+        /* ================================================
+           INICIO MODULO DIAGNOSTICOS ACADEMICOS
+           Reportes Anexo 22 y Evaluación Académica
+           ================================================ */
+
         const DIAGNOSTICO_ANEXO22 = {
             presentes: [
-                "Número de Pedimento", "Tipo de Operación", "Clave del Pedimento", "Régimen Aduanero",
-                "Clave de Destino", "Aduana de Despacho", "Medios de Transporte", "Tipo de Cambio",
-                "Peso Bruto Total", "Valor en Dólares", "Valor en Aduana", "Precio Pagado",
-                "RFC", "Nombre/Razón Social", "Domicilio Fiscal", "Incrementables", "Liquidación",
-                "Fracción Arancelaria", "País Origen", "Vinculación", "Descripción", "Identificadores"
+                "Número de Pedimento (15 dígitos SAAI)",
+                "Tipo de Operación (IMP/EXP)",
+                "Clave del Pedimento (A1, IN, DF, T1, ET, RT)",
+                "Régimen Aduanero (IMD, ITE, ITA, DFI, TIN, ETD)",
+                "Clave de Destino",
+                "Aduana de Despacho (3 dígitos, Apéndice 1)",
+                "Medios de Transporte (entrada/arribo/salida)",
+                "Tipo de Cambio (5 decimales DOF)",
+                "Peso Bruto Total (kg)",
+                "Valor en Dólares (precio comercial)",
+                "Valor en Aduana (MXN con incrementables)",
+                "Precio Pagado/Valor Comercial (MXN)",
+                "RFC del Importador/Exportador",
+                "Nombre/Razón Social",
+                "Domicilio Fiscal",
+                "Incrementables (Fletes, Seguros, Otros)",
+                "Cuadro de Liquidación (IVA, DTA, PRV, CNT)",
+                "Fracción Arancelaria (8 dígitos LIGIE)",
+                "País de Origen/Destino (ISO 3)",
+                "Vinculación Comprador-Vendedor",
+                "Descripción de Mercancía",
+                "Identificadores de Partida (TL, EN, EO, etc.)",
+                "Fecha de Entrada y Pago",
+                "CURP (persona física)"
             ],
             faltantes: [
-                "Documentos complementarios adicionales", "Bultos detallados adicionales"
+                "Número de Factura Comercial (campo dedicado)",
+                "Patente del Agente Aduanal",
+                "Datos del Proveedor Extranjero (nombre, país, dirección)",
+                "Número de Contenedor/BL (conocimiento de embarque)",
+                "Permisos Previos (COFEPRIS, SAGARPA, SEDENA)",
+                "Marcas y Número de Bultos detallado",
+                "Valor Decrementable (para INCOTERMS con costos post-entrada)",
+                "Segunda partida y partidas subsecuentes",
+                "Campo de Observaciones/Leyendas",
+                "Datos de la Empresa Certificada OEA (si aplica)"
             ],
             recomendados: [
-                "Validación automática de RFC con patrón SAT"
+                "Agregar campo para número de certificado de origen (T-MEC/TLCUE)",
+                "Agregar campo para número de permiso COFEPRIS",
+                "Agregar campo para número de conocimiento de embarque (BL/AWB)",
+                "Mostrar cálculo detallado de DTA con indicador de tratado aplicable",
+                "Agregar validación automática de RFC con patrón correcto"
             ]
         };
 
         const EVALUACION_ACADEMICA = [
-            { area: "Cobertura de Campos", nivel: "Bueno", nota: "Cubre los campos principales del Anexo 22." },
-            { area: "Regímenes Aduaneros", nivel: "Excelente", nota: "Cobertura completa para nivel intermedio." }
+            { area: "Cobertura de Campos del Pedimento",      nivel: "Bueno",       nota: "Cubre los 24 campos principales. Faltan 10 campos complementarios del Anexo 22." },
+            { area: "Cobertura de Regímenes Aduaneros",       nivel: "Excelente",   nota: "Cubre 9 regímenes: IMD, ITE, ITA, DFI, TIN, ETD, RT, DF y EXD. Cobertura completa para nivel básico-intermedio." },
+            { area: "Cobertura de Identificadores",           nivel: "Bueno",       nota: "Incluye TL, EN, EO y vinculación. Faltan RS (Registro Sanitario), HA (hasta agotar) y ZL (zona libre)." },
+            { area: "Cobertura de Contribuciones",            nivel: "Excelente",   nota: "Cubre IGI, IVA, DTA, PRV y CNT con cálculos correctos. Incluye casos con 0% por tratado." },
+            { area: "Cobertura de Valor en Aduana",           nivel: "Excelente",   nota: "Implementa correctamente incrementables (flete, seguro) según INCOTERM. Método 1 de valoración." },
+            { area: "Cobertura de Transporte",                nivel: "Bueno",       nota: "Cubre marítimo, aéreo y terrestre. Falta ferroviario y ductos." },
+            { area: "Cobertura de Importaciones",             nivel: "Excelente",   nota: "20 casos con diversidad de orígenes, aduanas, regímenes e INCOTERMS. Muy completo." },
+            { area: "Cobertura de Exportaciones",             nivel: "Regular",     nota: "Solo 4 casos de exportación. Faltan casos de exportación con maquiladoras (retorno) y exportación temporal." },
+            { area: "Experiencia Educativa General",          nivel: "Bueno",       nota: "Ayudas contextuales, modo aprendizaje y biblioteca son valor diferencial. Puede mejorar con más exportaciones." }
         ];
 
         function mostrarDiagnosticoAnexo22() {
             const modal = document.getElementById('modal-fieldhelp');
             const body = document.getElementById('modal-fieldhelp-body');
             if (!modal || !body) return;
+
             const colores = { 'Excelente': 'emerald', 'Bueno': 'blue', 'Regular': 'amber', 'Insuficiente': 'red' };
+
             body.innerHTML = `
                 <div class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-700">
                     <span class="text-2xl">📋</span>
                     <div>
                         <h2 class="text-base font-bold text-white">Diagnóstico Anexo 22</h2>
-                        <p class="text-xs text-gray-400">Cobertura del simulador</p>
+                        <p class="text-xs text-gray-400">Cobertura del simulador vs. campos del Anexo 22 oficial</p>
                     </div>
                 </div>
+
                 <div class="space-y-3">
                     <div class="bg-emerald-900/30 rounded-xl p-3 border border-emerald-700/40">
                         <p class="text-xs font-bold text-emerald-400 mb-2">✓ Campos Presentes (${DIAGNOSTICO_ANEXO22.presentes.length})</p>
-                        <ul class="space-y-0.5">${DIAGNOSTICO_ANEXO22.presentes.slice(0, 5).map(c => `<li class="text-xs text-emerald-200"><span>✓</span>${c}</li>`).join('')}<li>...</li></ul>
+                        <ul class="space-y-0.5">${DIAGNOSTICO_ANEXO22.presentes.map(c =>
+                            `<li class="text-xs text-emerald-200 flex gap-1.5"><span>✓</span>${c}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="bg-red-900/30 rounded-xl p-3 border border-red-700/40">
+                        <p class="text-xs font-bold text-red-400 mb-2">✗ Campos Faltantes (${DIAGNOSTICO_ANEXO22.faltantes.length})</p>
+                        <ul class="space-y-0.5">${DIAGNOSTICO_ANEXO22.faltantes.map(c =>
+                            `<li class="text-xs text-red-200 flex gap-1.5"><span>○</span>${c}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="bg-amber-900/30 rounded-xl p-3 border border-amber-700/40">
+                        <p class="text-xs font-bold text-amber-400 mb-2">⭐ Recomendados para versión futura</p>
+                        <ul class="space-y-0.5">${DIAGNOSTICO_ANEXO22.recomendados.map(c =>
+                            `<li class="text-xs text-amber-200 flex gap-1.5"><span>→</span>${c}</li>`).join('')}
+                        </ul>
                     </div>
                     <div class="bg-slate-800 rounded-xl p-3">
-                        <p class="text-xs font-bold text-white mb-3">📊 Evaluación Académica</p>
+                        <p class="text-xs font-bold text-white mb-3">📊 Evaluación Académica por Área</p>
                         <div class="space-y-2">${EVALUACION_ACADEMICA.map(e => {
                             const c = colores[e.nivel] || 'gray';
                             return `<div class="flex items-start gap-2">
-                                <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-${c}-900/50 text-${c}-300 border border-${c}-700/50">${e.nivel}</span>
-                                <div><p class="text-xs font-semibold text-white">${e.area}</p></div>
+                                <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-${c}-900/50 text-${c}-300 border border-${c}-700/50 w-20 text-center flex-shrink-0">${e.nivel}</span>
+                                <div><p class="text-xs font-semibold text-white">${e.area}</p><p class="text-[10px] text-slate-400">${e.nota}</p></div>
                             </div>`;}).join('')}
                         </div>
                     </div>
                 </div>`;
+
             modal.classList.remove('hidden');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
+
+        /* FIN MODULO DIAGNOSTICOS ACADEMICOS */
 
         function showHelp(field) {
             const modal = document.getElementById('modal-help');
             const content = document.getElementById('modal-help-content');
             content.innerHTML = APENDICES[field] || "<p class='text-xs'>Catálogo temporalmente fuera de línea.</p>";
             modal.classList.remove('hidden');
-            if (typeof lucide !== 'undefined') lucide.createIcons();
+            lucide.createIcons();
         }
 
         function closeModal(id) {
             document.getElementById(id).classList.add('hidden');
         }
-
-        function toggleSegundaPartida() {
-            const fields = document.getElementById('segunda-partida-fields');
-            const btn = document.getElementById('btn-segunda-partida');
-            if (!fields || !btn) return;
-            const visible = !fields.classList.contains('hidden');
-            fields.classList.toggle('hidden', visible);
-            btn.textContent = visible ? '+ Agregar Partida 2' : '− Ocultar Partida 2';
-        }
     </script>
 
-    <div id="modal-fieldhelp" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target===this)closeFHModal()">
-        <div class="modal-inner bg-gray-900 rounded-2xl w-full max-w-lg shadow-2xl border border-gray-700">
-            <div class="flex items-center justify-between px-4 pt-4 pb-2">
-                <span class="text-xs font-bold text-amber-400 uppercase tracking-widest flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span>
-                    Anexo 22 Interactivo — Ayuda del Campo
-                </span>
-                <button onclick="closeFHModal()" class="text-gray-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-gray-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
+        <!-- ========================================
+             MODAL AYUDA DE CAMPO (Anexo 22 Interactivo)
+             Nuevo: no toca ningún modal existente
+             ======================================== -->
+        <div id="modal-fieldhelp" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target===this)closeFHModal()">
+            <div class="modal-inner bg-gray-900 rounded-2xl w-full max-w-lg shadow-2xl border border-gray-700">
+                <div class="flex items-center justify-between px-4 pt-4 pb-2">
+                    <span class="text-xs font-bold text-amber-400 uppercase tracking-widest flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span>
+                        Anexo 22 Interactivo — Ayuda del Campo
+                    </span>
+                    <button onclick="closeFHModal()" class="text-gray-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <div id="modal-fieldhelp-body" class="px-4 pb-5 space-y-3"></div>
             </div>
-            <div id="modal-fieldhelp-body" class="px-4 pb-5 space-y-3"></div>
         </div>
-    </div>
 
-    <div id="learning-mode-badge" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-[9998]">
-        <span class="learning-badge">
-            🎓 Modo Aprendizaje Activo — Haz clic en ❓ o enfoca un campo para ver la guía
-        </span>
-    </div>
+        <!-- Badge modo aprendizaje (se muestra/oculta dinámicamente) -->
+        <div id="learning-mode-badge" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-[9998]">
+            <span class="learning-badge">
+                🎓 Modo Aprendizaje Activo — Haz clic en ❓ o enfoca un campo para ver la guía
+            </span>
+        </div>
 
+    <!-- ================================================
+         INICIO MODULO BIBLIOTECA ADUANERA
+         Funciona 100% offline - Sin APIs externas
+         ================================================ -->
     <div id="modal-biblioteca" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[10001] flex items-center justify-center p-4"
          onclick="if(event.target===this)closeBiblioteca()">
         <div class="bg-slate-900 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col border border-slate-700 shadow-2xl">
+            <!-- Header -->
             <div class="flex items-center justify-between px-5 py-4 border-b border-slate-700 flex-shrink-0">
                 <div class="flex items-center gap-3">
                     <div class="w-9 h-9 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center">
@@ -2817,16 +3444,22 @@
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
+            <!-- Buscador y filtros -->
             <div class="px-5 py-3 border-b border-slate-700 flex-shrink-0 space-y-2">
                 <input id="bib-search" type="text" placeholder="🔍 Buscar concepto aduanero..."
                     oninput="filtrarBiblioteca()"
                     class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 <div class="flex flex-wrap gap-2" id="bib-categorias">
+                    <!-- Generado por JS -->
                 </div>
             </div>
+            <!-- Resultados -->
             <div class="flex flex-1 min-h-0 overflow-hidden">
+                <!-- Lista -->
                 <div class="w-2/5 border-r border-slate-700 overflow-y-auto custom-scrollbar" id="bib-lista">
+                    <!-- Generado por JS -->
                 </div>
+                <!-- Detalle -->
                 <div class="flex-1 overflow-y-auto custom-scrollbar p-4" id="bib-detalle">
                     <div class="flex flex-col items-center justify-center h-full text-center text-slate-500">
                         <span class="text-4xl mb-3">📖</span>
@@ -2837,5 +3470,6 @@
             </div>
         </div>
     </div>
+    <!-- FIN MODULO BIBLIOTECA ADUANERA -->
 </body>
 </html>
