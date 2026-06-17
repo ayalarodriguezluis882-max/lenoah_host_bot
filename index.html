@@ -358,71 +358,107 @@
     <div id="app-container" class="hidden h-screen flex flex-col bg-slate-950">
         
         <!-- Header Superior -->
-        <header class="flex h-16 items-center justify-between border-b border-slate-800 bg-slate-900 px-6 shrink-0">
-            <div class="flex items-center gap-3">
-                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-500/30">
-                    <i data-lucide="terminal" class="h-5 w-5"></i>
-                </div>
-                <div>
-                    <span class="font-black text-white text-lg tracking-tight">Simulador de Pedimento</span>
-                    <span class="ml-2 text-[10px] font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded uppercase tracking-widest">Anexo 22 SAAI M3</span>
-                </div>
-            </div>
+        <header class="border-b border-slate-800 bg-slate-900 shrink-0 no-print">
+            <!-- Barra principal -->
+            <div class="flex h-14 items-center justify-between px-4 gap-2">
 
-            <!-- Banner PWA Flotante para escritorio / móvil -->
-            <div id="pwa-install-banner" class="hidden md:flex items-center gap-2 bg-indigo-950/80 border border-indigo-500/30 px-3 py-1.5 rounded-lg no-print">
-                <span class="text-xs text-indigo-200 font-medium">¿Usar como App móvil?</span>
-                <button onclick="installPWA()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-2.5 py-1 rounded transition flex items-center gap-1">
-                    <i data-lucide="download" class="h-3 w-3"></i> Instalar
+                <!-- Logo + título -->
+                <div class="flex items-center gap-2 min-w-0">
+                    <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-indigo-600 text-white shadow-lg shadow-indigo-500/30">
+                        <i data-lucide="terminal" class="h-4 w-4"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <span class="font-black text-white text-sm tracking-tight truncate block">Simulador de Pedimento</span>
+                        <span class="text-[9px] font-bold text-indigo-400">Anexo 22 · SAAI M3</span>
+                    </div>
+                </div>
+
+                <!-- Botones desktop (ocultos en móvil) -->
+                <div class="hidden md:flex items-center gap-2 flex-shrink-0">
+                    <!-- PWA -->
+                    <div id="pwa-install-banner" class="hidden md:flex items-center gap-2 bg-indigo-950/80 border border-indigo-500/30 px-3 py-1.5 rounded-lg">
+                        <span class="text-xs text-indigo-200 font-medium">¿Usar como App móvil?</span>
+                        <button onclick="installPWA()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-2.5 py-1 rounded transition flex items-center gap-1">
+                            <i data-lucide="download" class="h-3 w-3"></i> Instalar
+                        </button>
+                    </div>
+                    <!-- Progreso -->
+                    <div class="flex items-center gap-3">
+                        <div class="text-right">
+                            <div class="text-xs text-slate-400 font-medium">Ejercicios Concluidos</div>
+                            <div class="text-sm font-bold text-slate-200" id="progress-text">0 / 30 Casos</div>
+                        </div>
+                        <div class="h-2 w-28 rounded-full bg-slate-800 overflow-hidden border border-slate-700">
+                            <div id="global-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-indigo-600 transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <!-- Firma -->
+                    <div class="flex items-center gap-2">
+                        <div class="text-right text-xs">
+                            <span class="block font-medium text-slate-500">Apoyo académico por:</span>
+                            <span class="font-bold text-indigo-400">Luis Ignacio Ayala R.</span>
+                        </div>
+                        <div class="h-8 w-8 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center font-black text-xs text-indigo-400">AR</div>
+                    </div>
+                    <!-- Modo Aprendizaje -->
+                    <button id="btn-learning-mode" onclick="toggleLearningMode()"
+                        class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-600 bg-gray-700 text-gray-300 text-xs font-semibold transition hover:bg-gray-600"
+                        title="Activar modo aprendizaje">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/></svg>
+                        Modo Aprendizaje
+                    </button>
+                    <!-- Biblioteca -->
+                    <button onclick="abrirBiblioteca()"
+                        class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-indigo-500/40 bg-indigo-600/10 text-indigo-300 text-xs font-semibold transition hover:bg-indigo-600/25 hover:text-indigo-200">
+                        📚 Biblioteca
+                    </button>
+                    <!-- Diagnóstico -->
+                    <button onclick="mostrarDiagnosticoAnexo22()" id="btn-diagnostico"
+                        class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-600 bg-slate-700/50 text-slate-300 text-xs font-semibold transition hover:bg-slate-700 hover:text-white">
+                        📊 Diagnóstico
+                    </button>
+                </div>
+
+                <!-- Botón hamburguesa (solo móvil) -->
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()"
+                    class="md:hidden flex items-center justify-center h-9 w-9 rounded-lg border border-slate-700 bg-slate-800 text-slate-300 flex-shrink-0">
+                    <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
                 </button>
             </div>
 
-            <!-- Progreso General del Curso -->
-            <div class="hidden items-center gap-4 md:flex">
-                <div class="text-right">
-                    <div class="text-xs text-slate-400 font-medium">Ejercicios Concluidos</div>
-                    <div class="text-sm font-bold text-slate-200" id="progress-text">0 / 30 Casos</div>
+            <!-- Menú desplegable móvil -->
+            <div id="mobile-menu" class="hidden md:hidden border-t border-slate-800 bg-slate-900 px-4 py-3 space-y-2">
+                <!-- Progreso móvil -->
+                <div class="flex items-center justify-between py-2 border-b border-slate-800">
+                    <span class="text-xs text-slate-400">Ejercicios Concluidos</span>
+                    <span class="text-sm font-bold text-slate-200" id="progress-text-mobile">0 / 30 Casos</span>
                 </div>
-                <div class="h-2 w-36 rounded-full bg-slate-800 overflow-hidden border border-slate-700">
-                    <div id="global-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-indigo-600 transition-all duration-500" style="width: 0%"></div>
+                <!-- Botones del menú -->
+                <button onclick="toggleLearningMode(); toggleMobileMenu()"
+                    class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg border border-gray-600 bg-gray-700 text-gray-300 text-sm font-semibold transition hover:bg-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/></svg>
+                    Modo Aprendizaje
+                </button>
+                <button onclick="abrirBiblioteca(); toggleMobileMenu()"
+                    class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg border border-indigo-500/40 bg-indigo-600/10 text-indigo-300 text-sm font-semibold transition hover:bg-indigo-600/25">
+                    📚 Biblioteca Aduanera
+                </button>
+                <button onclick="mostrarDiagnosticoAnexo22(); toggleMobileMenu()"
+                    class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg border border-slate-600 bg-slate-700/50 text-slate-300 text-sm font-semibold transition hover:bg-slate-700">
+                    📊 Diagnóstico
+                </button>
+                <button onclick="installPWA(); toggleMobileMenu()"
+                    class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg border border-indigo-500/30 bg-indigo-950/80 text-indigo-200 text-sm font-semibold transition hover:bg-indigo-900/50">
+                    <i data-lucide="download" class="h-4 w-4 flex-shrink-0"></i>
+                    Instalar como App
+                </button>
+                <!-- Firma móvil -->
+                <div class="pt-1 pb-1 text-center text-xs text-slate-500 border-t border-slate-800">
+                    Apoyo académico: <span class="text-indigo-400 font-bold">Luis Ignacio Ayala R.</span>
                 </div>
             </div>
-
-            <!-- Firma de Autoría Discreta de Luis Ignacio Ayala Rodríguez -->
-            <div class="flex items-center gap-3">
-                <div class="text-right text-xs">
-                    <span class="block font-medium text-slate-500">Apoyo académico por:</span>
-                    <span class="font-bold text-indigo-400">Luis Ignacio Ayala R.</span>
-                </div>
-                <div class="h-9 w-9 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center font-black text-sm text-indigo-400">
-                    AR
-                </div>
-            </div>
-
-            <!-- Botón Modo Aprendizaje (nueva capa educativa) -->
-            <button id="btn-learning-mode"
-                onclick="toggleLearningMode()"
-                class="no-print hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-600 bg-gray-700 text-gray-300 text-xs font-semibold transition hover:bg-gray-600"
-                title="Activar modo aprendizaje: ayuda contextual en cada campo">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
-                Modo Aprendizaje
-            </button>
-
-            <!-- INICIO MODULO BIBLIOTECA - Botón de acceso -->
-            <button onclick="abrirBiblioteca()"
-                class="no-print hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-indigo-500/40 bg-indigo-600/10 text-indigo-300 text-xs font-semibold transition hover:bg-indigo-600/25 hover:text-indigo-200"
-                title="Biblioteca Aduanera — Consulta offline de conceptos del Anexo 22">
-                📚 Biblioteca
-            </button>
-            <!-- FIN MODULO BIBLIOTECA - Botón -->
-
-            <!-- INICIO MODULO DIAGNOSTICOS - Botón de acceso -->
-            <button onclick="mostrarDiagnosticoAnexo22()" id="btn-diagnostico"
-                class="no-print hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-600 bg-slate-700/50 text-slate-300 text-xs font-semibold transition hover:bg-slate-700 hover:text-white"
-                title="Diagnóstico Anexo 22 y Evaluación Académica del Simulador">
-                📊 Diagnóstico
-            </button>
-            <!-- FIN MODULO DIAGNOSTICOS - Botón -->
         </header>
 
         <!-- Área de Trabajo Principal (Split de Pantallas) -->
@@ -2668,6 +2704,7 @@
         function updateProgress() {
             const count = casesCompleted.length;
             document.getElementById('progress-text').innerText = `${count} / 30 Casos`;
+            const mob = document.getElementById('progress-text-mobile'); if(mob) mob.innerText = `${count} / 30 Casos`;
             const pct = (count / 30) * 100;
             document.getElementById('global-progress-bar').style.width = `${pct}%`;
         }
@@ -2941,6 +2978,11 @@
         // --- MODO APRENDIZAJE ---
         let learningModeActive = false;
         let activeFieldTooltip = null;
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
 
         function toggleLearningMode() {
             learningModeActive = !learningModeActive;
