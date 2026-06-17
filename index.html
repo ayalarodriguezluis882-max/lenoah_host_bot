@@ -2496,57 +2496,44 @@
         function showProjectInfo() {
             const logoSrc = document.getElementById('logo-aduamex-src').src;
             const modal = document.getElementById('modal-help');
-            const content = document.getElementById('modal-help-content');
-            content.innerHTML = `
-                <!-- Encabezado -->
-                <div class="text-center mb-5">
-                    <div class="flex justify-center mb-3">
-                        <img src="${logoSrc}" alt="AduaMex Agencia Digital" class="h-16 object-contain mx-auto drop-shadow-lg">
-                    </div>
-                    <p class="font-black text-white text-lg tracking-tight">Simulador de Pedimento</p>
-                    <span class="text-[10px] font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded uppercase tracking-widest">Anexo 22 · SAAI M3 · v4.6-OPEN</span>
-                </div>
+            const cnt = document.getElementById('modal-help-content');
 
-                <!-- Descripción -->
-                <p class="text-xs text-slate-300 leading-relaxed mb-4">
-                    Simulador académico interactivo diseñado para apoyar a estudiantes de comercio exterior en el aprendizaje del llenado de pedimentos conforme al <strong class="text-white">Anexo 22 del SAAI M3</strong>. Distribución libre y gratuita con fines didácticos.
-                </p>
+            // Construir HTML con concatenación simple, sin template literals anidados
+            cnt.innerHTML =
+                '<div class="text-center mb-5">' +
+                  '<div class="flex justify-center mb-3">' +
+                    '<img src="' + logoSrc + '" alt="AduaMex" class="h-16 object-contain mx-auto drop-shadow-lg">' +
+                  '</div>' +
+                  '<p class="font-black text-white text-lg tracking-tight">Simulador de Pedimento</p>' +
+                  '<span class="text-[10px] font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded uppercase tracking-widest">Anexo 22 · SAAI M3 · v4.6-OPEN</span>' +
+                '</div>' +
+                '<p class="text-xs text-slate-300 leading-relaxed mb-4">' +
+                  'Simulador académico interactivo para apoyar a estudiantes de comercio exterior en el llenado de pedimentos conforme al <strong class="text-white">Anexo 22 del SAAI M3</strong>. Distribución libre y gratuita con fines didácticos.' +
+                '</p>' +
+                '<div class="rounded-xl border border-slate-700 bg-slate-800/50 p-4 mb-4">' +
+                  '<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Créditos</p>' +
+                  '<p class="text-xs text-slate-300"><strong class="text-white">Diseño y Desarrollo:</strong> Luis Ignacio Ayala Rodríguez</p>' +
+                  '<p class="text-xs text-slate-300 mt-1"><strong class="text-white">Colaboración académica:</strong> Agencia Aduanal Lenoah</p>' +
+                  '<p class="text-xs text-slate-400 mt-1">Licencia: uso libre, gratuito y exclusivamente didáctico.</p>' +
+                '</div>' +
+                '<div class="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 mb-4">' +
+                  '<p class="text-[10px] font-bold text-amber-400 uppercase tracking-widest mb-2">⭐ Patrocinador Oficial — Próximamente</p>' +
+                  '<p class="text-xs text-slate-300 font-semibold">Agencia Aduanal Lenoah</p>' +
+                  '<p class="text-xs text-slate-400 mt-1">Patrocinando la publicación en Google Play Store para acceso libre a toda la comunidad estudiantil de México.</p>' +
+                  '<p class="text-xs text-slate-500 mt-2 italic">* Información de contacto se integrará al confirmar patrocinio.</p>' +
+                '</div>' +
+                '<div class="rounded-xl border border-slate-700 bg-slate-800/30 p-4">' +
+                  '<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Desarrollado con tecnología de</p>' +
+                  '<div class="flex justify-center">' +
+                    '<img src="' + logoSrc + '" alt="AduaMex" class="h-12 object-contain drop-shadow-lg">' +
+                  '</div>' +
+                  '<p class="text-center text-xs text-slate-400 mt-2">AduaMex · Agencia Digital</p>' +
+                  '<p class="text-center text-[10px] text-slate-500">Tijuana, Baja California · México</p>' +
+                '</div>';
 
-                <!-- Créditos -->
-                <div class="rounded-xl border border-slate-700 bg-slate-800/50 p-4 mb-4">
-                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Créditos</p>
-                    <p class="text-xs text-slate-300"><strong class="text-white">Diseño y Desarrollo:</strong> Luis Ignacio Ayala Rodríguez</p>
-                    <p class="text-xs text-slate-300 mt-1"><strong class="text-white">Colaboración académica:</strong> Agencia Aduanal Lenoah</p>
-                    <p class="text-xs text-slate-400 mt-1">Licencia: uso libre, gratuito y exclusivamente didáctico.</p>
-                </div>
-
-                <!-- Patrocinador / Contacto Lenoah (próximamente) -->
-                <div class="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 mb-4">
-                    <p class="text-[10px] font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
-                        ⭐ Patrocinador Oficial — Próximamente
-                    </p>
-                    <p class="text-xs text-slate-300 font-semibold">Agencia Aduanal Lenoah</p>
-                    <p class="text-xs text-slate-400 mt-1">Patrocinando la publicación en Google Play Store para acceso libre a toda la comunidad estudiantil de México.</p>
-                    <p class="text-xs text-slate-500 mt-2 italic">* Información de contacto se integrará al confirmar patrocinio.</p>
-                </div>
-
-                <!-- Desarrollado por AduaMex -->
-                <div class="rounded-xl border border-slate-700 bg-slate-800/30 p-4">
-                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Desarrollado con tecnología de</p>
-                    <div class="flex justify-center">
-                        <img src="${logoSrc}" alt="AduaMex Agencia Digital" class="h-12 object-contain mx-auto drop-shadow-lg">
-                    </div>
-                    <p class="text-center text-xs text-slate-400 mt-2">AduaMex · Agencia Digital</p>
-                    <p class="text-center text-[10px] text-slate-500">Tijuana, Baja California · México</p>
-                </div>
-            \`;
             modal.classList.remove('hidden');
             lucide.createIcons();
         }
-
-        let activeCaseIdx = 0;
-        let casesCompleted = [];
-
         function loadCase(id) {
             const idx = CASOS.findIndex(c => c.id === parseInt(id));
             if (idx === -1) return;
