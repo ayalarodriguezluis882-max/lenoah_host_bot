@@ -683,7 +683,7 @@
                         </div>
 
                         <!-- INICIO CAMPOS FALTANTES: PROVEEDOR EXTRANJERO -->
-                        <div class="saai-tabla mb-3 p-2 font-bold text-[10px]">
+                        <div id="bloque-proveedor" class="saai-tabla mb-3 p-2 font-bold text-[10px]">
                             <span class="saai-header border-b border-black pb-1 mb-2 block">DATOS DEL PROVEEDOR / COMPRADOR EXTRANJERO
                                 <button onclick="showHelp('proveedor')" class="text-blue-600 hover:text-blue-800 px-1 no-print" title="Ayuda del campo"><i data-lucide="help-circle" class="h-2.5 w-2.5 inline"></i></button>
                                 <button type="button" onclick="showFieldHelp('p_prov_nombre')" class="field-help-btn no-print" title="Ver ayuda completa">❓</button>
@@ -706,7 +706,7 @@
                         <!-- FIN CAMPOS FALTANTES: PROVEEDOR EXTRANJERO -->
 
                         <!-- INICIO CAMPOS FALTANTES: FACTURA + BL + PATENTE -->
-                        <div class="saai-tabla mb-3 p-2 font-bold text-[10px]">
+                        <div id="bloque-factura-bl" class="saai-tabla mb-3 p-2 font-bold text-[10px]">
                             <span class="saai-header border-b border-black pb-1 mb-2 block">DATOS DEL DOCUMENTO DE TRANSPORTE Y COMERCIO</span>
                             <div class="grid grid-cols-12 gap-2 mb-1">
                                 <div class="col-span-4 saai-border-r pr-2">
@@ -793,7 +793,7 @@
                         </div>
 
                         <!-- INICIO CAMPOS FALTANTES: DECREMENTABLES -->
-                        <div class="saai-tabla mb-3 p-2 font-bold text-[10px]">
+                        <div id="bloque-decrementables" class="saai-tabla mb-3 p-2 font-bold text-[10px]">
                             <span class="saai-header border-b border-black pb-1 mb-2 block">VALOR DECREMENTABLE — Costos posteriores a la entrada
                                 <button onclick="showFieldHelp('p_decr_transp')" class="field-help-btn no-print" title="Costos a deducir del valor en aduana (DAP/DDP)">❓</button>
                             </span>
@@ -935,7 +935,7 @@
                         </div>
 
                         <!-- INICIO CAMPOS FALTANTES: PERMISOS PREVIOS -->
-                        <div class="saai-tabla mb-3 p-2 font-bold text-[10px] border-t border-dashed border-slate-300 pt-2 mt-2">
+                        <div id="bloque-permisos" class="saai-tabla mb-3 p-2 font-bold text-[10px] border-t border-dashed border-slate-300 pt-2 mt-2">
                             <span class="saai-header border-b border-black pb-1 mb-2 block">
                                 PERMISOS PREVIOS Y REGULACIONES NO ARANCELARIAS
                                 <button onclick="showFieldHelp('p_permiso1')" class="field-help-btn no-print" title="Permisos requeridos según fracción arancelaria">❓</button>
@@ -1054,7 +1054,7 @@
                         <div class="saai-tabla mb-3 p-2 font-bold text-[10px] border-t border-dashed border-slate-300 pt-2 mt-2">
                             <span class="saai-header border-b border-black pb-1 mb-2 block">DATOS COMPLEMENTARIOS DEL PEDIMENTO</span>
                             <div class="grid grid-cols-12 gap-2 mb-2">
-                                <div class="col-span-5 saai-border-r pr-2">
+                                <div id="bloque-oea" class="col-span-5 saai-border-r pr-2">
                                     <span class="saai-header">
                                         CERTIFICACIÓN OEA (Operador Económico Autorizado)
                                         <button onclick="showFieldHelp('p_oea')" class="field-help-btn no-print" title="Ayuda: OEA">❓</button>
@@ -1069,25 +1069,27 @@
                                         <input type="text" id="p_oea_num" class="saai-input flex-1 font-mono">
                                     </div>
                                 </div>
-                                <div class="col-span-3 saai-border-r pr-2">
-                                    <span class="saai-header">No. CERTIFICADO DE ORIGEN
-                                        <button onclick="showFieldHelp('p_cert_origen')" class="field-help-btn no-print" title="T-MEC / TLCUE / Otro tratado">❓</button>
-                                    </span>
-                                    <input type="text" id="p_cert_origen" class="w-full saai-input mt-1 font-mono">
-                                </div>
-                                <div class="col-span-4">
-                                    <span class="saai-header">TRATADO APLICABLE</span>
-                                    <select id="p_tratado" class="w-full saai-input mt-1">
-                                        <option value="">-- No Aplica --</option>
-                                        <option value="TMEC">T-MEC (USA / Canadá)</option>
-                                        <option value="TLCUE">TLCUE (Unión Europea)</option>
-                                        <option value="COL">TLC Colombia</option>
-                                        <option value="CHL">TLC Chile</option>
-                                        <option value="ISR">TLC Israel</option>
-                                        <option value="JPN">AAE Japón</option>
-                                        <option value="CRI">TLC Costa Rica</option>
-                                        <option value="OTRO">Otro tratado</option>
-                                    </select>
+                                <div id="bloque-tratado" class="col-span-7 grid grid-cols-12 gap-2">
+                                    <div class="col-span-5 saai-border-r pr-2">
+                                        <span class="saai-header">No. CERTIFICADO DE ORIGEN
+                                            <button onclick="showFieldHelp('p_cert_origen')" class="field-help-btn no-print" title="T-MEC / TLCUE / Otro tratado">❓</button>
+                                        </span>
+                                        <input type="text" id="p_cert_origen" class="w-full saai-input mt-1 font-mono">
+                                    </div>
+                                    <div class="col-span-7">
+                                        <span class="saai-header">TRATADO APLICABLE</span>
+                                        <select id="p_tratado" class="w-full saai-input mt-1">
+                                            <option value="">-- No Aplica --</option>
+                                            <option value="TMEC">T-MEC (USA / Canadá)</option>
+                                            <option value="TLCUE">TLCUE (Unión Europea)</option>
+                                            <option value="COL">TLC Colombia</option>
+                                            <option value="CHL">TLC Chile</option>
+                                            <option value="ISR">TLC Israel</option>
+                                            <option value="JPN">AAE Japón</option>
+                                            <option value="CRI">TLC Costa Rica</option>
+                                            <option value="OTRO">Otro tratado</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div>
@@ -1177,6 +1179,7 @@
             {
                 id: 1,
                 titulo: "Nina Importaciones - Pedimento C1",
+                mostrarBloques: { proveedor: true, decrementables: false, permisos: false, oea: false, tratado: false },
                 dificultad: "Básica (Cruce Terrestre)",
                 descripcion: "El caso real cargado de Nina Importaciones S. de R.L. de C.V. Se realiza una importación definitiva a región fronteriza de un sistema de enrollador de vela de proa con accesorios, comprado a un proveedor en EE.UU. (Star Import Export LLC). El embarque cruza vía terrestre por la aduana de Tijuana (Otay). Debes asentar con exactitud los impuestos de prevalidación, IVA y el total del pedimento que ves en tu formato guía.",
                 datosSoporte: {
@@ -1200,6 +1203,7 @@
                 ],
                 respuestas: {
                     p_num: "244035814024883",
+                    p_patente: "3581",
                     p_destino: "1",
                     p_op: "IMP",
                     p_clave: "C1",
@@ -1228,6 +1232,7 @@
             {
                 id: 2,
                 titulo: "Maquiladora IMMEX - Temporal Circuitos",
+                mostrarBloques: { proveedor: true, decrementables: false, permisos: false, oea: false, tratado: false },
                 dificultad: "Intermedia (Temporal)",
                 descripcion: "La empresa certificada 'MAQUILADORA DEL NORTE S.A. DE C.V.' realiza una importación temporal de circuitos integrados procedentes de San Diego para su ensamble en Tijuana. Al ser una importación temporal bajo el programa IMMEX, la clave del pedimento debe corresponder a una operación temporal, y los impuestos de importación (IGI e IVA) quedan diferidos/certificados bajo el esquema de crédito fiscal.",
                 datosSoporte: {
@@ -1250,6 +1255,7 @@
                 ],
                 respuestas: {
                     p_num: "244035814024884",
+                    p_patente: "3581",
                     p_destino: "1",
                     p_op: "IMP",
                     p_clave: "IN",
@@ -1278,6 +1284,7 @@
             {
                 id: 3,
                 titulo: "Persona Física - Autos Usados Juárez",
+                mostrarBloques: { proveedor: true, decrementables: false, permisos: false, oea: false, tratado: false },
                 dificultad: "Intermedia (Persona Física)",
                 descripcion: "El importador individual 'César Omar Ayala Rodríguez' realiza la importación definitiva de un automóvil usado por la aduana de Ciudad Juárez (070). Por tratarse de una Persona Física con actividad empresarial, el pedimento requiere asentar su CURP correspondiente de forma obligatoria, y liquidar los aranceles generales de importación sin preferencias arancelarias.",
                 datosSoporte: {
@@ -1300,6 +1307,7 @@
                 ],
                 respuestas: {
                     p_num: "240735814024885",
+                    p_patente: "3581",
                     p_destino: "7",
                     p_op: "IMP",
                     p_clave: "A1",
@@ -1332,6 +1340,7 @@
             {
                 id: 4,
                 titulo: "Exportación Definitiva - Mezcal Veracruz",
+                mostrarBloques: { proveedor: false, decrementables: false, permisos: false, oea: false, tratado: false },
                 dificultad: "Avanzada (Exportación)",
                 descripcion: "La destilería 'BEBIDAS ANCESTRALES DE MÉXICO S.A. DE C.V.' realiza una exportación definitiva (Clave A1, Régimen EXD) de 500 cajas de Mezcal Mexicano de Oaxaca hacia la Unión Europea. La salida física del país se realiza vía marítima por el Puerto de Veracruz (430). Las exportaciones mexicanas están exentas de IVA y de Arancel (IGI), lo que genera un cuadro de liquidación significativamente simplificado.",
                 datosSoporte: {
@@ -1351,6 +1360,7 @@
                 ],
                 respuestas: {
                     p_num: "244335814024886",
+                    p_patente: "3581",
                     p_destino: "9",
                     p_op: "EXP",
                     p_clave: "A1",
@@ -1379,6 +1389,7 @@
             {
                 id: 5,
                 titulo: "Calzado de China - Manzanillo",
+                mostrarBloques: { proveedor: true, decrementables: false, permisos: false, oea: false, tratado: false },
                 dificultad: "Avanzada (Arancel Alto)",
                 descripcion: "La distribuidora 'CALZADO MODERNO DE MÉXICO' importa de manera definitiva un contenedor de tenis deportivos de marca genérica de origen China, entrando por el puerto de Manzanillo (160). Al no contar con acuerdos comerciales vigentes con China para este sector, se asienta una tasa arancelaria del IGI del 25% sobre el Valor de Aduana, además de requerir fletes e incrementables marítimos.",
                 datosSoporte: {
@@ -1402,6 +1413,7 @@
                 ],
                 respuestas: {
                     p_num: "241635814024887",
+                    p_patente: "3581",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
@@ -1435,6 +1447,7 @@
             {
                 id: 6,
                 titulo: "Torno CNC Alemán - Veracruz Marítimo",
+                mostrarBloques: { proveedor: true, decrementables: false, permisos: false, oea: false, tratado: false },
                 dificultad: "Avanzada (Industrial)",
                 descripcion: "La Siderúrgica 'INGENIERÍA MECÁNICA DEL GOLFO' realiza la importación definitiva de un centro de maquinado (Torno CNC) nuevo de procedencia alemana por el Puerto de Veracruz (430). La mercancía viaja vía marítima, requiriendo asentar de forma rigurosa los fletes marítimos facturados y aplicar un arancel general del 15% al no presentarse certificado de la UE.",
                 datosSoporte: {
@@ -1458,6 +1471,7 @@
                 ],
                 respuestas: {
                     p_num: "244335814024888",
+                    p_patente: "3581",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
@@ -1491,6 +1505,7 @@
             {
                 id: 7,
                 titulo: "Dispositivos Médicos - Laredo T-MEC",
+                mostrarBloques: { proveedor: true, decrementables: false, permisos: false, oea: false, tratado: true },
                 dificultad: "Avanzada (Tratado)",
                 descripcion: "La distribuidora hospitalaria 'SISTEMAS MÉDICOS DE MÉXICO' importa de forma definitiva un lote de catéteres de infusión procedentes de Dallas, Texas, cruzando por la aduana líder de Nuevo Laredo (240). Se presenta certificado de origen bajo el acuerdo T-MEC, lo que exime totalmente la tasa del IGI (Arancel 0%). Se liquida de forma regular el Derecho de Trámite Aduanero y el IVA en cascada correspondiente.",
                 datosSoporte: {
@@ -1512,6 +1527,9 @@
                 ],
                 respuestas: {
                     p_num: "242435814024889",
+                    p_patente: "3581",
+                    p_cert_origen: "CO-TMEC-2024-7731",
+                    p_tratado: "TMEC",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
@@ -1544,6 +1562,7 @@
             {
                 id: 8,
                 titulo: "Activo Fijo IMMEX - Maquinaria Tijuana",
+                mostrarBloques: { proveedor: true, decrementables: false, permisos: false, oea: false, tratado: false },
                 dificultad: "Avanzada (IMMEX)",
                 descripcion: "La maquiladora de autopartes 'AUTOMOTRIZ DE TIJUANA S. DE R.L.' realiza la importación temporal de una celda robotizada de soldadura como activo fijo bajo su programa IMMEX (Clave AF, Régimen ITE) por la aduana de Tijuana (400). Por disposición de la Ley Aduanera, las importaciones temporales de activo fijo para maquila pagan una cuota de DTA fija que se estipula en lugar del 8 al millar.",
                 datosSoporte: {
@@ -1565,6 +1584,7 @@
                 ],
                 respuestas: {
                     p_num: "244035814024890",
+                    p_patente: "3581",
                     p_destino: "1",
                     p_op: "IMP",
                     p_clave: "AF",
@@ -1598,6 +1618,7 @@
             {
                 id: 9,
                 titulo: "Electrodomésticos Korea - Manzanillo T-MEC Asia",
+                mostrarBloques: { proveedor: true, decrementables: false, permisos: false, oea: false, tratado: false },
                 dificultad: "Intermedia (Importación Marítima)",
                 descripcion: "La empresa 'DISTRIBUIDORA HOGAR MODERNO S.A. DE C.V.' importa un contenedor de refrigeradores de última generación provenientes de Corea del Sur, por el Puerto de Manzanillo (160). No existe tratado comercial aplicable, por lo que se aplica arancel general del 15% de IGI. Se incluyen fletes marítimos como incrementable.",
                 datosSoporte: {
@@ -1620,6 +1641,7 @@
                 ],
                 respuestas: {
                     p_num: "241635814024891",
+                    p_patente: "3581",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
@@ -1648,6 +1670,7 @@
             {
                 id: 10,
                 titulo: "Exportación Temporal - Maquinaria para Reparación",
+                mostrarBloques: { proveedor: false, decrementables: false, permisos: false, oea: false, tratado: false },
                 dificultad: "Avanzada (Exportación Temporal)",
                 descripcion: "La empresa 'MANUFACTURA PRÉCISION DE MONTERREY S.A. DE C.V.' exporta temporalmente una fresadora CNC para reparación especializada en EE.UU. La salida se realiza vía terrestre por la aduana de Nuevo Laredo (240). Al tratarse de una exportación temporal para reparación, el régimen es ETE y la clave de pedimento es BM. No se liquidan IGI ni IVA, solo PRV y CNT.",
                 datosSoporte: {
@@ -1668,6 +1691,7 @@
                 ],
                 respuestas: {
                     p_num: "242435814024892",
+                    p_patente: "3581",
                     p_destino: "9",
                     p_op: "EXP",
                     p_clave: "BM",
@@ -1696,6 +1720,7 @@
             {
                 id: 11,
                 titulo: "Textiles India - Guadalajara Aéreo",
+                mostrarBloques: { proveedor: true, decrementables: false, permisos: false, oea: false, tratado: false },
                 dificultad: "Intermedia (Transporte Aéreo)",
                 descripcion: "La empresa 'MODAS Y TEXTILES DEL PACÍFICO S.A. DE C.V.' importa definitivamente un embarque aéreo de telas de seda natural provenientes de Mumbai, India, llegando al Aeropuerto Internacional de Guadalajara (480). Se aplica arancel general del 10% de IGI al no existir tratado con India.",
                 datosSoporte: {
@@ -1718,6 +1743,7 @@
                 ],
                 respuestas: {
                     p_num: "244835814024893",
+                    p_patente: "3581",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
@@ -1746,6 +1772,7 @@
             {
                 id: 12,
                 titulo: "Depósito Fiscal - Electrónica CDMX",
+                mostrarBloques: { proveedor: true, decrementables: false, permisos: false, oea: false, tratado: false },
                 dificultad: "Avanzada (Régimen Especial)",
                 descripcion: "La empresa 'ALMACENES FISCALES DEL CENTRO S.A. DE C.V.' introduce mercancía de origen japonés (laptops) a un Almacén General de Depósito autorizado en la Ciudad de México bajo el régimen de Depósito Fiscal (A4). La entrada física ocurre por el Aeropuerto Internacional de la CDMX (470). Bajo este régimen, las contribuciones se difieren hasta que la mercancía salga del almacén.",
                 datosSoporte: {
@@ -1766,6 +1793,7 @@
                 ],
                 respuestas: {
                     p_num: "244735814024894",
+                    p_patente: "3581",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A4",
@@ -1794,6 +1822,7 @@
             {
                 id: 13,
                 titulo: "Importación Vehículo Nuevo - Nuevo Laredo T-MEC",
+                mostrarBloques: { proveedor: true, decrementables: false, permisos: false, oea: false, tratado: true },
                 dificultad: "Intermedia (Automotriz T-MEC)",
                 descripcion: "La agencia automotriz 'AUTOS PREMIUM DEL NOROESTE S.A. DE C.V.' importa definitivamente 5 vehículos nuevos de fabricación estadounidense por la aduana de Nuevo Laredo (240). Con certificado de origen T-MEC, el IGI queda exento (0%). Se aplica DTA regular.",
                 datosSoporte: {
@@ -1814,6 +1843,9 @@
                 ],
                 respuestas: {
                     p_num: "242435814024895",
+                    p_patente: "3581",
+                    p_cert_origen: "CO-TMEC-2024-4410",
+                    p_tratado: "TMEC",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
@@ -1842,6 +1874,7 @@
             {
                 id: 14,
                 titulo: "Medicamentos - Aeropuerto CDMX con Reg. Sanitario",
+                mostrarBloques: { proveedor: true, decrementables: false, permisos: true, oea: false, tratado: false },
                 dificultad: "Avanzada (Regulaciones Sanitarias)",
                 descripcion: "La empresa 'LABORATORIOS FARMACÉUTICOS ALIANZA S.A. DE C.V.' importa definitivamente antibióticos procedentes de Alemania por el Aeropuerto Internacional de la Ciudad de México (470). Los medicamentos pagan una tasa IGI del 5% conforme al LIGIE. La importación requiere permiso COFEPRIS.",
                 datosSoporte: {
@@ -1864,6 +1897,10 @@
                 ],
                 respuestas: {
                     p_num: "244735814024896",
+                    p_patente: "3581",
+                    p_permiso_tipo1: "COFEPRIS",
+                    p_permiso1: "COFEPRIS-2024-015234",
+                    p_permiso_vig1: "31/12/2025",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
@@ -1892,6 +1929,7 @@
             {
                 id: 15,
                 titulo: "Exportación Aguacate - Región Fronteriza USA",
+                mostrarBloques: { proveedor: false, decrementables: false, permisos: false, oea: false, tratado: false },
                 dificultad: "Básica (Exportación Agro)",
                 descripcion: "La empresa 'AGUACATEROS DEL BAJÍO S.A. DE C.V.' exporta definitivamente aguacate Hass de producción nacional hacia EE.UU. La salida se realiza vía terrestre por Nuevo Laredo (240). Las exportaciones agrícolas no generan IGI ni IVA. Solo se liquidan PRV y CNT.",
                 datosSoporte: {
@@ -1912,6 +1950,7 @@
                 ],
                 respuestas: {
                     p_num: "242435814024897",
+                    p_patente: "3581",
                     p_destino: "9",
                     p_op: "EXP",
                     p_clave: "A1",
@@ -1940,6 +1979,7 @@
             {
                 id: 16,
                 titulo: "Partes Aeronáuticas - TLCUE Unión Europea",
+                mostrarBloques: { proveedor: true, decrementables: false, permisos: false, oea: false, tratado: true },
                 dificultad: "Avanzada (Tratado TLCUE)",
                 descripcion: "'AERONÁUTICA QUERÉTARO S.A. DE C.V.' importa componentes de turbina para la industria aeroespacial procedentes de Francia, por el Aeropuerto de Querétaro (640). Con certificado EUR.1 bajo el TLCUE, el IGI queda exento. Las partes aeronáuticas tienen fracciones con NOM de seguridad.",
                 datosSoporte: {
@@ -1962,6 +2002,9 @@
                 ],
                 respuestas: {
                     p_num: "246435814024898",
+                    p_patente: "3581",
+                    p_cert_origen: "EUR.1 FR/2024/008842",
+                    p_tratado: "TLCUE",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
@@ -1990,6 +2033,7 @@
             {
                 id: 17,
                 titulo: "Retorno de Exportación Temporal - Tecate",
+                mostrarBloques: { proveedor: false, decrementables: false, permisos: false, oea: false, tratado: false },
                 dificultad: "Avanzada (Régimen Retorno)",
                 descripcion: "'HERRAJES Y FUNDICIÓN DE BAJA CALIFORNIA S.A.' retorna a territorio nacional maquinaria exportada temporalmente para reparación en EE.UU. El retorno se realiza por la aduana de Tecate (390). Al regresar sin transformación, no se genera valor agregado ni pago de IGI. Solo PRV y CNT.",
                 datosSoporte: {
@@ -2010,6 +2054,7 @@
                 ],
                 respuestas: {
                     p_num: "243935814024899",
+                    p_patente: "3581",
                     p_destino: "1",
                     p_op: "IMP",
                     p_clave: "H1",
@@ -2038,6 +2083,7 @@
             {
                 id: 18,
                 titulo: "Tránsito Interno - Electrónica Veracruz a CDMX",
+                mostrarBloques: { proveedor: false, decrementables: false, permisos: false, oea: false, tratado: false },
                 dificultad: "Avanzada (Tránsito Aduanero)",
                 descripcion: "'DISTRIBUIDORA TECNOLÓGICA NACIONAL S.A. DE C.V.' introduce mercancía electrónica por el Puerto de Veracruz (430) bajo el régimen de Tránsito Interno para trasladarla a la aduana CDMX (470) donde se despacha definitivamente. El pedimento de tránsito no genera liquidación en la aduana de entrada.",
                 datosSoporte: {
@@ -2059,6 +2105,7 @@
                 ],
                 respuestas: {
                     p_num: "244335814024900",
+                    p_patente: "3581",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "T3",
@@ -2087,6 +2134,7 @@
             {
                 id: 19,
                 titulo: "Importación Productos Alimenticios - Monterrey",
+                mostrarBloques: { proveedor: true, decrementables: false, permisos: true, oea: false, tratado: true },
                 dificultad: "Intermedia (Alimentos + Regulaciones)",
                 descripcion: "'IMPORTADORA ALIMENTARIA DEL NORTE S.A. DE C.V.' importa aceite de oliva extra virgen procedente de España por la aduana de Nuevo Laredo (240). Con certificado de origen TLCUE, el IGI queda exento. Los productos alimenticios requieren permiso SAGARPA y certificado sanitario.",
                 datosSoporte: {
@@ -2108,6 +2156,12 @@
                 ],
                 respuestas: {
                     p_num: "242435814024901",
+                    p_patente: "3581",
+                    p_cert_origen: "EUR.1 ES/2024/003317",
+                    p_tratado: "TLCUE",
+                    p_permiso_tipo1: "SAGARPA",
+                    p_permiso1: "SENASICA-2024-008873",
+                    p_permiso_vig1: "31/12/2025",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
@@ -2136,6 +2190,7 @@
             {
                 id: 20,
                 titulo: "Caso Integral - Maquila Tijuana con Vinculación",
+                mostrarBloques: { proveedor: true, decrementables: false, permisos: false, oea: false, tratado: false },
                 dificultad: "Avanzada (Valoración + Vinculación)",
                 descripcion: "'ELECTRÓNICA TRANSFRONTERIZA S. DE R.L. DE C.V.' importa temporalmente componentes electrónicos bajo IMMEX por la aduana de Tijuana Otay (400). Existe vinculación entre comprador y vendedor (empresas relacionadas), lo que obliga a declararlo y justificar que el precio no fue influenciado. Se usa método de valoración 1 (precio pagado).",
                 datosSoporte: {
@@ -2157,6 +2212,7 @@
                 ],
                 respuestas: {
                     p_num: "244035814024902",
+                    p_patente: "3581",
                     p_destino: "1",
                     p_op: "IMP",
                     p_clave: "IN",
@@ -2581,8 +2637,24 @@
             }
 
             clearInputs();
+            applyFieldVisibility(caso);
             document.getElementById('case-selector').value = id;
         }
+
+        /* INICIO LOGICA DE CAMPOS CONDICIONALES POR REGIMEN (Ronda 9) */
+        function applyFieldVisibility(caso) {
+            const m = caso.mostrarBloques || {};
+            const setVisible = (id, visible) => {
+                const el = document.getElementById(id);
+                if (el) el.classList.toggle('hidden', !visible);
+            };
+            setVisible('bloque-proveedor', m.proveedor !== false);
+            setVisible('bloque-decrementables', m.decrementables === true);
+            setVisible('bloque-permisos', m.permisos === true);
+            setVisible('bloque-oea', m.oea === true);
+            setVisible('bloque-tratado', m.tratado === true);
+        }
+        /* FIN LOGICA DE CAMPOS CONDICIONALES POR REGIMEN */
 
         /* INICIO LIMPIEZA AUTOMATICA */
         function clearInputs() {
@@ -2664,7 +2736,9 @@
 
         // --- VERIFICACIÓN DE PEDIMENTO (VERIFICACIÓN EN CASCADA) ---
         function verifyPedimento() {
-            const resp = CASOS[activeCaseIdx].respuestas;
+            const caso = CASOS[activeCaseIdx];
+            const resp = caso.respuestas;
+            const bloques = caso.mostrarBloques || {};
             const log = [];
             let errors = 0;
 
@@ -2694,12 +2768,23 @@
 
             // Validar Campos SAAI M3
             check('p_num', resp.p_num, "<strong>Número de Pedimento:</strong> El formato de 15 dígitos o su composición aduanera es incorrecto.");
+            check('p_patente', resp.p_patente, "<strong>Patente Aduanal:</strong> Número de patente del agente aduanal incorrecto.");
             check('p_destino', resp.p_destino, "<strong>Destino:</strong> Debe ser '2' para región fronteriza o '9' para el resto del país.");
             check('p_op', resp.p_op, "<strong>T. Operación:</strong> Código incorrecto (IMP / EXP).");
             check('p_clave', resp.p_clave, "<strong>Clave Pedimento:</strong> Clave del Anexo 22 incorrecta.");
             check('p_regimen', resp.p_regimen, "<strong>Régimen:</strong> Incompatibilidad del régimen declarado.");
             check('p_tc', resp.p_tc, "<strong>Tipo de Cambio:</strong> No coincide con el valor oficial del DOF.");
             check('p_adu', resp.p_adu, "<strong>Aduana E/S:</strong> Sección aduanera del despacho errónea.");
+
+            // Validar campos condicionales por régimen (solo si el caso los requiere)
+            if (bloques.tratado) {
+                check('p_tratado', resp.p_tratado, "<strong>Tratado Aplicable:</strong> No corresponde con el certificado de origen declarado en este caso.");
+                check('p_cert_origen', resp.p_cert_origen, "<strong>Certificado de Origen:</strong> Folio incorrecto o no declarado.");
+            }
+            if (bloques.permisos) {
+                check('p_permiso_tipo1', resp.p_permiso_tipo1, "<strong>Permiso Previo:</strong> Autoridad emisora incorrecta para esta mercancía regulada.");
+                check('p_permiso1', resp.p_permiso1, "<strong>Permiso Previo:</strong> Número de folio incorrecto.");
+            }
             check('p_rfc', resp.p_rfc, "<strong>R.F.C:</strong> RFC de la empresa importadora incorrecto.");
             check('p_curp', resp.p_curp, "<strong>CURP:</strong> Debe permanecer vacío si es Persona Moral.");
             check('p_vadu', resp.p_vadu, "<strong>Valor en Aduana:</strong> Base gravable (Precio Comercial + Gastos Incrementables en Pesos) errónea.");
@@ -3891,6 +3976,16 @@
                     error_frecuente: "Dejar este campo vacío cuando la operación tiene condiciones especiales que deben documentarse para el expediente.",
                     referencia: "Anexo 22, instrucciones generales. Las observaciones forman parte del expediente aduanero y pueden ser auditadas.",
                     tip: "Usa este campo para cualquier dato que el verificador necesite conocer. No hay penalidad por declarar más información — siempre es mejor documentar de más que de menos."
+                },
+                p_tratado: {
+                    titulo: "Tratado de Libre Comercio Aplicable",
+                    descripcion: "Identifica el tratado comercial bajo el cual se solicita la tasa arancelaria preferencial, en conjunto con el Certificado de Origen y el identificador TL en la partida.",
+                    como_llenar: "Seleccionar el tratado exacto que ampara el origen de la mercancía. Debe ser coherente con el país de origen declarado en la partida y con el folio del certificado.",
+                    formato: "Selección de catálogo: TMEC, TLCUE, COL, CHL, ISR, JPN, CRI, OTRO",
+                    ejemplo: "Mercancía de EE.UU./Canadá → TMEC. Mercancía de la Unión Europea → TLCUE.",
+                    error_frecuente: "Declarar un tratado que no corresponde al país de origen real de la mercancía, o declarar tratado sin tener el identificador TL en la partida.",
+                    referencia: "Ley de los Impuestos Generales de Importación y Exportación, Reglas de Origen de cada tratado específico.",
+                    tip: "El tratado, el certificado de origen y el identificador TL de la partida deben ser consistentes entre sí; un error en cualquiera de los tres invalida la preferencia arancelaria ante una auditoría."
                 }
             });
         }
