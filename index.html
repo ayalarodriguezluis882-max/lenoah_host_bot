@@ -1182,7 +1182,7 @@
                 datosSoporte: {
                     "Patente Aduanal": "3581",
                     "RFC Importador": "NIM180606MU5",
-                    "Aduana Despacho": "040 (Tijuana Otay)",
+                    "Aduana Despacho": "400 (Tijuana Otay)",
                     "Tipo de Cambio": "20.32330",
                     "Precio Factura (USD)": "$3,700.00",
                     "Valor en Aduana": "$75,196.00 MXN",
@@ -1193,20 +1193,20 @@
                     "CNT (IVA/PRV)": "$46.00 MXN"
                 },
                 pistas: [
-                    "El número de pedimento debe estructurarse así: Año de validación (24) + Aduana de Tijuana (04) + Patente AA (3581) + Último dígito año (4) + Consecutivo (024883) -> '240435814024883'.",
+                    "El número de pedimento debe estructurarse así: Año de validación (24) + Aduana de Tijuana (40) + Patente AA (3581) + Último dígito año (4) + Consecutivo (024883) -> '244035814024883'.",
                     "Al ser importación definitiva de Nina Importaciones (Persona Moral), la clave de pedimento es 'C1', el régimen es 'IMD', el RFC es 'NIM180606MU5' y la CURP permanece en blanco.",
                     "El valor aduana en pesos se calcula multiplicando el precio en dólares ($3,700 USD) por el tipo de cambio ($20.32330), dando $75,196 MXN. Al ser Incoterm DAP en aduana fronteriza terrestre, no hay fletes ni incrementables declarados.",
                     "En la liquidación, el IVA es del 16% sobre el Valor Aduana ($75,196 * 0.16 = $12,031 MXN). El total a pagar en efectivo es la suma del IVA ($12,031) + Prevalidación ($290) + CNT ($46) = $12,367 MXN."
                 ],
                 respuestas: {
-                    p_num: "240435814024883",
-                    p_destino: "2",
+                    p_num: "244035814024883",
+                    p_destino: "1",
                     p_op: "IMP",
                     p_clave: "C1",
                     p_regimen: "IMD",
                     p_tc: 20.32330,
                     p_peso: 62.000,
-                    p_adu: "040",
+                    p_adu: "400",
                     p_trans_e: "7", p_trans_a: "7", p_trans_s: "7",
                     p_vdol: 3700.00,
                     p_vadu: 75196,
@@ -1233,7 +1233,7 @@
                 datosSoporte: {
                     "Patente Aduanal": "3581",
                     "RFC Importador": "MNO151020TY9",
-                    "Aduana Despacho": "040 (Tijuana Otay)",
+                    "Aduana Despacho": "400 (Tijuana Otay)",
                     "Tipo de Cambio": "20.10000",
                     "Precio Factura (USD)": "$15,000.00",
                     "Valor en Aduana": "$301,500.00 MXN",
@@ -1243,20 +1243,20 @@
                     "Régimen": "ITE (Temporal Maquila)"
                 },
                 pistas: [
-                    "Estructura del Pedimento: Año (24) + Aduana (04) + Patente (3581) + Dígito Año (4) + Consecutivo (024884) -> '240435814024884'.",
+                    "Estructura del Pedimento: Año (24) + Aduana (40) + Patente (3581) + Dígito Año (4) + Consecutivo (024884) -> '244035814024884'.",
                     "Al ser importación temporal IMMEX, la Clave de Pedimento es 'IN' y el Régimen es 'ITE'.",
                     "Al contar con Certificación de IVA e IEPS de Maquiladoras, no se liquida IVA en efectivo en la importación. Por tanto, el campo 'IVA Liquidación' debe registrar '0'.",
                     "Los únicos importes que se pagan efectivamente en caja bancaria son la Prevalidación ($290) y el CNT ($46), dando un total de efectivo de $336 MXN."
                 ],
                 respuestas: {
-                    p_num: "240435814024884",
-                    p_destino: "2",
+                    p_num: "244035814024884",
+                    p_destino: "1",
                     p_op: "IMP",
                     p_clave: "IN",
                     p_regimen: "ITE",
                     p_tc: 20.10000,
                     p_peso: 120.000,
-                    p_adu: "040",
+                    p_adu: "400",
                     p_trans_e: "7", p_trans_a: "7", p_trans_s: "7",
                     p_vdol: 15000.00,
                     p_vadu: 301500,
@@ -1269,8 +1269,8 @@
                     p_fecha_e: "06/12/2024", p_fecha_p: "06/12/2024",
                     p_prv_tasa: 290,
                     p_l_iva: 0, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 336, p_l_total: 336,
-                    p_part_frac: "85423101", p_part_nico: "00", p_part_vinc: "0",
-                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 1500.000, p_part_pais: "USA",
+                    p_part_frac: "85423103", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_umc: "6", p_part_umt: "6", p_part_cant: 1500.000, p_part_pais: "USA",
                     p_part_desc: "CIRCUITOS INTEGRADOS MONOLITICOS PARA PROCESAMIENTO",
                     p_part_id1: "EN", p_part_id2: "TL", p_part_id3: "PO"
                 }
@@ -1283,24 +1283,24 @@
                 datosSoporte: {
                     "Patente Aduanal": "3581",
                     "RFC Importador": "AARC950528XX1",
-                    "CURP": "AARC950528HBCYRL02",
+                    "CURP": "AARC950528HCHYDS08",
                     "Aduana Despacho": "070",
                     "Tipo de Cambio": "19.80000",
                     "Precio Factura (USD)": "$8,000.00",
                     "Valor en Aduana": "$158,400.00 MXN",
-                    "Arancel (IGI)": "10% ($15,840.00 MXN)",
+                    "Arancel (IGI)": "50% ($79,200.00 MXN)",
                     "DTA (8 al millar)": "$1,267.00 MXN"
                 },
                 pistas: [
                     "Al ser el despacho por la aduana de Ciudad Juárez, el número de pedimento debe llevar la aduana '07' -> '240735814024885'.",
-                    "Al ser Persona Física, debes ingresar de forma obligatoria el RFC de 13 caracteres ('AARC950528XX1') y la CURP ('AARC950528HBCYRL02').",
-                    "Calcula la liquidación en cascada: El arancel de IGI es de $15,840 (10% sobre Valor Aduana), el DTA es de $1,267 (8 al millar de $158,400).",
-                    "La base del IVA es: Valor Aduana ($158,400) + IGI ($15,840) + DTA ($1,267) = $175,507 MXN. El IVA del 16% es $28,081 MXN.",
-                    "El efectivo total es la suma de: IVA ($28,081) + DTA ($1,267) + IGI ($15,840) + PRV ($290) + CNT ($46) = $45,524 MXN."
+                    "Al ser Persona Física, debes ingresar de forma obligatoria el RFC de 13 caracteres ('AARC950528XX1') y la CURP ('AARC950528HCHYDS08').",
+                    "Por tratarse de un vehículo USADO (fracción 8703.23.02), la tasa de IGI es del 50% (mucho mayor a la de un vehículo nuevo) conforme al LIGIE. Calcula la liquidación en cascada: El arancel de IGI es de $79,200 (50% sobre Valor Aduana), el DTA es de $1,267 (8 al millar de $158,400).",
+                    "La base del IVA es: Valor Aduana ($158,400) + IGI ($79,200) + DTA ($1,267) = $238,867 MXN. El IVA del 16% es $38,219 MXN.",
+                    "El efectivo total es la suma de: IVA ($38,219) + DTA ($1,267) + IGI ($79,200) + PRV ($290) + CNT ($46) = $119,022 MXN."
                 ],
                 respuestas: {
                     p_num: "240735814024885",
-                    p_destino: "2",
+                    p_destino: "7",
                     p_op: "IMP",
                     p_clave: "A1",
                     p_regimen: "IMD",
@@ -1312,52 +1312,52 @@
                     p_vadu: 158400,
                     p_vcom: 158400,
                     p_rfc: "AARC950528XX1",
-                    p_curp: "AARC950528HBCYRL02",
+                    p_curp: "AARC950528HCHYDS08",
                     p_nombre: "CESAR OMAR AYALA RODRIGUEZ",
                     p_domicilio: "AV. DE LA REPUBLICA No. 450 CIUDAD JUAREZ Chihuahua",
                     p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "07/12/2024", p_fecha_p: "07/12/2024",
                     p_prv_tasa: 290,
-                    p_l_iva: 28081,
+                    p_l_iva: 38219,
                     p_l_prv: 290,
                     p_l_cnt: 46,
-                    p_l_efec: 45524,
-                    p_l_total: 45524,
-                    p_part_frac: "87032301", p_part_nico: "00", p_part_vinc: "0",
-                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 1.000, p_part_pais: "USA",
+                    p_l_efec: 119022,
+                    p_l_total: 119022,
+                    p_part_frac: "87032302", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_umc: "6", p_part_umt: "6", p_part_cant: 1.000, p_part_pais: "USA",
                     p_part_desc: "AUTOMOVIL USADO MOTOR 4 CILINDROS CON AIRE ACONDICIONADO",
-                    p_part_id1: "MU", p_part_id2: "EN", p_part_id3: "PO"
+                    p_part_id1: "VU", p_part_id2: "EN", p_part_id3: "PO"
                 }
             },
             {
                 id: 4,
                 titulo: "Exportación Definitiva - Mezcal Veracruz",
                 dificultad: "Avanzada (Exportación)",
-                descripcion: "La destilería 'BEBIDAS ANCESTRALES DE MÉXICO S.A. DE C.V.' realiza una exportación definitiva (Clave A1, Régimen EXD) de 500 cajas de Mezcal Mexicano de Oaxaca hacia la Unión Europea. La salida física del país se realiza vía marítima por el Puerto de Veracruz (280). Las exportaciones mexicanas están exentas de IVA y de Arancel (IGI), lo que genera un cuadro de liquidación significativamente simplificado.",
+                descripcion: "La destilería 'BEBIDAS ANCESTRALES DE MÉXICO S.A. DE C.V.' realiza una exportación definitiva (Clave A1, Régimen EXD) de 500 cajas de Mezcal Mexicano de Oaxaca hacia la Unión Europea. La salida física del país se realiza vía marítima por el Puerto de Veracruz (430). Las exportaciones mexicanas están exentas de IVA y de Arancel (IGI), lo que genera un cuadro de liquidación significativamente simplificado.",
                 datosSoporte: {
                     "Patente Aduanal": "3581",
                     "RFC Exportador": "BAM120404TY5",
-                    "Aduana Despacho": "280 (Veracruz)",
+                    "Aduana Despacho": "430 (Veracruz)",
                     "Tipo de Cambio": "20.12000",
                     "Precio Factura (USD)": "$12,000.00",
                     "Valor en Aduana": "$241,440.00 MXN",
                     "Medio de Transporte": "1 (Marítimo)"
                 },
                 pistas: [
-                    "Al ser un despacho marítimo de exportación por el Puerto de Veracruz, el número de pedimento debe estructurarse con la aduana de Veracruz '28' -> '242835814024886'.",
+                    "Al ser un despacho marítimo de exportación por el Puerto de Veracruz, el número de pedimento debe estructurarse con la aduana de Veracruz '43' -> '244335814024886'.",
                     "El Tipo de Operación es 'EXP' (Exportación), la clave es 'A1' y el Régimen es 'EXD' (Exportación Definitiva). El medio de transporte (entrada/arribo/salida) es '1' (Marítimo).",
                     "Al tratarse de una exportación de mezcal mexicano, la tasa de IGI e IVA es '0%' (Exentos para incentivar la salida de productos nacionales). El DTA de exportación para la clave A1 definitiva se liquida de forma exenta o no genera cargos en efectivo en el cuadro final.",
                     "Los únicos importes que liquidas en efectivo para este despacho aduanal de exportación son la Prevalidación ($290) y el CNT ($46), dando un total de efectivo de $336 MXN."
                 ],
                 respuestas: {
-                    p_num: "242835814024886",
+                    p_num: "244335814024886",
                     p_destino: "9",
                     p_op: "EXP",
                     p_clave: "A1",
                     p_regimen: "EXD",
                     p_tc: 20.12000,
                     p_peso: 2500.000,
-                    p_adu: "280",
+                    p_adu: "430",
                     p_trans_e: "1", p_trans_a: "1", p_trans_s: "1",
                     p_vdol: 12000.00,
                     p_vadu: 241440,
@@ -1371,7 +1371,7 @@
                     p_prv_tasa: 290,
                     p_l_iva: 0, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 336, p_l_total: 336,
                     p_part_frac: "22089005", p_part_nico: "00", p_part_vinc: "0",
-                    p_part_umc: "9", p_part_umt: "9", p_part_cant: 3000.000, p_part_pais: "DEU",
+                    p_part_umc: "8", p_part_umt: "8", p_part_cant: 3000.000, p_part_pais: "MEX",
                     p_part_desc: "MEZCAL ARTESANAL 100 POR CIENTO DE AGAVE ESPADIN EN BOTELLAS",
                     p_part_id1: "EX", p_part_id2: "EN", p_part_id3: "PO"
                 }
@@ -1380,7 +1380,7 @@
                 id: 5,
                 titulo: "Calzado de China - Manzanillo",
                 dificultad: "Avanzada (Arancel Alto)",
-                descripcion: "La distribuidora 'CALZADO MODERNO DE MÉXICO' importa de manera definitiva un contenedor de tenis deportivos de marca genérica de origen China, entrando por el puerto de Manzanillo (160). Al no contar con acuerdos comerciales vigentes con China para este sector, se asienta una tasa arancelaria del IGI del 20% sobre el Valor de Aduana, además de requerir fletes e incrementables marítimos.",
+                descripcion: "La distribuidora 'CALZADO MODERNO DE MÉXICO' importa de manera definitiva un contenedor de tenis deportivos de marca genérica de origen China, entrando por el puerto de Manzanillo (160). Al no contar con acuerdos comerciales vigentes con China para este sector, se asienta una tasa arancelaria del IGI del 25% sobre el Valor de Aduana, además de requerir fletes e incrementables marítimos.",
                 datosSoporte: {
                     "Patente Aduanal": "3581",
                     "RFC Importador": "CMM110909HY1",
@@ -1389,16 +1389,16 @@
                     "Precio Factura (USD)": "$18,000.00",
                     "Fletes Terrestres (USD)": "$1,200.00",
                     "Valor en Aduana": "$391,680.00 MXN",
-                    "Arancel (IGI)": "20% ($78,336.00 MXN)",
+                    "Arancel (IGI)": "25% ($97,920.00 MXN)",
                     "DTA (8 al millar)": "$3,133.00 MXN"
                 },
                 pistas: [
                     "Aduana de despacho es Manzanillo (16) -> Pedimento: '241635814024887'.",
                     "Ojo con el cálculo de los incrementables: Debes registrar $24,480 MXN en el campo de 'Fletes' de la sección de incrementables (que equivale a los $1,200 USD multiplicados por el Tipo de Cambio de $20.40).",
                     "El Valor Comercial (Factura) convertido a pesos es de $367,200 MXN ($18,000 * 20.40). Al sumarle el flete incrementable ($24,480), obtienes el Valor en Aduana exacto de $391,680 MXN.",
-                    "La liquidación de impuestos en cascada se calcula así: IGI = $391,680 * 20% = $78,336. DTA = $391,680 * 0.008 = $3,133.",
-                    "La base del IVA es: Valor Aduana ($391,680) + IGI ($78,336) + DTA ($3,133) = $473,149 MXN. El IVA del 16% resultante es $75,704 MXN.",
-                    "El efectivo total es la suma de: IVA ($75,704) + DTA ($3,133) + IGI ($78,336) + PRV ($290) + CNT ($46) = $157,509 MXN."
+                    "Por tratarse de calzado deportivo genérico (fracción 6404.11.16), la tasa de IGI conforme al LIGIE es del 25%. La liquidación de impuestos en cascada se calcula así: IGI = $391,680 * 25% = $97,920. DTA = $391,680 * 0.008 = $3,133.",
+                    "La base del IVA es: Valor Aduana ($391,680) + IGI ($97,920) + DTA ($3,133) = $492,733 MXN. El IVA del 16% resultante es $78,837 MXN.",
+                    "El efectivo total es la suma de: IVA ($78,837) + DTA ($3,133) + IGI ($97,920) + PRV ($290) + CNT ($46) = $180,226 MXN."
                 ],
                 respuestas: {
                     p_num: "241635814024887",
@@ -1421,13 +1421,13 @@
                     p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "09/12/2024", p_fecha_p: "09/12/2024",
                     p_prv_tasa: 290,
-                    p_l_iva: 75704,
+                    p_l_iva: 78837,
                     p_l_prv: 290,
                     p_l_cnt: 46,
-                    p_l_efec: 157509,
-                    p_l_total: 157509,
-                    p_part_frac: "64041101", p_part_nico: "00", p_part_vinc: "0",
-                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 1200.000, p_part_pais: "CHN",
+                    p_l_efec: 180226,
+                    p_l_total: 180226,
+                    p_part_frac: "64041116", p_part_nico: "01", p_part_vinc: "0",
+                    p_part_umc: "6", p_part_umt: "6", p_part_cant: 1200.000, p_part_pais: "CHN",
                     p_part_desc: "CALZADO DEPORTE TENIS CON SUELA DE CAUCHO SINTETICO",
                     p_part_id1: "EN", p_part_id2: "UM", p_part_id3: "PO"
                 }
@@ -1436,35 +1436,35 @@
                 id: 6,
                 titulo: "Torno CNC Alemán - Veracruz Marítimo",
                 dificultad: "Avanzada (Industrial)",
-                descripcion: "La Siderúrgica 'INGENIERÍA MECÁNICA DEL GOLFO' realiza la importación definitiva de un centro de maquinado (Torno CNC) nuevo de procedencia alemana por el Puerto de Veracruz (280). La mercancía viaja vía marítima, requiriendo asentar de forma rigurosa los fletes marítimos facturados y aplicar un arancel general del 5% al no presentarse certificado de la UE.",
+                descripcion: "La Siderúrgica 'INGENIERÍA MECÁNICA DEL GOLFO' realiza la importación definitiva de un centro de maquinado (Torno CNC) nuevo de procedencia alemana por el Puerto de Veracruz (430). La mercancía viaja vía marítima, requiriendo asentar de forma rigurosa los fletes marítimos facturados y aplicar un arancel general del 15% al no presentarse certificado de la UE.",
                 datosSoporte: {
                     "Patente Aduanal": "3581",
                     "RFC Importador": "IMG081112TR1",
-                    "Aduana Despacho": "280 (Veracruz)",
+                    "Aduana Despacho": "430 (Veracruz)",
                     "Tipo de Cambio": "19.95000",
                     "Precio Factura (USD)": "$40,000.00",
                     "Fletes (USD)": "$2,500.00",
                     "Valor en Aduana": "$847,875.00 MXN",
-                    "Arancel (IGI)": "5% ($42,394.00 MXN)",
+                    "Arancel (IGI)": "15% ($127,181.00 MXN)",
                     "DTA (8 al millar)": "$6,783.00 MXN"
                 },
                 pistas: [
-                    "Aduana de despacho es Veracruz (28) -> El número de pedimento debe ser '242835814024888'.",
+                    "Aduana de despacho es Veracruz (43) -> El número de pedimento debe ser '244335814024888'.",
                     "Convierte los incrementables de fletes marítimos ($2,500 USD) a pesos utilizando el Tipo de Cambio ($19.95) para registrar $49,875 MXN en el cuadro de Fletes.",
                     "El Valor Comercial es de $798,000 MXN ($40,000 * 19.95). Al sumarle el flete ($49,875), el Valor de Aduana final es $847,875 MXN.",
-                    "El arancel del IGI es del 5% sobre el Valor Aduana ($847,875 * 0.05 = $42,394). El DTA es el 8 al millar ($847,875 * 0.008 = $6,783).",
-                    "La base gravable acumulada para el cálculo del IVA es: Valor Aduana ($847,875) + IGI ($42,394) + DTA ($6,783) = $897,052 MXN. Multiplicado por el 16% de IVA da $143,528 MXN.",
-                    "El efectivo total que se paga en el banco es de $193,041 MXN."
+                    "Por tratarse de un torno paralelo universal de control numérico (fracción 8458.11.01), el arancel del IGI es del 15% sobre el Valor Aduana ($847,875 * 0.15 = $127,181). El DTA es el 8 al millar ($847,875 * 0.008 = $6,783).",
+                    "La base gravable acumulada para el cálculo del IVA es: Valor Aduana ($847,875) + IGI ($127,181) + DTA ($6,783) = $981,839 MXN. Multiplicado por el 16% de IVA da $157,094 MXN.",
+                    "El efectivo total que se paga en el banco es de $291,394 MXN."
                 ],
                 respuestas: {
-                    p_num: "242835814024888",
+                    p_num: "244335814024888",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
                     p_regimen: "IMD",
                     p_tc: 19.95000,
                     p_peso: 4500.000,
-                    p_adu: "280",
+                    p_adu: "430",
                     p_trans_e: "1", p_trans_a: "1", p_trans_s: "7",
                     p_vdol: 40000.00,
                     p_vadu: 847875,
@@ -1477,13 +1477,13 @@
                     p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "10/12/2024", p_fecha_p: "10/12/2024",
                     p_prv_tasa: 290,
-                    p_l_iva: 143528,
+                    p_l_iva: 157094,
                     p_l_prv: 290,
                     p_l_cnt: 46,
-                    p_l_efec: 193041,
-                    p_l_total: 193041,
-                    p_part_frac: "84581102", p_part_nico: "00", p_part_vinc: "0",
-                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 1.000, p_part_pais: "DEU",
+                    p_l_efec: 291394,
+                    p_l_total: 291394,
+                    p_part_frac: "84581101", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_umc: "6", p_part_umt: "6", p_part_cant: 1.000, p_part_pais: "DEU",
                     p_part_desc: "TORNO DE CONTROL NUMERICO COMPUTARIZADO INDUSTRIAL CNC NUEVO",
                     p_part_id1: "EN", p_part_id2: "PO", p_part_id3: "UM"
                 }
@@ -1535,8 +1535,8 @@
                     p_l_cnt: 46,
                     p_l_efec: 102666,
                     p_l_total: 102666,
-                    p_part_frac: "90183902", p_part_nico: "00", p_part_vinc: "0",
-                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 5000.000, p_part_pais: "USA",
+                    p_part_frac: "90183999", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_umc: "6", p_part_umt: "6", p_part_cant: 5000.000, p_part_pais: "USA",
                     p_part_desc: "CATETERES DE INFUSION PARA USO HOSPITALARIO NUEVOS",
                     p_part_id1: "TL", p_part_id2: "EN", p_part_id3: "PO"
                 }
@@ -1545,11 +1545,11 @@
                 id: 8,
                 titulo: "Activo Fijo IMMEX - Maquinaria Tijuana",
                 dificultad: "Avanzada (IMMEX)",
-                descripcion: "La maquiladora de autopartes 'AUTOMOTRIZ DE TIJUANA S. DE R.L.' realiza la importación temporal de una celda robotizada de soldadura como activo fijo bajo su programa IMMEX (Clave AF, Régimen ITE) por la aduana de Tijuana (040). Por disposición de la Ley Aduanera, las importaciones temporales de activo fijo para maquila pagan una cuota de DTA fija que se estipula en lugar del 8 al millar.",
+                descripcion: "La maquiladora de autopartes 'AUTOMOTRIZ DE TIJUANA S. DE R.L.' realiza la importación temporal de una celda robotizada de soldadura como activo fijo bajo su programa IMMEX (Clave AF, Régimen ITE) por la aduana de Tijuana (400). Por disposición de la Ley Aduanera, las importaciones temporales de activo fijo para maquila pagan una cuota de DTA fija que se estipula en lugar del 8 al millar.",
                 datosSoporte: {
                     "Patente Aduanal": "3581",
                     "RFC Importador": "ATI140505TY1",
-                    "Aduana Despacho": "040 (Tijuana Otay)",
+                    "Aduana Despacho": "400 (Tijuana Otay)",
                     "Tipo de Cambio": "20.25000",
                     "Precio Factura (USD)": "$90,000.00",
                     "Valor en Aduana": "$1,822,500.00 MXN",
@@ -1557,21 +1557,21 @@
                     "Arancel (IGI)": "0% (Bajo Certificación)"
                 },
                 pistas: [
-                    "Aduana de despacho es Tijuana (04) -> Número de pedimento: '240435814024890'.",
+                    "Aduana de despacho es Tijuana (40) -> Número de pedimento: '244035814024890'.",
                     "Al ser importación temporal de activo fijo de IMMEX, la Clave de Pedimento es 'AF' y el Régimen es 'ITE'.",
                     "Regla Especial del DTA para Activo Fijo IMMEX: No se calcula con el 8 al millar. El artículo 49 de la LFD dictamina una cuota fija de DTA (asentar '$410' en el cuadro de liquidación en vez del porcentaje regular).",
                     "Al estar amparado bajo certificación IMMEX y tener tasa preferencial, el IVA es diferido (asentar '0' en IVA Liquidación).",
                     "El efectivo total a liquidar en este despacho es la suma de: IVA ($0) + DTA Fijo ($410) + Prevalidación ($290) + CNT ($46) = $746 MXN."
                 ],
                 respuestas: {
-                    p_num: "240435814024890",
-                    p_destino: "2",
+                    p_num: "244035814024890",
+                    p_destino: "1",
                     p_op: "IMP",
                     p_clave: "AF",
                     p_regimen: "ITE",
                     p_tc: 20.25000,
                     p_peso: 3400.000,
-                    p_adu: "040",
+                    p_adu: "400",
                     p_trans_e: "7", p_trans_a: "7", p_trans_s: "7",
                     p_vdol: 90000.00,
                     p_vadu: 1822500,
@@ -1585,7 +1585,7 @@
                     p_prv_tasa: 290,
                     p_l_iva: 0, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 746, p_l_total: 746,
                     p_part_frac: "85153101", p_part_nico: "00", p_part_vinc: "0",
-                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 1.000, p_part_pais: "USA",
+                    p_part_umc: "6", p_part_umt: "6", p_part_cant: 1.000, p_part_pais: "USA",
                     p_part_desc: "CELDA ROBOTIZADA DE SOLDADURA ELECTRICA DE ALTA PRECISION",
                     p_part_id1: "EN", p_part_id2: "TL", p_part_id3: "PO"
                 }
@@ -1639,8 +1639,8 @@
                     p_fecha_e: "13/12/2024", p_fecha_p: "13/12/2024",
                     p_prv_tasa: 290,
                     p_l_iva: 97217, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 180456, p_l_total: 180456,
-                    p_part_frac: "84181001", p_part_nico: "00", p_part_vinc: "0",
-                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 48.000, p_part_pais: "KOR",
+                    p_part_frac: "84182101", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_umc: "6", p_part_umt: "6", p_part_cant: 48.000, p_part_pais: "KOR",
                     p_part_desc: "REFRIGERADORES DOMESTICOS COMPRESOR INVERTER 520 LITROS",
                     p_part_id1: "EN", p_part_id2: "PO", p_part_id3: "UM"
                 }
@@ -1649,7 +1649,7 @@
                 id: 10,
                 titulo: "Exportación Temporal - Maquinaria para Reparación",
                 dificultad: "Avanzada (Exportación Temporal)",
-                descripcion: "La empresa 'MANUFACTURA PRÉCISION DE MONTERREY S.A. DE C.V.' exporta temporalmente una fresadora CNC para reparación especializada en EE.UU. La salida se realiza vía terrestre por la aduana de Nuevo Laredo (240). Al tratarse de una exportación temporal, el régimen es ETD y la clave de pedimento es IN. No se liquidan IGI ni IVA, solo PRV y CNT.",
+                descripcion: "La empresa 'MANUFACTURA PRÉCISION DE MONTERREY S.A. DE C.V.' exporta temporalmente una fresadora CNC para reparación especializada en EE.UU. La salida se realiza vía terrestre por la aduana de Nuevo Laredo (240). Al tratarse de una exportación temporal para reparación, el régimen es ETE y la clave de pedimento es BM. No se liquidan IGI ni IVA, solo PRV y CNT.",
                 datosSoporte: {
                     "Patente Aduanal": "3581",
                     "RFC Exportador": "MPM050815TR7",
@@ -1657,12 +1657,12 @@
                     "Tipo de Cambio": "20.05000",
                     "Precio Factura (USD)": "$45,000.00",
                     "Valor en Aduana": "$902,250.00 MXN",
-                    "Clave Pedimento": "IN (Temporal)",
-                    "Régimen": "ETD (Exportación Temporal Definitiva)"
+                    "Clave Pedimento": "BM (Exportación Temporal para Reparación)",
+                    "Régimen": "ETE (Temporales de Exportación para Elaboración, Transformación o Reparación)"
                 },
                 pistas: [
                     "Aduana es Nuevo Laredo (24) -> Número de pedimento: '242435814024892'.",
-                    "El Tipo de Operación es 'EXP'. La clave del pedimento para exportación temporal es 'IN' y el régimen es 'ETD'.",
+                    "El Tipo de Operación es 'EXP'. La clave del pedimento para exportación temporal de bienes que serán reparados es 'BM' y el régimen es 'ETE'.",
                     "Al ser exportación temporal, NO se aplican IGI, DTA ni IVA. El Valor en Aduana se registra pero no genera liquidación de aranceles.",
                     "Los únicos pagos en efectivo son: Prevalidación ($290) + CNT ($46) = $336 MXN en total."
                 ],
@@ -1670,8 +1670,8 @@
                     p_num: "242435814024892",
                     p_destino: "9",
                     p_op: "EXP",
-                    p_clave: "IN",
-                    p_regimen: "ETD",
+                    p_clave: "BM",
+                    p_regimen: "ETE",
                     p_tc: 20.05000,
                     p_peso: 3800.000,
                     p_adu: "240",
@@ -1687,8 +1687,8 @@
                     p_fecha_e: "14/12/2024", p_fecha_p: "14/12/2024",
                     p_prv_tasa: 290,
                     p_l_iva: 0, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 336, p_l_total: 336,
-                    p_part_frac: "84573001", p_part_nico: "00", p_part_vinc: "0",
-                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 1.000, p_part_pais: "MEX",
+                    p_part_frac: "84596101", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_umc: "6", p_part_umt: "6", p_part_cant: 1.000, p_part_pais: "MEX",
                     p_part_desc: "FRESADORA CNC DE CONTROL NUMERICO PARA REPARACION",
                     p_part_id1: "EX", p_part_id2: "EN", p_part_id3: "PO"
                 }
@@ -1697,11 +1697,11 @@
                 id: 11,
                 titulo: "Textiles India - Guadalajara Aéreo",
                 dificultad: "Intermedia (Transporte Aéreo)",
-                descripcion: "La empresa 'MODAS Y TEXTILES DEL PACÍFICO S.A. DE C.V.' importa definitivamente un embarque aéreo de telas de seda natural provenientes de Mumbai, India, llegando al Aeropuerto Internacional de Guadalajara (210). Se aplica arancel general del 10% de IGI al no existir tratado con India.",
+                descripcion: "La empresa 'MODAS Y TEXTILES DEL PACÍFICO S.A. DE C.V.' importa definitivamente un embarque aéreo de telas de seda natural provenientes de Mumbai, India, llegando al Aeropuerto Internacional de Guadalajara (480). Se aplica arancel general del 10% de IGI al no existir tratado con India.",
                 datosSoporte: {
                     "Patente Aduanal": "3581",
                     "RFC Importador": "MTP091215UV4",
-                    "Aduana Despacho": "210 (Guadalajara Aeropuerto)",
+                    "Aduana Despacho": "480 (Guadalajara Aeropuerto)",
                     "Tipo de Cambio": "20.18000",
                     "Precio Factura (USD)": "$8,500.00",
                     "Seguro Aéreo (USD)": "$250.00",
@@ -1710,22 +1710,22 @@
                     "DTA (8 al millar)": "$1,413.00 MXN"
                 },
                 pistas: [
-                    "Aduana de Guadalajara Aeropuerto (21) -> Número de pedimento: '242135814024893'.",
+                    "Aduana de Guadalajara Aeropuerto (48) -> Número de pedimento: '244835814024893'.",
                     "El medio de transporte para flete aéreo es '2'. Seguro: $250 USD * 20.18 = $5,045 MXN. Precio comercial: $8,500 * 20.18 = $171,530 MXN. Valor Aduana = $171,530 + $5,045 = $176,575 MXN.",
                     "IGI = $176,575 * 10% = $17,658 MXN. DTA = $176,575 * 0.008 = $1,413 MXN.",
                     "Base IVA = $176,575 + $17,658 + $1,413 = $195,646 MXN. IVA = $195,646 * 16% = $31,303 MXN.",
                     "Total efectivo: IVA ($31,303) + DTA ($1,413) + IGI ($17,658) + PRV ($290) + CNT ($46) = $50,710 MXN."
                 ],
                 respuestas: {
-                    p_num: "242135814024893",
+                    p_num: "244835814024893",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
                     p_regimen: "IMD",
                     p_tc: 20.18000,
                     p_peso: 320.000,
-                    p_adu: "210",
-                    p_trans_e: "2", p_trans_a: "2", p_trans_s: "7",
+                    p_adu: "480",
+                    p_trans_e: "4", p_trans_a: "4", p_trans_s: "7",
                     p_vdol: 8500.00,
                     p_vadu: 176575,
                     p_vcom: 171530,
@@ -1737,7 +1737,7 @@
                     p_fecha_e: "15/12/2024", p_fecha_p: "15/12/2024",
                     p_prv_tasa: 290,
                     p_l_iva: 31303, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 50710, p_l_total: 50710,
-                    p_part_frac: "50072001", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_frac: "50072091", p_part_nico: "00", p_part_vinc: "0",
                     p_part_umc: "2", p_part_umt: "2", p_part_cant: 150.000, p_part_pais: "IND",
                     p_part_desc: "TELA DE SEDA NATURAL TEJIDA AL ANCHO DE 140 CM",
                     p_part_id1: "EN", p_part_id2: "PO", p_part_id3: "UM"
@@ -1747,33 +1747,33 @@
                 id: 12,
                 titulo: "Depósito Fiscal - Electrónica CDMX",
                 dificultad: "Avanzada (Régimen Especial)",
-                descripcion: "La empresa 'ALMACENES FISCALES DEL CENTRO S.A. DE C.V.' introduce mercancía de origen japonés (laptops) a un Almacén General de Depósito autorizado en la Ciudad de México bajo el régimen de Depósito Fiscal (DF). La entrada física ocurre por el Aeropuerto Internacional de la CDMX (010). Bajo este régimen, las contribuciones se difieren hasta que la mercancía salga del almacén.",
+                descripcion: "La empresa 'ALMACENES FISCALES DEL CENTRO S.A. DE C.V.' introduce mercancía de origen japonés (laptops) a un Almacén General de Depósito autorizado en la Ciudad de México bajo el régimen de Depósito Fiscal (A4). La entrada física ocurre por el Aeropuerto Internacional de la CDMX (470). Bajo este régimen, las contribuciones se difieren hasta que la mercancía salga del almacén.",
                 datosSoporte: {
                     "Patente Aduanal": "3581",
                     "RFC Importador": "AFC120610PQ8",
-                    "Aduana Despacho": "010 (CDMX Aeropuerto)",
+                    "Aduana Despacho": "470 (CDMX Aeropuerto)",
                     "Tipo de Cambio": "20.22000",
                     "Precio Factura (USD)": "$35,000.00",
                     "Valor en Aduana": "$707,700.00 MXN",
-                    "Clave Pedimento": "DF (Depósito Fiscal)",
+                    "Clave Pedimento": "A4 (Introducción a Depósito Fiscal AGD)",
                     "Régimen": "DFI (Depósito Fiscal)"
                 },
                 pistas: [
-                    "Aduana de CDMX Aeropuerto (01) -> Número de pedimento: '240135814024894'.",
-                    "La Clave del Pedimento para Depósito Fiscal es 'DF' y el Régimen es 'DFI'. El Tipo de Operación es 'IMP'.",
+                    "Aduana de CDMX Aeropuerto (47) -> Número de pedimento: '244735814024894'.",
+                    "La Clave del Pedimento para Introducción a Depósito Fiscal en Almacén General de Depósito es 'A4' y el Régimen es 'DFI'. El Tipo de Operación es 'IMP'.",
                     "Bajo el régimen de Depósito Fiscal, los impuestos (IGI e IVA) se difieren y NO se liquidan en efectivo en este pedimento. El almacén autorizado garantiza las contribuciones.",
                     "Solo se pagan en efectivo: Prevalidación ($290) + CNT ($46) = $336 MXN. El IVA y el IGI se registran en $0."
                 ],
                 respuestas: {
-                    p_num: "240135814024894",
+                    p_num: "244735814024894",
                     p_destino: "9",
                     p_op: "IMP",
-                    p_clave: "DF",
+                    p_clave: "A4",
                     p_regimen: "DFI",
                     p_tc: 20.22000,
                     p_peso: 650.000,
-                    p_adu: "010",
-                    p_trans_e: "2", p_trans_a: "2", p_trans_s: "7",
+                    p_adu: "470",
+                    p_trans_e: "4", p_trans_a: "4", p_trans_s: "7",
                     p_vdol: 35000.00,
                     p_vadu: 707700,
                     p_vcom: 707700,
@@ -1786,20 +1786,20 @@
                     p_prv_tasa: 290,
                     p_l_iva: 0, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 336, p_l_total: 336,
                     p_part_frac: "84713001", p_part_nico: "00", p_part_vinc: "0",
-                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 200.000, p_part_pais: "JPN",
+                    p_part_umc: "6", p_part_umt: "6", p_part_cant: 200.000, p_part_pais: "JPN",
                     p_part_desc: "COMPUTADORAS PORTATILES LAPTOPS PROCESADOR INTEL CORE I7",
                     p_part_id1: "EN", p_part_id2: "PO", p_part_id3: "TL"
                 }
             },
             {
                 id: 13,
-                titulo: "Importación Vehículo Nuevo - Nogales T-MEC",
+                titulo: "Importación Vehículo Nuevo - Nuevo Laredo T-MEC",
                 dificultad: "Intermedia (Automotriz T-MEC)",
-                descripcion: "La agencia automotriz 'AUTOS PREMIUM DEL NOROESTE S.A. DE C.V.' importa definitivamente 5 vehículos nuevos de fabricación estadounidense por la aduana de Nogales (083). Con certificado de origen T-MEC, el IGI queda exento (0%). Se aplica DTA regular.",
+                descripcion: "La agencia automotriz 'AUTOS PREMIUM DEL NOROESTE S.A. DE C.V.' importa definitivamente 5 vehículos nuevos de fabricación estadounidense por la aduana de Nuevo Laredo (240). Con certificado de origen T-MEC, el IGI queda exento (0%). Se aplica DTA regular.",
                 datosSoporte: {
                     "Patente Aduanal": "3581",
                     "RFC Importador": "APN150820WX5",
-                    "Aduana Despacho": "083 (Nogales, Sonora)",
+                    "Aduana Despacho": "240 (Nuevo Laredo, Tamaulipas)",
                     "Tipo de Cambio": "19.95000",
                     "Precio Factura (USD)": "$120,000.00",
                     "Valor en Aduana": "$2,394,000.00 MXN",
@@ -1807,20 +1807,20 @@
                     "DTA (8 al millar)": "$19,152.00 MXN"
                 },
                 pistas: [
-                    "Aduana de Nogales (08) -> Número de pedimento: '240835814024895'. El medio de transporte es terrestre (7).",
+                    "Aduana de Nuevo Laredo (24) -> Número de pedimento: '242435814024895'. El medio de transporte es terrestre (7).",
                     "Con certificado de origen T-MEC (USA), el IGI es 0%. El identificador de partida 'TL' con complemento 'USA' es obligatorio para acreditar la preferencia arancelaria.",
                     "DTA = $2,394,000 * 0.008 = $19,152 MXN. Base IVA = Valor Aduana ($2,394,000) + DTA ($19,152) = $2,413,152 MXN.",
                     "IVA = $2,413,152 * 16% = $386,104 MXN. Total efectivo: IVA ($386,104) + DTA ($19,152) + PRV ($290) + CNT ($46) = $405,592 MXN."
                 ],
                 respuestas: {
-                    p_num: "240835814024895",
-                    p_destino: "2",
+                    p_num: "242435814024895",
+                    p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
                     p_regimen: "IMD",
                     p_tc: 19.95000,
                     p_peso: 8500.000,
-                    p_adu: "083",
+                    p_adu: "240",
                     p_trans_e: "7", p_trans_a: "7", p_trans_s: "7",
                     p_vdol: 120000.00,
                     p_vadu: 2394000,
@@ -1833,8 +1833,8 @@
                     p_fecha_e: "17/12/2024", p_fecha_p: "17/12/2024",
                     p_prv_tasa: 290,
                     p_l_iva: 386104, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 405592, p_l_total: 405592,
-                    p_part_frac: "87032101", p_part_nico: "00", p_part_vinc: "0",
-                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 5.000, p_part_pais: "USA",
+                    p_part_frac: "87032399", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_umc: "6", p_part_umt: "6", p_part_cant: 5.000, p_part_pais: "USA",
                     p_part_desc: "AUTOMOVILES NUEVOS GASOLINA 4 CILINDROS TRANSMISION AUTOMATICA",
                     p_part_id1: "TL", p_part_id2: "EN", p_part_id3: "PO"
                 }
@@ -1843,35 +1843,35 @@
                 id: 14,
                 titulo: "Medicamentos - Aeropuerto CDMX con Reg. Sanitario",
                 dificultad: "Avanzada (Regulaciones Sanitarias)",
-                descripcion: "La empresa 'LABORATORIOS FARMACÉUTICOS ALIANZA S.A. DE C.V.' importa definitivamente antibióticos procedentes de Alemania por el Aeropuerto Internacional de la Ciudad de México (010). Los medicamentos tienen tasa IGI del 0% por disposición LIGIE. La importación requiere permiso COFEPRIS.",
+                descripcion: "La empresa 'LABORATORIOS FARMACÉUTICOS ALIANZA S.A. DE C.V.' importa definitivamente antibióticos procedentes de Alemania por el Aeropuerto Internacional de la Ciudad de México (470). Los medicamentos pagan una tasa IGI del 5% conforme al LIGIE. La importación requiere permiso COFEPRIS.",
                 datosSoporte: {
                     "Patente Aduanal": "3581",
                     "RFC Importador": "LFA080312KY6",
-                    "Aduana Despacho": "010 (CDMX Aeropuerto)",
+                    "Aduana Despacho": "470 (CDMX Aeropuerto)",
                     "Tipo de Cambio": "20.30000",
                     "Precio Factura (USD)": "$50,000.00",
                     "Seguro Aéreo (USD)": "$500.00",
                     "Valor en Aduana": "$1,025,150.00 MXN",
-                    "Arancel (IGI)": "0% (Medicamento LIGIE)",
+                    "Arancel (IGI)": "5% ($51,258.00 MXN)",
                     "DTA (8 al millar)": "$8,201.00 MXN"
                 },
                 pistas: [
-                    "Aduana CDMX (01) -> Número de pedimento: '240135814024896'. Transporte aéreo = código '2'.",
+                    "Aduana CDMX (47) -> Número de pedimento: '244735814024896'. Transporte aéreo = código '2'.",
                     "Seguro: $500 USD * 20.30 = $10,150 MXN. V. Comercial: $50,000 * 20.30 = $1,015,000 MXN. V. Aduana = $1,015,000 + $10,150 = $1,025,150 MXN.",
-                    "El IGI es 0% para medicamentos por disposición LIGIE. DTA = $1,025,150 * 0.008 = $8,201 MXN.",
-                    "Base IVA = $1,025,150 + $0 (IGI) + $8,201 (DTA) = $1,033,351 MXN. IVA = $1,033,351 * 16% = $165,336 MXN.",
-                    "Total efectivo: IVA ($165,336) + DTA ($8,201) + PRV ($290) + CNT ($46) = $173,873 MXN."
+                    "Por tratarse de Amoxicilina trihidratada (fracción 2941.10.12), el IGI es del 5% sobre el Valor Aduana: $1,025,150 * 0.05 = $51,258 MXN. DTA = $1,025,150 * 0.008 = $8,201 MXN.",
+                    "Base IVA = $1,025,150 + $51,258 (IGI) + $8,201 (DTA) = $1,084,609 MXN. IVA = $1,084,609 * 16% = $173,537 MXN.",
+                    "Total efectivo: IVA ($173,537) + DTA ($8,201) + IGI ($51,258) + PRV ($290) + CNT ($46) = $233,332 MXN."
                 ],
                 respuestas: {
-                    p_num: "240135814024896",
+                    p_num: "244735814024896",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
                     p_regimen: "IMD",
                     p_tc: 20.30000,
                     p_peso: 180.000,
-                    p_adu: "010",
-                    p_trans_e: "2", p_trans_a: "2", p_trans_s: "7",
+                    p_adu: "470",
+                    p_trans_e: "4", p_trans_a: "4", p_trans_s: "7",
                     p_vdol: 50000.00,
                     p_vadu: 1025150,
                     p_vcom: 1015000,
@@ -1882,11 +1882,11 @@
                     p_fletes: 0, p_seguros: 10150, p_otros_inc: 0,
                     p_fecha_e: "18/12/2024", p_fecha_p: "18/12/2024",
                     p_prv_tasa: 290,
-                    p_l_iva: 165336, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 173873, p_l_total: 173873,
-                    p_part_frac: "29411001", p_part_nico: "00", p_part_vinc: "0",
+                    p_l_iva: 173537, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 233332, p_l_total: 233332,
+                    p_part_frac: "29411012", p_part_nico: "00", p_part_vinc: "0",
                     p_part_umc: "6", p_part_umt: "6", p_part_cant: 50000.000, p_part_pais: "DEU",
                     p_part_desc: "ANTIBIOTICOS AMOXICILINA 500MG CAPSULAS CON REGISTRO COFEPRIS",
-                    p_part_id1: "EN", p_part_id2: "RS", p_part_id3: "PO"
+                    p_part_id1: "EN", p_part_id2: "S3", p_part_id3: "PO"
                 }
             },
             {
@@ -1941,11 +1941,11 @@
                 id: 16,
                 titulo: "Partes Aeronáuticas - TLCUE Unión Europea",
                 dificultad: "Avanzada (Tratado TLCUE)",
-                descripcion: "'AERONÁUTICA QUERÉTARO S.A. DE C.V.' importa componentes de turbina para la industria aeroespacial procedentes de Francia, por el Aeropuerto de Querétaro (250). Con certificado EUR.1 bajo el TLCUE, el IGI queda exento. Las partes aeronáuticas tienen fracciones con NOM de seguridad.",
+                descripcion: "'AERONÁUTICA QUERÉTARO S.A. DE C.V.' importa componentes de turbina para la industria aeroespacial procedentes de Francia, por el Aeropuerto de Querétaro (640). Con certificado EUR.1 bajo el TLCUE, el IGI queda exento. Las partes aeronáuticas tienen fracciones con NOM de seguridad.",
                 datosSoporte: {
                     "Patente Aduanal": "3581",
                     "RFC Importador": "AQU070405AZ1",
-                    "Aduana Despacho": "250 (Querétaro)",
+                    "Aduana Despacho": "640 (Querétaro)",
                     "Tipo de Cambio": "20.50000",
                     "Precio Factura (USD)": "$75,000.00",
                     "Flete Aéreo (USD)": "$3,200.00",
@@ -1954,22 +1954,22 @@
                     "DTA (8 al millar)": "$12,805.00 MXN"
                 },
                 pistas: [
-                    "Aduana de Querétaro (25) -> Número de pedimento: '242535814024898'. Transporte aéreo = '2'.",
+                    "Aduana de Querétaro (64) -> Número de pedimento: '246435814024898'. Transporte aéreo = '2'.",
                     "Flete: $3,200 USD * 20.50 = $65,600 MXN. V. Comercial: $75,000 * 20.50 = $1,537,500 MXN. V. Aduana = $1,537,500 + $65,600 = $1,603,100 MXN. Nota: revisar redondeo: exacto es $1,600,600 con los valores dados.",
                     "Con certificado EUR.1 (TLCUE), IGI = 0%. El identificador 'TL' con complemento 'UE' acredita la preferencia arancelaria. DTA = $1,600,600 * 0.008 = $12,805 MXN.",
                     "Base IVA = $1,600,600 + $12,805 = $1,613,405 MXN. IVA = $1,613,405 * 16% = $258,145 MXN.",
                     "Total efectivo: IVA ($258,145) + DTA ($12,805) + PRV ($290) + CNT ($46) = $271,286 MXN."
                 ],
                 respuestas: {
-                    p_num: "242535814024898",
+                    p_num: "246435814024898",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
                     p_regimen: "IMD",
                     p_tc: 20.50000,
                     p_peso: 420.000,
-                    p_adu: "250",
-                    p_trans_e: "2", p_trans_a: "2", p_trans_s: "7",
+                    p_adu: "640",
+                    p_trans_e: "4", p_trans_a: "4", p_trans_s: "7",
                     p_vdol: 75000.00,
                     p_vadu: 1600600,
                     p_vcom: 1537500,
@@ -1982,7 +1982,7 @@
                     p_prv_tasa: 290,
                     p_l_iva: 258145, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 271286, p_l_total: 271286,
                     p_part_frac: "84111201", p_part_nico: "00", p_part_vinc: "0",
-                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 4.000, p_part_pais: "FRA",
+                    p_part_umc: "6", p_part_umt: "6", p_part_cant: 4.000, p_part_pais: "FRA",
                     p_part_desc: "TURBINAS DE GAS COMPONENTES PARA AERONAVES CERTIFICADAS",
                     p_part_id1: "TL", p_part_id2: "EN", p_part_id3: "PO"
                 }
@@ -1991,32 +1991,32 @@
                 id: 17,
                 titulo: "Retorno de Exportación Temporal - Tecate",
                 dificultad: "Avanzada (Régimen Retorno)",
-                descripcion: "'HERRAJES Y FUNDICIÓN DE BAJA CALIFORNIA S.A.' retorna a territorio nacional maquinaria exportada temporalmente para reparación en EE.UU. El retorno se realiza por la aduana de Tecate (044). Al regresar sin transformación, no se genera valor agregado ni pago de IGI. Solo PRV y CNT.",
+                descripcion: "'HERRAJES Y FUNDICIÓN DE BAJA CALIFORNIA S.A.' retorna a territorio nacional maquinaria exportada temporalmente para reparación en EE.UU. El retorno se realiza por la aduana de Tecate (390). Al regresar sin transformación, no se genera valor agregado ni pago de IGI. Solo PRV y CNT.",
                 datosSoporte: {
                     "Patente Aduanal": "3581",
                     "RFC Importador": "HFB120310CX9",
-                    "Aduana Despacho": "044 (Tecate, B.C.)",
+                    "Aduana Despacho": "390 (Tecate, B.C.)",
                     "Tipo de Cambio": "20.15000",
                     "Precio Factura (USD)": "$28,000.00",
                     "Valor en Aduana": "$564,200.00 MXN",
-                    "Clave Pedimento": "RT (Retorno Exportación Temporal)",
-                    "Régimen": "ETD (Retorno)"
+                    "Clave Pedimento": "H1 (Retorno de mercancías en su mismo estado)",
+                    "Régimen": "ETR (Temporales de exportación para retornar al país en el mismo estado)"
                 },
                 pistas: [
-                    "Aduana de Tecate (04) -> El prefijo de aduana en el pedimento es '04'. Número: '240435814024899'.",
-                    "El Tipo de Operación es 'IMP' (regresa a México). La Clave del Pedimento para retorno de exportación temporal es 'RT' y el Régimen es 'ETD'.",
+                    "Aduana de Tecate (39) -> El prefijo de aduana en el pedimento es '39'. Número: '243935814024899'.",
+                    "El Tipo de Operación es 'IMP' (regresa a México). Al no ser empresa IMMEX/RFE/OEA, la Clave del Pedimento para retorno de mercancía en su mismo estado es 'H1' y el Régimen es 'ETR'.",
                     "Al retornar la mercancía sin transformación, no hay valor agregado, por lo que no se pagan IGI ni IVA en efectivo.",
                     "Solo se pagan: Prevalidación ($290) + CNT ($46) = $336 MXN."
                 ],
                 respuestas: {
-                    p_num: "240435814024899",
-                    p_destino: "2",
+                    p_num: "243935814024899",
+                    p_destino: "1",
                     p_op: "IMP",
-                    p_clave: "RT",
-                    p_regimen: "ETD",
+                    p_clave: "H1",
+                    p_regimen: "ETR",
                     p_tc: 20.15000,
                     p_peso: 2800.000,
-                    p_adu: "044",
+                    p_adu: "390",
                     p_trans_e: "7", p_trans_a: "7", p_trans_s: "7",
                     p_vdol: 28000.00,
                     p_vadu: 564200,
@@ -2029,8 +2029,8 @@
                     p_fecha_e: "21/12/2024", p_fecha_p: "21/12/2024",
                     p_prv_tasa: 290,
                     p_l_iva: 0, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 336, p_l_total: 336,
-                    p_part_frac: "84663001", p_part_nico: "00", p_part_vinc: "0",
-                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 2.000, p_part_pais: "MEX",
+                    p_part_frac: "84624201", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_umc: "6", p_part_umt: "6", p_part_cant: 2.000, p_part_pais: "MEX",
                     p_part_desc: "MAQUINA TROQUELADORA PARA FUNDICION RETORNO DE REPARACION",
                     p_part_id1: "EN", p_part_id2: "PO", p_part_id3: "EX"
                 }
@@ -2039,33 +2039,33 @@
                 id: 18,
                 titulo: "Tránsito Interno - Electrónica Veracruz a CDMX",
                 dificultad: "Avanzada (Tránsito Aduanero)",
-                descripcion: "'DISTRIBUIDORA TECNOLÓGICA NACIONAL S.A. DE C.V.' introduce mercancía electrónica por el Puerto de Veracruz (280) bajo el régimen de Tránsito Interno para trasladarla a la aduana CDMX (010) donde se despacha definitivamente. El pedimento de tránsito no genera liquidación en la aduana de entrada.",
+                descripcion: "'DISTRIBUIDORA TECNOLÓGICA NACIONAL S.A. DE C.V.' introduce mercancía electrónica por el Puerto de Veracruz (430) bajo el régimen de Tránsito Interno para trasladarla a la aduana CDMX (470) donde se despacha definitivamente. El pedimento de tránsito no genera liquidación en la aduana de entrada.",
                 datosSoporte: {
                     "Patente Aduanal": "3581",
                     "RFC Importador": "DTN190720FY2",
-                    "Aduana Entrada": "280 (Veracruz)",
-                    "Aduana Destino": "010 (CDMX)",
+                    "Aduana Entrada": "430 (Veracruz)",
+                    "Aduana Destino": "470 (CDMX)",
                     "Tipo de Cambio": "20.08000",
                     "Precio Factura (USD)": "$60,000.00",
                     "Valor en Aduana": "$1,204,800.00 MXN",
-                    "Clave Pedimento": "T1 (Tránsito Interno)",
-                    "Régimen": "TIN (Tránsito Interno Nacional)"
+                    "Clave Pedimento": "T3 (Tránsito Interno)",
+                    "Régimen": "TRA (Tránsitos)"
                 },
                 pistas: [
-                    "El pedimento de tránsito se presenta en la aduana de entrada Veracruz (28) -> '242835814024900'.",
-                    "La Clave del Pedimento es 'T1' y el Régimen es 'TIN'. El Tipo de Operación es 'IMP'.",
+                    "El pedimento de tránsito se presenta en la aduana de entrada Veracruz (43) -> '244335814024900'.",
+                    "La Clave del Pedimento es 'T3' (Tránsito interno) y el Régimen es 'TRA' (Tránsitos). El Tipo de Operación es 'IMP'.",
                     "En el tránsito interno NO se liquidan contribuciones en efectivo. La mercancía viaja bajo garantía hasta la aduana destino donde se efectuará el despacho definitivo.",
                     "Solo se pagan: Prevalidación ($290) + CNT ($46) = $336 MXN en la aduana de entrada."
                 ],
                 respuestas: {
-                    p_num: "242835814024900",
+                    p_num: "244335814024900",
                     p_destino: "9",
                     p_op: "IMP",
-                    p_clave: "T1",
-                    p_regimen: "TIN",
+                    p_clave: "T3",
+                    p_regimen: "TRA",
                     p_tc: 20.08000,
                     p_peso: 1200.000,
-                    p_adu: "280",
+                    p_adu: "430",
                     p_trans_e: "1", p_trans_a: "1", p_trans_s: "7",
                     p_vdol: 60000.00,
                     p_vadu: 1204800,
@@ -2078,8 +2078,8 @@
                     p_fecha_e: "22/12/2024", p_fecha_p: "22/12/2024",
                     p_prv_tasa: 290,
                     p_l_iva: 0, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 336, p_l_total: 336,
-                    p_part_frac: "85287201", p_part_nico: "00", p_part_vinc: "0",
-                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 500.000, p_part_pais: "CHN",
+                    p_part_frac: "85285202", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_umc: "6", p_part_umt: "6", p_part_cant: 500.000, p_part_pais: "CHN",
                     p_part_desc: "MONITORES LED PANTALLA PLANA 27 PULGADAS 4K HDMI",
                     p_part_id1: "EN", p_part_id2: "PO", p_part_id3: "UM"
                 }
@@ -2127,7 +2127,7 @@
                     p_fecha_e: "23/12/2024", p_fecha_p: "23/12/2024",
                     p_prv_tasa: 290,
                     p_l_iva: 61399, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 64781, p_l_total: 64781,
-                    p_part_frac: "15091001", p_part_nico: "00", p_part_vinc: "0",
+                    p_part_frac: "15092001", p_part_nico: "00", p_part_vinc: "0",
                     p_part_umc: "1", p_part_umt: "1", p_part_cant: 3600.000, p_part_pais: "ESP",
                     p_part_desc: "ACEITE DE OLIVA EXTRA VIRGEN ACIDEZ MAXIMA 0.8 EN ENVASE 5L",
                     p_part_id1: "TL", p_part_id2: "EN", p_part_id3: "PO"
@@ -2137,11 +2137,11 @@
                 id: 20,
                 titulo: "Caso Integral - Maquila Tijuana con Vinculación",
                 dificultad: "Avanzada (Valoración + Vinculación)",
-                descripcion: "'ELECTRÓNICA TRANSFRONTERIZA S. DE R.L. DE C.V.' importa temporalmente componentes electrónicos bajo IMMEX por la aduana de Tijuana Otay (040). Existe vinculación entre comprador y vendedor (empresas relacionadas), lo que obliga a declararlo y justificar que el precio no fue influenciado. Se usa método de valoración 1 (precio pagado).",
+                descripcion: "'ELECTRÓNICA TRANSFRONTERIZA S. DE R.L. DE C.V.' importa temporalmente componentes electrónicos bajo IMMEX por la aduana de Tijuana Otay (400). Existe vinculación entre comprador y vendedor (empresas relacionadas), lo que obliga a declararlo y justificar que el precio no fue influenciado. Se usa método de valoración 1 (precio pagado).",
                 datosSoporte: {
                     "Patente Aduanal": "3581",
                     "RFC Importador": "ETR030820NK5",
-                    "Aduana Despacho": "040 (Tijuana Otay)",
+                    "Aduana Despacho": "400 (Tijuana Otay)",
                     "Tipo de Cambio": "20.32000",
                     "Precio Factura (USD)": "$55,000.00",
                     "Valor en Aduana": "$1,117,600.00 MXN",
@@ -2150,20 +2150,20 @@
                     "Régimen": "ITE"
                 },
                 pistas: [
-                    "Aduana Tijuana Otay (04) -> Número de pedimento: '240435814024902'. Transporte terrestre = '7'.",
+                    "Aduana Tijuana Otay (40) -> Número de pedimento: '244035814024902'. Transporte terrestre = '7'.",
                     "Al existir vinculación entre importador y exportador (empresas del mismo grupo), el campo de vinculación de partida debe marcarse como '1' (SÍ existe vinculación). Esto NO invalida la operación, pero debe declararse.",
                     "Al ser importación temporal IMMEX (clave 'IN', régimen 'ITE'), los impuestos IGI e IVA se difieren. El IVA se registra en $0 en la liquidación.",
                     "Los únicos pagos en efectivo son: Prevalidación ($290) + CNT ($46) = $336 MXN. El valor en aduana se registra aunque no genere pago inmediato."
                 ],
                 respuestas: {
-                    p_num: "240435814024902",
-                    p_destino: "2",
+                    p_num: "244035814024902",
+                    p_destino: "1",
                     p_op: "IMP",
                     p_clave: "IN",
                     p_regimen: "ITE",
                     p_tc: 20.32000,
                     p_peso: 280.000,
-                    p_adu: "040",
+                    p_adu: "400",
                     p_trans_e: "7", p_trans_a: "7", p_trans_s: "7",
                     p_vdol: 55000.00,
                     p_vadu: 1117600,
@@ -2176,8 +2176,8 @@
                     p_fecha_e: "24/12/2024", p_fecha_p: "24/12/2024",
                     p_prv_tasa: 290,
                     p_l_iva: 0, p_l_prv: 290, p_l_cnt: 46, p_l_efec: 336, p_l_total: 336,
-                    p_part_frac: "85423101", p_part_nico: "00", p_part_vinc: "1",
-                    p_part_umc: "7", p_part_umt: "7", p_part_cant: 8000.000, p_part_pais: "USA",
+                    p_part_frac: "85423103", p_part_nico: "00", p_part_vinc: "1",
+                    p_part_umc: "6", p_part_umt: "6", p_part_cant: 8000.000, p_part_pais: "USA",
                     p_part_desc: "CIRCUITOS INTEGRADOS MICROPROCESADORES PARA ENSAMBLE MAQUILA",
                     p_part_id1: "EN", p_part_id2: "TL", p_part_id3: "PO"
                 }
@@ -2197,7 +2197,7 @@
                     <p class="text-xs"><strong>Estructura para el llenado (15 dígitos):</strong></p>
                     <ul class="list-disc pl-5 text-[11px] space-y-1">
                         <li><strong>Dígitos 1-2:</strong> Año de validación (Ej: '24' para 2024).</li>
-                        <li><strong>Dígitos 3-4:</strong> Aduana de despacho (Apéndice 1. Ej: '04' Tijuana Otay).</li>
+                        <li><strong>Dígitos 3-4:</strong> Aduana de despacho (Apéndice 1. Ej: '40' Tijuana Otay).</li>
                         <li><strong>Dígitos 5-8:</strong> Número de patente del Agente Aduanal (Ej: '3581').</li>
                         <li><strong>Dígito 9:</strong> Último dígito del año de validación (Ej: '4' para 2024).</li>
                         <li><strong>Dígitos 10-15:</strong> Consecutivo de la patente en el año de despacho.</li>
@@ -2281,8 +2281,8 @@
                     <p class="text-xs"><strong>¿Qué significa?</strong> Clave de 3 dígitos de la aduana y sección por donde la mercancía ingresa o sale físicamente del país.</p>
                     <p class="text-xs"><strong>Ejemplos comunes (Apéndice 1):</strong></p>
                     <ul class="list-disc pl-5 text-[11px] space-y-1">
-                        <li><strong>040:</strong> Tijuana, Mesa de Otay (Aduana fronteriza de alto volumen).</li>
-                        <li><strong>400:</strong> Nogales, Sonora.</li>
+                        <li><strong>400:</strong> Tijuana, Mesa de Otay (Aduana fronteriza de alto volumen).</li>
+                        <li><strong>230:</strong> Nogales, Sonora.</li>
                         <li><strong>240:</strong> Nuevo Laredo, Tamaulipas.</li>
                     </ul>
                     <p class="text-xs"><strong>¿Por qué importa?</strong> Delimita la competencia territorial y jurisdicción de las autoridades aduaneras que fiscalizarán la operación.</p>
@@ -2442,7 +2442,7 @@
             `,
             identificador: `
                 <p class="font-bold text-white text-base">Identificadores de Partida (Apéndice 8)</p>
-                <p class="text-xs text-slate-300 mt-1">Claves de dos letras con complementos que avisan supuestos legales en la partida (Ej: EN certifica cumplimiento de NOMs oficiales, TL declara aplicación de tratado de libre comercio para exención de arancel, MU declara mercancía usada).</p>
+                <p class="text-xs text-slate-300 mt-1">Claves de dos letras con complementos que avisan supuestos legales en la partida (Ej: EN certifica no aplicación de NOMs oficiales, TL declara mercancía originaria al amparo de un tratado de libre comercio, VU declara importación definitiva de vehículos usados).</p>
             `,
             partida: `
                 <p class="font-bold text-white text-base">Datos de la Partida Arancelaria</p>
@@ -2796,10 +2796,10 @@
                 descripcion: "Identificador único y oficial de la operación aduanera. Es asignado por el Sistema Aduanero Automatizado Integral (SAAI) al momento de validar el pedimento.",
                 como_llenar: "Se construye con 15 dígitos: Año (2) + Aduana (2) + Patente (4) + Último dígito del año (1) + Número consecutivo (6). Ejemplo: 24-04-3581-4024883.",
                 formato: "AA AA AAAA NAAAAAA (15 dígitos, sin guiones al capturar)",
-                ejemplo: "240435814024883 → Año 2024, Aduana 040 (Tijuana Otay), Patente 3581, consecutivo 4024883",
-                error_frecuente: "Usar el código de aduana incorrecto. Tijuana Otay es 040, NO 390. Manzanillo es 160, Veracruz es 280.",
+                ejemplo: "244035814024883 → Año 2024, Aduana 400 (Tijuana), Patente 3581, consecutivo 4024883",
+                error_frecuente: "Confundir el orden de los dígitos de aduana. Conforme al Apéndice 1, Tijuana es 400, Manzanillo es 160, Veracruz es 430.",
                 referencia: "Anexo 22, Apartado A, sección 'Número de Pedimento'. Apéndice 1 (claves de aduanas).",
-                tip: "Los dígitos 3 y 4 identifican la aduana. Memorizar las principales: 010 CDMX, 040 Tijuana, 160 Manzanillo, 240 Nuevo Laredo, 280 Veracruz."
+                tip: "Los dígitos 3 y 4 identifican la aduana. Memorizar las principales: 470 CDMX (Aeropuerto), 400 Tijuana, 160 Manzanillo, 240 Nuevo Laredo, 430 Veracruz."
             },
             p_destino: {
                 titulo: "Clave de Destino",
@@ -2824,22 +2824,22 @@
             p_clave: {
                 titulo: "Clave del Pedimento",
                 descripcion: "Identifica el tipo específico de operación aduanera dentro de la clasificación del Anexo 22. Es uno de los campos más importantes del pedimento.",
-                como_llenar: "Consultar el Apéndice 2 del Anexo 22. Las claves más comunes: A1=Importación/Exportación Definitiva, IN=Importación Temporal (IMMEX), DF=Depósito Fiscal, T1=Tránsito Interno, RT=Retorno de Exportación Temporal.",
+                como_llenar: "Consultar el Apéndice 2 del Anexo 22. Las claves más comunes: A1=Importación/Exportación Definitiva, IN=Importación Temporal (IMMEX), A4=Introducción para Depósito Fiscal, T3=Tránsito Interno, H1=Retorno de mercancías en su mismo estado (genérico), RT=Retorno de mercancías (exclusivo IMMEX).",
                 formato: "2 caracteres alfanuméricos",
-                ejemplo: "A1 = Definitiva | IN = Temporal IMMEX | DF = Depósito Fiscal | T1 = Tránsito | RT = Retorno | ET = Exportación Temporal",
-                error_frecuente: "Usar 'A1' para todos los casos. Cada régimen especial tiene su propia clave. Un depósito fiscal con clave A1 es incorrecto.",
+                ejemplo: "A1 = Definitiva | IN = Temporal IMMEX | A4 = Depósito Fiscal | T3 = Tránsito Interno | H1 = Retorno (genérico) | RT = Retorno (IMMEX) | BM = Exportación Temporal para Reparación",
+                error_frecuente: "Usar 'A1' para todos los casos, o usar 'RT' para un retorno cuando la empresa no es IMMEX (en ese caso la clave correcta es H1, no RT). Cada régimen especial tiene su propia clave.",
                 referencia: "Anexo 22, Apéndice 2 - Claves de Pedimento. Este apéndice es de memorización obligatoria.",
-                tip: "La clave del pedimento + el régimen deben ser coherentes entre sí. Si la clave es IN (temporal IMMEX), el régimen debe ser ITE o ITD."
+                tip: "La clave del pedimento + el régimen deben ser coherentes entre sí. Si la clave es IN (temporal IMMEX), el régimen debe ser ITE o ITR."
             },
             p_regimen: {
                 titulo: "Régimen Aduanero",
                 descripcion: "Define el tratamiento legal y fiscal que se aplica a las mercancías durante su permanencia en territorio nacional o en el extranjero.",
-                como_llenar: "Usar las claves oficiales del Apéndice 2: IMD=Importación Definitiva, ITE=Importación Temporal para Elaboración, ETD=Exportación Temporal Definitiva, DFI=Depósito Fiscal, TIN=Tránsito Interno.",
+                como_llenar: "Usar las claves oficiales del Apéndice 16: IMD=Importación Definitiva, ITE=Temporal de Importación para Elaboración/Transformación/Reparación, ETE=Temporal de Exportación para Elaboración/Transformación/Reparación, DFI=Depósito Fiscal, TRA=Tránsitos.",
                 formato: "3 caracteres alfanuméricos",
-                ejemplo: "IMD (Import. Definitiva) | ITE (Temporal Elaboración) | ETD (Export. Temporal) | DFI (Depósito Fiscal) | TIN (Tránsito Interno)",
-                error_frecuente: "Confundir IMD con ITE. IMD paga todos los impuestos. ITE es IMMEX y solo paga PRV+CNT mientras la mercancía se transforma.",
-                referencia: "Ley Aduanera Arts. 90-131. Anexo 22 Apéndice 2.",
-                tip: "Para IMMEX: ITE = Elaboración, ITD = Depósito, ITA = Activo Fijo. Son tres tipos distintos de importación temporal maquiladora."
+                ejemplo: "IMD (Import. Definitiva) | ITE (Temporal Importación p/Elaboración) | ETE (Temporal Exportación p/Reparación) | DFI (Depósito Fiscal) | TRA (Tránsitos)",
+                error_frecuente: "Confundir IMD con ITE. IMD paga todos los impuestos. ITE es IMMEX y solo paga PRV+CNT mientras la mercancía se transforma. También es común inventar claves que no existen como 'ETD' o 'TIN'; el catálogo oficial del Apéndice 16 solo tiene 10 claves: IMD, EXD, ITR, ITE, ETR, ETE, DFI, RFE, TRA, RFS.",
+                referencia: "Ley Aduanera Arts. 90-131. Anexo 22 Apéndice 16.",
+                tip: "Para temporales: ITE/ITR son de IMPORTACIÓN (elaboración o retorno al extranjero); ETE/ETR son de EXPORTACIÓN (elaboración o retorno al país). No existen variantes con 'D' al final como ETD."
             },
             p_tc: {
                 titulo: "Tipo de Cambio",
@@ -2866,10 +2866,10 @@
                 descripcion: "Código de 3 dígitos que identifica la aduana donde se realiza físicamente el despacho aduanero de las mercancías. Debe corresponder a la aduana real de entrada o salida.",
                 como_llenar: "Consultar el Apéndice 1 del Anexo 22. Usar siempre el código oficial de 3 dígitos de la aduana que despacha la mercancía.",
                 formato: "3 dígitos numéricos: 'XXX'",
-                ejemplo: "010 = CDMX Aeropuerto | 040 = Tijuana (Mesa de Otay) | 044 = Tecate | 070 = Cd. Juárez | 083 = Nogales | 160 = Manzanillo | 210 = Guadalajara | 240 = Nuevo Laredo | 250 = Querétaro | 280 = Veracruz",
-                error_frecuente: "Usar '390' para Tijuana. La clave oficial de Tijuana Mesa de Otay es '040'. El error '390' es muy frecuente en exámenes.",
+                ejemplo: "470 = CDMX Aeropuerto | 400 = Tijuana (Mesa de Otay) | 390 = Tecate | 070 = Cd. Juárez | 230 = Nogales | 160 = Manzanillo | 480 = Guadalajara | 240 = Nuevo Laredo | 640 = Querétaro | 430 = Veracruz",
+                error_frecuente: "Confundir el orden de los dígitos de aduana-sección. Conforme al Apéndice 1, la clave oficial de Tijuana es '400'.",
                 referencia: "Anexo 22, Apéndice 1 - Catálogo de Aduanas. Memorización obligatoria.",
-                tip: "TIJUANA = 040 (no 390). Las primeras 2 aduanas en memorizar: 040 Tijuana y 160 Manzanillo por ser las de mayor volumen en México."
+                tip: "TIJUANA = 400. Las primeras 2 aduanas en memorizar: 400 Tijuana y 160 Manzanillo por ser las de mayor volumen en México."
             },
             p_trans_e: {
                 titulo: "Medio de Transporte de Entrada",
@@ -2914,9 +2914,9 @@
             p_rfc: {
                 titulo: "RFC del Importador / Exportador",
                 descripcion: "Registro Federal de Contribuyentes de la empresa o persona física que realiza la operación de comercio exterior como importador o exportador.",
-                como_llenar: "Capturar el RFC completo y correcto del importador/exportador. Para personas morales: 12 caracteres. Para personas físicas: 13 caracteres.",
-                formato: "Personas Morales: XXXXNNNNNNNA (12 caracteres). Personas Físicas: XXXXNNNNNNNAAA (13 caracteres)",
-                ejemplo: "DHM100505BX2 = Persona Moral constituida el 05/05/2010, siglas DHM. RAML800115KR5 = Persona Física.",
+                como_llenar: "Capturar el RFC completo y correcto del importador/exportador. Para personas morales: 12 caracteres (3 letras + 6 dígitos de fecha de constitución + homoclave de 3 caracteres). Para personas físicas: 13 caracteres (4 letras + 6 dígitos de fecha de nacimiento + homoclave de 3 caracteres).",
+                formato: "Personas Morales: LLLAAMMDD+HHH (12 caracteres). Personas Físicas: LLLLAAMMDD+HHH (13 caracteres)",
+                ejemplo: "DHM100505BX2 = Persona Moral constituida el 05/05/2010, siglas DHM, homoclave BX2. AARC950528XX1 = Persona Física nacida el 28/05/1995, iniciales AARC.",
                 error_frecuente: "Capturar el RFC del agente aduanal en lugar del RFC del importador/exportador. Son personas distintas.",
                 referencia: "CFF Art. 27. La validación del RFC se hace contra el padrón del SAT.",
                 tip: "El RFC que va en el pedimento es siempre el del IMPORTADOR O EXPORTADOR (dueño de la mercancía), nunca el del agente aduanal."
@@ -3268,16 +3268,16 @@
                 titulo: "Número de Pedimento",
                 categoria: "Pedimento",
                 descripcion: "Identificador único de 15 dígitos asignado por el SAAI al validar la operación. Estructura: AA (año) + AA (aduana) + AAAA (patente) + N (dígito año) + NNNNNN (consecutivo).",
-                ejemplo: "240435814024883 → Año 2024 · Aduana 040 Tijuana · Patente 3581 · Consecutivo 4024883",
-                errorFrecuente: "Usar '390' como clave de Tijuana. La clave oficial de Tijuana Mesa de Otay es '040'.",
+                ejemplo: "244035814024883 → Año 2024 · Aduana 400 Tijuana · Patente 3581 · Consecutivo 4024883",
+                errorFrecuente: "Confundir el orden de los dígitos de aduana. La clave oficial de Tijuana conforme al Apéndice 1 es '400'.",
                 datoImportante: "Los dígitos 3-4 identifican la aduana. Apéndice 1 del Anexo 22 tiene el catálogo completo de aduanas."
             },
             {
                 titulo: "Clave del Pedimento",
                 categoria: "Pedimento",
                 descripcion: "Código de 2 caracteres del Apéndice 2 del Anexo 22 que identifica el tipo específico de operación aduanera.",
-                ejemplo: "A1 = Definitiva | IN = Temporal IMMEX | DF = Depósito Fiscal | T1 = Tránsito | RT = Retorno | ET = Export. Temporal",
-                errorFrecuente: "Usar 'A1' para todas las operaciones. Cada régimen especial tiene su propia clave obligatoria.",
+                ejemplo: "A1 = Definitiva | IN = Temporal IMMEX | A4 = Depósito Fiscal | T3 = Tránsito Interno | H1 = Retorno (genérico) | BM = Export. Temporal p/Reparación",
+                errorFrecuente: "Usar 'A1' para todas las operaciones, o inventar claves que no existen como 'DF', 'T1' o 'ET'. Cada régimen especial tiene su propia clave obligatoria del Apéndice 2.",
                 datoImportante: "La clave del pedimento y el régimen deben ser coherentes. Error en la clave es motivo de rechazo en el SAAI."
             },
             {
@@ -3343,7 +3343,7 @@
                 descripcion: "Permite a empresas maquiladoras importar temporalmente insumos sin pagar IGI ni IVA, con la obligación de exportar el producto transformado.",
                 ejemplo: "Maquiladora importa circuitos en Tijuana bajo IMMEX. Clave: IN. Régimen: ITE. No paga IGI ni IVA, solo PRV+CNT.",
                 errorFrecuente: "Olvidar que bajo IMMEX la mercancía DEBE exportarse. Si se queda en México, se genera deuda tributaria con recargos.",
-                datoImportante: "Tipos IMMEX: ITE = Elaboración, ITD = Depósito, ITA = Activo Fijo. Cada uno tiene plazos distintos de permanencia."
+                datoImportante: "Tipos IMMEX de importación temporal: ITE = Elaboración/Transformación/Reparación, ITR = Retorno al extranjero en el mismo estado. No existen variantes 'ITD' ni 'ITA' como régimen (ITA es un código de país, Italia)."
             },
             {
                 titulo: "Régimen DFI — Depósito Fiscal",
@@ -3354,29 +3354,29 @@
                 datoImportante: "El almacén autorizado garantiza las contribuciones ante el SAT durante el tiempo que la mercancía permanezca depositada."
             },
             {
-                titulo: "Régimen ETD — Exportación Temporal",
+                titulo: "Régimen ETE — Exportación Temporal para Elaboración, Transformación o Reparación",
                 categoria: "Régimen",
-                descripcion: "Permite sacar temporalmente mercancías nacionales al extranjero para su uso, reparación o transformación, con obligación de retornar.",
-                ejemplo: "Constructor exporta maquinaria a EE.UU. para obra. Clave: ET. Régimen: ETD. No paga IGI ni IVA.",
+                descripcion: "Permite sacar temporalmente mercancías nacionales al extranjero para su transformación, elaboración o reparación, con obligación de retornar.",
+                ejemplo: "Fabricante exporta maquinaria a EE.UU. para reparación. Clave: BM. Régimen: ETE. No paga IGI ni IVA.",
                 errorFrecuente: "No presentar el pedimento de retorno al regresar la mercancía. Es obligatorio y tiene plazo definido.",
                 datoImportante: "Si la mercancía regresa transformada, se paga IGI únicamente sobre el valor agregado en el extranjero."
             },
             {
-                titulo: "Régimen TIN — Tránsito Interno",
+                titulo: "Régimen TRA — Tránsito Interno",
                 categoria: "Régimen",
                 descripcion: "Permite trasladar mercancías extranjeras entre aduanas del territorio nacional bajo custodia aduanal, sin pagar contribuciones en la aduana de entrada.",
-                ejemplo: "Mercancía entra por Veracruz (280) y se despacha definitivamente en CDMX (010). Clave: T1. Régimen: TIN.",
+                ejemplo: "Mercancía entra por Veracruz (430) y se despacha definitivamente en CDMX (470). Clave: T3. Régimen: TRA.",
                 errorFrecuente: "Presentar pedimento definitivo en la aduana de entrada cuando la mercancía se destinará a otra aduana.",
                 datoImportante: "Las contribuciones se pagan en la aduana de destino, no en la de entrada. El pedimento de tránsito es la garantía."
             },
             // ---- CATEGORÍA: ADUANAS ----
             {
-                titulo: "Aduana 040 — Tijuana (Mesa de Otay)",
+                titulo: "Aduana 400 — Tijuana (Mesa de Otay)",
                 categoria: "Aduanas",
                 descripcion: "Aduana terrestre de mayor volumen en México, ubicada en Mesa de Otay, Tijuana, Baja California. Principal punto de despacho para operaciones IMMEX y maquila.",
-                ejemplo: "Pedimento: 240435814024883 → dígitos '04' = Aduana 040 Tijuana. CLAVE CORRECTA: 040 (NO 390).",
-                errorFrecuente: "Usar '390' como clave de Tijuana. Ese número no corresponde a ninguna aduana real. La clave oficial es 040.",
-                datoImportante: "El error '390' para Tijuana es el más frecuente en exámenes de comercio exterior en México. Memorizar: TIJUANA = 040."
+                ejemplo: "Pedimento: 244035814024883 → dígitos '40' = Aduana 400 Tijuana.",
+                errorFrecuente: "Confundir la clave de Tijuana con la de otras aduanas. La clave oficial conforme al Apéndice 1 es 400.",
+                datoImportante: "Tijuana es de las aduanas con mayor volumen de operaciones IMMEX/maquila del país. Memorizar: TIJUANA = 400."
             },
             {
                 titulo: "Aduana 160 — Manzanillo",
@@ -3387,11 +3387,11 @@
                 datoImportante: "Manzanillo maneja aproximadamente el 50% del comercio marítimo del Pacífico mexicano."
             },
             {
-                titulo: "Aduana 280 — Veracruz",
+                titulo: "Aduana 430 — Veracruz",
                 categoria: "Aduanas",
                 descripcion: "Principal aduana marítima del Golfo de México. Recibe mercancías de Europa y la costa este de América.",
-                ejemplo: "Maquinaria industrial de Alemania → Puerto de Veracruz → Aduana 280. Pedimento: 242835814XXXXXX.",
-                errorFrecuente: "Asignar el código de Veracruz (280) a mercancías que entran por Manzanillo.",
+                ejemplo: "Maquinaria industrial de Alemania → Puerto de Veracruz → Aduana 430. Pedimento: 244335814XXXXXX.",
+                errorFrecuente: "Asignar el código de Veracruz (430) a mercancías que entran por Manzanillo.",
                 datoImportante: "Veracruz es la aduana marítima más antigua de México y puerta principal del comercio con Europa."
             },
             {
@@ -3403,12 +3403,12 @@
                 datoImportante: "Nuevo Laredo procesa más del 40% del valor total del comercio exterior terrestre México-EE.UU."
             },
             {
-                titulo: "Aduana 010 — Ciudad de México (Aeropuerto)",
+                titulo: "Aduana 470 — Ciudad de México (Aeropuerto)",
                 categoria: "Aduanas",
                 descripcion: "Principal aduana aérea de México, ubicada en el AICM. Maneja mercancías de alto valor, courier, muestras y carga aérea.",
-                ejemplo: "Medicamentos de Alemania llegan al AICM → Aduana 010. Pedimento: 240135814XXXXXX.",
-                errorFrecuente: "Asignar el código 010 a mercancías terrestres que entran por la Ciudad de México.",
-                datoImportante: "La aduana 010 tiene procedimientos especiales para mercancías perecederas, courier y mercancías peligrosas."
+                ejemplo: "Medicamentos de Alemania llegan al AICM → Aduana 470. Pedimento: 244735814XXXXXX.",
+                errorFrecuente: "Asignar el código de la aduana aérea CDMX a mercancías terrestres.",
+                datoImportante: "La aduana 470 tiene procedimientos especiales para mercancías perecederas, courier y mercancías peligrosas."
             },
             // ---- CATEGORÍA: INCOTERMS ----
             {
@@ -3665,8 +3665,8 @@
             presentes: [
                 "Número de Pedimento (15 dígitos SAAI)",
                 "Tipo de Operación (IMP/EXP)",
-                "Clave del Pedimento (A1, IN, DF, T1, ET, RT)",
-                "Régimen Aduanero (IMD, ITE, ITA, DFI, TIN, ETD)",
+                "Clave del Pedimento (A1, IN, A4, T3, H1, BM, AF, RT)",
+                "Régimen Aduanero (IMD, ITE, ETE, ETR, DFI, TRA)",
                 "Clave de Destino",
                 "Aduana de Despacho (3 dígitos, Apéndice 1)",
                 "Medios de Transporte (entrada/arribo/salida)",
@@ -3711,7 +3711,7 @@
 
         const EVALUACION_ACADEMICA = [
             { area: "Cobertura de Campos del Pedimento",      nivel: "Bueno",       nota: "Cubre los 24 campos principales. Faltan 10 campos complementarios del Anexo 22." },
-            { area: "Cobertura de Regímenes Aduaneros",       nivel: "Excelente",   nota: "Cubre 9 regímenes: IMD, ITE, ITA, DFI, TIN, ETD, RT, DF y EXD. Cobertura completa para nivel básico-intermedio." },
+            { area: "Cobertura de Regímenes Aduaneros",       nivel: "Excelente",   nota: "Cubre 6 regímenes del Apéndice 16: IMD, ITE, ETE, ETR, DFI y TRA, además de EXD. Cobertura completa para nivel básico-intermedio." },
             { area: "Cobertura de Identificadores",           nivel: "Bueno",       nota: "Incluye TL, EN, EO y vinculación. Faltan RS (Registro Sanitario), HA (hasta agotar) y ZL (zona libre)." },
             { area: "Cobertura de Contribuciones",            nivel: "Excelente",   nota: "Cubre IGI, IVA, DTA, PRV y CNT con cálculos correctos. Incluye casos con 0% por tratado." },
             { area: "Cobertura de Valor en Aduana",           nivel: "Excelente",   nota: "Implementa correctamente incrementables (flete, seguro) según INCOTERM. Método 1 de valoración." },
@@ -3827,7 +3827,7 @@
                     descripcion: "Número de patente otorgado por el SAT al agente aduanal que despacha la operación. Es su identificación oficial e intransferible ante todas las aduanas de México.",
                     como_llenar: "Capturar el número de 4 dígitos que identifica la patente. Se obtiene directamente del agente aduanal contratado.",
                     formato: "4 dígitos numéricos: XXXX",
-                    ejemplo: "3581 = patente del agente aduanal habilitado en la Aduana de Tijuana (040).",
+                    ejemplo: "3581 = patente del agente aduanal habilitado en la Aduana de Tijuana (400).",
                     error_frecuente: "Confundir la patente con el RFC del agente aduanal. Son datos distintos que identifican aspectos diferentes.",
                     referencia: "Ley Aduanera Arts. 159-162. La patente es intransferible y personal del agente aduanal.",
                     tip: "Cada aduana tiene agentes aduanales con patente habilitada específicamente en ella. Verificar que la patente esté habilitada en la aduana de despacho antes de contratar."
