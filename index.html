@@ -34,6 +34,12 @@
             letter-spacing: -0.02em;
         }
 
+        /* Respaldo local de la utilidad .hidden de Tailwind: si el CDN de Tailwind
+           no carga (red restringida, CDN caído), esta regla garantiza que los
+           bloques condicionales por régimen (Ronda 9/10) sigan ocultándose
+           correctamente en vez de quedar siempre visibles. */
+        .hidden { display: none !important; }
+
         .saai-tabla {
             border: 1.5px solid #000000 !important;
             border-collapse: collapse;
@@ -2509,7 +2515,7 @@
 
         // --- SISTEMA DE INICIALIZACIÓN MOCKUP (DISEÑADO POR LUIS IGNACIO AYALA RODRÍGUEZ) ---
         window.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
+            try { lucide.createIcons(); } catch (e) { console.warn('lucide no disponible, continuando sin iconos:', e); }
             populateSelector();
 
             let progress = 0;
@@ -2612,7 +2618,7 @@
                 '</div>';
 
             modal.classList.remove('hidden');
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
         function loadCase(id) {
             const idx = CASOS.findIndex(c => c.id === parseInt(id));
@@ -2732,7 +2738,7 @@
             pistasHTML += `</div>`;
             content.innerHTML = pistasHTML;
             modal.classList.remove('hidden');
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         // --- VERIFICACIÓN DE PEDIMENTO (VERIFICACIÓN EN CASCADA) ---
@@ -2852,7 +2858,7 @@
 
                 nextBtn.classList.add('hidden');
             }
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         function updateProgress() {
@@ -3181,7 +3187,7 @@
                 if (badge) { badge.classList.add('hidden'); }
                 deactivateLearningFields();
             }
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         function activateLearningFields() {
@@ -3334,7 +3340,7 @@
                 </div>`;
 
             modal.classList.remove('hidden');
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         function closeFHModal() {
@@ -3866,7 +3872,7 @@
             const content = document.getElementById('modal-help-content');
             content.innerHTML = APENDICES[field] || "<p class='text-xs'>Catálogo temporalmente fuera de línea.</p>";
             modal.classList.remove('hidden');
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         function closeModal(id) {
