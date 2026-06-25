@@ -414,7 +414,7 @@
                     <div class="flex items-center gap-3">
                         <div class="text-right">
                             <div class="text-xs text-slate-400 font-medium">Ejercicios Concluidos</div>
-                            <div class="text-sm font-bold text-slate-200" id="progress-text">0 / 30 Casos</div>
+                            <div class="text-sm font-bold text-slate-200" id="progress-text">0 / 20 Casos</div>
                         </div>
                         <div class="h-2 w-28 rounded-full bg-slate-800 overflow-hidden border border-slate-700">
                             <div id="global-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-indigo-600 transition-all duration-500" style="width: 0%"></div>
@@ -461,7 +461,7 @@
                 <!-- Progreso móvil -->
                 <div class="flex items-center justify-between py-2 border-b border-slate-800">
                     <span class="text-xs text-slate-400">Ejercicios Concluidos</span>
-                    <span class="text-sm font-bold text-slate-200" id="progress-text-mobile">0 / 30 Casos</span>
+                    <span class="text-sm font-bold text-slate-200" id="progress-text-mobile">0 / 20 Casos</span>
                 </div>
                 <!-- Botones del menú -->
                 <button onclick="toggleLearningMode(); toggleMobileMenu()"
@@ -1210,6 +1210,10 @@
                 respuestas: {
                     p_num: "244035814024883",
                     p_patente: "3581",
+                    p_factura: "INV-2024-88341",
+                    p_marcas: "NIM/TJ",
+                    p_num_bultos: 1,
+                    p_tipo_bulto: "CAJA",
                     p_destino: "1",
                     p_op: "IMP",
                     p_clave: "C1",
@@ -1224,6 +1228,9 @@
                     p_rfc: "NIM180606MU5",
                     p_curp: "",
                     p_nombre: "NINA IMPORTACIONES S. DE R.L. DE C.V.",
+                    p_prov_nombre: "STAR IMPORT EXPORT LLC",
+                    p_prov_pais: "USA",
+                    p_prov_domicilio: "1200 HARBOR DR SAN DIEGO CA",
                     p_domicilio: "AV. CENTRO COMERCIAL No. 17115 Int. A1 OTAY CONSTITUYENTES CP. 22457 TIJUANA Baja California",
                     p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "05/12/2024", p_fecha_p: "05/12/2024",
@@ -1254,6 +1261,7 @@
                     "Régimen": "ITE (Temporal Maquila)"
                 },
                 pistas: [
+                    "En Datos del Proveedor Extranjero, declara: Nombre = 'PACIFIC SEMICONDUCTOR INC', País = 'USA'.",
                     "Estructura del Pedimento: Año (24) + Aduana (40) + Patente (3581) + Dígito Año (4) + Consecutivo (024884) -> '244035814024884'.",
                     "Al ser importación temporal IMMEX, la Clave de Pedimento es 'IN' y el Régimen es 'ITE'.",
                     "Al contar con Certificación de IVA e IEPS de Maquiladoras, no se liquida IVA en efectivo en la importación. Por tanto, el campo 'IVA Liquidación' debe registrar '0'.",
@@ -1262,6 +1270,10 @@
                 respuestas: {
                     p_num: "244035814024884",
                     p_patente: "3581",
+                    p_factura: "INV-2024-88342",
+                    p_marcas: "MNO/IMMEX",
+                    p_num_bultos: 3,
+                    p_tipo_bulto: "CAJA",
                     p_destino: "1",
                     p_op: "IMP",
                     p_clave: "IN",
@@ -1276,6 +1288,9 @@
                     p_rfc: "MNO151020TY9",
                     p_curp: "",
                     p_nombre: "MAQUILADORA DEL NORTE S.A. DE C.V.",
+                    p_prov_nombre: "PACIFIC SEMICONDUCTOR INC",
+                    p_prov_pais: "USA",
+                    p_prov_domicilio: "4500 KEARNY VILLA RD SAN DIEGO CA",
                     p_domicilio: "CALLE INDUSTRIAL No. 200 OTAY TIJUANA Baja California",
                     p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "06/12/2024", p_fecha_p: "06/12/2024",
@@ -1305,6 +1320,7 @@
                     "DTA (8 al millar)": "$1,267.00 MXN"
                 },
                 pistas: [
+                    "En Datos del Proveedor Extranjero, declara: Nombre = 'AUTO TRADERS OF EL PASO LLC', País = 'USA'.",
                     "Al ser el despacho por la aduana de Ciudad Juárez, el número de pedimento debe llevar la aduana '07' -> '240735814024885'.",
                     "Al ser Persona Física, debes ingresar de forma obligatoria el RFC de 13 caracteres ('AARC950528XX1') y la CURP ('AARC950528HCHYDS08').",
                     "Por tratarse de un vehículo USADO (fracción 8703.23.02), la tasa de IGI es del 50% (mucho mayor a la de un vehículo nuevo) conforme al LIGIE. Calcula la liquidación en cascada: El arancel de IGI es de $79,200 (50% sobre Valor Aduana), el DTA es de $1,267 (8 al millar de $158,400).",
@@ -1314,6 +1330,10 @@
                 respuestas: {
                     p_num: "240735814024885",
                     p_patente: "3581",
+                    p_factura: "FAC-USA-44219",
+                    p_marcas: "S/M",
+                    p_num_bultos: 1,
+                    p_tipo_bulto: "UNIDAD",
                     p_destino: "7",
                     p_op: "IMP",
                     p_clave: "A1",
@@ -1328,6 +1348,9 @@
                     p_rfc: "AARC950528XX1",
                     p_curp: "AARC950528HCHYDS08",
                     p_nombre: "CESAR OMAR AYALA RODRIGUEZ",
+                    p_prov_nombre: "AUTO TRADERS OF EL PASO LLC",
+                    p_prov_pais: "USA",
+                    p_prov_domicilio: "900 N MESA ST EL PASO TX",
                     p_domicilio: "AV. DE LA REPUBLICA No. 450 CIUDAD JUAREZ Chihuahua",
                     p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "07/12/2024", p_fecha_p: "07/12/2024",
@@ -1367,6 +1390,11 @@
                 respuestas: {
                     p_num: "244335814024886",
                     p_patente: "3581",
+                    p_factura: "BAM-EXP-0091",
+                    p_bl: "MEDUB1234567",
+                    p_marcas: "BAM/OAX",
+                    p_num_bultos: 500,
+                    p_tipo_bulto: "CAJA",
                     p_destino: "9",
                     p_op: "EXP",
                     p_clave: "A1",
@@ -1410,6 +1438,7 @@
                     "DTA (8 al millar)": "$3,133.00 MXN"
                 },
                 pistas: [
+                    "En Datos del Proveedor Extranjero, declara: Nombre = 'GUANGZHOU FOOTWEAR TRADING CO LTD', País = 'CHN'.",
                     "Aduana de despacho es Manzanillo (16) -> Pedimento: '241635814024887'.",
                     "Ojo con el cálculo de los incrementables: Debes registrar $24,480 MXN en el campo de 'Fletes' de la sección de incrementables (que equivale a los $1,200 USD multiplicados por el Tipo de Cambio de $20.40).",
                     "El Valor Comercial (Factura) convertido a pesos es de $367,200 MXN ($18,000 * 20.40). Al sumarle el flete incrementable ($24,480), obtienes el Valor en Aduana exacto de $391,680 MXN.",
@@ -1420,6 +1449,11 @@
                 respuestas: {
                     p_num: "241635814024887",
                     p_patente: "3581",
+                    p_factura: "CMM-INV-7732",
+                    p_bl: "MSCUV9988221",
+                    p_marcas: "CMM/CHN",
+                    p_num_bultos: 120,
+                    p_tipo_bulto: "CAJA",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
@@ -1434,6 +1468,9 @@
                     p_rfc: "CMM110909HY1",
                     p_curp: "",
                     p_nombre: "CALZADO MODERNO DE MEXICO S.A. DE C.V.",
+                    p_prov_nombre: "GUANGZHOU FOOTWEAR TRADING CO LTD",
+                    p_prov_pais: "CHN",
+                    p_prov_domicilio: "NO. 88 TIYU RD GUANGZHOU",
                     p_domicilio: "AV. DE LOS PINOS No. 120 LEON Guanajuato",
                     p_fletes: 24480,
                     p_seguros: 0, p_otros_inc: 0,
@@ -1468,6 +1505,7 @@
                     "DTA (8 al millar)": "$6,783.00 MXN"
                 },
                 pistas: [
+                    "En Datos del Proveedor Extranjero, declara: Nombre = 'MASCHINENBAU WERNER GMBH', País = 'DEU'.",
                     "Aduana de despacho es Veracruz (43) -> El número de pedimento debe ser '244335814024888'.",
                     "Convierte los incrementables de fletes marítimos ($2,500 USD) a pesos utilizando el Tipo de Cambio ($19.95) para registrar $49,875 MXN en el cuadro de Fletes.",
                     "El Valor Comercial es de $798,000 MXN ($40,000 * 19.95). Al sumarle el flete ($49,875), el Valor de Aduana final es $847,875 MXN.",
@@ -1478,6 +1516,11 @@
                 respuestas: {
                     p_num: "244335814024888",
                     p_patente: "3581",
+                    p_factura: "IMG-DE-55102",
+                    p_bl: "HLCUVE100234",
+                    p_marcas: "IMG/DEU",
+                    p_num_bultos: 1,
+                    p_tipo_bulto: "CAJON",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
@@ -1492,6 +1535,9 @@
                     p_rfc: "IMG081112TR1",
                     p_curp: "",
                     p_nombre: "INGENIERIA MECANICA DEL GOLFO S.A. DE C.V.",
+                    p_prov_nombre: "MASCHINENBAU WERNER GMBH",
+                    p_prov_pais: "DEU",
+                    p_prov_domicilio: "INDUSTRIESTRASSE 14 STUTTGART",
                     p_domicilio: "AV. COSTA VERDE No. 100 VERACRUZ Veracruz",
                     p_fletes: 49875,
                     p_seguros: 0, p_otros_inc: 0,
@@ -1525,6 +1571,7 @@
                     "DTA (8 al millar)": "$4,836.00 MXN"
                 },
                 pistas: [
+                    "En Datos del Proveedor Extranjero, declara: Nombre = 'MEDSUPPLY DALLAS LLC', País = 'USA'.",
                     "Aduana del cruce es Nuevo Laredo (24) -> Número de pedimento: '242435814024889'.",
                     "Gracias al acuerdo comercial del T-MEC y el certificado de origen, el arancel de IGI queda completamente exento (asentar '0' en IGI). El identificador a nivel de partida a declarar debe ser 'TL' con complemento de origen 'USA'. En el bloque de Certificado/Tratado, declara el folio 'CO-TMEC-2024-7731' y selecciona Tratado = TMEC.",
                     "El Derecho de Trámite Aduanero (DTA) del 8 al millar sobre el Valor en Aduana ($604,500) es de $4,836 MXN.",
@@ -1534,6 +1581,10 @@
                 respuestas: {
                     p_num: "242435814024889",
                     p_patente: "3581",
+                    p_factura: "SMM-USA-3391",
+                    p_marcas: "SMM/TX",
+                    p_num_bultos: 8,
+                    p_tipo_bulto: "CAJA",
                     p_cert_origen: "CO-TMEC-2024-7731",
                     p_tratado: "TMEC",
                     p_destino: "9",
@@ -1550,6 +1601,9 @@
                     p_rfc: "SMM131212UY3",
                     p_curp: "",
                     p_nombre: "SISTEMAS MEDICOS DE MEXICO S.A. DE C.V.",
+                    p_prov_nombre: "MEDSUPPLY DALLAS LLC",
+                    p_prov_pais: "USA",
+                    p_prov_domicilio: "2200 N STEMMONS FWY DALLAS TX",
                     p_domicilio: "REFORMA No. 800 NUEVO LAREDO Tamaulipas",
                     p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "11/12/2024", p_fecha_p: "11/12/2024",
@@ -1582,6 +1636,7 @@
                     "Arancel (IGI)": "0% (Bajo Certificación)"
                 },
                 pistas: [
+                    "En Datos del Proveedor Extranjero, declara: Nombre = 'ROBOTIC WELDING SYSTEMS INC', País = 'USA'.",
                     "Aduana de despacho es Tijuana (40) -> Número de pedimento: '244035814024890'.",
                     "Al ser importación temporal de activo fijo de IMMEX, la Clave de Pedimento es 'AF' y el Régimen es 'ITE'.",
                     "Regla Especial del DTA para Activo Fijo IMMEX: No se calcula con el 8 al millar. El artículo 49 de la LFD dictamina una cuota fija de DTA (asentar '$410' en el cuadro de liquidación en vez del porcentaje regular).",
@@ -1591,6 +1646,10 @@
                 respuestas: {
                     p_num: "244035814024890",
                     p_patente: "3581",
+                    p_factura: "ATI-IMMEX-209",
+                    p_marcas: "ATI/TIJ",
+                    p_num_bultos: 1,
+                    p_tipo_bulto: "CAJON",
                     p_destino: "1",
                     p_op: "IMP",
                     p_clave: "AF",
@@ -1605,6 +1664,9 @@
                     p_rfc: "ATI140505TY1",
                     p_curp: "",
                     p_nombre: "AUTOMOTRIZ DE TIJUANA S. DE R.L. DE C.V.",
+                    p_prov_nombre: "ROBOTIC WELDING SYSTEMS INC",
+                    p_prov_pais: "USA",
+                    p_prov_domicilio: "550 INDUSTRIAL BLVD SAN DIEGO CA",
                     p_domicilio: "AV. EXPORTADORES No. 440 PARQUE INDUSTRIAL OTAY TIJUANA Baja California",
                     p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "12/12/2024", p_fecha_p: "12/12/2024",
@@ -1639,6 +1701,7 @@
                     "DTA (8 al millar)": "$4,198.00 MXN"
                 },
                 pistas: [
+                    "En Datos del Proveedor Extranjero, declara: Nombre = 'HANGUK ELECTRONICS CO LTD', País = 'KOR'.",
                     "Aduana de despacho es Manzanillo (16) -> Número de pedimento: '241635814024891'.",
                     "Los fletes marítimos ($1,500 USD * 19.80 TC) = $29,700 MXN se registran en el campo Fletes como incrementable. Precio comercial: $25,000 * 19.80 = $495,000 MXN. Valor Aduana = $495,000 + $29,700 = $524,700 MXN.",
                     "Calcula el IGI: $524,700 * 15% = $78,705 MXN. El DTA es 8 al millar: $524,700 * 0.008 = $4,198 MXN.",
@@ -1648,6 +1711,11 @@
                 respuestas: {
                     p_num: "241635814024891",
                     p_patente: "3581",
+                    p_factura: "DHM-KOR-6604",
+                    p_bl: "ONEYUSB554321",
+                    p_marcas: "DHM/KOR",
+                    p_num_bultos: 50,
+                    p_tipo_bulto: "CAJA",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
@@ -1662,6 +1730,9 @@
                     p_rfc: "DHM100505BX2",
                     p_curp: "",
                     p_nombre: "DISTRIBUIDORA HOGAR MODERNO S.A. DE C.V.",
+                    p_prov_nombre: "HANGUK ELECTRONICS CO LTD",
+                    p_prov_pais: "KOR",
+                    p_prov_domicilio: "123 TEHERAN-RO GANGNAM-GU SEUL",
                     p_domicilio: "AV. BOULEVARD COSTERO No. 890 MANZANILLO Colima",
                     p_fletes: 29700, p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "13/12/2024", p_fecha_p: "13/12/2024",
@@ -1698,6 +1769,10 @@
                 respuestas: {
                     p_num: "242435814024892",
                     p_patente: "3581",
+                    p_factura: "MPM-EXP-T-118",
+                    p_marcas: "MPM/MTY",
+                    p_num_bultos: 1,
+                    p_tipo_bulto: "CAJON",
                     p_destino: "9",
                     p_op: "EXP",
                     p_clave: "BM",
@@ -1741,6 +1816,7 @@
                     "DTA (8 al millar)": "$1,413.00 MXN"
                 },
                 pistas: [
+                    "En Datos del Proveedor Extranjero, declara: Nombre = 'MUMBAI SILK EXPORTS PVT LTD', País = 'IND'.",
                     "Aduana de Guadalajara Aeropuerto (48) -> Número de pedimento: '244835814024893'.",
                     "El medio de transporte para flete aéreo es '2'. Seguro: $250 USD * 20.18 = $5,045 MXN. Precio comercial: $8,500 * 20.18 = $171,530 MXN. Valor Aduana = $171,530 + $5,045 = $176,575 MXN.",
                     "IGI = $176,575 * 10% = $17,658 MXN. DTA = $176,575 * 0.008 = $1,413 MXN.",
@@ -1750,6 +1826,11 @@
                 respuestas: {
                     p_num: "244835814024893",
                     p_patente: "3581",
+                    p_factura: "MTP-IND-2290",
+                    p_bl: "AWB1576894423",
+                    p_marcas: "MTP/IND",
+                    p_num_bultos: 15,
+                    p_tipo_bulto: "ROLLO",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A1",
@@ -1764,6 +1845,9 @@
                     p_rfc: "MTP091215UV4",
                     p_curp: "",
                     p_nombre: "MODAS Y TEXTILES DEL PACIFICO S.A. DE C.V.",
+                    p_prov_nombre: "MUMBAI SILK EXPORTS PVT LTD",
+                    p_prov_pais: "IND",
+                    p_prov_domicilio: "PLOT 45 ANDHERI EAST MUMBAI",
                     p_domicilio: "BLVD. PABLO NERUDA No. 3265 GUADALAJARA Jalisco",
                     p_fletes: 0, p_seguros: 5045, p_otros_inc: 0,
                     p_fecha_e: "15/12/2024", p_fecha_p: "15/12/2024",
@@ -1792,6 +1876,7 @@
                     "Régimen": "DFI (Depósito Fiscal)"
                 },
                 pistas: [
+                    "En Datos del Proveedor Extranjero, declara: Nombre = 'TOKYO COMPUTING TRADING CO', País = 'JPN'.",
                     "Aduana de CDMX Aeropuerto (47) -> Número de pedimento: '244735814024894'.",
                     "La Clave del Pedimento para Introducción a Depósito Fiscal en Almacén General de Depósito es 'A4' y el Régimen es 'DFI'. El Tipo de Operación es 'IMP'.",
                     "Bajo el régimen de Depósito Fiscal, los impuestos (IGI e IVA) se difieren y NO se liquidan en efectivo en este pedimento. El almacén autorizado garantiza las contribuciones.",
@@ -1800,6 +1885,11 @@
                 respuestas: {
                     p_num: "244735814024894",
                     p_patente: "3581",
+                    p_factura: "AFC-DEP-3357",
+                    p_bl: "AWB2098765411",
+                    p_marcas: "AFC/JPN",
+                    p_num_bultos: 200,
+                    p_tipo_bulto: "CAJA",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "A4",
@@ -1814,6 +1904,9 @@
                     p_rfc: "AFC120610PQ8",
                     p_curp: "",
                     p_nombre: "ALMACENES FISCALES DEL CENTRO S.A. DE C.V.",
+                    p_prov_nombre: "TOKYO COMPUTING TRADING CO",
+                    p_prov_pais: "JPN",
+                    p_prov_domicilio: "3-2-1 MARUNOUCHI CHIYODA TOKYO",
                     p_domicilio: "AV. INSURGENTES SUR No. 1971 CIUDAD DE MEXICO CDMX",
                     p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "16/12/2024", p_fecha_p: "16/12/2024",
@@ -1842,6 +1935,7 @@
                     "DTA (8 al millar)": "$19,152.00 MXN"
                 },
                 pistas: [
+                    "En Datos del Proveedor Extranjero, declara: Nombre = 'DETROIT MOTORS EXPORT LLC', País = 'USA'.",
                     "Aduana de Nuevo Laredo (24) -> Número de pedimento: '242435814024895'. El medio de transporte es terrestre (7).",
                     "Con certificado de origen T-MEC (USA), el IGI es 0%. El identificador de partida 'TL' con complemento 'USA' es obligatorio para acreditar la preferencia arancelaria. En el bloque de Certificado/Tratado, declara el folio 'CO-TMEC-2024-4410' y selecciona Tratado = TMEC.",
                     "DTA = $2,394,000 * 0.008 = $19,152 MXN. Base IVA = Valor Aduana ($2,394,000) + DTA ($19,152) = $2,413,152 MXN.",
@@ -1850,6 +1944,10 @@
                 respuestas: {
                     p_num: "242435814024895",
                     p_patente: "3581",
+                    p_factura: "APN-USA-9912",
+                    p_marcas: "APN/USA",
+                    p_num_bultos: 5,
+                    p_tipo_bulto: "UNIDAD",
                     p_cert_origen: "CO-TMEC-2024-4410",
                     p_tratado: "TMEC",
                     p_destino: "9",
@@ -1866,6 +1964,9 @@
                     p_rfc: "APN150820WX5",
                     p_curp: "",
                     p_nombre: "AUTOS PREMIUM DEL NOROESTE S.A. DE C.V.",
+                    p_prov_nombre: "DETROIT MOTORS EXPORT LLC",
+                    p_prov_pais: "USA",
+                    p_prov_domicilio: "1 AUTOMOTIVE PLZ DETROIT MI",
                     p_domicilio: "BLVD. LOPEZ MATEOS No. 1200 HERMOSILLO Sonora",
                     p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "17/12/2024", p_fecha_p: "17/12/2024",
@@ -1895,6 +1996,7 @@
                     "DTA (8 al millar)": "$8,201.00 MXN"
                 },
                 pistas: [
+                    "En Datos del Proveedor Extranjero, declara: Nombre = 'PHARMA HANDEL DEUTSCHLAND GMBH', País = 'DEU'.",
                     "Aduana CDMX (47) -> Número de pedimento: '244735814024896'. Transporte aéreo = código '2'.",
                     "Seguro: $500 USD * 20.30 = $10,150 MXN. V. Comercial: $50,000 * 20.30 = $1,015,000 MXN. V. Aduana = $1,015,000 + $10,150 = $1,025,150 MXN.",
                     "Por tratarse de un medicamento regulado por la Secretaría de Salud, además del identificador S3 en la partida (Copia del Registro Sanitario), debes declarar en el bloque de Permisos Previos: Autoridad Emisora = COFEPRIS, Folio = COFEPRIS-2024-015234, vigente al 31/12/2025.",
@@ -1905,6 +2007,11 @@
                 respuestas: {
                     p_num: "244735814024896",
                     p_patente: "3581",
+                    p_factura: "LFA-DEU-7741",
+                    p_bl: "AWB3321098765",
+                    p_marcas: "LFA/DEU",
+                    p_num_bultos: 40,
+                    p_tipo_bulto: "CAJA",
                     p_permiso_tipo1: "COFEPRIS",
                     p_permiso1: "COFEPRIS-2024-015234",
                     p_permiso_vig1: "31/12/2025",
@@ -1922,6 +2029,9 @@
                     p_rfc: "LFA080312KY6",
                     p_curp: "",
                     p_nombre: "LABORATORIOS FARMACEUTICOS ALIANZA S.A. DE C.V.",
+                    p_prov_nombre: "PHARMA HANDEL DEUTSCHLAND GMBH",
+                    p_prov_pais: "DEU",
+                    p_prov_domicilio: "ARZNEIMITTELSTR 9 FRANKFURT",
                     p_domicilio: "CALZADA DE LOS MISTERIOS No. 26 CIUDAD DE MEXICO CDMX",
                     p_fletes: 0, p_seguros: 10150, p_otros_inc: 0,
                     p_fecha_e: "18/12/2024", p_fecha_p: "18/12/2024",
@@ -1958,6 +2068,10 @@
                 respuestas: {
                     p_num: "242435814024897",
                     p_patente: "3581",
+                    p_factura: "ABA-EXP-2245",
+                    p_marcas: "ABA/BAJ",
+                    p_num_bultos: 800,
+                    p_tipo_bulto: "CAJA",
                     p_destino: "9",
                     p_op: "EXP",
                     p_clave: "A1",
@@ -2001,6 +2115,7 @@
                     "DTA (8 al millar)": "$12,805.00 MXN"
                 },
                 pistas: [
+                    "En Datos del Proveedor Extranjero, declara: Nombre = 'AEROSPATIALE TURBINES FRANCE SA', País = 'FRA'.",
                     "Aduana de Querétaro (64) -> Número de pedimento: '246435814024898'. Transporte aéreo = '2'.",
                     "Flete: $3,200 USD * 20.50 = $65,600 MXN. V. Comercial: $75,000 * 20.50 = $1,537,500 MXN. V. Aduana = $1,537,500 + $65,600 = $1,603,100 MXN. Nota: revisar redondeo: exacto es $1,600,600 con los valores dados.",
                     "Con certificado EUR.1 (TLCUE), IGI = 0%. El identificador 'TL' con complemento 'UE' acredita la preferencia arancelaria. En el bloque de Certificado/Tratado, declara el folio 'EUR.1 FR/2024/008842' y selecciona Tratado = TLCUE. DTA = $1,600,600 * 0.008 = $12,805 MXN.",
@@ -2010,6 +2125,11 @@
                 respuestas: {
                     p_num: "246435814024898",
                     p_patente: "3581",
+                    p_factura: "AQU-FRA-1183",
+                    p_bl: "AWB4456712398",
+                    p_marcas: "AQU/FRA",
+                    p_num_bultos: 2,
+                    p_tipo_bulto: "CAJON",
                     p_cert_origen: "EUR.1 FR/2024/008842",
                     p_tratado: "TLCUE",
                     p_destino: "9",
@@ -2026,6 +2146,9 @@
                     p_rfc: "AQU070405AZ1",
                     p_curp: "",
                     p_nombre: "AERONAUTICA QUERETARO S.A. DE C.V.",
+                    p_prov_nombre: "AEROSPATIALE TURBINES FRANCE SA",
+                    p_prov_pais: "FRA",
+                    p_prov_domicilio: "12 RUE DE L'AVIATION TOULOUSE",
                     p_domicilio: "PARQUE AEROESPACIAL No. 1 QUERETARO Querétaro",
                     p_fletes: 65600, p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "20/12/2024", p_fecha_p: "20/12/2024",
@@ -2062,6 +2185,10 @@
                 respuestas: {
                     p_num: "243935814024899",
                     p_patente: "3581",
+                    p_factura: "HFB-RET-0067",
+                    p_marcas: "HFB/TEC",
+                    p_num_bultos: 1,
+                    p_tipo_bulto: "CAJON",
                     p_destino: "1",
                     p_op: "IMP",
                     p_clave: "H1",
@@ -2113,6 +2240,11 @@
                 respuestas: {
                     p_num: "244335814024900",
                     p_patente: "3581",
+                    p_factura: "DTN-TRA-4471",
+                    p_bl: "MEDUB7765432",
+                    p_marcas: "DTN/VER",
+                    p_num_bultos: 30,
+                    p_tipo_bulto: "CAJA",
                     p_destino: "9",
                     p_op: "IMP",
                     p_clave: "T3",
@@ -2156,6 +2288,7 @@
                     "DTA (8 al millar)": "$3,046.00 MXN"
                 },
                 pistas: [
+                    "En Datos del Proveedor Extranjero, declara: Nombre = 'OLIVARES DEL MEDITERRANEO SA', País = 'ESP'.",
                     "Aduana Nuevo Laredo (24) -> Número de pedimento: '242435814024901'. Transporte terrestre = '7'.",
                     "Flete: $800 * 20.25 = $16,200 MXN. V. Comercial: $18,000 * 20.25 = $364,500 MXN. V. Aduana = $364,500 + $16,200 = $380,700 MXN.",
                     "TLCUE con España: IGI = 0%. Debes declarar el identificador TL en la partida, el Certificado de Origen 'EUR.1 ES/2024/003317' y seleccionar Tratado = TLCUE. Por tratarse de un alimento agrícola, también declara en Permisos Previos: Autoridad Emisora = SAGARPA/SENASICA, Folio = SENASICA-2024-008873, vigente al 31/12/2025. DTA = $380,700 * 0.008 = $3,046 MXN. Base IVA = $380,700 + $3,046 = $383,746 MXN.",
@@ -2164,6 +2297,10 @@
                 respuestas: {
                     p_num: "242435814024901",
                     p_patente: "3581",
+                    p_factura: "IAN-ESP-8821",
+                    p_marcas: "IAN/ESP",
+                    p_num_bultos: 100,
+                    p_tipo_bulto: "CAJA",
                     p_cert_origen: "EUR.1 ES/2024/003317",
                     p_tratado: "TLCUE",
                     p_permiso_tipo1: "SAGARPA",
@@ -2183,6 +2320,9 @@
                     p_rfc: "IAN170825LM4",
                     p_curp: "",
                     p_nombre: "IMPORTADORA ALIMENTARIA DEL NORTE S.A. DE C.V.",
+                    p_prov_nombre: "OLIVARES DEL MEDITERRANEO SA",
+                    p_prov_pais: "ESP",
+                    p_prov_domicilio: "POL. IND. LA ALORA JAEN",
                     p_domicilio: "AV. CONSTITUCION No. 4500 MONTERREY Nuevo León",
                     p_fletes: 16200, p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "23/12/2024", p_fecha_p: "23/12/2024",
@@ -2212,6 +2352,7 @@
                     "Régimen": "ITE"
                 },
                 pistas: [
+                    "En Datos del Proveedor Extranjero, declara: Nombre = 'SAN DIEGO ELECTRONIC COMPONENTS LLC', País = 'USA'.",
                     "Aduana Tijuana Otay (40) -> Número de pedimento: '244035814024902'. Transporte terrestre = '7'.",
                     "Al existir vinculación entre importador y exportador (empresas del mismo grupo), el campo de vinculación de partida debe marcarse como '1' (SÍ existe vinculación). Esto NO invalida la operación, pero debe declararse.",
                     "Al ser importación temporal IMMEX (clave 'IN', régimen 'ITE'), los impuestos IGI e IVA se difieren. El IVA se registra en $0 en la liquidación.",
@@ -2220,6 +2361,10 @@
                 respuestas: {
                     p_num: "244035814024902",
                     p_patente: "3581",
+                    p_factura: "ETR-MAQ-5563",
+                    p_marcas: "ETR/TIJ",
+                    p_num_bultos: 4,
+                    p_tipo_bulto: "CAJA",
                     p_destino: "1",
                     p_op: "IMP",
                     p_clave: "IN",
@@ -2234,6 +2379,9 @@
                     p_rfc: "ETR030820NK5",
                     p_curp: "",
                     p_nombre: "ELECTRONICA TRANSFRONTERIZA S. DE R.L. DE C.V.",
+                    p_prov_nombre: "SAN DIEGO ELECTRONIC COMPONENTS LLC",
+                    p_prov_pais: "USA",
+                    p_prov_domicilio: "7800 SILVERTON AVE SAN DIEGO CA",
                     p_domicilio: "PARQUE INDUSTRIAL PACÍFICO No. 900 TIJUANA Baja California",
                     p_fletes: 0, p_seguros: 0, p_otros_inc: 0,
                     p_fecha_e: "24/12/2024", p_fecha_p: "24/12/2024",
@@ -2528,7 +2676,7 @@
                 "Estableciendo conexión con SAAI M3...",
                 "Sincronizando claves del Anexo 22 de las RGCE...",
                 "Configurando entorno interactivo libre...",
-                "Inicializando 30 casos didácticos..."
+                "Inicializando 20 casos didácticos..."
             ];
 
             const interval = setInterval(() => {
@@ -2620,6 +2768,13 @@
             modal.classList.remove('hidden');
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
+
+        // Array de IDs de los casos que el estudiante ya completó correctamente.
+        // (declaración añadida: faltaba por completo, causando un ReferenceError
+        // cada vez que un estudiante aprobaba un caso — justo el momento de éxito
+        // que nunca debería fallar)
+        let casesCompleted = [];
+
         function loadCase(id) {
             const idx = CASOS.findIndex(c => c.id === parseInt(id));
             if (idx === -1) return;
@@ -2773,17 +2928,42 @@
                 }
             }
 
+            // Identificadores de partida (p_part_id1/2/3): un valor vacío puede ser
+            // correcto si el caso no requiere ese identificador (Ronda 10 quitó el
+            // relleno genérico que antes tenían todos los casos), así que no se
+            // marca como incorrecto solo por no avisar de un campo "no aplica".
+            function checkIdentificador(id, expected) {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const val = el.value.trim().toUpperCase();
+                const exp = (expected || '').toString().toUpperCase();
+                const isCorrect = val === exp;
+                if (isCorrect) {
+                    el.classList.add('bg-green-100', 'border-green-500');
+                    el.classList.remove('bg-red-100', 'border-red-500');
+                } else {
+                    el.classList.add('bg-red-100', 'border-red-500');
+                    el.classList.remove('bg-green-100', 'border-green-500');
+                    log.push("<strong>Identificador de Partida:</strong> Verifica si este identificador aplica o no a la mercancía descrita (Apéndice 8/9).");
+                    errors++;
+                }
+            }
+
             // Validar Campos SAAI M3
             check('p_num', resp.p_num, "<strong>Número de Pedimento:</strong> El formato de 15 dígitos o su composición aduanera es incorrecto.");
             check('p_patente', resp.p_patente, "<strong>Patente Aduanal:</strong> Número de patente del agente aduanal incorrecto.");
-            check('p_destino', resp.p_destino, "<strong>Destino:</strong> Debe ser '2' para región fronteriza o '9' para el resto del país.");
-            check('p_op', resp.p_op, "<strong>T. Operación:</strong> Código incorrecto (IMP / EXP).");
+            check('p_destino', resp.p_destino, "<strong>Destino:</strong> Verifica la clave del Apéndice 15 (1=BC y parcial Sonora, 7=Franja Fronteriza Norte, 9=Interior del País, etc.) según el domicilio real de la mercancía.");
+            check('p_op', resp.p_op, "<strong>T. Operación:</strong> Código incorrecto (IMP / EXP / TRA).");
             check('p_clave', resp.p_clave, "<strong>Clave Pedimento:</strong> Clave del Anexo 22 incorrecta.");
             check('p_regimen', resp.p_regimen, "<strong>Régimen:</strong> Incompatibilidad del régimen declarado.");
             check('p_tc', resp.p_tc, "<strong>Tipo de Cambio:</strong> No coincide con el valor oficial del DOF.");
             check('p_adu', resp.p_adu, "<strong>Aduana E/S:</strong> Sección aduanera del despacho errónea.");
 
             // Validar campos condicionales por régimen (solo si el caso los requiere)
+            if (bloques.proveedor !== false) {
+                check('p_prov_nombre', resp.p_prov_nombre, "<strong>Proveedor Extranjero:</strong> Nombre o razón social del proveedor incorrecto.");
+                check('p_prov_pais', resp.p_prov_pais, "<strong>País del Proveedor:</strong> Clave ISO del país del proveedor incorrecta.");
+            }
             if (bloques.tratado) {
                 check('p_tratado', resp.p_tratado, "<strong>Tratado Aplicable:</strong> No corresponde con el certificado de origen declarado en este caso.");
                 check('p_cert_origen', resp.p_cert_origen, "<strong>Certificado de Origen:</strong> Folio incorrecto o no declarado.");
@@ -2802,6 +2982,27 @@
             check('p_part_frac', resp.p_part_frac, "<strong>Fracción Arancelaria:</strong> Fracción de la partida incorrecta.");
             check('p_part_nico', resp.p_part_nico, "<strong>NICO:</strong> Número identificador comercial incorrecto.");
             check('p_part_umc', resp.p_part_umc, "<strong>U.M.C:</strong> Unidad de medida comercial incorrecta.");
+
+            // Campos ampliados en Ronda 12 (antes definidos en el caso pero sin validar):
+            check('p_l_prv', resp.p_l_prv, "<strong>PRV:</strong> Monto de prevalidación incorrecto.");
+            check('p_l_cnt', resp.p_l_cnt, "<strong>CNT:</strong> Cuota de IVA/PRV incorrecta.");
+            check('p_l_total', resp.p_l_total, "<strong>Total:</strong> El total general del pedimento no coincide con la suma de conceptos.");
+            check('p_vdol', resp.p_vdol, "<strong>Valor en Dólares:</strong> El precio de factura en USD no coincide con el dato de la operación.");
+            check('p_fecha_e', resp.p_fecha_e, "<strong>Fecha de Entrada:</strong> Verifica el formato DD/MM/AAAA y que coincida con el año de validación del pedimento.");
+            check('p_fecha_p', resp.p_fecha_p, "<strong>Fecha de Pago:</strong> Debe ser igual o posterior a la fecha de entrada.");
+            check('p_peso', resp.p_peso, "<strong>Peso Bruto:</strong> El peso total en kilogramos no coincide con la mercancía descrita.");
+            check('p_trans_a', resp.p_trans_a, "<strong>Transporte Arribo:</strong> Código de transporte de arribo incorrecto.");
+            check('p_trans_s', resp.p_trans_s, "<strong>Transporte Salida:</strong> Código de transporte de salida incorrecto.");
+            check('p_part_cant', resp.p_part_cant, "<strong>Cantidad UMC:</strong> La cantidad comercial de la partida no coincide.");
+            check('p_part_pais', resp.p_part_pais, "<strong>País de Origen:</strong> Clave ISO de 3 letras del país de origen de la mercancía incorrecta (Apéndice 4).");
+            check('p_part_desc', resp.p_part_desc, "<strong>Descripción de Mercancía:</strong> La descripción debe coincidir exactamente con la declarada en el caso.");
+            checkIdentificador('p_part_id1', resp.p_part_id1);
+            checkIdentificador('p_part_id2', resp.p_part_id2);
+            checkIdentificador('p_part_id3', resp.p_part_id3);
+            check('p_factura', resp.p_factura, "<strong>Factura Comercial:</strong> El número de folio no coincide con el documento soporte del caso.");
+            checkIdentificador('p_bl', resp.p_bl);
+            check('p_marcas', resp.p_marcas, "<strong>Marcas y Números:</strong> Las marcas de identificación de los bultos no coinciden.");
+            check('p_num_bultos', resp.p_num_bultos, "<strong>Número de Bultos:</strong> La cantidad de bultos declarada no coincide con la mercancía descrita.");
 
             showFeedback(errors, log);
         }
@@ -2863,9 +3064,10 @@
 
         function updateProgress() {
             const count = casesCompleted.length;
-            document.getElementById('progress-text').innerText = `${count} / 30 Casos`;
-            const mob = document.getElementById('progress-text-mobile'); if(mob) mob.innerText = `${count} / 30 Casos`;
-            const pct = (count / 30) * 100;
+            const total = CASOS.length;
+            document.getElementById('progress-text').innerText = `${count} / ${total} Casos`;
+            const mob = document.getElementById('progress-text-mobile'); if(mob) mob.innerText = `${count} / ${total} Casos`;
+            const pct = (count / total) * 100;
             document.getElementById('global-progress-bar').style.width = `${pct}%`;
         }
 
@@ -3756,6 +3958,7 @@
         const DIAGNOSTICO_ANEXO22 = {
             presentes: [
                 "Número de Pedimento (15 dígitos SAAI)",
+                "Patente del Agente Aduanal",
                 "Tipo de Operación (IMP/EXP)",
                 "Clave del Pedimento (A1, IN, A4, T3, H1, BM, AF, RT)",
                 "Régimen Aduanero (IMD, ITE, ETE, ETR, DFI, TRA)",
@@ -3770,47 +3973,48 @@
                 "RFC del Importador/Exportador",
                 "Nombre/Razón Social",
                 "Domicilio Fiscal",
+                "Datos del Proveedor Extranjero (nombre, país, dirección) — condicional, solo en importaciones",
                 "Incrementables (Fletes, Seguros, Otros)",
+                "Número de Factura Comercial",
+                "Número de Conocimiento de Embarque (BL/AWB)",
                 "Cuadro de Liquidación (IVA, DTA, PRV, CNT)",
                 "Fracción Arancelaria (8 dígitos LIGIE)",
                 "País de Origen/Destino (ISO 3)",
                 "Vinculación Comprador-Vendedor",
                 "Descripción de Mercancía",
-                "Identificadores de Partida (TL, EN, EO, etc.)",
+                "Identificadores de Partida (TL, EN, VU, S3, PO — según Apéndice 8/9)",
+                "Permisos Previos (COFEPRIS, SAGARPA/SENASICA) — condicional, solo en mercancía regulada",
+                "Certificado de Origen y Tratado Aplicable (T-MEC, TLCUE) — condicional, solo con preferencia arancelaria",
+                "Certificación OEA — condicional (selector disponible, ningún caso actual la requiere)",
+                "Campo de Observaciones y Leyendas del Pedimento",
                 "Fecha de Entrada y Pago",
-                "CURP (persona física)"
+                "CURP (persona física)",
+                "Segunda partida (mercancía adicional en el mismo pedimento)"
             ],
             faltantes: [
-                "Número de Factura Comercial (campo dedicado)",
-                "Patente del Agente Aduanal",
-                "Datos del Proveedor Extranjero (nombre, país, dirección)",
-                "Número de Contenedor/BL (conocimiento de embarque)",
-                "Permisos Previos (COFEPRIS, SAGARPA, SEDENA)",
-                "Marcas y Número de Bultos detallado",
-                "Valor Decrementable (para INCOTERMS con costos post-entrada)",
-                "Segunda partida y partidas subsecuentes",
-                "Campo de Observaciones/Leyendas",
-                "Datos de la Empresa Certificada OEA (si aplica)"
+                "Marcas y Número de Bultos (existe el campo, no se valida en verifyPedimento)",
+                "Valor Decrementable (para INCOTERMS DAP/DDP con costos post-entrada; ningún caso actual lo requiere)",
+                "Datos detallados de tercera partida en adelante (solo soporta 1ra y 2da partida)",
+                "Validación automática de formato de RFC/CURP en tiempo real (hoy solo se compara contra el valor esperado del caso)"
             ],
             recomendados: [
-                "Agregar campo para número de certificado de origen (T-MEC/TLCUE)",
-                "Agregar campo para número de permiso COFEPRIS",
-                "Agregar campo para número de conocimiento de embarque (BL/AWB)",
-                "Mostrar cálculo detallado de DTA con indicador de tratado aplicable",
-                "Agregar validación automática de RFC con patrón correcto"
+                "Agregar más casos de ejemplo con Certificación OEA real para poder probar ese bloque en producción",
+                "Agregar validación automática de los identificadores de partida (p_part_id1/2/3) en verifyPedimento",
+                "Agregar un caso con Incoterm DAP/DDP para poder mostrar el bloque de Decrementables en uso real",
+                "Ampliar a una tercera partida o más en el mismo pedimento para casos de consolidación de mercancías"
             ]
         };
 
         const EVALUACION_ACADEMICA = [
-            { area: "Cobertura de Campos del Pedimento",      nivel: "Bueno",       nota: "Cubre los 24 campos principales. Faltan 10 campos complementarios del Anexo 22." },
+            { area: "Cobertura de Campos del Pedimento",      nivel: "Excelente",   nota: "Cubre los campos principales y los complementarios condicionales (proveedor, permisos, tratado/certificado de origen, OEA, patente, factura, BL) que se muestran según el régimen de cada caso, replicando el comportamiento de un pedimento real." },
             { area: "Cobertura de Regímenes Aduaneros",       nivel: "Excelente",   nota: "Cubre 6 regímenes del Apéndice 16: IMD, ITE, ETE, ETR, DFI y TRA, además de EXD. Cobertura completa para nivel básico-intermedio." },
-            { area: "Cobertura de Identificadores",           nivel: "Bueno",       nota: "Incluye TL, EN, EO y vinculación. Faltan RS (Registro Sanitario), HA (hasta agotar) y ZL (zona libre)." },
+            { area: "Cobertura de Identificadores",           nivel: "Bueno",       nota: "Incluye TL (tratado), EN (excepción NOM), VU (vehículos usados), S3 (registro sanitario) y PO (proveedor de origen con preferencia arancelaria), cada uno usado solo cuando su condición de aplicación real se cumple. Faltan otras claves menos frecuentes del Apéndice 8/9." },
             { area: "Cobertura de Contribuciones",            nivel: "Excelente",   nota: "Cubre IGI, IVA, DTA, PRV y CNT con cálculos correctos. Incluye casos con 0% por tratado." },
             { area: "Cobertura de Valor en Aduana",           nivel: "Excelente",   nota: "Implementa correctamente incrementables (flete, seguro) según INCOTERM. Método 1 de valoración." },
-            { area: "Cobertura de Transporte",                nivel: "Bueno",       nota: "Cubre marítimo, aéreo y terrestre. Falta ferroviario y ductos." },
+            { area: "Cobertura de Transporte",                nivel: "Bueno",       nota: "Cubre marítimo, aéreo y terrestre, verificados contra la descripción de cada caso. Falta ferroviario y ductos." },
             { area: "Cobertura de Importaciones",             nivel: "Excelente",   nota: "20 casos con diversidad de orígenes, aduanas, regímenes e INCOTERMS. Muy completo." },
             { area: "Cobertura de Exportaciones",             nivel: "Regular",     nota: "Solo 4 casos de exportación. Faltan casos de exportación con maquiladoras (retorno) y exportación temporal." },
-            { area: "Experiencia Educativa General",          nivel: "Bueno",       nota: "Ayudas contextuales, modo aprendizaje y biblioteca son valor diferencial. Puede mejorar con más exportaciones." }
+            { area: "Experiencia Educativa General",          nivel: "Excelente",   nota: "Ayudas contextuales, modo aprendizaje, biblioteca y campos condicionales por régimen son valor diferencial. Puede mejorar con más casos de exportación." }
         ];
 
         function mostrarDiagnosticoAnexo22() {
